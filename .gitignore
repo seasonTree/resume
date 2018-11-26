@@ -1,0 +1,7 @@
+.vscode
+node_modules/
+package-lock.json
+#发布版本注释
+client/dist/
+#发布版本添加注释，应为上传文件夹不应该被发布
+client/dist/upload
