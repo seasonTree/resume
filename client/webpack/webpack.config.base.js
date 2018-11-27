@@ -107,7 +107,7 @@ let plugins = [
         //复制文件
         //favicon.ico
         {
-            from: `/${srcPath}/image/favicon.ico`,
+            from: `${srcPath}/image/favicon.ico`,
             to: `${outputPath}`,
             force: true,
         }
