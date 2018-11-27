@@ -2,8 +2,10 @@
   Options +FollowSymlinks -Multiviews
   RewriteEngine On
 
+  RewriteCond  %{REQUEST_FILENAME} ^(.+)\.(js|css|gif|jpe?g|png|svg|bmp|ico|icon|woff2?|eot|ttf|otf)$
+  RewriteRule ^(.*\).(js|css|gif|jpe?g|png|svg|bmp|ico|icon|woff2?|eot|ttf|otf)$ ../../client/dist/$1 [QSA,L]
+
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteRule .*\.(js|css|gif|jpe?g|png|svg|bmp|ico|icon|woff2?|eot|ttf|otf)$ ../../client/dist/$1 [QSA,L]
   RewriteRule ^(.*)$ index.php?/$1 [QSA,PT,L]
 </IfModule>
