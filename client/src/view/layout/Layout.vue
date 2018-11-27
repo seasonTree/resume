@@ -170,7 +170,7 @@ export default {
                 if (valid) {
                     that.changLoading = true;
 
-                    that.$api.users
+                    that.$api.user
                         .changePassword(that.changePwd)
                         .then(res => {
                             if (res.error == 0) {
@@ -199,7 +199,7 @@ export default {
         logout() {
             let that = this;
 
-            that.$api.users
+            that.$api.user
                 .logout()
                 .then(res => {
                     that.$store.commit("clearUserInfo");

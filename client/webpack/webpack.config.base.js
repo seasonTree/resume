@@ -2,7 +2,11 @@ const path = require('path');
 const extractTextPlugin = require("extract-text-webpack-plugin");
 const vueLoaderPlugin = require('vue-loader/lib/plugin');
 const htmlPlugin = require('html-webpack-plugin');
+
 const fs = require('fs');
+
+//webpack
+// const webpack = require('webpack');
 
 //多线程打包, 使用 happypack@next
 const happyPack = require('happypack');
@@ -46,7 +50,7 @@ rmGenFile(outputPath);
 
 //生成入文件
 let entry = {
-    'index': `${srcPath}/index.js`,
+    'app': `${srcPath}/index.js`,
 }
 
 let plugins = [
@@ -108,6 +112,11 @@ let plugins = [
             force: true,
         }
     ]),
+    
+    //热更新
+    // new webpack.HotModuleReplacementPlugin(),
+    // new webpack.NoEmitOnErrorsPlugin(),
+    // new webpack.NamedModulesPlugin()
 ]
 
 
@@ -129,7 +138,20 @@ module.exports = {
         path: `${outputPath}`,
         filename: '[name]/index[hash:4].js',
         chunkFilename: 'js/chunks/[name][hash:4].js',
+        publicPath: '/'
     },
+
+    // devServer: {
+    //     contentBase: outputPath,
+    //     compress: true,
+    //     port: 9000,
+    //     hot: true,
+    //     inline: true,
+    //     publicPath: `${outputPath}`,
+    //     open: true,
+    //     historyApiFallback:true,
+    //     progress:true,
+    // },
 
     // externals: {
     //     'CKEDITOR': 'window.CKEDITOR'
@@ -201,7 +223,8 @@ module.exports = {
                 loader: 'url-loader',
                 options: {
                     limit: 10000,
-                    name: `/image/[name].[hash:7].[ext]`,
+                    //删除 / 改写到public path，为了热重启能找到
+                    name: `image/[name].[hash:7].[ext]`,
                 }
             },
             {
@@ -209,7 +232,8 @@ module.exports = {
                 loader: 'url-loader',
                 options: {
                     limit: 10000,
-                    name: `/fonts/[name].[hash:7].[ext]`,
+                    //删除 / 改写到public path，为了热重启能找到
+                    name: `fonts/[name].[hash:7].[ext]`,
                 }
             }
         ],

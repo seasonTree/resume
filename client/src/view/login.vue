@@ -2,7 +2,7 @@
     <div class="login-container">
 
         <el-form ref="form" :model="form" class="login-form">
-            <div class="login-title">管理系统</div>
+            <div class="login-title">简历管理系统</div>
             <el-input v-model.trim="form.username" placeholder="请输入用户名" auto-complete="off"></el-input>
             <el-input @keyup.native.enter="submitHandler" v-model.trim="form.password" type="password" placeholder="请输入用户密码" autocomplete="off"></el-input>
             <el-button type="primary" :loading="loading" @click="submitHandler">登录</el-button>
@@ -41,7 +41,7 @@ export default {
 
             that.loading = true;
 
-            that.$api.users
+            that.$api.user
                 .login(that.form)
                 .then(res => {
                     if (res.error == 0) {
@@ -88,7 +88,7 @@ export default {
     background-color: #12afe3;
     background-image: url(../image/login_bg.jpg);
     background-size: 100% 100%;
-
+    
     .login-form {
         position: absolute;
         top: 50%;

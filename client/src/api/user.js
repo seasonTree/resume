@@ -4,7 +4,7 @@ import request from '../common/request';
 //登录
 export function login(data) {
     return request({
-        url: '/users/login',
+        url: '/user/login',
         method: 'post',
         data: data
     })
@@ -13,7 +13,7 @@ export function login(data) {
 //登出
 export function logout(data) {
     return request({
-        url: '/users/logout',
+        url: '/user/logout',
         method: 'post',
         data: data
     })
@@ -22,7 +22,7 @@ export function logout(data) {
 //修改密码
 export function changePassword(data) {
     return request({
-        url: '/users/change_password',
+        url: '/user/change_password',
         method: 'post',
         data: data
     })
@@ -31,7 +31,7 @@ export function changePassword(data) {
 //获取用户信息
 export function getUserInfo(data){
     return request({
-        url: '/users/get_userInfo',
+        url: '/user/get_userInfo',
         method: 'get',
         data: data
     })
