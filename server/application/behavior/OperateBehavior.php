@@ -110,60 +110,60 @@ class OperateBehavior extends Controller
     public function run()
     {   
         
-        //获取当前访问路由
-        $url = getActionUrl();
-        $userid = Session::get('user_info')['id'] ? Session::get('user_info')['id'] : 0;
+        // //获取当前访问路由
+        // $url = getActionUrl();
+        // $userid = Session::get('user_info')['id'] ? Session::get('user_info')['id'] : 0;
         
-        if (in_array($url, $this->login)) {
-            if (checkLogin() && $url != 'user/sendmessage') {
-                $this->redirect('user/userInfo');
-            }
-        }
-        if (empty(Session::get()) && !in_array($url, $this->login)) {
-            if (checkLogin()) {
-                $this->redirect($url);
-            }
-            $this->error('请先登陆', '/', '', '1');
-        }
+        // if (in_array($url, $this->login)) {
+        //     if (checkLogin() && $url != 'user/sendmessage') {
+        //         $this->redirect('user/userInfo');
+        //     }
+        // }
+        // if (empty(Session::get()) && !in_array($url, $this->login)) {
+        //     if (checkLogin()) {
+        //         $this->redirect($url);
+        //     }
+        //     $this->error('请先登陆', '/', '', '1');
+        // }
 
         
-        if ($userid != 0) {
-            //用户所拥有的权限路由(登录后)
-            $auth = Session::get('auth') ? Session::get('auth') : $this->unaudit;
-            $auth = array_merge($this->login,$this->exclude,$auth);
-            // dump($auth);exit;
-        }
-        else{
-            $auth = $this->login;
-            if (!in_array($url, $auth)) {
-                $this->error('请先登陆', '/index/index');
-            }
-        }
-        if ($userid != 1) {
-            //超级管理员跳权限
-            if (!in_array($url, $auth)) {
-                $this->error('无权限访问');
-            }
+        // if ($userid != 0) {
+        //     //用户所拥有的权限路由(登录后)
+        //     $auth = Session::get('auth') ? Session::get('auth') : $this->unaudit;
+        //     $auth = array_merge($this->login,$this->exclude,$auth);
+        //     // dump($auth);exit;
+        // }
+        // else{
+        //     $auth = $this->login;
+        //     if (!in_array($url, $auth)) {
+        //         $this->error('请先登陆', '/index/index');
+        //     }
+        // }
+        // if ($userid != 1) {
+        //     //超级管理员跳权限
+        //     if (!in_array($url, $auth)) {
+        //         $this->error('无权限访问');
+        //     }
 
-        }
-        $page = Session::get('page') ? Session::get('page') : [];
-        $page = array_merge($this->untoken,$page);
+        // }
+        // $page = Session::get('page') ? Session::get('page') : [];
+        // $page = array_merge($this->untoken,$page);
         
-        if (!in_array($url, $page)) {
-            if ($userid != 1) {
-                //超级管理员略过
-                $api_token = isset($_SERVER['HTTP_TOKEN']) ? $_SERVER['HTTP_TOKEN'] : '';
-                if (!$api_token) {
-                    $this->error('token不存在');
-                }
-                date_default_timezone_set('UTC');
-                $token = getSignature(date('YmdH',time()),base64_decode(config('config.api_key')));
-                if ($api_token != $token) {
-                    $this->error('token无效');
-                }
-            }
+        // if (!in_array($url, $page)) {
+        //     if ($userid != 1) {
+        //         //超级管理员略过
+        //         $api_token = isset($_SERVER['HTTP_TOKEN']) ? $_SERVER['HTTP_TOKEN'] : '';
+        //         if (!$api_token) {
+        //             $this->error('token不存在');
+        //         }
+        //         date_default_timezone_set('UTC');
+        //         $token = getSignature(date('YmdH',time()),base64_decode(config('config.api_key')));
+        //         if ($api_token != $token) {
+        //             $this->error('token无效');
+        //         }
+        //     }
             
-        }
+        // }
         
 
     }

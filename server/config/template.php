@@ -12,7 +12,7 @@
 // +----------------------------------------------------------------------
 // | 模板设置
 // +----------------------------------------------------------------------
-$basePath=json_decode(file_get_contents(dirname(Env::get('ROOT_PATH')).'/config.json'),true);
+// $basePath=json_decode(file_get_contents(dirname(Env::get('ROOT_PATH')).'/config.json'),true);
 return [
     // 模板引擎类型 支持 php think 支持扩展
     'type'         => 'Think',
@@ -39,9 +39,10 @@ return [
 //        '__JS__' => '',
 //        '__IMG__' => '',
 //        '__FONTS__' => '',
-        '__basePath__' =>$basePath['publicPath'],
+        '__basePath__' => '/dist',
 //        '__basePath__' => '/client',
         '__date__'=>time(),
     ],
-    'view_path'=> dirname(Env::get('ROOT_PATH')).'/client/template/',
+
+    'view_path'=> dirname(Env::get('ROOT_PATH')).'/client/dist/',
 ];
