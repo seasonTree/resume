@@ -3,9 +3,9 @@ const webpack = require('webpack');
 const webpackConfig = require('./webpack.config.dev.js');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
-const apiMocker = require('webpack-api-mocker');
+// const apiMocker = require('webpack-api-mocker');
 const path = require('path');
-const mocker = require('../test/mocker/index');
+// const mocker = require('../test/mocker/index');
 
 const app = new express();
 
