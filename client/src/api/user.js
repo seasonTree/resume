@@ -33,6 +33,15 @@ export function getUserInfo(data){
     return request({
         url: '/user/get_userInfo',
         method: 'get',
-        data: data
+        params: data
+    })
+}
+
+//获取用户列表
+export function get(data){
+    return request({
+        url: '/user/get_userInfo',
+        method: 'get',
+        params: data
     })
 }

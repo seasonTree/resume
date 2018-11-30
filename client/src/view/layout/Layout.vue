@@ -217,7 +217,12 @@ export default {
                             icon: "fa fa-user-shield"
                         }
                     ]
-                }
+                },
+                {
+                    url: "/test",
+					name: "测试",
+                    icon: "fa fa-list-alt"
+                },
             ],
 
             changePasswordVisable: false,
