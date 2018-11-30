@@ -15615,3 +15615,327 @@
   'pageIndex' => '1',
   'pageSize' => '10',
 )
+---------------------------------------------------------------
+[ 2018-11-30T17:48:59+08:00 ] 127.0.0.1 GET www.test.com/
+[运行时间：0.031228s] [吞吐率：32.02req/s] [内存消耗：1,581.81kb] [文件加载：110]
+[ info ] [ LANG ] H:\resume\server\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] H:\resume\server\application\index\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=easlr1n5tnlsjmu8fpimsjul36',
+  'accept-language' => 'zh-CN,zh;q=0.9',
+  'accept-encoding' => 'gzip, deflate',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.test.com',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] H:\resume/client/dist/index.html [ array (
+) ]
+---------------------------------------------------------------
+[ 2018-11-30T17:48:59+08:00 ] 127.0.0.1 GET www.test.com/api/user/get_userInfo
+[运行时间：0.029836s] [吞吐率：33.52req/s] [内存消耗：1,686.66kb] [文件加载：114]
+[ info ] [ LANG ] H:\resume\server\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] H:\resume\server\application\index\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'rule' => 'api/user/get_userInfo',
+  'route' => 'User/getUserInfo',
+  'option' => 
+  array (
+    'merge_rule_regex' => false,
+  ),
+  'var' => 
+  array (
+  ),
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=easlr1n5tnlsjmu8fpimsjul36',
+  'accept-language' => 'zh-CN,zh;q=0.9',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.test.com/',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36',
+  'accept' => 'application/json, text/plain, */*',
+  'connection' => 'close',
+  'host' => 'www.test.com',
+)
+[ info ] [ PARAM ] array (
+  '/api/user/get_userInfo' => '',
+)
+---------------------------------------------------------------
+[ 2018-11-30T17:48:59+08:00 ] 127.0.0.1 GET www.test.com/api/user/get_userInfo?pageIndex=1&pageSize=10
+[运行时间：0.030334s] [吞吐率：32.97req/s] [内存消耗：1,686.76kb] [文件加载：114]
+[ info ] [ LANG ] H:\resume\server\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] H:\resume\server\application\index\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'rule' => 'api/user/get_userInfo',
+  'route' => 'User/getUserInfo',
+  'option' => 
+  array (
+    'merge_rule_regex' => false,
+  ),
+  'var' => 
+  array (
+  ),
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=easlr1n5tnlsjmu8fpimsjul36',
+  'accept-language' => 'zh-CN,zh;q=0.9',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.test.com/',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36',
+  'accept' => 'application/json, text/plain, */*',
+  'connection' => 'close',
+  'host' => 'www.test.com',
+)
+[ info ] [ PARAM ] array (
+  '/api/user/get_userInfo' => '',
+  'pageIndex' => '1',
+  'pageSize' => '10',
+)
+---------------------------------------------------------------
+[ 2018-11-30T18:15:54+08:00 ] 127.0.0.1 GET www.test.com/api/user/get_userInfo
+[运行时间：0.035870s] [吞吐率：27.88req/s] [内存消耗：1,686.66kb] [文件加载：114]
+[ info ] [ LANG ] H:\resume\server\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] H:\resume\server\application\index\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'rule' => 'api/user/get_userInfo',
+  'route' => 'User/getUserInfo',
+  'option' => 
+  array (
+    'merge_rule_regex' => false,
+  ),
+  'var' => 
+  array (
+  ),
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=easlr1n5tnlsjmu8fpimsjul36',
+  'accept-language' => 'zh-CN,zh;q=0.9',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.test.com/',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36',
+  'accept' => 'application/json, text/plain, */*',
+  'connection' => 'close',
+  'host' => 'www.test.com',
+)
+[ info ] [ PARAM ] array (
+  '/api/user/get_userInfo' => '',
+)
+---------------------------------------------------------------
+[ 2018-11-30T18:18:00+08:00 ] 127.0.0.1 GET www.test.com/
+[运行时间：0.032449s] [吞吐率：30.82req/s] [内存消耗：1,471.09kb] [文件加载：108]
+[ info ] [ LANG ] H:\resume\server\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] H:\resume\server\application\index\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=easlr1n5tnlsjmu8fpimsjul36',
+  'accept-language' => 'zh-CN,zh;q=0.9',
+  'accept-encoding' => 'gzip, deflate',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.test.com',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] H:\resume/client/dist/index.html [ array (
+) ]
+---------------------------------------------------------------
+[ 2018-11-30T18:18:00+08:00 ] 127.0.0.1 GET www.test.com/api/user/get_userInfo
+[运行时间：0.028852s] [吞吐率：34.66req/s] [内存消耗：1,686.66kb] [文件加载：114]
+[ info ] [ LANG ] H:\resume\server\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] H:\resume\server\application\index\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'rule' => 'api/user/get_userInfo',
+  'route' => 'User/getUserInfo',
+  'option' => 
+  array (
+    'merge_rule_regex' => false,
+  ),
+  'var' => 
+  array (
+  ),
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=easlr1n5tnlsjmu8fpimsjul36',
+  'accept-language' => 'zh-CN,zh;q=0.9',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.test.com/',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36',
+  'accept' => 'application/json, text/plain, */*',
+  'connection' => 'close',
+  'host' => 'www.test.com',
+)
+[ info ] [ PARAM ] array (
+  '/api/user/get_userInfo' => '',
+)
+---------------------------------------------------------------
+[ 2018-11-30T18:18:14+08:00 ] 127.0.0.1 GET www.test.com/
+[运行时间：0.026403s] [吞吐率：37.87req/s] [内存消耗：1,471.09kb] [文件加载：108]
+[ info ] [ LANG ] H:\resume\server\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] H:\resume\server\application\index\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=easlr1n5tnlsjmu8fpimsjul36',
+  'accept-language' => 'zh-CN,zh;q=0.9',
+  'accept-encoding' => 'gzip, deflate',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.test.com',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] H:\resume/client/dist/index.html [ array (
+) ]
+---------------------------------------------------------------
+[ 2018-11-30T18:18:14+08:00 ] 127.0.0.1 GET www.test.com/api/user/get_userInfo
+[运行时间：0.029551s] [吞吐率：33.84req/s] [内存消耗：1,686.66kb] [文件加载：114]
+[ info ] [ LANG ] H:\resume\server\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] H:\resume\server\application\index\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'rule' => 'api/user/get_userInfo',
+  'route' => 'User/getUserInfo',
+  'option' => 
+  array (
+    'merge_rule_regex' => false,
+  ),
+  'var' => 
+  array (
+  ),
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=easlr1n5tnlsjmu8fpimsjul36',
+  'accept-language' => 'zh-CN,zh;q=0.9',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.test.com/',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36',
+  'accept' => 'application/json, text/plain, */*',
+  'connection' => 'close',
+  'host' => 'www.test.com',
+)
+[ info ] [ PARAM ] array (
+  '/api/user/get_userInfo' => '',
+)
+---------------------------------------------------------------
+[ 2018-11-30T18:24:04+08:00 ] 127.0.0.1 GET www.test.com/
+[运行时间：0.030029s] [吞吐率：33.30req/s] [内存消耗：1,471.09kb] [文件加载：108]
+[ info ] [ LANG ] H:\resume\server\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] H:\resume\server\application\index\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=easlr1n5tnlsjmu8fpimsjul36',
+  'accept-language' => 'zh-CN,zh;q=0.9',
+  'accept-encoding' => 'gzip, deflate',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.test.com',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] H:\resume/client/dist/index.html [ array (
+) ]
+---------------------------------------------------------------
+[ 2018-11-30T18:24:05+08:00 ] 127.0.0.1 GET www.test.com/api/user/get_userInfo
+[运行时间：0.029295s] [吞吐率：34.14req/s] [内存消耗：1,686.66kb] [文件加载：114]
+[ info ] [ LANG ] H:\resume\server\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] H:\resume\server\application\index\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'rule' => 'api/user/get_userInfo',
+  'route' => 'User/getUserInfo',
+  'option' => 
+  array (
+    'merge_rule_regex' => false,
+  ),
+  'var' => 
+  array (
+  ),
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=easlr1n5tnlsjmu8fpimsjul36',
+  'accept-language' => 'zh-CN,zh;q=0.9',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.test.com/',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36',
+  'accept' => 'application/json, text/plain, */*',
+  'connection' => 'close',
+  'host' => 'www.test.com',
+)
+[ info ] [ PARAM ] array (
+  '/api/user/get_userInfo' => '',
+)
+---------------------------------------------------------------
+[ 2018-11-30T18:24:07+08:00 ] 127.0.0.1 GET www.test.com/api/user/get_userInfo
+[运行时间：0.029045s] [吞吐率：34.43req/s] [内存消耗：1,686.66kb] [文件加载：114]
+[ info ] [ LANG ] H:\resume\server\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] H:\resume\server\application\index\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'rule' => 'api/user/get_userInfo',
+  'route' => 'User/getUserInfo',
+  'option' => 
+  array (
+    'merge_rule_regex' => false,
+  ),
+  'var' => 
+  array (
+  ),
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=easlr1n5tnlsjmu8fpimsjul36',
+  'accept-language' => 'zh-CN,zh;q=0.9',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.test.com/',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36',
+  'accept' => 'application/json, text/plain, */*',
+  'connection' => 'close',
+  'host' => 'www.test.com',
+)
+[ info ] [ PARAM ] array (
+  '/api/user/get_userInfo' => '',
+)
+---------------------------------------------------------------
+[ 2018-11-30T18:24:07+08:00 ] 127.0.0.1 GET www.test.com/api/user/get_userInfo?pageIndex=1&pageSize=10
+[运行时间：0.031741s] [吞吐率：31.50req/s] [内存消耗：1,686.76kb] [文件加载：114]
+[ info ] [ LANG ] H:\resume\server\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] H:\resume\server\application\index\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+  'rule' => 'api/user/get_userInfo',
+  'route' => 'User/getUserInfo',
+  'option' => 
+  array (
+    'merge_rule_regex' => false,
+  ),
+  'var' => 
+  array (
+  ),
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'PHPSESSID=easlr1n5tnlsjmu8fpimsjul36',
+  'accept-language' => 'zh-CN,zh;q=0.9',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.test.com/',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36',
+  'accept' => 'application/json, text/plain, */*',
+  'connection' => 'close',
+  'host' => 'www.test.com',
+)
+[ info ] [ PARAM ] array (
+  '/api/user/get_userInfo' => '',
+  'pageIndex' => '1',
+  'pageSize' => '10',
+)

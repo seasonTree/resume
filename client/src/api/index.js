@@ -16,4 +16,4 @@ const install = function (Vue) {
     })
 };
 
-export default install;
+                 export default install;
