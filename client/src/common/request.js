@@ -24,16 +24,16 @@ instance.interceptors.response.use(
         const resp = response.data
         if (response.status === 200) {
 
-            if (resp.error == '403') {
-                that.$message.error("未登录.");
+            // if (resp.error == '403') {
+            //     that.$message.error("未登录.");
 
-                router.replace({
-                    path: '/login',
-                    query: {
-                        redirect: router.currentRoute.fullPath
-                    } //登录成功后跳入浏览的当前页面
-                })
-            }
+            //     router.replace({
+            //         path: '/login',
+            //         query: {
+            //             redirect: router.currentRoute.fullPath
+            //         } //登录成功后跳入浏览的当前页面
+            //     })
+            // }
         }
 
         return resp;

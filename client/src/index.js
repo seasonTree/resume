@@ -5,11 +5,8 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import router from './router';
 import api from './api';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import './config/icon';
 
 //图标
-Vue.component('font-awesome-icon', FontAwesomeIcon);
 Vue.config.productionTip = false;
 
 //远程api

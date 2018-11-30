@@ -44,7 +44,7 @@ export default {
             that.$api.user
                 .login(that.form)
                 .then(res => {
-                    if (res.error == 0) {
+                    if (res.code == 0) {
                         this.$message({
                             message: "登录成功",
                             type: "success",
@@ -55,7 +55,7 @@ export default {
 
                         setTimeout(() => {
                             let redirect = decodeURIComponent(
-                                that.$route.query.redirect || "/test"
+                                that.$route.query.redirect || "/dashboard"
                             );
 
                             that.$router.push({

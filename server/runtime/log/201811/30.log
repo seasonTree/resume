@@ -1,0 +1,225 @@
+---------------------------------------------------------------
+[ 2018-11-30T13:47:23+08:00 ] 127.0.0.1 GET 127.0.0.1:9000/
+[运行时间：0.011263s] [吞吐率：88.79req/s] [内存消耗：359.26kb] [文件加载：111]
+[ info ] [ LANG ] /home/john/workspace/resume/server/thinkphp/lang/zh-cn.php
+[ info ] [ LANG ] /home/john/workspace/resume/server/application/index//lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'i18n=zh_cn; i18n.sig=CiSYb_B-3f0tnDMm3dTGAfQldJk',
+  'accept-language' => 'zh-CN,zh;q=0.9',
+  'accept-encoding' => 'gzip, deflate, br',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'keep-alive',
+  'host' => '127.0.0.1:9000',
+  'content-type' => '',
+  'content-length' => '',
+)
+[ info ] [ PARAM ] array (
+)
+[ error ] [0]模板文件不存在:/home/john/workspace/resume/client/dist/index.html[/home/john/workspace/resume/server/thinkphp/library/think/view/driver/Think.php:86]
+---------------------------------------------------------------
+[ 2018-11-30T13:47:25+08:00 ] 127.0.0.1 GET 127.0.0.1:9000/
+[运行时间：0.003041s] [吞吐率：328.86req/s] [内存消耗：360.49kb] [文件加载：110]
+[ info ] [ LANG ] /home/john/workspace/resume/server/thinkphp/lang/zh-cn.php
+[ info ] [ LANG ] /home/john/workspace/resume/server/application/index//lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'i18n=zh_cn; i18n.sig=CiSYb_B-3f0tnDMm3dTGAfQldJk',
+  'accept-language' => 'zh-CN,zh;q=0.9',
+  'accept-encoding' => 'gzip, deflate, br',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'keep-alive',
+  'host' => '127.0.0.1:9000',
+  'content-type' => '',
+  'content-length' => '',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] /home/john/workspace/resume/client/dist/index.html [ array (
+) ]
+---------------------------------------------------------------
+[ 2018-11-30T13:47:28+08:00 ] 127.0.0.1 GET 127.0.0.1:9000/
+[运行时间：0.002531s] [吞吐率：395.13req/s] [内存消耗：354.15kb] [文件加载：108]
+[ info ] [ LANG ] /home/john/workspace/resume/server/thinkphp/lang/zh-cn.php
+[ info ] [ LANG ] /home/john/workspace/resume/server/application/index//lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'i18n=zh_cn; i18n.sig=CiSYb_B-3f0tnDMm3dTGAfQldJk',
+  'accept-language' => 'zh-CN,zh;q=0.9',
+  'accept-encoding' => 'gzip, deflate, br',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'keep-alive',
+  'host' => '127.0.0.1:9000',
+  'content-type' => '',
+  'content-length' => '',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] /home/john/workspace/resume/client/dist/index.html [ array (
+) ]
+---------------------------------------------------------------
+[ 2018-11-30T13:58:19+08:00 ] 127.0.0.1 GET 127.0.0.1:9000/
+[运行时间：0.003674s] [吞吐率：272.18req/s] [内存消耗：360.49kb] [文件加载：110]
+[ info ] [ LANG ] /home/john/workspace/resume/server/thinkphp/lang/zh-cn.php
+[ info ] [ LANG ] /home/john/workspace/resume/server/application/index//lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'i18n=zh_cn; i18n.sig=CiSYb_B-3f0tnDMm3dTGAfQldJk',
+  'accept-language' => 'zh-CN,zh;q=0.9',
+  'accept-encoding' => 'gzip, deflate, br',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'keep-alive',
+  'host' => '127.0.0.1:9000',
+  'content-type' => '',
+  'content-length' => '',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] /home/john/workspace/resume/client/dist/index.html [ array (
+) ]
+---------------------------------------------------------------
+[ 2018-11-30T13:58:21+08:00 ] 127.0.0.1 GET 127.0.0.1:9000/
+[运行时间：0.002573s] [吞吐率：388.65req/s] [内存消耗：354.15kb] [文件加载：108]
+[ info ] [ LANG ] /home/john/workspace/resume/server/thinkphp/lang/zh-cn.php
+[ info ] [ LANG ] /home/john/workspace/resume/server/application/index//lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'i18n=zh_cn; i18n.sig=CiSYb_B-3f0tnDMm3dTGAfQldJk',
+  'accept-language' => 'zh-CN,zh;q=0.9',
+  'accept-encoding' => 'gzip, deflate, br',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'keep-alive',
+  'host' => '127.0.0.1:9000',
+  'content-type' => '',
+  'content-length' => '',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] /home/john/workspace/resume/client/dist/index.html [ array (
+) ]
+---------------------------------------------------------------
+[ 2018-11-30T13:59:07+08:00 ] 127.0.0.1 GET 127.0.0.1:9000/
+[运行时间：0.003554s] [吞吐率：281.36req/s] [内存消耗：360.49kb] [文件加载：110]
+[ info ] [ LANG ] /home/john/workspace/resume/server/thinkphp/lang/zh-cn.php
+[ info ] [ LANG ] /home/john/workspace/resume/server/application/index//lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'i18n=zh_cn; i18n.sig=CiSYb_B-3f0tnDMm3dTGAfQldJk',
+  'accept-language' => 'zh-CN,zh;q=0.9',
+  'accept-encoding' => 'gzip, deflate, br',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'keep-alive',
+  'host' => '127.0.0.1:9000',
+  'content-type' => '',
+  'content-length' => '',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] /home/john/workspace/resume/client/dist/index.html [ array (
+) ]
+---------------------------------------------------------------
+[ 2018-11-30T13:59:07+08:00 ] 127.0.0.1 GET 127.0.0.1:9000/api/user/get_userInfo
+[运行时间：0.011834s] [吞吐率：84.50req/s] [内存消耗：355.62kb] [文件加载：109]
+[ info ] [ LANG ] /home/john/workspace/resume/server/thinkphp/lang/zh-cn.php
+[ info ] [ LANG ] /home/john/workspace/resume/server/application/index//lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'i18n=zh_cn; i18n.sig=CiSYb_B-3f0tnDMm3dTGAfQldJk',
+  'accept-language' => 'zh-CN,zh;q=0.9',
+  'accept-encoding' => 'gzip, deflate, br',
+  'referer' => 'http://127.0.0.1:9000/',
+  'user-agent' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36',
+  'accept' => 'application/json, text/plain, */*',
+  'connection' => 'keep-alive',
+  'host' => '127.0.0.1:9000',
+  'content-type' => '',
+  'content-length' => '',
+)
+[ info ] [ PARAM ] array (
+)
+---------------------------------------------------------------
+[ 2018-11-30T13:59:14+08:00 ] 127.0.0.1 POST 127.0.0.1:9000/api/user/login
+[运行时间：2.161295s] [吞吐率：0.46req/s] [内存消耗：756.63kb] [文件加载：119]
+[ info ] [ LANG ] /home/john/workspace/resume/server/thinkphp/lang/zh-cn.php
+[ info ] [ LANG ] /home/john/workspace/resume/server/application/index//lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+  'rule' => 'api/user/login',
+  'route' => 'Login/login',
+  'option' => 
+  array (
+    'merge_rule_regex' => false,
+  ),
+  'var' => 
+  array (
+  ),
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'i18n=zh_cn; i18n.sig=CiSYb_B-3f0tnDMm3dTGAfQldJk',
+  'accept-language' => 'zh-CN,zh;q=0.9',
+  'accept-encoding' => 'gzip, deflate, br',
+  'referer' => 'http://127.0.0.1:9000/',
+  'content-type' => 'application/json;charset=UTF-8',
+  'user-agent' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36',
+  'origin' => 'http://127.0.0.1:9000',
+  'accept' => 'application/json, text/plain, */*',
+  'content-length' => '40',
+  'connection' => 'keep-alive',
+  'host' => '127.0.0.1:9000',
+)
+[ info ] [ PARAM ] array (
+  'username' => 'admin',
+  'password' => '123456',
+)
+[ info ] [ DB ] INIT mysql
+[ sql ] [ DB ] CONNECT:[ UseTime:1.437773s ] mysql:host=192.168.199.87;port=3306;dbname=resume;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `user` [ RunTime:0.348585s ]
+[ sql ] [ SQL ] SELECT * FROM `user` WHERE  `uname` = 'admin' LIMIT 1 [ RunTime:0.334315s ]
+---------------------------------------------------------------
+[ 2018-11-30T14:00:03+08:00 ] 127.0.0.1 GET 127.0.0.1:9000/
+[运行时间：0.004387s] [吞吐率：227.95req/s] [内存消耗：360.74kb] [文件加载：110]
+[ info ] [ LANG ] /home/john/workspace/resume/server/thinkphp/lang/zh-cn.php
+[ info ] [ LANG ] /home/john/workspace/resume/server/application/index//lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'cookie' => 'i18n=zh_cn; i18n.sig=CiSYb_B-3f0tnDMm3dTGAfQldJk; PHPSESSID=9riqjtbr2lp0j04uv69dfer3o5',
+  'accept-language' => 'zh-CN,zh;q=0.9',
+  'accept-encoding' => 'gzip, deflate, br',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'keep-alive',
+  'host' => '127.0.0.1:9000',
+  'content-type' => '',
+  'content-length' => '',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] /home/john/workspace/resume/client/dist/index.html [ array (
+) ]
