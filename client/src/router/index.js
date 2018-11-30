@@ -8,7 +8,8 @@ import {
 Vue.use(VueRouter);
 
 //指定name，组织数据方便
-const routes = [{
+const routes = [
+    {
 
         //登陆
         path: '/login',
@@ -41,6 +42,14 @@ const routes = [{
             path: '404',
             component: () =>
                 import('@view/error/NotFound'),
+        },{
+            //test
+            path: '/test',
+            component: () =>
+                import('@view/test/Index'),
+            meta: {
+                name: '登录',
+            }
         }]        
     },
     {

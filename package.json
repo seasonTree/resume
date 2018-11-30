@@ -4,8 +4,8 @@
 	"description": "简历管理系统",
 	"main": "index.js",
 	"scripts": {
-		"dev": "node ./node_modules/webpack/bin/webpack.js --config ./client/webpack/webpack.config.dev.js",
-		"devwt": "node ./node_modules/webpack/bin/webpack.js --watch --config ./client/webpack/webpack.config.dev.js",
+		"dev-not-watch": "node ./node_modules/webpack/bin/webpack.js --config ./client/webpack/webpack.config.dev.js",
+		"dev": "node ./node_modules/webpack/bin/webpack.js --watch --config ./client/webpack/webpack.config.dev.js",
 		"build": "node ./node_modules/webpack/bin/webpack.js --config ./client/webpack/webpack.config.pro.js",
 		"dev-server": "node ./client/webpack/webpackServer.js",
 		"start": "node ./node_modules/concurrently/src/main.js \"npm run dev-watch\" \"npm run dev-server-watch\""
