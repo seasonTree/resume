@@ -17,7 +17,7 @@
                 prop="pesonal_name"
             >
                 <el-input
-                    v-model.trim="form.pesonal_name"
+                    v-model.trim="editItem.pesonal_name"
                     autocomplete="off"
                 ></el-input>
             </el-form-item>
@@ -27,7 +27,7 @@
                 prop="联系电话"
             >
                 <el-input
-                    v-model.trim="form.phone"
+                    v-model.trim="editItem.phone"
                     autocomplete="off"
                 ></el-input>
             </el-form-item>
@@ -54,7 +54,6 @@ export default {
 
     data() {
         return {
-            form: {},
             formRules: {}
         };
     },
