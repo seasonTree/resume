@@ -510,6 +510,7 @@ class Route
         // 检查路由规则（包含分组）
         foreach ($rules as $key => $val) {
             if (is_numeric($key)) {
+                // dump($val);exit;
                 $key = array_shift($val);
             }
 
