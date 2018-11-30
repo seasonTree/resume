@@ -9,6 +9,7 @@ Vue.use(VueRouter);
 
 //指定name，组织数据方便
 const routes = [{
+
         //登陆
         path: '/login',
         component: () =>
@@ -29,8 +30,18 @@ const routes = [{
             meta: {
                 name: '首页',
                 icon: "list-alt"
-            }
-        }]
+            },
+        },
+        , {
+            path: '403',
+            component: () =>
+                import('@view/error/Forbidden'),
+        },
+        {
+            path: '404',
+            component: () =>
+                import('@view/error/NotFound'),
+        }]        
     },
     {
         path: '/resume',
@@ -41,7 +52,7 @@ const routes = [{
         },
 
         children: [{
-                path: '/index',
+                path: 'index',
                 component: () =>
                     import('@view/resume/Index'),
                 meta: {
@@ -49,7 +60,7 @@ const routes = [{
                 }
             },
             {
-                path: '/search',
+                path: 'search',
                 component: () =>
                     import('@view/resume_search/Index'),
                 meta: {
@@ -64,7 +75,7 @@ const routes = [{
         redirect: '/user/index',
 
         children: [{
-                path: '/index',
+                path: 'index',
                 component: () =>
                     import('@view/user/Index'),
                 meta: {
@@ -72,17 +83,17 @@ const routes = [{
                 }
             },
             {
-                path: '/role',
+                path: 'role',
                 component: () =>
-                    import('@view/user/Index'),
+                    import('@view/user_role/Index'),
                 meta: {
                     name: '用户角色'
                 }
             },
             {
-                path: '/permission',
+                path: 'permission',
                 component: () =>
-                    import('@view/user/Index'),
+                    import('@view/user_permission/Index'),
                 meta: {
                     name: '用户权限'
                 }
@@ -108,7 +119,7 @@ router.beforeEach((to, from, next) => {
         next();
     } else {
         getUserInfo().then((res) => {
-            if (res.error == 0) {
+            if (res.code == 0) {
                 let sessionUserInfo = window.sessionStorage.getItem('_user'),
                     userInfo = JSON.stringify(res.data);
 
