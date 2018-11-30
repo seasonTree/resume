@@ -30,7 +30,7 @@ class Login
            }
            unset($res['passwd']);
            Session::set('user_info',$res);
-           return json(['code' => 0,'msg' => '登录成功','data' => []]);
+           return json(['code' => 0,'msg' => '登录成功','data' => $res]);
        }
        else{
            return json(['code' => 1,'msg' => '用户不存在','data' => []]);
