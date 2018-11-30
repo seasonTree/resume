@@ -13,6 +13,14 @@ class Login
     public function login()
     {
        $input = input('post.');
+
+       if ($input['username'] == '') {
+           return json(['code' => 3,'msg' => '用户名不能为空','data' => []]);
+       }
+
+       if ($input['password'] == '') {
+           return json(['code' => 4,'msg' => '密码不能为空','data' => []]);
+       }
        // dump($input);exit;
        $user_model = new User();
        $res = $user_model->checkUser(['uname' => $input['username']]);
