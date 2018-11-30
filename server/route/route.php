@@ -18,6 +18,7 @@ Route::post('api/user/login','Login/login');//登录
 
 return [
 
-	// 'api/user/login' => ['Login/login',['method' => 'post']],
+	// 'api/user/login' => ['Login/login',['method' => 'post']],//写法2
 
 ];
+

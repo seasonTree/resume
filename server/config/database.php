@@ -22,13 +22,13 @@ return [
     // 'password'        => 'root',
 
     // 服务器地址
-    'hostname'        => '119.23.68.34',
+    'hostname'        => '192.168.199.87',
     // 数据库名
-    'database'        => 'sales',
+    'database'        => 'resume',
     // 用户名
     'username'        => 'root',
     // 密码
-    'password'        => 'uAiqwVwjJ8-i',
+    'password'        => 'mydatabase',
     
     // 端口
     'hostport'        => '3306',
@@ -39,7 +39,7 @@ return [
     // 数据库编码默认采用utf8
     'charset'         => 'utf8',
     // 数据库表前缀
-    'prefix'          => 'sales_',
+    'prefix'          => '',
     // 数据库调试模式
     'debug'           => true,
     // 数据库部署方式:0 集中式(单一服务器),1 分布式(主从服务器)
