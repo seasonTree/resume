@@ -12,6 +12,7 @@ create table user
 	uname varchar(64) not null comment '用户名',
 	passwd varchar(256) not null comment '密码',
     pesonal_name varchar(32) not null default '' comment '姓名',
+	phone varchar(11) not null default '' comment '联系电话',
     status tinyint(1) not null default 0 comment '0: 正常， 1: 禁用',
 	ct_user varchar(64) default '' null comment '创建人',
 	ct_time datetime default CURRENT_TIMESTAMP not null comment '创建时间',
