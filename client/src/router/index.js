@@ -9,37 +9,92 @@ Vue.use(VueRouter);
 
 //指定name，组织数据方便
 const routes = [{
-    //登陆
-    path: '/login',
-    component: () =>
-        import('@view/login'),
-    meta: {
-        name: '登录',
-        checkAuth: false
-    }
-}, {
-    path: '/',
-    component: () => import('@view/layout/Layout'),
-    redirect: '/test',
-    meta: {
-        name: '首页',
-        checkAuth: true,
+        //登陆
+        path: '/login',
+        component: () =>
+            import('@view/login'),
+        meta: {
+            name: '登录',
+        }
     },
+    {
+        path: '/',
+        component: () => import('@view/layout/Layout'),
+        redirect: '/dashboard',
 
-    //可以component的用page属性，指定router-view的name
-    //只支持一个children，不然显示不聊
-    children: [
-        {
-            path: 'test',
+        children: [{
+            path: 'dashboard',
             component: () =>
-                import('@view/test/Index'),
+                import('@view/dashboard/Index'),
             meta: {
-                name: '测试',
+                name: '首页',
                 icon: "list-alt"
             }
+        }]
+    },
+    {
+        path: '/resume',
+        component: () => import('@view/layout/Layout'),
+        redirect: '/resume/index',
+        meta: {
+            name: '简历管理',
         },
-    ]
-}];
+
+        children: [{
+                path: '/index',
+                component: () =>
+                    import('@view/resume/Index'),
+                meta: {
+                    name: '简历信息'
+                }
+            },
+            {
+                path: '/search',
+                component: () =>
+                    import('@view/resume_search/Index'),
+                meta: {
+                    name: '简历搜索'
+                }
+            },
+        ]
+    },
+    {
+        path: '/user',
+        component: () => import('@view/layout/Layout'),
+        redirect: '/user/index',
+
+        children: [{
+                path: '/index',
+                component: () =>
+                    import('@view/user/Index'),
+                meta: {
+                    name: '用户管理'
+                }
+            },
+            {
+                path: '/role',
+                component: () =>
+                    import('@view/user/Index'),
+                meta: {
+                    name: '用户角色'
+                }
+            },
+            {
+                path: '/permission',
+                component: () =>
+                    import('@view/user/Index'),
+                meta: {
+                    name: '用户权限'
+                }
+            },
+        ]
+    },
+    {
+        "path": "*",
+        "redirect": "/404",
+        "hidden": true
+    }
+];
 
 const router = new VueRouter({
     routes

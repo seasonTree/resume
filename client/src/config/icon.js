@@ -2,10 +2,16 @@ import {
     library
 } from '@fortawesome/fontawesome-svg-core'
 import {
-    faCoffee,
-    faStore,
     faListAlt,
-    faClone
+    faAddressCard,
+    faAddressBook,
+    faSearchPlus,
+    faUsers,
+    faUserFriends,
+    faUsersCog,
+    faUserShield
 } from '@fortawesome/free-solid-svg-icons'
 
-library.add(faCoffee, faStore, faListAlt, faClone);
+library.add(faListAlt, faAddressCard, faAddressBook, faSearchPlus, 
+    faUsers, faUserFriends, faUsersCog, faUsersCog, 
+    faUserShield);
