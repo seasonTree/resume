@@ -1,0 +1,121 @@
+---------------------------------------------------------------
+[ 2018-11-28T12:04:31+08:00 ] 127.0.0.1 GET www.test.com/
+[运行时间：0.039706s] [吞吐率：25.19req/s] [内存消耗：1,505.52kb] [文件加载：111]
+[ info ] [ LANG ] H:\resume\server\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] H:\resume\server\application\index\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'accept-language' => 'zh-CN,zh;q=0.9',
+  'accept-encoding' => 'gzip, deflate',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.test.com',
+)
+[ info ] [ PARAM ] array (
+)
+[ error ] [0]模板文件不存在:H:\resume/client/dist/index.html[H:\resume\server\thinkphp\library\think\view\driver\Think.php:86]
+---------------------------------------------------------------
+[ 2018-11-28T12:11:13+08:00 ] 127.0.0.1 GET www.test.com/
+[运行时间：0.034105s] [吞吐率：29.32req/s] [内存消耗：1,578.29kb] [文件加载：110]
+[ info ] [ LANG ] H:\resume\server\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] H:\resume\server\application\index\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'accept-language' => 'zh-CN,zh;q=0.9',
+  'accept-encoding' => 'gzip, deflate',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.test.com',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] H:\resume/client/dist/index.html [ array (
+) ]
+---------------------------------------------------------------
+[ 2018-11-28T13:33:27+08:00 ] 127.0.0.1 GET www.test.com/
+[运行时间：0.030572s] [吞吐率：32.71req/s] [内存消耗：1,467.57kb] [文件加载：108]
+[ info ] [ LANG ] H:\resume\server\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] H:\resume\server\application\index\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'accept-language' => 'zh-CN,zh;q=0.9',
+  'accept-encoding' => 'gzip, deflate',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.test.com',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] H:\resume/client/dist/index.html [ array (
+) ]
+---------------------------------------------------------------
+[ 2018-11-28T13:33:27+08:00 ] 127.0.0.1 GET www.test.com/api/user/get_userInfo
+[运行时间：0.027710s] [吞吐率：36.09req/s] [内存消耗：1,498.42kb] [文件加载：109]
+[ info ] [ LANG ] H:\resume\server\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] H:\resume\server\application\index\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'accept-language' => 'zh-CN,zh;q=0.9',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.test.com/',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36',
+  'accept' => 'application/json, text/plain, */*',
+  'connection' => 'close',
+  'host' => 'www.test.com',
+)
+[ info ] [ PARAM ] array (
+  '/api/user/get_userInfo' => '',
+)
+---------------------------------------------------------------
+[ 2018-11-28T13:37:30+08:00 ] 127.0.0.1 GET www.test.com/
+[运行时间：0.030331s] [吞吐率：32.97req/s] [内存消耗：1,467.57kb] [文件加载：108]
+[ info ] [ LANG ] H:\resume\server\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] H:\resume\server\application\index\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'accept-language' => 'zh-CN,zh;q=0.9',
+  'accept-encoding' => 'gzip, deflate',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'cache-control' => 'max-age=0',
+  'connection' => 'close',
+  'host' => 'www.test.com',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ VIEW ] H:\resume/client/dist/index.html [ array (
+) ]
+---------------------------------------------------------------
+[ 2018-11-28T13:37:31+08:00 ] 127.0.0.1 GET www.test.com/api/user/get_userInfo
+[运行时间：0.026724s] [吞吐率：37.42req/s] [内存消耗：1,498.42kb] [文件加载：109]
+[ info ] [ LANG ] H:\resume\server\thinkphp\lang\zh-cn.php
+[ info ] [ LANG ] H:\resume\server\application\index\\lang\zh-cn.php
+[ info ] [ ROUTE ] array (
+)
+[ info ] [ HEADER ] array (
+  'accept-language' => 'zh-CN,zh;q=0.9',
+  'accept-encoding' => 'gzip, deflate',
+  'referer' => 'http://www.test.com/',
+  'user-agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36',
+  'accept' => 'application/json, text/plain, */*',
+  'connection' => 'close',
+  'host' => 'www.test.com',
+)
+[ info ] [ PARAM ] array (
+  '/api/user/get_userInfo' => '',
+)
