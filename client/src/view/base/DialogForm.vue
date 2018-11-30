@@ -7,12 +7,6 @@ export default {
         }
     },
 
-    data() {
-        return {
-            editID: 0
-        };
-    },
-
     methods: {
         closeDialog() {
             let that = this;

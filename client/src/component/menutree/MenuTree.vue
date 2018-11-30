@@ -5,6 +5,7 @@
                 <el-submenu
                     :key="item.name + index + item.url"
                     :index="item.name + index + item.url"
+                    
                 >
                     <span slot="title">
                         <template v-if="item.icon">

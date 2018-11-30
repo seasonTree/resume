@@ -404,7 +404,8 @@ export default {
 
 .navbar {
     background-color: @nav-color;
-    border: 1px solid @nav-color;
+	border: 1px solid @nav-color;
+	overflow: hidden !important;
 
     .el-menu-item.is-active {
         border-right: 4px solid @header-color;
