@@ -6,6 +6,8 @@ export default {
 
     data() {
         return {
+            form: {},
+            formRules: {},
             apiType: ""
         };
     },

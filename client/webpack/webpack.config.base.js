@@ -25,6 +25,7 @@ try {
     fs.statSync(outputPath);
 } catch (error) {
     fs.mkdirSync(outputPath);
+    fs.mkdirSync(`${outputPath}/uploads`);
 }
 
 //移除dist生成的path

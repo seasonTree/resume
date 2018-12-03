@@ -1,10 +1,16 @@
 <template>
-    <el-dialog>
+    <el-dialog
+        title="修改用户密码"
+        :visible.sync="show"
+        :show-close="false"
+        class="custom-dialog"
+        :close-on-click-modal="false"
+    >
         <el-form
-            :model="changePwd"
-            ref="changePwdForm"
-            label-width="100px"
-            :rules="rules"
+            :model="form"
+            :rules="formRules"
+            label-width="80px"
+            ref="form"
         >
             <el-form-item
                 label="新密码"
@@ -44,17 +50,31 @@
 </template>
 
 <script>
+import DialogForm from "../base/DialogForm";
 export default {
     name: "ChangePwd",
-    components: {},
+
+    mixins: [DialogForm],
+
     props: {
         id: {
             type: Number,
             default: 0
         }
     },
+
     data() {
-        return {};
+        return {
+            formRules: [
+                { required: true, message: "请输入密码", trigger: "blur" },
+                {
+                    min: 6,
+                    max: 16,
+                    message: "密码最少6个字符",
+                    trigger: "blur"
+                }
+            ]
+        };
     },
     created() {},
     mounted() {},
