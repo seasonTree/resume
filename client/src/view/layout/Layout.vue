@@ -115,7 +115,7 @@
                     ></el-input>
                 </el-form-item>
                 <el-form-item
-                    label="请确认密码"
+                    label="确认密码"
                     prop="newPassRe"
                 >
                     <el-input
@@ -154,7 +154,8 @@ let passRules = [
     },
     {
         min: 6,
-        message: "长度最少6个字符",
+        max: 20,
+        message: "密码最少6个字符, 最大20个字符",
         trigger: "blur"
     }
 ];

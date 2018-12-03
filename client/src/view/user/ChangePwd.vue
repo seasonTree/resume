@@ -14,21 +14,21 @@
         >
             <el-form-item
                 label="新密码"
-                prop="newPass"
+                prop="passwd"
             >
                 <el-input
-                    v-model="changePwd.newPass"
+                    v-model="form.passwd"
                     type="password"
                     autocomplete="off"
                     placeholder="请输入新密码"
                 ></el-input>
             </el-form-item>
             <el-form-item
-                label="请确认密码"
-                prop="newPassRe"
+                label="确认密码"
+                prop="repasswd"
             >
                 <el-input
-                    v-model="changePwd.newPassRe"
+                    v-model="form.repasswd"
                     type="password"
                     autocomplete="off"
                     placeholder="请再次输入新密码"
@@ -39,11 +39,10 @@
             slot="footer"
             class="dialog-footer"
         >
-            <el-button @click="resetForm">取 消</el-button>
+            <el-button @click="closeDialog">取 消</el-button>
             <el-button
-                :loading="changLoading"
                 type="primary"
-                @click="changePassword"
+                @click="changePwd"
             >确 定</el-button>
         </div>
     </el-dialog>
@@ -59,28 +58,86 @@ export default {
     props: {
         id: {
             type: Number,
-            default: 0
+            required: true
         }
     },
 
     data() {
         return {
-            formRules: [
-                { required: true, message: "请输入密码", trigger: "blur" },
-                {
-                    min: 6,
-                    max: 16,
-                    message: "密码最少6个字符",
-                    trigger: "blur"
-                }
-            ]
+            form: {
+                id: 0,
+                passwd: '',
+                repasswd: ''
+            },
+            formRules: {
+                passwd: [
+                    { required: true, message: "请输入密码", trigger: "blur" },
+                    {
+                        min: 6,
+                        max: 20,
+                        message: "密码最少6个字符, 最大20个字符",
+                        trigger: "blur"
+                    }
+                ],
+                repasswd: [
+                    {
+                        required: true,
+                        message: "请再次输入密码",
+                        trigger: "blur"
+                    },
+                    {
+                        min: 6,
+                        max: 20,
+                        message: "确认密码最少6个字符, 最大20个字符",
+                        trigger: "blur"
+                    },
+                    {
+                        validator: (rule, value, callback) => {
+                            let that = this;
+
+                            if (that.passwd !== value) {
+                                callback(
+                                    new Error("两次的密码不一致，请重新输入.")
+                                );
+                            }
+                        },
+                        trigger: "blur"
+                    }
+                ]
+            }
         };
     },
-    created() {},
-    mounted() {},
-    watch: {},
-    computed: {},
-    methods: {}
+
+    methods: {
+        changePwd() {
+            let that = this;
+
+            that.$refs["form"].validate(valid => {
+                if (valid) {
+                    that.form["id"] = that.id;
+
+                    that.$api.user
+                        .changeUserPasswd(that.form)
+                        .then(res => {
+                            if (res.code == 0) {
+                                that.$message({
+                                    message: "修改成功.",
+                                    type: "success",
+                                    duration: 800
+                                });
+
+                                that.closeDialog();
+                            } else {
+                                that.$message.error(res.msg);
+                            }
+                        })
+                        .catch(res => {
+                            that.$message.error("修改失败，请重试.");
+                        });
+                }
+            });
+        }
+    }
 };
 </script>
 <style lang="less" scoped>
