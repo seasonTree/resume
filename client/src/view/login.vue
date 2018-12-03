@@ -102,7 +102,7 @@ export default {
 
         input,
         div {
-            margin-bottom: 10px;
+              margin-bottom: 10px;
         }
 
         button {
