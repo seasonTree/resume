@@ -7,7 +7,7 @@
  * 目前支持，doc，docx，mht，html，htm格式
  *
  */
-class analysis {
+class Analysis {
 
     private $ext = '';
 

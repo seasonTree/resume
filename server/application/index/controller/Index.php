@@ -6,7 +6,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use think\facade\Session;
 use think\facade\Env;
-require_once dirname(Env::get('ROOT_PATH')).'/server/extend/analysis.php';
+require_once dirname(Env::get('ROOT_PATH')).'/server/extend/Analysis.php';
 
 class Index extends Controller
 {
@@ -27,7 +27,7 @@ class Index extends Controller
     	 */
     	$path = dirname(Env::get('ROOT_PATH')).'/client/dist/uploads/zgrc.doc';
     	//地址
-    	$obj = new \analysis();
+    	$obj = new \Analysis();
         $content = $obj->getContent($path,'string');
         /*参数string 字符串结果集
          * 	  array 数组结果集
