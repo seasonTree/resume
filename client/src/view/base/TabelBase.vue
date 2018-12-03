@@ -82,8 +82,8 @@ export default {
                 .then(res => {
                     if (res.error == 0) {
                         that.currentEditItem = res.data;
-                    } else if (res.error == 500 || res.error == 505) {
-                        that.$message.error(res.message);
+                    } else {
+                        that.$message.error(res.msg);
                     }
 
                     that.editDialog = true;
@@ -132,8 +132,8 @@ export default {
                                 break;
                             }
                         }
-                    } else if (res.error == 500 || res.error == 508) {
-                        that.$message.error(res.message);
+                    } else {
+                        that.$message.error(res.msg);
                     }
                 })
                 .catch(res => {

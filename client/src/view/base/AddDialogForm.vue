@@ -41,7 +41,7 @@ export default {
 
                                 that.closeDialog();
                             } else if (res.error == 501) {
-                                that.$message.error(res.message);
+                                that.$message.error(res.msg);
                             }
                         })
                         .catch(res => {

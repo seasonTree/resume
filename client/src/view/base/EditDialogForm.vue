@@ -60,7 +60,7 @@ export default {
 
                                 that.closeDialog();
                             } else if (res.error == 500 || res.error == 507) {
-                                that.$message.error(res.message);
+                                that.$message.error(res.msg);
                             }
                         })
                         .catch(res => {

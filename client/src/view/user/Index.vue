@@ -39,14 +39,14 @@
                     prop="ct_time"
                     label="创建时间"
                 ></el-table-column>
-                <el-table-column
+                <!-- <el-table-column
                     prop="mfy_user"
                     label="修改人"
                 ></el-table-column>
                 <el-table-column
                     prop="mfy_time"
                     label="修改时间"
-                ></el-table-column>
+                ></el-table-column> -->
 
                 <el-table-column
                     fixed="right"
@@ -73,6 +73,13 @@
                     align="center"
                 >
                     <template slot-scope="scope">
+                        <el-button
+                            type="success"
+                            size="mini"
+                            icon="fa fa-key"
+                            circle
+                            @click="changeUserPwd(scope.row.id)"
+                        ></el-button>
                         <el-button
                             type="primary"
                             size="mini"
@@ -114,6 +121,11 @@
             :edit-item="currentEditItem"
             @edit-item="editItem"
         ></edit>
+
+        <change-pwd
+            :show.sync="changePwdDialog"
+            :id = changePwdID
+        ></change-pwd>
     </div>
 </template>
 
@@ -121,18 +133,25 @@
 import TabelBase from "@view/base/TabelBase";
 import Add from "./Add";
 import Edit from "./Edit";
+import ChangePwd from './ChangePwd';
 export default {
     mixins: [TabelBase],
 
     components: {
         Add,
-        Edit
+        Edit,
+        ChangePwd
     },
 
     data() {
         return {
             //填写API获取的类型，由父类自动调用，不填不调用
             apiType: "user",
+
+            //修改用户的密码 -------
+            changePwdDialog: false,
+            changePwdID: 0,
+            // -------------------
 
             tdata: [
                 {
@@ -173,6 +192,12 @@ export default {
                 .catch(res => {
                     that.$message.error("更新状态失败，请重试.");
                 });
+        },
+
+        changeUserPwd(id){
+            let that = this;            
+            that.changePwdID = id;
+            that.changePwdDialog = true;
         }
     }
 };
