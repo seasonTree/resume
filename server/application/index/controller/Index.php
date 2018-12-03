@@ -25,7 +25,7 @@ class Index extends Controller
     	/*
     	 *尝试解析内容，
     	 */
-    	$path = dirname(Env::get('ROOT_PATH')).'/client/dist/uploads/zgrc.doc';
+    	$path = dirname(Env::get('ROOT_PATH')).'/client/dist/uploads/rc1.htm';
     	//地址
     	$obj = new \Analysis();
         $content = $obj->getContent($path,'string');
@@ -33,7 +33,13 @@ class Index extends Controller
          * 	  array 数组结果集
          *    html 原样输出
          */
-        dump($content);
+        // dump($content);
+
+        $url = 'http://cv-extract.com/api/extract';//接口
+        $data = ['content' => $content];//参数
+        $res = $obj->curlPost($url,$data);//结果集
+        dump($res);
+
     }
 
 }
