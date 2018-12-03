@@ -17,6 +17,7 @@ const happyThreadPool = happyPack.ThreadPool({
 
 const srcPath = path.resolve(__dirname, '../src');
 const outputPath = path.resolve(__dirname, '../dist');
+const uploadsPath = path.join(outputPath, 'uploads');
 
 const copyFile = require('copy-webpack-plugin');
 
@@ -29,9 +30,9 @@ try {
 
 //创建uplaod文件
 try {
-    fs.statSync(`${outputPath}/uploads`);
+    fs.statSync(uploadsPath);
 } catch (error) {
-    fs.mkdirSync(`${outputPath}/uploads`);
+    fs.mkdirSync(uploadsPath);
 }
 
 //移除dist生成的path
@@ -39,7 +40,7 @@ function rmGenFile(outputPath) {
     let files = fs.readdirSync(outputPath);
 
     files.forEach((item) => {
-        if (item !== 'upload' && item != 'favicon.ico') {
+        if (item !== 'uploads' && item != 'favicon.ico') {
             var fpath = path.resolve(outputPath, item),
                 fstat = fs.statSync(fpath);
 
