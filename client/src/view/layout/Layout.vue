@@ -142,9 +142,7 @@
 </template>
 
 <script>
-// import _ from "lodash";
 import MenuTree from "@component/menutree/MenuTree";
-// import { menu } from "@src/router";
 
 import { mapGetters } from "vuex";
 
@@ -236,7 +234,17 @@ export default {
             rules: {
                 oldPass: passRules,
                 newPass: passRules,
-                newPassRe: passRules
+                newPassRe: passRules.concat({
+                    validator: (rule, value, callback) => {
+                        let that = this;
+
+                        if (that.newPass !== value) {
+                            callback(
+                                new Error("两次的密码不一致，请重新输入.")
+                            );
+                        }
+                    }
+                })
             },
 
             changLoading: false,

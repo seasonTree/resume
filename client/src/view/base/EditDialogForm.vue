@@ -1,5 +1,6 @@
 <script>
 import DialogForm from "./DialogForm";
+import { deepClone } from '../../common/util';
 export default {
     mixins: [DialogForm],
 
@@ -12,8 +13,22 @@ export default {
 
     data() {
         return {
+            form: {},
+            formRules: {},
             apiType: ""
         };
+    },
+
+    watch: {
+        editItem(newValue, oldValue){
+            let that = this,
+                newItem = deepClone(newValue);
+            
+            //复制数值
+            for(var key in newItem){
+                form[key] = newItem[key];
+            }
+        }
     },
 
     methods: {

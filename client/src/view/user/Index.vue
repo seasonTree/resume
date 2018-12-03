@@ -28,6 +28,10 @@
                     label="姓名"
                 ></el-table-column>
                 <el-table-column
+                    prop="phone"
+                    label="电话"
+                ></el-table-column>
+                <el-table-column
                     prop="ct_user"
                     label="创建人"
                 ></el-table-column>
@@ -53,10 +57,12 @@
                         <i
                             v-if="scope.row.status == 0"
                             class="fa fa-check right"
+                            @click="changeStatus(scope.row.id, 1)"
                         ></i>
                         <i
                             v-if="scope.row.status == 1"
                             class="fa fa-ban ban"
+                            @click="changeStatus(scope.row.id, 0)"
                         ></i>
                     </template>
                 </el-table-column>
@@ -134,6 +140,7 @@ export default {
                     id: 1,
                     uname: "123",
                     pesonal_name: "aaaaa",
+                    phone: 128154444,
                     status: 1,
                     ct_user: "创建人",
                     ct_time: "创建时间",
@@ -142,6 +149,32 @@ export default {
                 }
             ]
         };
+    },
+
+    methods: {
+        changeStatus(id, status) {
+            let that = this;
+
+            that.$api.user
+                .changeStatus({
+                    id,
+                    status
+                })
+                .then(res => {
+                    if (res.code == 0) {
+                        that.$message({
+                            message: "更新状态成功.",
+                            type: "success",
+                            duration: 800
+                        });
+                    } else {
+                        that.$message.error(res.msg || "更新状态失败，请重试.");
+                    }
+                })
+                .catch(res => {
+                    that.$message.error("更新状态失败，请重试.");
+                });
+        }
     }
 };
 </script>
