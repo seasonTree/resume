@@ -24,7 +24,13 @@ const copyFile = require('copy-webpack-plugin');
 try {
     fs.statSync(outputPath);
 } catch (error) {
-    fs.mkdirSync(outputPath);
+    fs.mkdirSync(outputPath);    
+}
+
+//创建uplaod文件
+try {
+    fs.statSync(`${outputPath}/uploads`);
+} catch (error) {
     fs.mkdirSync(`${outputPath}/uploads`);
 }
 
