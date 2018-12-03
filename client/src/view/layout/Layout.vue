@@ -142,9 +142,7 @@
 </template>
 
 <script>
-// import _ from "lodash";
 import MenuTree from "@component/menutree/MenuTree";
-// import { menu } from "@src/router";
 
 import { mapGetters } from "vuex";
 
@@ -175,18 +173,18 @@ export default {
             menu: [
                 {
                     url: "/dashboard",
-					name: "首页",
+                    name: "首页",
                     icon: "fa fa-list-alt"
                 },
                 {
-					name: "简历管理",
+                    name: "简历管理",
                     icon: "fa fa-address-book",
 
                     children: [
                         {
                             url: "/resume/index",
                             name: "简历信息",
-							icon: "fa fa-address-card",
+                            icon: "fa fa-address-card"
                         },
                         {
                             url: "/resume/search",
@@ -196,8 +194,8 @@ export default {
                     ]
                 },
                 {
-					id: '5',
-					name: "用户管理",
+                    id: "5",
+                    name: "用户管理",
                     icon: "fa fa-users",
 
                     children: [
@@ -220,9 +218,9 @@ export default {
                 },
                 {
                     url: "/test",
-					name: "测试",
+                    name: "测试",
                     icon: "fa fa-list-alt"
-                },
+                }
             ],
 
             changePasswordVisable: false,
@@ -236,7 +234,17 @@ export default {
             rules: {
                 oldPass: passRules,
                 newPass: passRules,
-                newPassRe: passRules
+                newPassRe: passRules.concat({
+                    validator: (rule, value, callback) => {
+                        let that = this;
+
+                        if (that.newPass !== value) {
+                            callback(
+                                new Error("两次的密码不一致，请重新输入.")
+                            );
+                        }
+                    }
+                })
             },
 
             changLoading: false,
@@ -404,16 +412,16 @@ export default {
 
 .navbar {
     background-color: @nav-color;
-	border: 1px solid @nav-color;
-	overflow: hidden !important;
+    border: 1px solid @nav-color;
+    overflow: hidden !important;
 
     .el-menu-item.is-active {
         border-right: 4px solid @header-color;
         background-color: rgba(0, 0, 0, 0.06) !important;
-	}
-	
-	.el-submenu .el-menu-item.is-active{
-		border-right: 6px solid @header-color;
-	}
+    }
+
+    .el-submenu .el-menu-item.is-active {
+        border-right: 6px solid @header-color;
+    }
 }
 </style>

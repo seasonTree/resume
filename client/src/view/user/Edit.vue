@@ -17,17 +17,17 @@
                 prop="pesonal_name"
             >
                 <el-input
-                    v-model.trim="editItem.pesonal_name"
+                    v-model.trim="form.pesonal_name"
                     autocomplete="off"
                 ></el-input>
             </el-form-item>
 
             <el-form-item
                 label="电话"
-                prop="联系电话"
+                prop="phone"
             >
                 <el-input
-                    v-model.trim="editItem.phone"
+                    v-model.trim="form.phone"
                     autocomplete="off"
                 ></el-input>
             </el-form-item>
@@ -53,9 +53,7 @@ export default {
     mixins: [EditDialogForm],
 
     data() {
-        return {
-            formRules: {}
-        };
+        return {};
     },
 
     methods: {}

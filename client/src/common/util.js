@@ -25,9 +25,7 @@ export const deepClone = (data) => {
     var o,
         ostr = Object.prototype.toString;
 
-
-
-    if (ostr.call(data) == '[object String]') {
+    if (ostr.call(data) == '[object Object]') {
         o = {};
 
         for (var i in data) {
