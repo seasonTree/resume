@@ -19,7 +19,8 @@ export default {
             },
             addDialog: false,
             editDialog: false,
-            currentEditItem: {}
+            currentEditItem: {},
+            search: {},
         };
     },
 
@@ -43,6 +44,8 @@ export default {
 
             that.$api[that.apiType]
                 .get({
+                    //添加搜索条件
+                    ...that.search,
                     pageIndex: that.pager.current,
                     pageSize: that.pager.size
                 })
