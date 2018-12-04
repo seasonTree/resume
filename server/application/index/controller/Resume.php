@@ -26,6 +26,7 @@ class Resume extends Controller
         // $path = dirname(Env::get('ROOT_PATH')).'/client/dist/uploads/zl.doc';
         $path = dirname(Env::get('ROOT_PATH')).'/client/dist/uploads/1.html';
         // $path = dirname(Env::get('ROOT_PATH')).'/client/dist/uploads/2.html';
+    	$path = dirname(Env::get('ROOT_PATH')).'/client/dist/uploads/zl.html';
     	//地址
     	$obj = new \Analysis();
         $content = $obj->getContent($path,'array');

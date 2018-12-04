@@ -77,10 +77,21 @@
 
 .action-bar {
     margin-bottom: 10px;
+    .action-bar-right {
+        float: right;
+        >div {
+            display: inline-block;
+        }
+    }
 }
 
 .text-center {
     text-align: center;
+}
+
+.search-input {
+    max-width: 160px;
+    margin-right: 10px;
 }
 
 @import url("./font-awesome.min.css");
@@ -92,12 +103,10 @@
 //     text-rendering: auto;
 //     line-height: 1;
 // }
-
 // [class^="el-icon-fa"],
 // [class*=" el-icon-fa"] {
 //     .fa-icon-font;
 // }
-
 //使用方法
 // el-icon-fa fa-user; btton使用
 // fa fa-user 普通使用

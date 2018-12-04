@@ -2,10 +2,39 @@
     <div>
         <el-row class="table-container">
             <div class="action-bar">
-                <el-button
-                    type="primary"
-                    @click="addDialog = true"
-                >新增</el-button>
+
+                <el-row
+                    type="flex"
+                    justify="space-around"
+                    :gutter="20"
+                >
+                    <el-col :span="6">
+                        <el-button
+                            type="primary"
+                            @click="addDialog = true"
+                        >新增</el-button>
+                    </el-col>
+                    <el-col :span="18">
+                        <el-row
+                            type="flex"
+                            justify="end"
+                        >
+                            <el-input
+                                type="text"
+                                class="search-input"
+                                v-model="search.name"
+                                autocomplete="off"
+                                placeholder="请输入用户名或姓名"
+                            ></el-input>
+                            <el-button
+                                type="primary"
+                                circle
+                                icon="el-icon-search"
+                                @click="getData"
+                            ></el-button>
+                        </el-row>
+                    </el-col>
+                </el-row>
             </div>
 
             <el-table
@@ -39,14 +68,6 @@
                     prop="ct_time"
                     label="创建时间"
                 ></el-table-column>
-                <!-- <el-table-column
-                    prop="mfy_user"
-                    label="修改人"
-                ></el-table-column>
-                <el-table-column
-                    prop="mfy_time"
-                    label="修改时间"
-                ></el-table-column> -->
 
                 <el-table-column
                     fixed="right"
@@ -124,7 +145,7 @@
 
         <change-pwd
             :show.sync="changePwdDialog"
-            :id = changePwdID
+            :id=changePwdID
         ></change-pwd>
     </div>
 </template>
@@ -133,7 +154,7 @@
 import TabelBase from "@view/base/TabelBase";
 import Add from "./Add";
 import Edit from "./Edit";
-import ChangePwd from './ChangePwd';
+import ChangePwd from "./ChangePwd";
 export default {
     mixins: [TabelBase],
 
@@ -165,7 +186,12 @@ export default {
                     mfy_user: "修改人",
                     mfy_time: "修改时间"
                 }
-            ]
+            ],
+
+            //搜索条件
+            search: {
+                name: ''
+            }
         };
     },
 
@@ -194,8 +220,8 @@ export default {
                 });
         },
 
-        changeUserPwd(id){
-            let that = this;            
+        changeUserPwd(id) {
+            let that = this;
             that.changePwdID = id;
             that.changePwdDialog = true;
         }
