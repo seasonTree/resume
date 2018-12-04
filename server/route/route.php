@@ -14,7 +14,7 @@ Route::get('think', function () {
     return 'hello,ThinkPHP5!';
 });
 
-Route::get('test','Index/test');//测试用
+Route::get('test','Resume/test');//测试用
 
 Route::post('api/user/login','Login/login');//登录
 Route::post('api/user/logout','User/logOut');//退出登录

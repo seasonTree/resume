@@ -219,3 +219,7 @@ function getSignature($timeStamp, $key)
 {
     return $signature = sha1($timeStamp . $key);
 }
+
+function a($parm){
+      echo $parm;
+}

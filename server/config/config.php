@@ -44,7 +44,23 @@ return [
         'db_index'=>0,
     ],
     // 'api_key' => $basePath['api_key']
-    
+    'resume_title' => [
+        '基本资料' => 'basicData',
+        '求职意向'  =>  'jobIntention',
+        '工作经历'  =>  'workExperience',
+        '工作经验'  =>  'workExperience',
+        '教育经历'  =>  'educationalBackground',
+        '教育背景'  =>  'educationalBackground',
+        '项目经验'  =>  'projectExperience',
+        '项目经历'  =>  'projectExperience',
+        '简历内容'  =>  'projectExperience',
+        '自我评价'  =>  'selfEvaluation',
+        '技能特长'  =>  'skillExpertise',
+        '专业技能'  =>  'skillExpertise',
+        '技能专长'  =>  'skillExpertise',
+        '目前状况'  =>  'nowStatus',
+    ]
+        
     
 ];
 
