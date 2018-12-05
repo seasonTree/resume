@@ -1,6 +1,6 @@
 <template>
     <el-dialog
-        title="添加简历"
+        title="修改简历"
         :visible.sync="show"
         :show-close="false"
         class="custom-dialog"
@@ -27,8 +27,8 @@
                 >
 
                     <textarea
-                        style=" width:1068px; 
-                                height:740px; 
+                        style=" width:957px; 
+                                height:739.3px; 
                                 resize:none; 
                                 font-size: 20px;"
                         name=""
@@ -69,7 +69,6 @@
                                     基本信息
                                 </div>
 
-                                
                                 <div class="div-row">
                                     <el-form-item
                                         label="姓名"
