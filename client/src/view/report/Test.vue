@@ -1,10 +1,12 @@
 <template>
-    <div></div>
+    <div>
+        报表测试
+    </div>
 </template>
 
 <script>
 export default {
-    name: 'Add',
+    name: 'component',
     components:{},
     props:{},
     data(){

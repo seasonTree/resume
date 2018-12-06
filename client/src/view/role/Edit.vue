@@ -1,10 +1,11 @@
 <template>
     <el-dialog
-        title="修改用户"
+        title="修改角色"
         :visible.sync="show"
         :before-close="closeDialog"
         class="custom-dialog"
         :close-on-click-modal="false"
+        width="500px"
     >
         <el-form
             :model="form"
@@ -13,26 +14,26 @@
             ref="form"
         >
             <el-form-item
-                label="姓名"
-                prop="pesonal_name"
+                label="角色名称"
+                prop="role_name"
             >
                 <el-input
-                    v-model.trim="form.pesonal_name"
+                    v-model.trim="form.role_name"
                     autocomplete="off"
                 ></el-input>
             </el-form-item>
 
-            <el-form-item
-                label="电话"
-                prop="phone"
-            >
-                <el-input
-                    v-model.trim="form.phone"
-                    autocomplete="off"
-                ></el-input>
+            <el-form-item label="状态">
+                <el-switch
+                    v-model="form.status"
+                    active-color="#00c100"
+                    inactive-color="#f56c6c"
+                    :active-value="0"
+                    :inactive-value="1"
+                ></el-switch>
             </el-form-item>
-
         </el-form>
+
         <div
             slot="footer"
             class="dialog-footer"
@@ -54,11 +55,22 @@ export default {
 
     data() {
         return {
-            apiType: "user",
+            apiType: "role",
+
             form: {
                 id: 0,
-                pesonal_name: '',
-                phone: ''
+                role_name: "",
+                status: 0
+            },
+
+            formRules: {
+                role_name: [
+                    {
+                        required: true,
+                        message: "请输入角色名称",
+                        trigger: "blur"
+                    }
+                ]
             }
         };
     },
@@ -66,3 +78,5 @@ export default {
     methods: {}
 };
 </script>
+<style lang="less" scoped>
+</style>

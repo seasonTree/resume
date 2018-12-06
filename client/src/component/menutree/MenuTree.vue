@@ -8,10 +8,9 @@
                 >
                     <span slot="title">
                         <template v-if="item.icon">
-                            <i
-                                class="menu-icon"
-                                :class="item.icon"
-                            ></i>
+                            <span class="menu-icon">
+                                <i :class="item.icon"></i>
+                            </span>
                         </template>
                         {{item.name}}
                     </span>
@@ -25,10 +24,9 @@
                     :index="item.url"
                 >
                     <template v-if="item.icon">
-                        <i
-                            class="menu-icon"
-                            :class="item.icon"
-                        ></i>
+                        <span class="menu-icon">
+                            <i :class="item.icon"></i>
+                        </span>
                     </template>
                     {{item.name}}
                 </el-menu-item>
@@ -50,7 +48,9 @@ export default {
 </script>
 <style lang='less' scoped>
 .menu-icon {
-    margin-right: 10px;
+    display: inline-block;
+    width: 28px;
     margin-top: -2px;
+    margin-left: 6px;
 }
 </style>

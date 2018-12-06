@@ -187,3 +187,64 @@ export const getUrlParams = (key) => {
 
     return value;
 }
+
+/**
+ * 
+ * @param {Array} data 树型数据
+ * @param {Object} parent 父类节点
+ * @param {Number} level 等级
+ * @param {Boolean} expandedAll 是否展开全部
+ * @param {Object} context 是否包含vue的上下文
+ * 
+ * @returns 返回Array数组
+ */
+import Vue from 'vue'
+export const treeToArray = function (data, parent, level, expandedAll, context) {
+    let tmp = []
+    Array.from(data).forEach(function (record) {
+        if (record._expanded === undefined) {
+
+            if (context) {
+                //使用vue监听
+                context.$set(record, '_expanded', expandedAll);
+            } else {
+                record['_expanded'] = expandedAll;
+            }
+        }
+        if (parent) {
+
+            if (context) {
+            //使用vue监听
+            context.$set(record, '_parent', parent);
+            }else{
+                record['_parent'] = parent;
+            }
+        }
+
+        let _level = 0;
+
+        if (level !== undefined && level !== null) {
+            _level = level + 1
+        }
+
+        record['_level'] = _level;
+        tmp.push(record)
+
+        //使用vue监听
+        if(context){
+            context.$set(record, '_hasChild', record.children && record.children.length > 0);
+        }else{
+            record['_hasChild'] = record.children && record.children.length > 0;
+        }
+
+        if (record.children && record.children.length > 0) {
+
+            let children = treeToArray(record.children, record, _level, expandedAll, context)
+            tmp = tmp.concat(children);
+
+            delete record.children;
+        }
+
+    })
+    return tmp
+}

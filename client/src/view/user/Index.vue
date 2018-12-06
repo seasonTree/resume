@@ -48,22 +48,27 @@
                     prop="id"
                     label="ID"
                 ></el-table-column>
+                
                 <el-table-column
                     prop="uname"
                     label="用户名"
                 ></el-table-column>
+
                 <el-table-column
                     prop="pesonal_name"
                     label="姓名"
                 ></el-table-column>
+
                 <el-table-column
                     prop="phone"
                     label="电话"
                 ></el-table-column>
+
                 <el-table-column
                     prop="ct_user"
                     label="创建人"
                 ></el-table-column>
+
                 <el-table-column
                     prop="ct_time"
                     label="创建时间"
@@ -77,12 +82,12 @@
                     <template slot-scope="scope">
                         <i
                             v-if="scope.row.status == 0"
-                            class="fa fa-check right"
+                            class="fa fa-check right status-icon"
                             @click="changeStatus(scope.row.id, 1)"
                         ></i>
                         <i
                             v-if="scope.row.status == 1"
-                            class="fa fa-ban ban"
+                            class="fa fa-ban ban status-icon"
                             @click="changeStatus(scope.row.id, 0)"
                         ></i>
                     </template>
@@ -94,27 +99,46 @@
                     align="center"
                 >
                     <template slot-scope="scope">
-                        <el-button
-                            type="success"
-                            size="mini"
-                            icon="fa fa-key"
-                            circle
-                            @click="changeUserPwd(scope.row.id)"
-                        ></el-button>
-                        <el-button
-                            type="primary"
-                            size="mini"
-                            icon="el-icon-edit"
-                            circle
-                            @click="showEditDialog(scope.row.id)"
-                        ></el-button>
-                        <el-button
-                            type="danger"
-                            size="mini"
-                            icon="el-icon-delete"
-                            circle
-                            @click="del(scope.row.id, scope.$index)"
-                        ></el-button>
+
+                        <el-tooltip
+                            effect="dark"
+                            content="修改密码"
+                            placement="bottom"
+                        >
+                            <el-button
+                                type="success"
+                                size="mini"
+                                icon="fa fa-key"
+                                circle
+                                @click="changeUserPwd(scope.row.id)"
+                            ></el-button>
+                        </el-tooltip>
+                        <el-tooltip
+                            effect="dark"
+                            content="修改密码"
+                            placement="top"
+                        >
+                            <el-button
+                                type="primary"
+                                size="mini"
+                                icon="el-icon-edit"
+                                circle
+                                @click="showEditDialog(scope.row.id)"
+                            ></el-button>
+                        </el-tooltip>
+                        <el-tooltip
+                            effect="dark"
+                            content="删除"
+                            placement="bottom"
+                        >
+                            <el-button
+                                type="danger"
+                                size="mini"
+                                icon="el-icon-delete"
+                                circle
+                                @click="del(scope.row.id, scope.$index)"
+                            ></el-button>
+                        </el-tooltip>
                     </template>
                 </el-table-column>
             </el-table>
@@ -185,12 +209,23 @@ export default {
                     ct_time: "创建时间",
                     mfy_user: "修改人",
                     mfy_time: "修改时间"
-                }
+                },
+                 {
+                    id: 1,
+                    uname: "123",
+                    pesonal_name: "aaaaa",
+                    phone: 128154444,
+                    status: 1,
+                    ct_user: "创建人",
+                    ct_time: "创建时间",
+                    mfy_user: "修改人",
+                    mfy_time: "修改时间"
+                },
             ],
 
             //搜索条件
             search: {
-                name: ''
+                name: ""
             }
         };
     },
@@ -234,6 +269,10 @@ export default {
 }
 
 .ban {
-    color: red;
+    color: #f56c6c;
+}
+
+.status-icon {
+    cursor: pointer;
 }
 </style>

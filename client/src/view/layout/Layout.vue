@@ -218,6 +218,19 @@ export default {
                     ]
                 },
                 {
+                    id: "6",
+                    name: "报表",
+                    icon: "fa fa-database",
+
+                    children: [
+                        {
+                            url: "/report/test",
+                            name: "报表测试",
+                            icon: "fa fa-user-friends"
+                        },
+                    ]
+                },
+                {
                     url: "/test",
                     name: "测试",
                     icon: "fa fa-list-alt"
