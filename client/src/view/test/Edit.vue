@@ -1,7 +1,7 @@
 <template>
-    <el-dialog title="测试" :visible.sync="show" :show-close="false" class="custom-dialog" :close-on-click-modal="false">
+    <el-dialog title="测试服务" :visible.sync="show" :show-close="false" class="custom-dialog" :close-on-click-modal="false">
         <el-form :model="form" :rules="formRules" label-width="80px" ref="form">
-            <el-form-item label="测试" prop="ty_name">
+            <el-form-item label="测试服务" prop="ty_name">
                 <el-input v-model.trim="form.ty_name" autocomplete="off"></el-input>
             </el-form-item>
 

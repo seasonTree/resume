@@ -15,6 +15,8 @@ Route::get('think', function () {
 });
 
 Route::get('test','Resume/test');//测试用
+Route::post('api/resume/get_resume_data','Resume/getResumeData');//获取简历内容
+
 
 Route::post('api/user/login','Login/login');//登录
 Route::post('api/user/logout','User/logOut');//退出登录
