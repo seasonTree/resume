@@ -6,10 +6,9 @@
         class="custom-dialog"
         :close-on-click-modal="false"
         :class="dialog"
-        top="5vh"
+        top="4.5vh"
         width="60%"
     >
-
         <el-tabs
             v-model="activeName"
             @tab-click="handleClick"
@@ -69,7 +68,6 @@
                                     基本信息
                                 </div>
 
-                                
                                 <div class="div-row">
                                     <el-form-item
                                         label="姓名"
@@ -478,25 +476,24 @@
                 </el-form>
             </el-tab-pane>
 
-        </el-tabs >
+        </el-tabs>
 
         <div
             slot="footer"
             class="dialog-footer"
-           
         >
             <el-button @click="closeDialog">取 消</el-button>
-            <el-button@click="">自动识别</el-button>
-            <el-button
-                type="primary"
-                @click="addCommit"
-            >确 定</el-button>
-            
+            <el-button >自动识别</el-button>
+                <el-button
+                    type="primary"
+                    @click="addCommit"
+                >确 定</el-button>
         </div>
     </el-dialog>
 </template>
 
 <script>
+
 import AddDialogForm from "@view/base/AddDialogForm";
 export default {
     name: "Add",

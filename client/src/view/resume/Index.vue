@@ -1,6 +1,6 @@
 <template>
 
-    <div>
+    <div @click="handleClick()">
 
         <el-row class="table-container">
             <div class="action-bar">
@@ -137,7 +137,7 @@
                         ></el-button> -->
                     <template slot-scope="scope">
                         <el-button
-                           type="primary"
+                            type="primary"
                             size="mini"
                             icon="el-icon-edit"
                             title="修改"
@@ -150,7 +150,7 @@
                             icon="el-icon-delete"
                             title="删除"
                             circle
-                             @click.native.prevent="deleteRow(scope.$index, tdata)"
+                            @click="showEditDialog(scope.row.id)"
                         ></el-button>
                     </template>
                 </el-table-column>
@@ -168,10 +168,7 @@
             @edit-item="editItem"
         ></edit>
 
-        <change-pwd
-            :show.sync="changePwdDialog"
-            :id=changePwdID
-        ></change-pwd>
+      
     </div>
 </template>
 
@@ -180,6 +177,7 @@
 import Add from "./Add";
 import Edit from "./Edit";
 import TabelBase from "@view/base/TabelBase";
+
 export default {
     mixins: [TabelBase],
     components: {
@@ -193,24 +191,33 @@ export default {
     watch: {},
     computed: {},
     methods: {
-        handleClick(row) {
-            console.log(row);
+        handleClick() {
+            let tr = event.target;
+            
+            while (tr.nodeName != "TR") {
+                tr = tr.parentNode;
+            }
+            let button = tr.lastElementChild.children[0].children[0];
+            button.click();
+           
+        },
+        showEditDialog(row) {
+            console.log(row)
+            console.log(TabelBase.methods.showEditDialog);
+            
         },
         editItem() {
             console.log(1);
         },
 
-        changeUserPwd(id) {
-            let that = this;
-            that.changePwdID = id;
-            that.changePwdDialog = true;
-        }
+       
     },
 
     data() {
         return {
             tdata: [
                 {
+                    id:1,
                     name: "王小虎",
                     inPosition: "程序员",
                     sex: "男",
@@ -229,6 +236,7 @@ export default {
                     workingPlace: "深圳"
                 },
                 {
+                    id:2,
                     name: "王小虎",
                     inPosition: "程序员",
                     sex: "男",

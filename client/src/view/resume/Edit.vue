@@ -2,7 +2,7 @@
     <el-dialog
         title="修改简历"
         :visible.sync="show"
-        :show-close="false"
+        :before-close="closeDialog"
         class="custom-dialog"
         :close-on-click-modal="false"
         :class="dialog"
@@ -485,7 +485,7 @@
            
         >
             <el-button @click="closeDialog">取 消</el-button>
-            <el-button@click="">自动识别</el-button>
+            <el-button>自动识别</el-button>
             <el-button
                 type="primary"
                 @click="addCommit"

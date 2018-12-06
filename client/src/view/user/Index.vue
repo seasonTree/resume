@@ -48,22 +48,27 @@
                     prop="id"
                     label="ID"
                 ></el-table-column>
+                
                 <el-table-column
                     prop="uname"
                     label="用户名"
                 ></el-table-column>
+
                 <el-table-column
                     prop="pesonal_name"
                     label="姓名"
                 ></el-table-column>
+
                 <el-table-column
                     prop="phone"
                     label="电话"
                 ></el-table-column>
+
                 <el-table-column
                     prop="ct_user"
                     label="创建人"
                 ></el-table-column>
+
                 <el-table-column
                     prop="ct_time"
                     label="创建时间"
@@ -204,7 +209,18 @@ export default {
                     ct_time: "创建时间",
                     mfy_user: "修改人",
                     mfy_time: "修改时间"
-                }
+                },
+                 {
+                    id: 1,
+                    uname: "123",
+                    pesonal_name: "aaaaa",
+                    phone: 128154444,
+                    status: 1,
+                    ct_user: "创建人",
+                    ct_time: "创建时间",
+                    mfy_user: "修改人",
+                    mfy_time: "修改时间"
+                },
             ],
 
             //搜索条件
