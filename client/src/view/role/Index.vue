@@ -90,6 +90,20 @@
 
                             <el-tooltip
                                 effect="dark"
+                                content="设置角色用户"
+                                placement="top"
+                            >
+                                <el-button
+                                    type="info"
+                                    size="mini"
+                                    icon="fa fa-user"
+                                    circle
+                                    @click="setRoleUser(scope.row.id)"
+                                ></el-button>
+                            </el-tooltip>
+
+                            <el-tooltip
+                                effect="dark"
                                 content="设置权限"
                                 placement="bottom"
                             >
@@ -157,7 +171,13 @@
 
             <permission 
                 :show.sync="permissionDialog"
+                :id="permissionID"
             ></permission>
+
+            <user
+                :show.sync="userDialog"
+                :id="userRoleID"
+            ></user>
         </div>
     </div>
 </template>
@@ -166,14 +186,16 @@
 import TabelBase from "@view/base/TabelBase";
 import Add from "./Add";
 import Edit from "./Edit";
-import Permission from './Permission';
+import Permission from "./Permission";
+import User from "./User";
 export default {
     mixins: [TabelBase],
 
     components: {
         Add,
         Edit,
-        Permission
+        Permission,
+        User
     },
     data() {
         return {
@@ -196,7 +218,12 @@ export default {
             ],
 
             //权限
-            permissionDialog: false
+            permissionDialog: false,
+            permissionID: 0,
+
+            //设置角色的用户
+            userDialog: false,
+            userRoleID: 0
         };
     },
     methods: {
@@ -224,10 +251,19 @@ export default {
                 });
         },
 
+        //设置当前的角色权限
         setRolePremission(id) {
             let that = this;
 
-            that.permissionDialog = true
+            that.permissionID = id;
+            that.permissionDialog = true;
+        },
+
+        //设置当前角色的用户
+        setRoleUser(id) {
+            let that = this;
+            that.userRoleID = id;
+            that.userDialog = true;
         }
     }
 };

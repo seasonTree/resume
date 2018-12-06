@@ -5,22 +5,30 @@
         :before-close="closeDialog"
         class="custom-dialog"
         :close-on-click-modal="false"
+        width="400px"
     >
-        <!-- <el-form
-            :model="form"
-            :rules="formRules"
-            label-width="80px"
-            ref="form"
-        >
-
-        </el-form> -->
+        <div class="dialog-content">
+            <el-tree
+                :data="permissionData"
+                :default-checked-keys="defaultCheckKey"
+                show-checkbox
+                node-key="id"
+                :props="defaultProps"
+                default-expand-all
+                ref="tree"
+            >
+            </el-tree>
+        </div>
 
         <div
             slot="footer"
             class="dialog-footer"
         >
             <el-button @click="closeDialog">取 消</el-button>
-            <el-button type="primary">确 定</el-button>
+            <el-button
+                type="primary"
+                @click="permissionCommit"
+            >确 定</el-button>
         </div>
     </el-dialog>
 </template>
@@ -32,21 +40,175 @@ export default {
     mixins: [DialogForm],
 
     props: {
-        // id: {
-        //     type: Number,
-        //     required: true
-        // }
+        id: {
+            type: Number,
+            required: true
+        }
     },
 
     data() {
-        return {};
+        return {
+            permissionData: [
+                // {
+                //     id: 1,
+                //     p_name: "一级 1",
+                //     children: [
+                //         {
+                //             id: 4,
+                //             p_name: "二级 1-1",
+                //             children: [
+                //                 {
+                //                     id: 9,
+                //                     p_name: "三级 1-1-1"
+                //                 },
+                //                 {
+                //                     id: 10,
+                //                     p_name: "三级 1-1-2"
+                //                 }
+                //             ]
+                //         }
+                //     ]
+                // },
+                // {
+                //     id: 2,
+                //     p_name: "一级 2",
+                //     children: [
+                //         {
+                //             id: 5,
+                //             p_name: "二级 2-1"
+                //         },
+                //         {
+                //             id: 6,
+                //             p_name: "二级 2-2"
+                //         }
+                //     ]
+                // },
+                // {
+                //     id: 3,
+                //     p_name: "一级 3",
+                //     children: [
+                //         {
+                //             id: 7,
+                //             p_name: "二级 3-1"
+                //         },
+                //         {
+                //             id: 8,
+                //             p_name: "二级 3-2"
+                //         }
+                //     ]
+                // }
+            ],
+
+            // defaultCheckKey: [1,7],
+            defaultCheckKey: [],
+
+            defaultProps: {
+                children: "children",
+                label: "p_name"
+            }
+        };
     },
-    created() {},
-    mounted() {},
-    watch: {},
-    computed: {},
-    methods: {}
+    watch: {
+        id(newValue, oldValue) {
+            let that = this;
+
+            //获取所有的权限列表
+            that.getPermissionData();
+            //获取当前角色的权限
+            that.getCheckPermission();
+        }
+    },
+    methods: {
+        //获取所有的权限列表
+        getPermissionData() {
+            let that = this;
+
+            that.$api.permission
+                .get()
+                .then(res => {
+                    if (res.code == 0) {
+                        that.permissionData = res.data;
+                    } else {
+                        that.$message.error(
+                            res.msg || "获所有权限失败，请刷新后重试."
+                        );
+                    }
+                })
+                .catch(res => {
+                    that.$message.error("获所有权限失败，请刷新后重试.");
+                });
+        },
+
+        //获取当前角色的权限
+        getCheckPermission() {
+            let that = this;
+
+            that.$api.role
+                .getCheckPermission({
+                    id: that.id
+                })
+                .then(res => {
+                    if (res.code == 0) {
+                        that.defaultCheckKey = res.data;
+                    } else {
+                        that.$message.error(
+                            res.msg || "获当前角色权限失败，请刷新后重试."
+                        );
+                    }
+                })
+                .then(res => {
+                    that.$message.error("获当前角色权限失败，请刷新后重试.");
+                });
+        },
+
+        //设置角色权限
+        permissionCommit() {
+            let that = this,
+                checkNodes = that.$refs["tree"].getCheckedNodes(false, true),
+                checkIDs = checkNodes.map(item => {
+                    return item.id;
+                });
+
+            that.$api.role
+                .setRolePermission({
+                    id: that.id,
+                    //直接返回权限id数组
+                    permission: checkIDs
+                })
+                .then(res => {
+                    if (res.code == 0) {
+                        that.$message({
+                            message: "设置成功.",
+                            type: "success",
+                            duration: 800
+                        });
+
+                        that.closeDialog();
+                    } else {
+                        that.$message.error(
+                            res.msg || "设置角色权限失败，请刷新后重试."
+                        );
+                    }
+                })
+                .catch(res => {
+                    that.$message.error("设置角色权限失败，请刷新后重试.");
+                });
+        },
+
+        //关闭窗口后调用
+        afterClose() {
+            let that = this;
+            that.permissionData = [];
+            that.defaultCheckKey = [];
+        }
+    }
 };
 </script>
 <style lang="less" scoped>
+.dialog-content {
+    min-height: 300px;
+    max-height: 600px;
+    padding: 10px;
+    border: 1px solid #dcdfe6;
+}
 </style>

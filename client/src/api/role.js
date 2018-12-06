@@ -46,3 +46,39 @@ export function del(data){
         data: data
     });
 }
+
+//根据role的id获取用户
+export function getUser(data){
+    return request({
+        url: `${prefix}/get_user_by_id`,
+        method: 'get',
+        params: data
+    });
+}
+
+//设置当前角色的用户
+export function setRoleUser(data){
+    return request({
+        url: `${prefix}/set_role_user`,
+        method: 'post',
+        data: data
+    });
+}
+
+//获取当前角色选中的权限， 只需要返回id列表就可以
+export function getCheckPermission(data){
+    return request({
+        url: `${prefix}/get_check_permission`,
+        method: 'get',
+        params: data
+    });
+}
+
+//设置当用角色的权限
+export function setRolePermission(data){
+    return request({
+        url: `${prefix}/set_role_permission`,
+        method: 'post',
+        data: data
+    });
+}

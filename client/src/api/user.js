@@ -91,3 +91,12 @@ export function del(data){
         data: data
     });
 }
+
+//获取所有的用户
+export function getAll(data){
+    return request({
+        url: `${prefix}/all_list`,
+        method: 'get',
+        params: data
+    })
+}

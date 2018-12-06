@@ -20,7 +20,7 @@ export default {
             addDialog: false,
             editDialog: false,
             currentEditItem: {},
-            search: {},
+            search: {}
         };
     },
 
@@ -43,7 +43,6 @@ export default {
     },
 
     methods: {
-
         // //获取数据以后执行
         // afterGetDate(){},
 
@@ -62,7 +61,7 @@ export default {
             that.$api[that.apiType]
                 .get(params)
                 .then(res => {
-                    if (res.error == 0) {
+                    if (res.code == 0) {
                         that.tdata = res.data.rows;
 
                         // //获取数据以后
@@ -71,8 +70,10 @@ export default {
                         if (that.pager) {
                             that.pager.total = res.data.count || 1;
                         }
-                    } else if (res.error == 505) {
-                        that.$message.error("获取数据失败，请刷新后重试.");
+                    } else if (res.code) {
+                        that.$message.error(
+                            res.msg || "获取数据失败，请刷新后重试."
+                        );
                     }
                 })
                 .catch(res => {
@@ -102,7 +103,7 @@ export default {
                     id
                 })
                 .then(res => {
-                    if (res.error == 0) {
+                    if (res.code == 0) {
                         that.currentEditItem = res.data;
                     } else {
                         that.$message.error(res.msg);
@@ -134,33 +135,41 @@ export default {
         del(id, index) {
             let that = this;
 
-            that.$api[that.apiType]
-                .del({
-                    id
-                })
-                .then(res => {
-                    if (res.error == 0) {
-                        that.$message({
-                            message: "删除成功.",
-                            type: "success",
-                            duration: 800
-                        });
+            that.$confirm("是否删除当前记录?", "提示", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                type: "warning"
+            })
+                .then(() => {
+                    that.$api[that.apiType]
+                        .del({
+                            id
+                        })
+                        .then(res => {
+                            if (res.code == 0) {
+                                that.$message({
+                                    message: "删除成功.",
+                                    type: "success",
+                                    duration: 800
+                                });
 
-                        for (var i = 0; i < that.tdata.length; i++) {
-                            var item = that.tdata[i];
+                                for (var i = 0; i < that.tdata.length; i++) {
+                                    var item = that.tdata[i];
 
-                            if (item.id == id) {
-                                that.tdata.splice(i, 1);
-                                break;
+                                    if (item.id == id) {
+                                        that.tdata.splice(i, 1);
+                                        break;
+                                    }
+                                }
+                            } else {
+                                that.$message.error(res.msg);
                             }
-                        }
-                    } else {
-                        that.$message.error(res.msg);
-                    }
+                        })
+                        .catch(res => {
+                            that.$message.error("删除失败，请刷新后重试.");
+                        });
                 })
-                .catch(res => {
-                    that.$message.error("删除失败，请刷新后重试.");
-                });
+                .catch(() => {});
         }
     }
 };
