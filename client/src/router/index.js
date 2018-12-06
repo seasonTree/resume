@@ -8,8 +8,7 @@ import {
 Vue.use(VueRouter);
 
 //指定name，组织数据方便
-const routes = [
-    {
+const routes = [{
 
         //登陆
         path: '/login',
@@ -25,32 +24,32 @@ const routes = [
         redirect: '/dashboard',
 
         children: [{
-            path: 'dashboard',
-            component: () =>
-                import('@view/dashboard/Index'),
-            meta: {
-                name: '首页',
-                icon: "list-alt"
+                path: 'dashboard',
+                component: () =>
+                    import('@view/dashboard/Index'),
+                meta: {
+                    name: '首页',
+                    icon: "list-alt"
+                },
+            }, , {
+                path: '403',
+                component: () =>
+                    import('@view/error/Forbidden'),
             },
-        },
-        , {
-            path: '403',
-            component: () =>
-                import('@view/error/Forbidden'),
-        },
-        {
-            path: '404',
-            component: () =>
-                import('@view/error/NotFound'),
-        },{
-            //test
-            path: '/test',
-            component: () =>
-                import('@view/test/Index'),
-            meta: {
-                name: '登录',
+            {
+                path: '404',
+                component: () =>
+                    import('@view/error/NotFound'),
+            }, {
+                //test
+                path: '/test',
+                component: () =>
+                    import('@view/test/Index'),
+                meta: {
+                    name: '登录',
+                }
             }
-        }]        
+        ]
     },
     {
         path: '/resume',
@@ -105,6 +104,21 @@ const routes = [
                     import('@view/permission/Index'),
                 meta: {
                     name: '用户权限'
+                }
+            },
+        ]
+    },
+    {
+        path: '/report',
+        component: () => import('@view/layout/Layout'),
+        redirect: '/report/index',
+
+        children: [{
+                path: 'index',
+                component: () =>
+                    import('@view/report/Test'),
+                meta: {
+                    name: '报表测试'
                 }
             },
         ]

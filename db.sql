@@ -58,6 +58,7 @@ create table rs_permission
 	parent_id bigint(20) not null default 0 comment '父的id',
 	p_name varchar(64) not null comment '权限名称',
 	p_type tinyint(1) not null default 0 comment '0: 菜单， 1: 功能',
+	p_icon varchar(32) not null default '' comment '菜单图标，按钮不适用',
 	api1 varchar(1024) not null default '' comment 'api接口1',
 	api2 varchar(1024) not null default '' comment 'api接口2',
 	api3 varchar(1024) not null default '' comment 'api接口3',
