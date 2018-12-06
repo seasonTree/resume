@@ -1,13 +1,14 @@
 <template>
 
     <div>
+
         <el-row class="table-container">
             <div class="action-bar">
                 <el-button
                     type="primary"
                     @click="addDialog = true"
                 >新增简历</el-button>
-                
+
             </div>
 
             <el-table
@@ -15,12 +16,14 @@
                 border
                 style="width: 100%"
             >
+
                 <el-table-column
                     fixed
                     prop="name"
                     label="姓名"
                     width="100"
                 >
+
                 </el-table-column>
                 <el-table-column
                     fixed
@@ -121,39 +124,67 @@
                 <el-table-column
                     fixed="right"
                     label="操作"
-                    width="100"
+                    width="145"
                 >
+                    <!-- <template slot-scope="scope">
+                        <el-button
+                            type="primary"
+                            size="mini"
+                            icon="el-icon-edit"
+                            title="修改"
+                            circle
+                            @click="showEditDialog(scope.row.id)"
+                        ></el-button> -->
                     <template slot-scope="scope">
                         <el-button
-                            @click="handleClick(scope.row)"
-                            type="text"
-                            size="small"
-                        >查看</el-button>
+                           type="primary"
+                            size="mini"
+                            icon="el-icon-edit"
+                            title="修改"
+                            circle
+                            @click="showEditDialog(scope.row.id)"
+                        > </el-button>
                         <el-button
-                            type="text"
-                            size="small"
-                        >编辑</el-button>
+                            type="danger"
+                            size="mini"
+                            icon="el-icon-delete"
+                            title="删除"
+                            circle
+                             @click.native.prevent="deleteRow(scope.$index, tdata)"
+                        ></el-button>
                     </template>
                 </el-table-column>
             </el-table>
-
         </el-row>
 
-		<add
+        <add
             :show.sync="addDialog"
             @add-item="addItem"
         ></add>
+
+        <edit
+            :show.sync="editDialog"
+            :edit-item="currentEditItem"
+            @edit-item="editItem"
+        ></edit>
+
+        <change-pwd
+            :show.sync="changePwdDialog"
+            :id=changePwdID
+        ></change-pwd>
     </div>
 </template>
 
 
 <script>
 import Add from "./Add";
+import Edit from "./Edit";
 import TabelBase from "@view/base/TabelBase";
 export default {
-	mixins: [TabelBase],
+    mixins: [TabelBase],
     components: {
-        Add
+        Add,
+        Edit
     },
     props: {},
 
@@ -164,12 +195,39 @@ export default {
     methods: {
         handleClick(row) {
             console.log(row);
+        },
+        editItem() {
+            console.log(1);
+        },
+
+        changeUserPwd(id) {
+            let that = this;
+            that.changePwdID = id;
+            that.changePwdDialog = true;
         }
     },
 
     data() {
         return {
             tdata: [
+                {
+                    name: "王小虎",
+                    inPosition: "程序员",
+                    sex: "男",
+                    age: "11",
+                    edu: "本科",
+                    workAge: "三年",
+                    objective: "Java工程师",
+                    expectPay: "18k",
+                    recentlyUnit: "中软",
+                    recentPosition: "java工程师",
+                    graduateSchool: "北京大学",
+                    professional: "计算机",
+                    phone: "13923819974",
+                    email: "775803639@qq.com",
+                    englishLevel: "四级",
+                    workingPlace: "深圳"
+                },
                 {
                     name: "王小虎",
                     inPosition: "程序员",

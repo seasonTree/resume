@@ -1,5 +1,6 @@
 <?php
-
+use think\facade\Env;
+require_once dirname(Env::get('ROOT_PATH')).'/server/extend/phpanalysis/phpanalysis.class.php';
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
@@ -10,7 +11,49 @@
 // | Author: 流年 <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 // 应用公共文件
+function phpanalysis($str,$option = 'string'){
+  //分词
+  //岐义处理
+    $do_fork = empty($_POST['do_fork']) ? false : true;
+    //新词识别
+    $do_unit = empty($_POST['do_unit']) ? false : true;
+    //多元切分
+    $do_multi = empty($_POST['do_multi']) ? false : true;
+    //词性标注
+    $do_prop = empty($_POST['do_prop']) ? false : true;
+    //是否预载全部词条
+    $pri_dict = empty($_POST['pri_dict']) ? false : true;
+    
+    $tall = microtime(true);
+    
+    //初始化类
+    PhpAnalysis::$loadInit = false;
+    $pa = new PhpAnalysis('utf-8', 'utf-8', $pri_dict);
+    // print_memory('初始化对象', $memory_info);
+    
+    //载入词典
+    $pa->LoadDict();
+    // print_memory('载入基本词典', $memory_info);    
+        
+    //执行分词
+    $pa->SetSource($str);
+    $pa->differMax = $do_multi;
+    $pa->unitWord = $do_unit;
+    
+    $pa->StartAnalysis( $do_fork );
+    // print_memory('执行分词', $memory_info);
+    
+    $okresult = $pa->GetFinallyResult(' ', $do_prop);
+    // print_memory('输出分词结果', $memory_info);
+    
+    $pa_foundWordStr = $pa->foundWordStr;
 
+    // $res = explode(" ", $okresult);
+    if ($option == 'array') {
+      return explode(" ", $okresult);
+    }
+    return $okresult;
+}
 function getShortUrl($url){
       //生成短连接
       $url = str_replace('&', '%26', $url);
