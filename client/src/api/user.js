@@ -1,4 +1,3 @@
-
 import request from '../common/request';
 
 const prefix = '/user';
@@ -42,7 +41,7 @@ export function getUserInfo(data){
 //获取用户列表
 export function get(data){
     return request({
-        url: `${prefix}/get_userInfo`,
+        url: `${prefix}/list`,
         method: 'get',
         params: data
     })

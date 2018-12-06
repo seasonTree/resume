@@ -2,7 +2,7 @@
     <el-dialog
         title="修改用户"
         :visible.sync="show"
-        :show-close="false"
+        :before-close="closeDialog"
         class="custom-dialog"
         :close-on-click-modal="false"
     >
@@ -53,7 +53,14 @@ export default {
     mixins: [EditDialogForm],
 
     data() {
-        return {};
+        return {
+            apiType: "user",
+            form: {
+                id: 0,
+                pesonal_name: '',
+                phone: ''
+            }
+        };
     },
 
     methods: {}

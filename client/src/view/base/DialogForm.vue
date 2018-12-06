@@ -12,7 +12,7 @@ export default {
             let that = this;
             that.$emit("update:show", false);
             setTimeout(() => {
-                that.$refs["form"].resetFields();
+                that.$refs['form'] && that.$refs["form"].resetFields();
 
                 //允许用户自定义关闭窗口后的动作
                 that.afterClose();

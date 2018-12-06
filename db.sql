@@ -31,6 +31,7 @@ create table rs_role
 (
 	id bigint(20) auto_increment primary key comment '自增id',
 	role_name varchar(64) not null comment '角色名称',
+	status tinyint(1) not null default 0 comment '0: 正常， 1: 禁用',
 	ct_user varchar(64) default '' null comment '创建人',
 	ct_time datetime default CURRENT_TIMESTAMP not null comment '创建时间',
 	mfy_user varchar(64) default '' null comment '修改人',

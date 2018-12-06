@@ -2,7 +2,7 @@
     <el-dialog
         title="新增简历"
         :visible.sync="show"
-        :show-close="false"
+        :before-close="closeDialog"
         class="custom-dialog"
         :close-on-click-modal="false"
     >

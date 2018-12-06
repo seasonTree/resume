@@ -4,20 +4,18 @@
 
 <script>
 export default {
-    name: 'Add',
-    components:{},
-    props:{},
-    data(){
-      return {
-      }
+    name: "Add",
+    components: {},
+    props: {},
+    data() {
+        return {};
     },
-    created(){},
-    mounted(){},
-    watch:{},
-    computed:{},
-    methods:{},
-}
+    created() {},
+    mounted() {},
+    watch: {},
+    computed: {},
+    methods: {}
+};
 </script>
 <style lang="less" scoped>
-
 </style>
