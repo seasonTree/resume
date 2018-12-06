@@ -46,19 +46,22 @@
 
             <el-main class="main">
                 <div class="main-header">
-                    <el-breadcrumb separator="/">
+                    <el-breadcrumb separator="/">                        
+
                         <template v-for="(item, index) in $route.meta.paths">
                             <template v-if="item.url">
                                 <el-breadcrumb-item
-                                    :to="{ path: item.url }"
                                     :key="index"
                                 >{{item.name}}</el-breadcrumb-item>
                             </template>
 
-                            <template>
-                                <el-breadcrumb-item :key="index">{{item.name}}</el-breadcrumb-item>
+                            <template v-else>
+                                <el-breadcrumb-item :key="index">{{item.name}}</el-breadcrumb-item>    
                             </template>
+                            
                         </template>
+
+                        <el-breadcrumb-item>{{$route.meta.name}}</el-breadcrumb-item>    
                     </el-breadcrumb>
                 </div>
 
@@ -227,7 +230,7 @@ export default {
                             url: "/report/test",
                             name: "报表测试",
                             icon: "fa fa-user-friends"
-                        },
+                        }
                     ]
                 },
                 {

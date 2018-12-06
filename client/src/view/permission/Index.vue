@@ -3,7 +3,17 @@
         <el-row class="table-container">
             <div class="action-bar">
 
-                <el-row
+                <el-button
+                    type="primary"
+                    @click="addDialog = true"
+                >新增</el-button>
+
+                <el-button
+                    type="primary"
+                    @click="sortDialog = true"
+                >菜单排序</el-button>
+
+                <!-- <el-row
                     type="flex"
                     justify="space-around"
                     :gutter="20"
@@ -34,7 +44,7 @@
                             ></el-button>
                         </el-row>
                     </el-col>
-                </el-row>
+                </el-row> -->
             </div>
 
             <transition>
@@ -51,6 +61,7 @@
                         label="权限名称"
                     >
                         <template slot-scope="scope">
+                            <!-- 左边距离 -->
                             <span :style="{'margin-left': scope.row._level * 24 + 'px'}">
                                 <i
                                     v-if="scope.row._hasChild"
@@ -64,22 +75,17 @@
                         </template>
                     </el-table-column>
                     <el-table-column
-                        prop="api1"
-                        label="接口1"
+                        prop="api"
+                        label="接口"
                     ></el-table-column>
                     <el-table-column
-                        prop="api2"
-                        label="接口2"
+                        prop="ct_user"
+                        label="创建人"
                     ></el-table-column>
                     <el-table-column
-                        prop="api3"
-                        label="接口3"
+                        prop="ct_time"
+                        label="创建时间"
                     ></el-table-column>
-                    <el-table-column
-                        prop="api4"
-                        label="接口4"
-                    ></el-table-column>
-
                     <el-table-column
                         fixed="right"
                         label="操作"
@@ -116,6 +122,8 @@
             :edit-item="currentEditItem"
             @edit-item="editItem"
         ></edit>
+
+        <sort :show.sync="sortDialog"></sort>
     </div>
 </template>
 
@@ -124,85 +132,78 @@ import TabelBase from "@view/base/TabelBase";
 import { treeToArray } from "../../common/util";
 import Add from "./Add";
 import Edit from "./Edit";
+import Sort from "./Sort";
 export default {
     mixins: [TabelBase],
 
     components: {
         Add,
-        Edit
+        Edit,
+        Sort
     },
     props: {},
     data() {
         return {
+            //不分页
             pager: false,
 
+            apiType: "role",
+            search: {
+                name: ""
+            },
+
+            //菜单排序
+            sortDialog: false,
+
             tdata: [
-                {
-                    id: 1,
-                    p_name: "菜单页面",
-                    api1: "/ttttttt/ttttt",
-                    api2: "/ttttttt/ttttt",
-                    api3: "/ttttttt/ttttt",
-                    api4: "/ttttttt/ttttt",
-                    ct_user: "6666666",
-                    ct_time: "192.666245",
-                    children: [
-                        {
-                            id: 2,
-                            p_name: "功能页面",
-                            api1: "/44444/444",
-                            api2: "/44444/4444",
-                            api3: "/44/444",
-                            api4: "/4444444/44444",
-                            ct_user: "44444444",
-                            ct_time: "444444444444444"
-                        },
-                        {
-                            id: 3,
-                            p_name: "功能页面2222",
-                            api1: "/nnnnnn/nnn",
-                            api2: "/nnnn/nnn",
-                            api3: "/nnnnnn/nnnn",
-                            api4: "/nnnnn/nnnnnn",
-                            ct_user: "nnnnnnn",
-                            ct_time: "nnnnnnnnnnnn",
-                            children: [
-                                {
-                                    id: 4,
-                                    p_name: "333333333333",
-                                    api1: "/33333",
-                                    api2: "/3333n3333nnn/nnn",
-                                    api3: "/333/nnnn",
-                                    api4: "/3333/nnnnnn",
-                                    ct_user: "3333",
-                                    ct_time: "3333333"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    id: 16,
-                    p_name: "菜单33",
-                    api1: "/vvvv/vvvvv",
-                    api2: "/vvv/vv",
-                    api3: "/vvvv/vv",
-                    api4: "/vvv/vv",
-                    ct_user: "6666666",
-                    ct_time: "192.666245",
-                    children: [
-                        {
-                            id: 2,
-                            p_name: "功能页面",
-                            api1: "/44444/444",
-                            api2: "/44444/4444",
-                            api3: "/44/444",
-                            api4: "/4444444/44444",
-                            ct_user: "44444444",
-                            ct_time: "444444444444444"
-                        }
-                    ]
-                }
+                //     {
+                //         id: 1,
+                //         p_name: "菜单页面",
+                //         api: "/ttttttt/ttttt",
+                //         ct_user: "6666666",
+                //         ct_time: "192.666245",
+                //         children: [
+                //             {
+                //                 id: 2,
+                //                 p_name: "功能页面",
+                //                 api: "/44444/444",
+                //                 ct_user: "44444444",
+                //                 ct_time: "444444444444444"
+                //             },
+                //             {
+                //                 id: 3,
+                //                 p_name: "功能页面2222",
+                //                 api: "/nnnnnn/nnn",
+                //                 ct_user: "nnnnnnn",
+                //                 ct_time: "nnnnnnnnnnnn",
+                //                 children: [
+                //                     {
+                //                         id: 4,
+                //                         p_name: "333333333333",
+                //                         api: "/33333",
+                //                         ct_user: "3333",
+                //                         ct_time: "3333333"
+                //                     }
+                //                 ]
+                //             }
+                //         ]
+                //     },
+                //     {
+                //         id: 16,
+                //         p_name: "菜单33",
+                //         api: "/vvvv/vvvvv",
+                //         ct_user: "6666666",
+                //         ct_time: "192.666245",
+                //         children: [
+                //             {
+                //                 id: 2,
+                //                 p_name: "功能页面",
+                //                 api: "/44444/444",
+                //                 ct_user: "44444444",
+                //                 ct_time: "444444444444444"
+                //             }
+                //         ]
+                //     }
             ]
         };
     },
@@ -227,6 +228,18 @@ export default {
 
         toggle(item) {
             item._expanded = !item._expanded;
+        },
+
+        //重写新增方法, 重新获取数据
+        addItem(item) {
+            let that = this;
+            that.getData();
+        },
+
+        //重新修改方法，重新获取数据
+        editItem(item) {
+            let that = this;
+            that.getData();
         }
     }
 };

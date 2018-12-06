@@ -1,23 +1,200 @@
 <template>
-    <div></div>
+    <el-dialog
+        title="修改权限"
+        :visible.sync="show"
+        :before-close="closeDialog"
+        class="custom-dialog"
+        :close-on-click-modal="false"
+    >
+        <el-form
+            :model="form"
+            :rules="formRules"
+            label-width="100px"
+            ref="form"
+        >
+
+            <el-form-item
+                label="父级"
+                prop="top_class"
+            >
+                <el-cascader
+                    v-model="form.top_class"
+                    placeholder="菜单名称"
+                    :options="permissionData"
+                    :props="cascaderProps"
+                    filterable
+                    change-on-select
+                    class="select-width"
+                ></el-cascader>
+            </el-form-item>
+
+            <el-form-item label="类型">
+                <el-select
+                    v-model="form.p_type"
+                    placeholder="请选择类型"
+                    class="select-width"
+                >
+                    <el-option
+                        label="菜单"
+                        :value="0"
+                    ></el-option>
+                    <el-option
+                        label="功能"
+                        :value="1"
+                    ></el-option>
+                </el-select>
+            </el-form-item>
+
+            <el-form-item
+                label="权限名称"
+                prop="p_name"
+            >
+                <el-input
+                    v-model.trim="form.p_name"
+                    autocomplete="off"
+                ></el-input>
+            </el-form-item>
+
+            <el-form-item
+                label="菜单图标"
+                prop="p_icon"
+                v-if="form.p_type == 0"
+            >
+                <el-input
+                    v-model.trim="form.p_icon"
+                    autocomplete="off"
+                ></el-input>
+            </el-form-item>
+
+            <el-form-item
+                label="功能英文名称"
+                prop="p_act_name"
+                v-if="form.p_type == 1"
+            >
+                <el-input
+                    v-model.trim="form.p_act_name"
+                    autocomplete="off"
+                ></el-input>
+            </el-form-item>
+            <el-form-item
+                label="Api"
+                prop="api"
+            >
+                <el-input
+                    v-model.trim="form.api"
+                    autocomplete="off"
+                ></el-input>
+            </el-form-item>
+
+        </el-form>
+
+        <div
+            slot="footer"
+            class="dialog-footer"
+        >
+            <el-button @click="closeDialog">取 消</el-button>
+            <el-button
+                type="primary"
+                @click="editCommit"
+            >确 定</el-button>
+        </div>
+    </el-dialog>
 </template>
 
 <script>
+import EditDialogForm from "@view/base/EditDialogForm";
 export default {
-    name: 'Edit',
-    components:{},
-    props:{},
-    data(){
-      return {
-      }
+    name: "Edit",
+    mixins: [EditDialogForm],
+
+    watch: {
+        show(newValue, oldValue) {
+            let that = this;
+
+            if (newValue) {
+                that.getPermissionData();
+            } else {
+                that.permissionData = [];
+            }
+        }
     },
-    created(){},
-    mounted(){},
-    watch:{},
-    computed:{},
-    methods:{},
-}
+
+    data() {
+        return {
+            apiType: "permission",
+
+            permissionData: [],
+
+            cascaderProps: {
+                label: "p_name",
+                value: "id",
+                children: "children"
+            },
+
+            form: {
+                top_class: [0],
+                parent_id: 0,
+                p_name: "",
+                p_type: 0,
+                p_act_name: "",
+                p_icon: "",
+                api: ""
+            },
+
+            formRules: {
+                p_name: [
+                    { required: true, message: "权限名称必填", trigger: "blur" }
+                ],
+
+                p_act_name: [
+                    {
+                        validator: (rule, value, callback) => {
+                            let that = this;
+
+                            if (that.form.p_type == 1) {
+                                if (/[a-zA-z]/.test(value)) {
+                                    callback(
+                                        new Error(
+                                            "功能英文名称必须是英文，并且不为空."
+                                        )
+                                    );
+                                }
+                            }
+                        },
+                        trigger: "blur"
+                    }
+                ]
+            }
+        };
+    },
+
+    methods: {
+        getPermissionData() {
+            let that = this;
+
+            that.$api.permission
+                .get()
+                .then(res => {
+                    if (res.code == 0) {
+                        that.permissionData = res.data;
+                    } else {
+                        that.$message.error(
+                            res.msg || "获所有权限失败，请刷新后重试."
+                        );
+                    }
+                })
+                .catch(res => {
+                    that.$message.error("获所有权限失败，请刷新后重试.");
+                });
+        },
+
+        //修改提交之前处理下数据
+        beforeEdit(item) {
+            //找到上级的id
+            item.parent_id = item.top_class[item.top_class.length - 1];
+        }
+    }
+};
 </script>
 <style lang="less" scoped>
-
 </style>

@@ -64,7 +64,8 @@ const routes = [{
                 component: () =>
                     import('@view/resume/Index'),
                 meta: {
-                    name: '简历信息'
+                    name: '简历信息',
+                    paths: [ { name: '简历管理'}]
                 }
             },
             {
@@ -72,7 +73,8 @@ const routes = [{
                 component: () =>
                     import('@view/resume_search/Index'),
                 meta: {
-                    name: '简历搜索'
+                    name: '简历搜索',
+                    paths: [ { name: '简历管理'}]
                 }
             },
         ]
@@ -87,7 +89,8 @@ const routes = [{
                 component: () =>
                     import('@view/user/Index'),
                 meta: {
-                    name: '用户管理'
+                    name: '用户信息',
+                    paths: [ { name: '用户管理'} ]
                 }
             },
             {
@@ -95,7 +98,8 @@ const routes = [{
                 component: () =>
                     import('@view/role/Index'),
                 meta: {
-                    name: '用户角色'
+                    name: '用户角色',
+                    paths: [ { name: '用户管理'} ]
                 }
             },
             {
@@ -103,7 +107,8 @@ const routes = [{
                 component: () =>
                     import('@view/permission/Index'),
                 meta: {
-                    name: '用户权限'
+                    name: '用户权限',
+                    paths: [ { name: '用户管理'} ]
                 }
             },
         ]

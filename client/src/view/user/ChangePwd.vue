@@ -95,7 +95,7 @@ export default {
                         validator: (rule, value, callback) => {
                             let that = this;
 
-                            if (that.passwd !== value) {
+                            if (that.form.passwd !== value) {
                                 callback(
                                     new Error("两次的密码不一致，请重新输入.")
                                 );
