@@ -126,28 +126,19 @@
                         label="操作"
                         width="145"
                     >
-                        <!-- <template slot-scope="scope">
-                        <el-button
-                            type="primary"
-                            size="mini"
-                            icon="el-icon-edit"
-                            title="修改"
-                            circle
-                            @click="showEditDialog(scope.row.id)"
-                        ></el-button> -->
-                       <template slot-scope="scope">
 
+                       <template slot-scope="scope">
                         <el-tooltip
                             effect="dark"
-                            content="编辑"
+                            content="修改密码"
                             placement="top"
                         >
                             <el-button
-                                type="success"
+                                type="primary"
                                 size="mini"
-                                icon="fa fa-key"
+                                icon="el-icon-edit"
                                 circle
-                                @click="changeUserPwd(scope.row.id)"
+                                @click="showEditDialog(scope.row.id)"
                             ></el-button>
                         </el-tooltip>
                         <el-tooltip
@@ -163,16 +154,20 @@
                                 @click="del(scope.row.id, scope.$index)"
                             ></el-button>
                         </el-tooltip>
+                        
                     </template>
                     </el-table-column>
                 </el-table>
             </div>
+           
         </el-row>
 
         <add
             :show.sync="addDialog"
             @add-item="addItem"
         ></add>
+
+
 
         <edit
             :show.sync="editDialog"
@@ -188,6 +183,7 @@
 import Add from "./Add";
 import Edit from "./Edit";
 import TabelBase from "@view/base/TabelBase";
+
 
 export default {
     mixins: [TabelBase],

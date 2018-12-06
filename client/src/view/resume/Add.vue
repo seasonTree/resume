@@ -26,7 +26,7 @@
                 >
 
                     <textarea
-                        style=" width:1068px; 
+                        style=" width:955.8px; 
                                 height:740px; 
                                 resize:none; 
                                 font-size: 20px;"
@@ -476,6 +476,30 @@
                 </el-form>
             </el-tab-pane>
 
+
+
+            <el-tab-pane
+                label="上传简历"
+                name="third"
+            >
+                <div style="width:1068px; height:740px;display:flex;align-items:center;justify-content:center;" >
+                    <el-upload
+                        style=""
+                        class="upload-demo"
+                        drag
+                        action="https://jsonplaceholder.typicode.com/posts/"
+                        multiple
+                    >
+                        <i class="el-icon-upload"></i>
+                        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                        <div
+                            class="el-upload__tip"
+                            slot="tip"
+                        >只能上传jpg/png文件，且不超过500kb</div>
+                    </el-upload>
+                </div>
+            </el-tab-pane>
+
         </el-tabs>
 
         <div
@@ -483,17 +507,16 @@
             class="dialog-footer"
         >
             <el-button @click="closeDialog">取 消</el-button>
-            <el-button >自动识别</el-button>
-                <el-button
-                    type="primary"
-                    @click="addCommit"
-                >确 定</el-button>
+            <el-button>自动识别</el-button>
+            <el-button
+                type="primary"
+                @click="addCommit"
+            >确 定</el-button>
         </div>
     </el-dialog>
 </template>
 
 <script>
-
 import AddDialogForm from "@view/base/AddDialogForm";
 export default {
     name: "Add",
@@ -646,5 +669,10 @@ export default {
 }
 .div-row {
     display: flex;
+}
+
+.t_area {
+    width: 300px;
+    overflow-y: visible;
 }
 </style>
