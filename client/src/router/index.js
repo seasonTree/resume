@@ -94,7 +94,7 @@ const routes = [
             {
                 path: 'role',
                 component: () =>
-                    import('@view/user_role/Index'),
+                    import('@view/role/Index'),
                 meta: {
                     name: '用户角色'
                 }
@@ -102,7 +102,7 @@ const routes = [
             {
                 path: 'permission',
                 component: () =>
-                    import('@view/user_permission/Index'),
+                    import('@view/permission/Index'),
                 meta: {
                     name: '用户权限'
                 }
