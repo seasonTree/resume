@@ -65,76 +65,84 @@ export default {
         getPermissionData() {
             let that = this;
 
-            that.permissionData = [
-                {
-                    id: 1,
-                    p_name: "菜单页面",
-                    api: "/ttttttt/ttttt",
-                    ct_user: "6666666",
-                    ct_time: "192.666245",
-                    children: [
-                        {
-                            id: 2,
-                            p_name: "功能页面",
-                            api: "/44444/444",
-                            ct_user: "44444444",
-                            ct_time: "444444444444444"
-                        },
-                        {
-                            id: 3,
-                            p_name: "功能页面2222",
-                            api: "/nnnnnn/nnn",
-                            ct_user: "nnnnnnn",
-                            ct_time: "nnnnnnnnnnnn",
-                            children: [
-                                {
-                                    id: 4,
-                                    p_name: "333333333333",
-                                    api: "/33333",
-                                    ct_user: "3333",
-                                    ct_time: "3333333"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    id: 16,
-                    p_name: "菜单33",
-                    api: "/vvvv/vvvvv",
-                    ct_user: "6666666",
-                    ct_time: "192.666245",
-                    children: [
-                        {
-                            id: 2,
-                            p_name: "功能页面",
-                            api: "/44444/444",
-                            ct_user: "44444444",
-                            ct_time: "444444444444444"
-                        }
-                    ]
-                }
-            ];
+            // that.permissionData = [
+            //     {
+            //         id: 1,
+            //         p_name: "菜单页面",
+            //         api: "/ttttttt/ttttt",
+            //         ct_user: "6666666",
+            //         ct_time: "192.666245",
+            //         children: [
+            //             {
+            //                 id: 2,
+            //                 p_name: "功能页面",
+            //                 api: "/44444/444",
+            //                 ct_user: "44444444",
+            //                 ct_time: "444444444444444"
+            //             },
+            //             {
+            //                 id: 3,
+            //                 p_name: "功能页面2222",
+            //                 api: "/nnnnnn/nnn",
+            //                 ct_user: "nnnnnnn",
+            //                 ct_time: "nnnnnnnnnnnn",
+            //                 children: [
+            //                     {
+            //                         id: 4,
+            //                         p_name: "333333333333",
+            //                         api: "/33333",
+            //                         ct_user: "3333",
+            //                         ct_time: "3333333"
+            //                     }
+            //                 ]
+            //             }
+            //         ]
+            //     },
+            //     {
+            //         id: 16,
+            //         p_name: "菜单33",
+            //         api: "/vvvv/vvvvv",
+            //         ct_user: "6666666",
+            //         ct_time: "192.666245",
+            //         children: [
+            //             {
+            //                 id: 2,
+            //                 p_name: "功能页面",
+            //                 api: "/44444/444",
+            //                 ct_user: "44444444",
+            //                 ct_time: "444444444444444"
+            //             }
+            //         ]
+            //     }
+            // ];
 
-            // that.$api.permission
-            //     .get()
-            //     .then(res => {
-            //         if (res.code == 0) {
-            //             that.permissionData = res.data;
-            //         } else {
-            //             that.$message.error(
-            //                 res.msg || "获所有权限失败，请刷新后重试."
-            //             );
-            //         }
-            //     })
-            //     .catch(res => {
-            //         that.$message.error("获所有权限失败，请刷新后重试.");
-            //     });
+            that.$api.permission
+                .get()
+                .then(res => {
+                    if (res.code == 0) {
+                        that.permissionData = res.data;
+                    } else {
+                        that.$message.error(
+                            res.msg || "获所有权限失败，请刷新后重试."
+                        );
+                    }
+                })
+                .catch(res => {
+                    that.$message.error("获所有权限失败，请刷新后重试.");
+                });
         },
 
-        genIndex(arr, result){
-            for(var i = 0; i < arr.length; i++){
-                
+        genIndex(arr, result) {
+            let that = this;
+
+            for (var i = 0; i < arr.length; i++) {
+                var item = arr[i];
+
+                result.push(item.id);
+
+                if (item.children && item.children.length) {
+                    that.genIndex(item.children, result);
+                }
             }
         },
 
@@ -145,20 +153,26 @@ export default {
             //生成排序
             that.genIndex(that.permissionData, data);
 
-            // that.$api.permission
-            //     .sort()
-            //     .then(res => {
-            //         if (res.code == 0) {
-            //             that.permissionData = res.data;
-            //         } else {
-            //             that.$message.error(
-            //                 res.msg || "获所有权限失败，请刷新后重试."
-            //             );
-            //         }
-            //     })
-            //     .catch(res => {
-            //         that.$message.error("获所有权限失败，请刷新后重试.");
-            //     });
+            that.$api.permission
+                .sort({
+                    data
+                })
+                .then(res => {
+                    if (res.code == 0) {
+                        that.$message({
+                            message: "排序成功.",
+                            type: "success",
+                            duration: 800
+                        });
+                    } else {
+                        that.$message.error(
+                            res.msg || "排序失败，请刷新后重试."
+                        );
+                    }
+                })
+                .catch(res => {
+                    that.$message.error("排序失败，请刷新后重试.");
+                });
         }
     }
 };
