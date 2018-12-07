@@ -199,28 +199,28 @@ export default {
             // -------------------
 
             tdata: [
-                {
-                    id: 1,
-                    uname: "123",
-                    pesonal_name: "aaaaa",
-                    phone: 128154444,
-                    status: 1,
-                    ct_user: "创建人",
-                    ct_time: "创建时间",
-                    mfy_user: "修改人",
-                    mfy_time: "修改时间"
-                },
-                 {
-                    id: 1,
-                    uname: "123",
-                    pesonal_name: "aaaaa",
-                    phone: 128154444,
-                    status: 1,
-                    ct_user: "创建人",
-                    ct_time: "创建时间",
-                    mfy_user: "修改人",
-                    mfy_time: "修改时间"
-                },
+                // {
+                //     id: 1,
+                //     uname: "123",
+                //     pesonal_name: "aaaaa",
+                //     phone: 128154444,
+                //     status: 1,
+                //     ct_user: "创建人",
+                //     ct_time: "创建时间",
+                //     mfy_user: "修改人",
+                //     mfy_time: "修改时间"
+                // },
+                //  {
+                //     id: 1,
+                //     uname: "123",
+                //     pesonal_name: "aaaaa",
+                //     phone: 128154444,
+                //     status: 1,
+                //     ct_user: "创建人",
+                //     ct_time: "创建时间",
+                //     mfy_user: "修改人",
+                //     mfy_time: "修改时间"
+                // },
             ],
 
             //搜索条件

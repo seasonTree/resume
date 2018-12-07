@@ -76,12 +76,12 @@ export default {
                         that.users = res.data;
                     } else {
                         that.$message.error(
-                            res.msg || "获所有用户失败，请刷新后重试."
+                            res.msg || "获取所有用户失败，请刷新后重试."
                         );
                     }
                 })
                 .catch(res => {
-                    that.$message.error("获所有用户失败，请刷新后重试.");
+                    that.$message.error("获取所有用户失败，请刷新后重试.");
                 });
         },
 
