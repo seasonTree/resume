@@ -38,7 +38,7 @@ export default {
             that.$refs["form"].validate(valid => {
                 if (valid) {
                     //提交之前
-                    that.beforeEdit();
+                    that.beforeEdit(that.form);
 
                     that.$api[that.apiType]
                         .edit(that.form)
@@ -70,7 +70,7 @@ export default {
             });
         },
 
-        beforeEdit() {},
+        beforeEdit(item) {},
         afterEdit(item) {}
     }
 };

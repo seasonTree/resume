@@ -206,15 +206,15 @@ export default {
             },
 
             tdata: [
-                {
-                    id: 1,
-                    role_name: "123",
-                    status: 0,
-                    ct_user: "创建人",
-                    ct_time: "创建时间",
-                    mfy_user: "修改人",
-                    mfy_time: "修改时间"
-                }
+                // {
+                //     id: 1,
+                //     role_name: "123",
+                //     status: 0,
+                //     ct_user: "创建人",
+                //     ct_time: "创建时间",
+                //     mfy_user: "修改人",
+                //     mfy_time: "修改时间"
+                // }
             ],
 
             //权限

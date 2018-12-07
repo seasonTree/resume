@@ -19,7 +19,7 @@ export default {
             that.$refs["form"].validate(valid => {
                 if (valid) {
                     //提交之前
-                    that.beforeAdd();
+                    that.beforeAdd(that.form);
 
                     that.$api[that.apiType]
                         .add(that.form)
@@ -51,7 +51,7 @@ export default {
             });
         },
 
-        beforeAdd() {},
+        beforeAdd(item) {},
         afterAdd(item) {}
     }
 };

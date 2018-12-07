@@ -124,6 +124,26 @@ export const delCookie = (name) => {
 }
 
 /**
+ * 返回上周的开始和结束日期，date数据格式
+ * @return { Object } 
+ *          ex: { ltMonStart: 2018-01-01, ltMonEnd: 2018-01-07 }
+ */
+export const getLtWeek = () => {
+    let start = new Date(),
+        end = new Date(),
+        dayOfWeek = start.getDay(),
+        oneDayTime = 3600 * 24 * 1000;
+
+    start.setTime(start.getTime() - oneDayTime * (dayOfWeek + 6));
+    end.setTime(end.getTime() - oneDayTime * dayOfWeek - 1);
+
+    return {
+        ltWeekStart: start.getFullYear() + '-' + (start.getMonth() + 1) + start.getDate(),
+        ltWeekEnd: end.getFullYear() + '-' + (end.getMonth() + 1) + end.getDate(),
+    }
+}
+
+/**
  * 返回上个月的开始和结束日期，date数据格式
  * @return { Object } 
  *          ex: { ltMonStart: 2018-01-01, ltMonEnd: 2018-01-30 }
@@ -214,9 +234,9 @@ export const treeToArray = function (data, parent, level, expandedAll, context) 
         if (parent) {
 
             if (context) {
-            //使用vue监听
-            context.$set(record, '_parent', parent);
-            }else{
+                //使用vue监听
+                context.$set(record, '_parent', parent);
+            } else {
                 record['_parent'] = parent;
             }
         }
@@ -231,9 +251,9 @@ export const treeToArray = function (data, parent, level, expandedAll, context) 
         tmp.push(record)
 
         //使用vue监听
-        if(context){
+        if (context) {
             context.$set(record, '_hasChild', record.children && record.children.length > 0);
-        }else{
+        } else {
             record['_hasChild'] = record.children && record.children.length > 0;
         }
 

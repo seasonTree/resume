@@ -64,7 +64,8 @@ const routes = [{
                 component: () =>
                     import('@view/resume/Index'),
                 meta: {
-                    name: '简历信息'
+                    name: '简历信息',
+                    paths: [ { name: '简历管理'}]
                 }
             },
             {
@@ -72,7 +73,8 @@ const routes = [{
                 component: () =>
                     import('@view/resume_search/Index'),
                 meta: {
-                    name: '简历搜索'
+                    name: '简历搜索',
+                    paths: [ { name: '简历管理'}]
                 }
             },
         ]
@@ -87,7 +89,8 @@ const routes = [{
                 component: () =>
                     import('@view/user/Index'),
                 meta: {
-                    name: '用户管理'
+                    name: '用户信息',
+                    paths: [ { name: '用户管理'} ]
                 }
             },
             {
@@ -95,7 +98,8 @@ const routes = [{
                 component: () =>
                     import('@view/role/Index'),
                 meta: {
-                    name: '用户角色'
+                    name: '用户角色',
+                    paths: [ { name: '用户管理'} ]
                 }
             },
             {
@@ -103,7 +107,8 @@ const routes = [{
                 component: () =>
                     import('@view/permission/Index'),
                 meta: {
-                    name: '用户权限'
+                    name: '用户权限',
+                    paths: [ { name: '用户管理'} ]
                 }
             },
         ]
@@ -111,14 +116,15 @@ const routes = [{
     {
         path: '/report',
         component: () => import('@view/layout/Layout'),
-        redirect: '/report/index',
+        redirect: '/report/personal_recruitment',
 
         children: [{
-                path: 'index',
+                path: 'personal_recruitment',
                 component: () =>
-                    import('@view/report/Test'),
+                    import('@view/report/PersonalRecruitment'),
                 meta: {
-                    name: '报表测试'
+                    name: '个人招聘统计',
+                    paths: [ { name: '报表'} ]
                 }
             },
         ]

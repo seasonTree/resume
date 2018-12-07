@@ -3,7 +3,7 @@ import request from '../common/request';
 const prefix = '/role';
 
 //获取权限列表
-export function get(data){
+export function get(data) {
     return request({
         url: `${prefix}/list`,
         method: 'get',
@@ -12,7 +12,7 @@ export function get(data){
 }
 
 //根据id获取权限的信息
-export function getByID(data){
+export function getByID(data) {
     return request({
         url: `${prefix}/get_by_id`,
         method: 'post',
@@ -21,7 +21,7 @@ export function getByID(data){
 }
 
 //修改
-export function edit(data){
+export function edit(data) {
     return request({
         url: `${prefix}/edit`,
         method: 'post',
@@ -30,9 +30,18 @@ export function edit(data){
 }
 
 //删除
-export function del(data){
+export function del(data) {
     return request({
         url: `${prefix}/del`,
+        method: 'post',
+        data: data
+    });
+}
+
+//菜单排序
+export function sort(data) {
+    return request({
+        url: `${prefix}/sort`,
         method: 'post',
         data: data
     });

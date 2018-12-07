@@ -5,7 +5,7 @@ export default {
     props: {
         bodyHeight: {
             type: Number,
-            default: 300
+            default: 400
         }
     },
 
@@ -48,10 +48,15 @@ export default {
 
         getData() {
             let that = this,
-                params = {
-                    //添加搜索天剑
-                    ...that.search
-                };
+                params = {};
+
+            if (that.search) {
+                //添加搜索天剑
+                params = { ...that.search };
+            }
+
+            that.pager.current = 1;
+            that.pager.total = 1;
 
             if (that.pager) {
                 params["pageIndex"] = that.pager.current;

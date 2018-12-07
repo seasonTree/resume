@@ -47,18 +47,19 @@
             <el-main class="main">
                 <div class="main-header">
                     <el-breadcrumb separator="/">
+
                         <template v-for="(item, index) in $route.meta.paths">
                             <template v-if="item.url">
-                                <el-breadcrumb-item
-                                    :to="{ path: item.url }"
-                                    :key="index"
-                                >{{item.name}}</el-breadcrumb-item>
-                            </template>
-
-                            <template>
                                 <el-breadcrumb-item :key="index">{{item.name}}</el-breadcrumb-item>
                             </template>
+
+                            <template v-else>
+                                <el-breadcrumb-item :key="index">{{item.name}}</el-breadcrumb-item>
+                            </template>
+
                         </template>
+
+                        <el-breadcrumb-item>{{$route.meta.name}}</el-breadcrumb-item>
                     </el-breadcrumb>
                 </div>
 
@@ -224,10 +225,10 @@ export default {
 
                     children: [
                         {
-                            url: "/report/test",
-                            name: "报表测试",
+                            url: "/report/personal_recruitment",
+                            name: "个人招聘统计",
                             icon: "fa fa-user-friends"
-                        },
+                        }
                     ]
                 },
                 {
@@ -278,7 +279,7 @@ export default {
 
                 that.mainBodyTimer = setTimeout(() => {
                     that.bodyHeight = that.$refs.mainBody.offsetHeight;
-                }, 300);
+                }, 100);
             };
 
         resize();
@@ -427,7 +428,7 @@ export default {
 .navbar {
     background-color: @nav-color;
     border: 1px solid @nav-color;
-    overflow: hidden !important;
+    overflow-x: hidden !important;    
 
     .el-menu-item.is-active {
         border-right: 4px solid @header-color;
