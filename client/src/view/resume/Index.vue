@@ -140,7 +140,7 @@
                             <el-button
                                 type="success"
                                 size="mini"
-                                icon="fa fa-crosshairs"
+                                icon="fa fa-user-astronaut"
                                 circle
                                 @click.stop="showCommunicationDialog(scope.row.id)"
                             ></el-button>
@@ -204,7 +204,7 @@
 
         <communication
             :show.sync="communicationDialog"
-            :id="CommunicationID"
+            :id="communicationID"
         >
         </communication>
 
@@ -256,6 +256,7 @@ export default {
 
         //沟通管理
         showCommunicationDialog(id) {
+            console.log(id);
             let that = this;
             that.CommunicationID = id;
             that.communicationDialog = true;
@@ -307,7 +308,7 @@ export default {
 
             //沟通情况
             communicationDialog: false,
-            CommunicationID: 0
+            communicationID: 0
         };
     }
 };

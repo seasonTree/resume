@@ -176,6 +176,7 @@
 
 <script>
 import TabelBase from "@view/base/TabelBase";
+
 import Add from "./Add";
 import Edit from "./Edit";
 import ChangePwd from "./ChangePwd";
