@@ -19,7 +19,7 @@
 <script>
 import DialogForm from "../base/DialogForm";
 export default {
-    name: "component",
+    name: "communication",
     components: {},
     mixins: [DialogForm],
 

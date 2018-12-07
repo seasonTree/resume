@@ -5,7 +5,7 @@ export default {
     props: {
         bodyHeight: {
             type: Number,
-            default: 300
+            default: 400
         }
     },
 

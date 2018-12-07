@@ -10,135 +10,139 @@
                 >新增简历</el-button>
 
             </div>
-            <div @click="handleClick()">
-                <el-table
-                    :data="tdata"
-                    border
-                    style="width: 100%"
+            <!-- <div @click="handleClick()"> -->
+            <el-table
+                :data="tdata"
+                stripe
+                border
+                style="width: 100%"
+                :height="tabelHeight"
+                @row-click="showEditDialog"
+                class="resume-table"
+            >
+
+                <el-table-column
+                    fixed
+                    prop="name"
+                    label="姓名"
+                    width="100"
                 >
 
-                    <el-table-column
-                        fixed
-                        prop="name"
-                        label="姓名"
-                        width="100"
-                    >
+                </el-table-column>
+                <el-table-column
+                    fixed
+                    prop="sex"
+                    label="性别"
+                    width="50"
+                >
+                </el-table-column>
+                <el-table-column
+                    fixed
+                    prop="age"
+                    label="年龄"
+                    width="50"
+                >
+                </el-table-column>
+                <el-table-column
+                    fixed
+                    prop="phone"
+                    label="手机"
+                    width="150"
+                >
+                </el-table-column>
+                <el-table-column
+                    fixed
+                    prop="edu"
+                    label="学历"
+                    width="100"
+                >
+                </el-table-column>
+                <el-table-column
+                    fixed
+                    prop="workAge"
+                    label="工作年限"
+                    width="120"
+                >
+                </el-table-column>
+                <el-table-column
+                    prop="objective"
+                    label="求职意向"
+                    width="120"
+                >
+                </el-table-column>
+                <el-table-column
+                    prop="email"
+                    label="电子邮箱"
+                    width="200"
+                >
+                </el-table-column>
+                <el-table-column
+                    prop="expectPay"
+                    label="期望薪水"
+                    width="150"
+                >
+                </el-table-column>
+                <el-table-column
+                    prop="inPosition"
+                    label="所处职位"
+                    width="120"
+                >
+                </el-table-column>
+                <el-table-column
+                    prop="recentlyUnit"
+                    label="最近单位"
+                    width="200"
+                >
+                </el-table-column>
+                <el-table-column
+                    prop="recentPosition"
+                    label="最近职位"
+                    width="120"
+                >
+                </el-table-column>
+                <el-table-column
+                    prop="graduateSchool"
+                    label="毕业院校"
+                    width="300"
+                >
+                </el-table-column>
+                <el-table-column
+                    prop="professional"
+                    label="专业"
+                    width="150"
+                >
+                </el-table-column>
 
-                    </el-table-column>
-                    <el-table-column
-                        fixed
-                        prop="sex"
-                        label="性别"
-                        width="50"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                        fixed
-                        prop="age"
-                        label="年龄"
-                        width="50"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                        fixed
-                        prop="phone"
-                        label="手机"
-                        width="150"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                        fixed
-                        prop="edu"
-                        label="学历"
-                        width="100"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                        fixed
-                        prop="workAge"
-                        label="工作年限"
-                        width="120"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                        prop="objective"
-                        label="求职意向"
-                        width="120"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                        prop="email"
-                        label="电子邮箱"
-                        width="200"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                        prop="expectPay"
-                        label="期望薪水"
-                        width="150"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                        prop="inPosition"
-                        label="所处职位"
-                        width="120"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                        prop="recentlyUnit"
-                        label="最近单位"
-                        width="200"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                        prop="recentPosition"
-                        label="最近职位"
-                        width="120"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                        prop="graduateSchool"
-                        label="毕业院校"
-                        width="300"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                        prop="professional"
-                        label="专业"
-                        width="150"
-                    >
-                    </el-table-column>
+                <el-table-column
+                    prop="englishLevel"
+                    label="英语等级"
+                    width="120"
+                >
+                </el-table-column>
+                <el-table-column
+                    prop="workingPlace"
+                    label="工作地点"
+                    width="200"
+                >
+                </el-table-column>
+                <el-table-column
+                    fixed="right"
+                    label="操作"
+                    width="145"
+                >
 
-                    <el-table-column
-                        prop="englishLevel"
-                        label="英语等级"
-                        width="120"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                        prop="workingPlace"
-                        label="工作地点"
-                        width="200"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                        fixed="right"
-                        label="操作"
-                        width="145"
-                    >
-
-                       <template slot-scope="scope">
-                           <el-tooltip
+                    <template slot-scope="scope">
+                        <el-tooltip
                             effect="dark"
                             content="沟通管理"
                             placement="bottom"
                         >
                             <el-button
-                                type="primary"
+                                type="success"
                                 size="mini"
                                 icon="fa fa-crosshairs"
                                 circle
-                                @click="showCommunicationDialog(scope.row.id)"
+                                @click.stop="showCommunicationDialog(scope.row.id)"
                             ></el-button>
                         </el-tooltip>
                         <el-tooltip
@@ -151,7 +155,7 @@
                                 size="mini"
                                 icon="el-icon-edit"
                                 circle
-                                @click="showEditDialog(scope.row.id)"
+                                @click.stop="showEditDialog(scope.row.id)"
                             ></el-button>
                         </el-tooltip>
                         <el-tooltip
@@ -164,15 +168,27 @@
                                 size="mini"
                                 icon="el-icon-delete"
                                 circle
-                                @click="del(scope.row.id, scope.$index)"
+                                @click.stop="del(scope.row.id, scope.$index)"
                             ></el-button>
                         </el-tooltip>
-                        
+
                     </template>
-                    </el-table-column>
-                </el-table>
-            </div>
-           
+                </el-table-column>
+            </el-table>
+            <!-- </div> -->
+
+        </el-row>
+
+        <el-row class="pager">
+            <el-pagination
+                @current-change="changePage"
+                background
+                layout="prev, pager, next"
+                :page-size="pager.size"
+                :total="pager.total"
+                :current-page="pager.current"
+            >
+            </el-pagination>
         </el-row>
 
         <add
@@ -216,25 +232,30 @@ export default {
     watch: {},
     computed: {},
     methods: {
-        handleClick() {
-            let tr = event.target;
+        // handleClick() {
+        //     let tr = event.target;
 
-            while (tr.nodeName != "TR") {
-                tr = tr.parentNode;
-            }
-            let button = tr.lastElementChild.children[0].children[0];
-            button.click();
-        },
+        //     while (tr.nodeName != "TR") {
+        //         tr = tr.parentNode;
+        //     }
+        //     let button = tr.lastElementChild.children[0].children[0];
+        //     button.click();
+        // },
+        // showEditDialog(row) {
+        //     console.log(row);
+        //     console.log(TabelBase.methods.showEditDialog);
+        // },
+        // editItem() {
+        //     console.log(1);
+        // },
+
         showEditDialog(row) {
-            console.log(row);
-            console.log(TabelBase.methods.showEditDialog);
-        },
-        editItem() {
-            console.log(1);
+            let that = this;
+            that.editDialog = true;
         },
 
         //沟通管理
-        showCommunicationDialog(id){
+        showCommunicationDialog(id) {
             let that = this;
             that.CommunicationID = id;
             that.communicationDialog = true;
@@ -292,4 +313,11 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+.resume-table {
+    tbody {
+        tr {
+            cursor: pointer;
+        }
+    }
+}
 </style>

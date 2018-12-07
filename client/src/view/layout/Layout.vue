@@ -279,7 +279,7 @@ export default {
 
                 that.mainBodyTimer = setTimeout(() => {
                     that.bodyHeight = that.$refs.mainBody.offsetHeight;
-                }, 300);
+                }, 100);
             };
 
         resize();
