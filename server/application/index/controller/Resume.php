@@ -181,7 +181,7 @@ class Resume extends Controller
                             continue;
                         }
                     }
-                    
+
                     $strpos = strpos($v,$preg[0]);
                     $strlen = strlen($preg[0]);
 
@@ -280,12 +280,17 @@ class Resume extends Controller
         $content = '';
         foreach ($parm as $n => $list) {
             $list = $this->trimall($list);
-            foreach ($rule as $k => $v) {
-                if (preg_match($work_rule, $list,$preg)) {
+            if (preg_match($work_rule, $list,$preg)) {
                     
                     $key_num = $n;
+                    
 
-                }
+            }
+            if (isset($work[$key_num]['content'])) {
+                $work[$key_num]['content'].= $this->trimall($parm[$n]);
+            }
+            foreach ($rule as $k => $v) {
+                
 
                 if (preg_match($v, $list,$preg)) {
 
@@ -297,12 +302,38 @@ class Resume extends Controller
                         $strpos++;
                     }
 
-                    $work[$key_num][$k] = trim(preg_replace("/:|：/",'',$preg[0]));
+                if ($k == 'content') {
+                    if (!isset($work[$key_num]['content'])) {
+                        $work[$key_num][$k] = $preg[0];
+                    }
+
+                    if (!isset($work[$key_num]['job'])) {
+                        $work[$key_num]['job'] = $this->trimall($parm[$n-1]);
+                    }
+                    continue;
+                }
+                
+                if (isset($work[$key_num]['content'])) continue;
+
+                if ($k == 'work_time') {
+                    $company_name = trim(preg_replace("/:|：/",'',$list));
+                        if (!preg_match("/(公司|集团|超市|科技|酒店)/",$company_name)) {
+                            $work[$key_num]['company_name'] = $this->trimall($parm[$n - 1]);
+                            $work[$key_num][$k] = trim(preg_replace("/:|：/",'',$preg[0]));
+                            $work[$key_num]['job'] = trim(preg_replace("/:|：/",'',$list));
+                            continue;
+                        }
+                        $work[$key_num]['company_name'] = trim(preg_replace("/:|：/",'',$list));
+                }
+
+
+                $work[$key_num][$k] = trim(preg_replace("/:|：/",'',$preg[0]));
                     
 
                     
                 }
             }
+
         }
 
         // foreach ($parm as $k => $v) {
@@ -326,6 +357,7 @@ class Resume extends Controller
         // dump($arr);
         // dump($work);
         // dump($work);exit;
+        // exit;
         return array_merge($work);
 
 
@@ -361,50 +393,173 @@ class Resume extends Controller
     }
 
     public function projectExperience($parm){
-    	//项目经验
+        //项目经验
         $rule = config('config.projectExperience');
-        $project_rule = $rule['project_rule'];
-        unset($rule['project_rule']);
         unset($parm[0]);
         $project = [];
-        $key_num = 0;
-        foreach ($parm as $n => $list) {
-            $list = $this->trimall($list);
-            // dump($list);
-            if (preg_match($project_rule, $list,$preg)) {
-                
-                $key_num = $n;
 
-            }
-            // dump($key_num);
-            foreach ($rule as $k => $v) {
-                
+        foreach ($parm as $k => $v) {
+            $v = $this->trimall($v);
+            if (preg_match($rule['project_rule'], $v)) {
+                //项目时间/名字
 
-                if (preg_match($v, $list,$preg)) {
-
-                    $strpos = strpos($list,$preg[0]);
-                    $strlen = strlen($preg[0]);
-
-                    for ($i = 0;$i < $strlen; $i++) {
-                        $list[$strpos] = '';
-                        $strpos++;
-                    }
-
-                    if ($k == 'project_time') {
-                        $project[$key_num]['project_name'] = trim(preg_replace("/:|：/",'',$list));
-                        // dump($project);
-                    }
-
-                    $project[$key_num][$k] = $preg[0];
+                if (preg_match($rule['project_time'], $v,$preg)) {
+                    $project[$k]['project_time'] = $preg[0];
+                    $v = preg_replace($rule['project_time'], '', $v);
+                    $project[$k]['project_name'] = $v;
                 }
+
             }
-             // dump($project);
+
+            if (!isset($project[$k]['envy_responsibility']) && preg_match($rule['envy_responsibility'], $v,$preg)) {
+                $project[$k]['envy_responsibility'] = $v;
+                    
+            }
             
         }
-        // dump($parm);exit;
-        return array_merge($project);
-
+        dump($parm);
+        dump($project);exit;
     }
+
+
+
+    // public function projectExperience($parm){
+    // 	//项目经验
+    //     $rule = config('config.projectExperience');
+    //     $project_rule = $rule['project_rule'];
+    //     unset($rule['project_rule']);
+    //     unset($parm[0]);
+    //     $project = [];
+    //     $key_num = 0;
+    //     $mark_arr = [];
+    //     $last_index = count($parm) - 1;
+    //     foreach ($parm as $n => $list) {
+    //         $list = $this->trimall($list);
+    //         // dump($list);
+    //         if (preg_match($project_rule, $list,$preg)) {
+    //             $key_num = $n;
+    //             $end_key = end($mark_arr);
+
+    //             if ($end_key) {
+    //                 //检测最后一个数组中是否存在项目情况的内容，如果没有则表示匹配失败，直接截取这一段的内容作为填充(这种做法准确率降低)
+    //                 if (!isset($project[$end_key]['content']) && !isset($project[$end_key]['envy_responsibility'])) {
+
+    //                     $begin = $end_key;
+    //                     $length = $n - $begin - 2;
+    //                     $content = array_slice($parm,$begin,$length);
+
+    //                     $project[$end_key]['content'] = implode('', $content);
+    //                 }
+                    
+    //             }
+    //             $mark_arr[] = $n;
+
+    //         }
+
+    //         if ($n == $last_index) {
+    //             $end_key = end($mark_arr);
+    //             if (!isset($project[$end_key]['content']) && !isset($project[$end_key]['envy_responsibility'])) {
+    //                 $begin = $end_key;
+    //                 $length = $n - $begin - 1;
+    //                 $content = array_slice($parm,$begin,$length);
+    //                 $project[$end_key]['content'] = implode('', $content);
+    //             }
+                
+    //         }
+
+    //         if (isset($project[$key_num]['envy_responsibility'])) {
+
+    //                     $project[$key_num]['envy_responsibility'].= $this->trimall($parm[$n]);
+    //                     // continue;
+    //         }
+    //         if (isset($project[$key_num]['content'])) {
+
+    //             $project[$key_num]['content'].= $this->trimall($parm[$n]);
+    //             // continue;
+    //         }
+    //         foreach ($rule as $k => $v) {
+                
+
+    //             if (preg_match($v, $list,$preg)) {
+
+    //                 $strpos = strpos($list,$preg[0]);
+    //                 $strlen = strlen($preg[0]);
+
+    //                 for ($i = 0;$i < $strlen; $i++) {
+    //                     $list[$strpos] = '';
+    //                     $strpos++;
+    //                 }
+
+    //                 if ($k == 'envy_responsibility') {
+    //                     if (!isset($project[$key_num]['envy_responsibility'])) {
+    //                         $project[$key_num]['envy_responsibility'] = $preg[0];
+    //                     }
+    //                     unset($rule['content']);
+    //                     continue;
+    //                 }
+
+
+    //                 if ($k == 'content') {
+    //                     if (!isset($project[$key_num]['content'])) {
+
+    //                         $project[$key_num]['content'] = $preg[0];
+    //                     }
+    //                     unset($rule['envy_responsibility']);
+    //                     continue;
+    //                 }
+
+    //                 if (isset($project[$key_num]['envy_responsibility'])) continue;
+
+    //                 if (isset($project[$key_num]['content'])) continue;
+                    
+
+    //                 if ($k == 'project_time') {
+    //                     $project_name = trim(preg_replace("/:|：/",'',$list));
+    //                     // if (preg_match("/(任务分配|进度监督|系统架构|开发|技术总监|技术指导|架构师)/",$project_name)) {
+    //                     //     //匹配去除时间后的关键字是否含有以上字段
+    //                     //     $project_name = $this->trimall($parm[$n - 1]);
+    //                     //     if (!str_replace('-','',$project_name)) {
+    //                     //         //去除特殊字符-后是否包含项目名
+    //                     //         $project[$key_num]['project_name'] = $project_name;
+    //                     //         //项目名赋值
+    //                     //     }
+    //                     //     else{
+    //                     //         //排除特殊情况的赋值
+    //                     //         $project[$key_num]['project_name'] = trim(preg_replace("/:|：/",'',$list));
+    //                     //     }
+                            
+    //                     //     $project[$key_num][$k] = $preg[0];
+    //                     //     continue;
+    //                     // }
+
+    //                     $project_name = $this->trimall($parm[$n - 1]);
+    //                         if (strlen($project_name) < 60 && preg_match("/([\x{4e00}-\x{9fa5}]+|\w+)/u",$project_name)) {
+                                
+    //                             $project[$key_num]['project_name'] = $project_name;
+    //                         }
+    //                         else{
+    //                             $project[$key_num]['project_name'] = trim(preg_replace("/:|：/",'',$list));
+    //                         }
+                            
+    //                         $project[$key_num][$k] = $preg[0];
+    //                         continue;
+
+    //                     $project[$key_num]['project_name'] = trim(preg_replace("/:|：/",'',$list));
+    //                     // dump($project);
+    //                 }
+
+    //                 $project[$key_num][$k] = $preg[0];
+    //             }
+    //         }
+            
+            
+    //     }
+    //     // dump($project);
+    //     // exit;
+    //     // dump($parm);exit;
+    //     return array_merge($project);
+
+    // }
 
     public function selfEvaluation($parm){
     	//自我评价
@@ -434,7 +589,7 @@ class Resume extends Controller
         array_unshift($content,'基本资料');
         // dump($content);exit;
         $begin = 0;
-        $rule = "/^(基本资料|自我评价|目前状况|工作经历|工作业绩|工作经验|教育经历|教育背景|项目经验|项目经历|简历内容|技能特长|技能专长|专业技能|求职意向)/";
+        $rule = "/^(基本资料|自我评价|自我描述|自我介绍|目前状况|工作经历|工作业绩|工作经验|教育经历|教育背景|项目经验|项目经历|简历内容|技能特长|技能专长|专业技能|求职意向)/";
         $arr = [];//分类集合
         $lt_index = count($content) - 1;
         $resume_title = config('config.resume_title');
