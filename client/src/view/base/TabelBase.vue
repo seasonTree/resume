@@ -48,10 +48,12 @@ export default {
 
         getData() {
             let that = this,
-                params = {
-                    //添加搜索天剑
-                    ...that.search
-                };
+                params = {};
+
+            if (that.search) {
+                //添加搜索天剑
+                params = { ...that.search };
+            }
 
             if (that.pager) {
                 params["pageIndex"] = that.pager.current;

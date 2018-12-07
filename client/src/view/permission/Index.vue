@@ -147,6 +147,9 @@ export default {
             //不分页
             pager: false,
 
+            //不查找
+            search: false,
+
             apiType: "role",
             search: {
                 name: ""
