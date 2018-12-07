@@ -225,8 +225,8 @@ export default {
 
                     children: [
                         {
-                            url: "/report/test",
-                            name: "报表测试",
+                            url: "/report/personal_recruitment",
+                            name: "个人招聘统计",
                             icon: "fa fa-user-friends"
                         }
                     ]

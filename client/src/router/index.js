@@ -116,14 +116,15 @@ const routes = [{
     {
         path: '/report',
         component: () => import('@view/layout/Layout'),
-        redirect: '/report/index',
+        redirect: '/report/personal_recruitment',
 
         children: [{
-                path: 'index',
+                path: 'personal_recruitment',
                 component: () =>
-                    import('@view/report/Test'),
+                    import('@view/report/PersonalRecruitment'),
                 meta: {
-                    name: '报表测试'
+                    name: '个人招聘统计',
+                    paths: [ { name: '报表'} ]
                 }
             },
         ]
