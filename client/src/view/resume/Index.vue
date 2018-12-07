@@ -128,6 +128,19 @@
                     >
 
                        <template slot-scope="scope">
+                           <el-tooltip
+                            effect="dark"
+                            content="沟通管理"
+                            placement="bottom"
+                        >
+                            <el-button
+                                type="primary"
+                                size="mini"
+                                icon="fa fa-crosshairs"
+                                circle
+                                @click="showCommunicationDialog(scope.row.id)"
+                            ></el-button>
+                        </el-tooltip>
                         <el-tooltip
                             effect="dark"
                             content="修改密码"
@@ -167,13 +180,17 @@
             @add-item="addItem"
         ></add>
 
-
-
         <edit
             :show.sync="editDialog"
             :edit-item="currentEditItem"
             @edit-item="editItem"
         ></edit>
+
+        <communication
+            :show.sync="communicationDialog"
+            :id="CommunicationID"
+        >
+        </communication>
 
     </div>
 </template>
@@ -182,14 +199,15 @@
 <script>
 import Add from "./Add";
 import Edit from "./Edit";
+import Communication from "./Communication";
 import TabelBase from "@view/base/TabelBase";
-
 
 export default {
     mixins: [TabelBase],
     components: {
         Add,
-        Edit
+        Edit,
+        Communication
     },
     props: {},
 
@@ -213,6 +231,13 @@ export default {
         },
         editItem() {
             console.log(1);
+        },
+
+        //沟通管理
+        showCommunicationDialog(id){
+            let that = this;
+            that.CommunicationID = id;
+            that.communicationDialog = true;
         }
     },
 
@@ -257,7 +282,11 @@ export default {
                     englishLevel: "四级",
                     workingPlace: "深圳"
                 }
-            ]
+            ],
+
+            //沟通情况
+            communicationDialog: false,
+            CommunicationID: 0
         };
     }
 };
