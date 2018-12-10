@@ -42,22 +42,22 @@
             </div>
         </el-dialog>
 
-        <add-communication 
+        <add-commun
             :show.sync="addDialog"
             :resume_id="resume_id" 
             @add-item="addItem">
-        </add-communication>
+        </add-commun>
     </div>
 
 </template>
 
 <script>
 import DialogForm from "../base/DialogForm";
-import AddCommunication from "./AddCommunication";
+import AddCommun from "./AddCommun";
 export default {
-    name: "Communication",
+    name: "Commun",
     components: {
-        AddCommunication
+        AddCommun
     },
     mixins: [DialogForm],
 
@@ -80,8 +80,6 @@ export default {
         return {
             commData: [],
             dialogVisible: false,
-            // value1: "",
-            // textarea3: "",
 
             //新增沟通
             addDialog: false,

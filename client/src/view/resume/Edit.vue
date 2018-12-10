@@ -477,11 +477,11 @@
                 </el-form>
             </el-tab-pane>
 
-        </el-tabs >
+        </el-tabs>
 
         <div
             slot="footer"
-            class="dialog-footer"           
+            class="dialog-footer"
         >
             <el-button @click="closeDialog">取 消</el-button>
             <el-button>自动识别</el-button>
@@ -489,7 +489,7 @@
                 type="primary"
                 @click="addCommit"
             >确 定</el-button>
-            
+
         </div>
     </el-dialog>
 </template>

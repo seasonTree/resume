@@ -11,7 +11,6 @@
         <el-form
             :model="form"
             :rules="formRules"
-            label-width="90px"
             class="form-container"
             ref="form"
         >
