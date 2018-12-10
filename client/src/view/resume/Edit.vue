@@ -4,49 +4,27 @@
         :visible.sync="show"
         :before-close="closeDialog"
         class="custom-dialog"
-        :close-on-click-modal="false"
-        :class="dialog"
-        top="5vh"
+        :close-on-click-modal="false"        
+        top="4.5vh"
         width="60%"
     >
 
         <el-tabs
-            v-model="activeName"
-            @tab-click="handleClick"
-            style="padding-bottom: -10px;"
+             v-model="activeName"
+            class="mb-20"
         >
             <el-tab-pane
-                label="粘贴简历"
-                name="first"
-            >
-                <el-form
-                    :model="form"
-                    :rules="formRules"
-                    label-width="100px"
-                    ref="form"
-                >
-
-                    <textarea
-                        style=" width:957px; 
-                                height:739.3px; 
-                                resize:none; 
-                                font-size: 20px;"
-                        name=""
-                        id=""
-                    ></textarea>
-                    <el-col
-                        :span="12"
-                        class="right-container"
+                    label="粘贴简历"
+                    name="first">
+                    <el-input
+                        type="textarea"
+                        placeholder="请输入要分析的内容"
+                        v-model="analyzeContent"
+                        class="analyze-content"
+                        resize="none"
                     >
-                        <el-tabs
-                            v-model="activeName2"
-                            @tab-click="handleClick"
-                        >
-                        </el-tabs>
-                    </el-col>
-
-                </el-form>
-            </el-tab-pane>
+                    </el-input>
+                </el-tab-pane>
             <el-tab-pane
                 label="手工输入"
                 name="second"

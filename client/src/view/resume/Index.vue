@@ -206,11 +206,11 @@
             :id="viewID"
         ></view-resume>
 
-        <commun
+        <communication
             :show.sync="communicationDialog"
             :resume_id="communicationID"
         >
-        </commun>
+        </communication>
 
     </div>
 </template>
@@ -220,7 +220,7 @@
 import Add from "./Add";
 import Edit from "./Edit";
 import ViewResume from "./ViewResume";
-import Commun from "./Commun";
+import Communication from "./Communication";
 import TabelBase from "@view/base/TabelBase";
 
 export default {
@@ -229,7 +229,7 @@ export default {
         Add,
         Edit,
         ViewResume,
-        Commun
+        Communication
     },
     methods: {
         //点击行查看简历
