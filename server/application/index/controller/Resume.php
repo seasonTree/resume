@@ -167,7 +167,7 @@ class Resume extends Controller
         $rule = config('config.basicData');
         unset($parm[0]);
         foreach ($parm as $k => $v) {
-            $v = getSafeStr($this->trimall($v));
+            $v = $this->trimall($v);
             $v = preg_replace("/(智联招聘|前程无忧|匹配度(:|：)\d{2}%)|个人简历/",'',$v);
             // $v = phpanalysis($v);
             // dump($v);
@@ -504,7 +504,7 @@ class Resume extends Controller
         $arr = [];
         $rule = config('config.educationalBackground');
         foreach ($parm as $k => $v) {
-            $v = getSafeStr($this->trimall($v));
+            $v = $this->trimall($v);
             // $v = phpanalysis($v);
             // dump($v);
             foreach ($rule as $n => $pattern) {
@@ -538,7 +538,7 @@ class Resume extends Controller
         $envy_responsibility_end = false;//判断责任描述是否匹配结束的标记
         $mark_arr = [];//记录下标（用户获取上一个项目经验组来使用）
         foreach ($parm as $k => $v) {
-            $v = getSafeStr($this->trimall($v));//转格式，去空格处理
+            $v = $this->trimall($v);//转格式，去空格处理
             if (preg_match($rule['project_rule'], $v)) {
                 //项目时间/名字
                 
