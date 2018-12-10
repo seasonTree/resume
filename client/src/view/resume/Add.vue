@@ -5,46 +5,26 @@
         :before-close="closeDialog"
         class="custom-dialog"
         :close-on-click-modal="false"
-        :class="dialog"
         top="4.5vh"
         width="60%"
     >
+
         <el-tabs
             v-model="activeName"
-            @tab-click="handleClick"
-            style="padding-bottom: -10px;"
+            class="mb-20"
         >
             <el-tab-pane
                 label="粘贴简历"
                 name="first"
             >
-                <el-form
-                    :model="form"
-                    :rules="formRules"
-                    label-width="100px"
-                    ref="form"
+                <el-input
+                    type="textarea"
+                    placeholder="请输入要分析的内容"
+                    v-model="analyzeContent"
+                    class="analyze-content"
+                    resize="none"
                 >
-
-                    <textarea
-                        style=" width:955.8px; 
-                                height:740px; 
-                                resize:none; 
-                                font-size: 20px;"
-                        name=""
-                        id=""
-                    ></textarea>
-                    <el-col
-                        :span="12"
-                        class="right-container"
-                    >
-                        <el-tabs
-                            v-model="activeName2"
-                            @tab-click="handleClick"
-                        >
-                        </el-tabs>
-                    </el-col>
-
-                </el-form>
+                </el-input>
             </el-tab-pane>
             <el-tab-pane
                 label="手工输入"
@@ -58,7 +38,7 @@
                     ref="form"
                 >
                     <el-row :gutter="20">
-                        <!-- 基础信息 -->
+                        <!-- *****************基础信息******************* -->
                         <el-col :span="12">
                             <div class="grid-content bg-purple left-container">
                                 <div
@@ -337,17 +317,14 @@
 
                             </div>
 
-                            <!-- /* 888888888888888888888888888888888888888888888888888888888 */ -->
+                            <!-- *****************基础信息******************* -->
                         </el-col>
 
                         <el-col
                             :span="12"
                             class="right-container"
                         >
-                            <el-tabs
-                                v-model="activeName2"
-                                @tab-click="handleClick"
-                            >
+                            <el-tabs v-model="activeName2">
                                 <el-tab-pane
                                     label="用户管理"
                                     name="first"
@@ -470,15 +447,11 @@
                                 </el-tab-pane>
                             </el-tabs>
                         </el-col>
-
                     </el-row>
-
                 </el-form>
             </el-tab-pane>
 
-
-
-            <el-tab-pane
+            <!-- <el-tab-pane
                 label="上传简历"
                 name="third"
             >
@@ -499,15 +472,15 @@
                     </el-upload>
                 </div>
             </el-tab-pane>
-
+ -->
         </el-tabs>
 
         <div
             slot="footer"
             class="dialog-footer"
         >
+            <el-button @click="analyze">自动识别</el-button>
             <el-button @click="closeDialog">取 消</el-button>
-            <el-button>自动识别</el-button>
             <el-button
                 type="primary"
                 @click="addCommit"
@@ -526,9 +499,10 @@ export default {
         return {
             activeName: "second",
             activeName2: "first",
-            dialog: "dialog",
-            // elRoW: "elRoW",
-            //     apiType: "user",
+            // dialog: "dialog",
+
+            //要分析的内容
+            analyzeContent: "",
 
             form: {
                 uname: "",
@@ -559,8 +533,14 @@ export default {
     },
 
     methods: {
-        handleClick(tab, event) {
-            console.log(tab, event);
+        //分析简历
+        analyze() {},
+
+        afterClose() {
+            let that = this;
+            that.activeName = "second";
+            that.activeName2 = "first";
+            that.analyzeContent = "";
         }
     }
 };
@@ -671,8 +651,13 @@ export default {
     display: flex;
 }
 
-.t_area {
-    width: 300px;
-    overflow-y: visible;
+.analyze-content {
+    height: 740px;
+    width: 100%;
+    box-sizing: border-box;
+
+    textarea {
+        height: 100%;
+    }
 }
 </style>

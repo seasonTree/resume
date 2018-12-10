@@ -4,49 +4,27 @@
         :visible.sync="show"
         :before-close="closeDialog"
         class="custom-dialog"
-        :close-on-click-modal="false"
-        :class="dialog"
-        top="5vh"
+        :close-on-click-modal="false"        
+        top="4.5vh"
         width="60%"
     >
 
         <el-tabs
-            v-model="activeName"
-            @tab-click="handleClick"
-            style="padding-bottom: -10px;"
+             v-model="activeName"
+            class="mb-20"
         >
             <el-tab-pane
-                label="粘贴简历"
-                name="first"
-            >
-                <el-form
-                    :model="form"
-                    :rules="formRules"
-                    label-width="100px"
-                    ref="form"
-                >
-
-                    <textarea
-                        style=" width:957px; 
-                                height:739.3px; 
-                                resize:none; 
-                                font-size: 20px;"
-                        name=""
-                        id=""
-                    ></textarea>
-                    <el-col
-                        :span="12"
-                        class="right-container"
+                    label="粘贴简历"
+                    name="first">
+                    <el-input
+                        type="textarea"
+                        placeholder="请输入要分析的内容"
+                        v-model="analyzeContent"
+                        class="analyze-content"
+                        resize="none"
                     >
-                        <el-tabs
-                            v-model="activeName2"
-                            @tab-click="handleClick"
-                        >
-                        </el-tabs>
-                    </el-col>
-
-                </el-form>
-            </el-tab-pane>
+                    </el-input>
+                </el-tab-pane>
             <el-tab-pane
                 label="手工输入"
                 name="second"
@@ -347,7 +325,6 @@
                         >
                             <el-tabs
                                 v-model="activeName2"
-                                @tab-click="handleClick"
                             >
                                 <el-tab-pane
                                     label="用户管理"
@@ -477,12 +454,11 @@
                 </el-form>
             </el-tab-pane>
 
-        </el-tabs >
+        </el-tabs>
 
         <div
             slot="footer"
             class="dialog-footer"
-           
         >
             <el-button @click="closeDialog">取 消</el-button>
             <el-button>自动识别</el-button>
@@ -490,7 +466,7 @@
                 type="primary"
                 @click="addCommit"
             >确 定</el-button>
-            
+
         </div>
     </el-dialog>
 </template>
@@ -505,9 +481,6 @@ export default {
         return {
             activeName: "second",
             activeName2: "first",
-            dialog: "dialog",
-            // elRoW: "elRoW",
-            //     apiType: "user",
 
             form: {
                 uname: "",
@@ -538,8 +511,12 @@ export default {
     },
 
     methods: {
-        handleClick(tab, event) {
-            console.log(tab, event);
+        
+        afterClose() {
+            let that = this;
+            that.activeName = "second";
+            that.activeName2 = "first";
+            that.analyzeContent = "";
         }
     }
 };

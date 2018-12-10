@@ -59,7 +59,7 @@ create table rs_permission
 	p_name varchar(64) not null comment '权限名称',
 	p_type tinyint(1) not null default 0 comment '0: 菜单， 1: 功能',
 	p_icon varchar(32) not null default '' comment '菜单图标，按钮不适用',
-	p_act_name varchar(64) not null default '' comment '功能英文简写，用于前端匹配功能做权限认证，必须英文，例如add,edit',
+	p_act_name varchar(64) not null default '' comment '功能英文简写，用于前端匹配功能做权限认证，必须英文，例如add,edit, 按钮名称必须唯一',
 	api varchar(1024) not null default '' comment 'api接口',
 	idx smallint(4) not null default 0 comment '菜单排序',
 	-- top_class varchar(128) not null default '' comment '上级的层级, 逗号分割: 例如 1,2,3', --暂时不用，待讨论

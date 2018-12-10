@@ -96,12 +96,12 @@ export default {
                         that.roleUser = res.data;
                     } else {
                         that.$message.error(
-                            res.msg || "获角色用户失败，请刷新后重试."
+                            res.msg || "获取角色用户失败，请刷新后重试."
                         );
                     }
                 })
                 .catch(res => {
-                    that.$message.error("获角色用户失败，请刷新后重试.");
+                    that.$message.error("获取角色用户失败，请刷新后重试.");
                 });
         },
 

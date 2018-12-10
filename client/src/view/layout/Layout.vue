@@ -404,7 +404,8 @@ export default {
         }
 
         .main-header {
-            background-color: #e4e4e4;
+            background-color: #f7f7f7;
+            border-bottom: 1px solid #dcdfe6;
         }
 
         .main-body {
@@ -420,15 +421,20 @@ export default {
             line-height: 40px;
             height: 40px !important;
             text-align: center;
-            background-color: #e4e4e4;
+            background-color: #dcdfe6;
         }
     }
 }
 
 .navbar {
     background-color: @nav-color;
-    border: 1px solid @nav-color;
-    overflow-x: hidden !important;    
+    border: 1px solid #e6e6e6;
+    overflow-x: hidden !important;
+    box-sizing: border-box;
+    
+    .el-menu{
+        border: none;
+    }
 
     .el-menu-item.is-active {
         border-right: 4px solid @header-color;

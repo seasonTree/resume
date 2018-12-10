@@ -10,14 +10,13 @@
                 >新增简历</el-button>
 
             </div>
-            <!-- <div @click="handleClick()"> -->
             <el-table
                 :data="tdata"
                 stripe
                 border
                 style="width: 100%"
                 :height="tabelHeight"
-                @row-click="showEditDialog"
+                @row-click="showViewDialog"
                 class="resume-table"
             >
 
@@ -128,10 +127,23 @@
                 <el-table-column
                     fixed="right"
                     label="操作"
-                    width="145"
+                    width="180"
                 >
 
                     <template slot-scope="scope">
+                        <el-tooltip
+                            effect="dark"
+                            content="添加附件"
+                            placement="top"
+                        >
+                            <el-button
+                                type="info"
+                                size="mini"
+                                icon="fa fa-folder-open"
+                                circle
+                                @click.stop="showUploadFile(scope.row.id)"
+                            ></el-button>
+                        </el-tooltip>
                         <el-tooltip
                             effect="dark"
                             content="沟通管理"
@@ -147,13 +159,13 @@
                         </el-tooltip>
                         <el-tooltip
                             effect="dark"
-                            content="修改密码"
+                            content="修改"
                             placement="top"
                         >
                             <el-button
                                 type="primary"
                                 size="mini"
-                                icon="el-icon-edit"
+                                icon="fa fa-edit"
                                 circle
                                 @click.stop="showEditDialog(scope.row.id)"
                             ></el-button>
@@ -202,11 +214,22 @@
             @edit-item="editItem"
         ></edit>
 
+        <view-resume
+            :show.sync="viewDialog"
+            :id="viewID"
+        ></view-resume>
+
         <communication
             :show.sync="communicationDialog"
-            :id="communicationID"
+            :resume_id="communicationID"
         >
         </communication>
+
+        <upload-file
+            :show.sync="uploadFileDialog"
+            :resume_id="uploadFileID"
+        >
+        </upload-file>
 
     </div>
 </template>
@@ -215,39 +238,34 @@
 <script>
 import Add from "./Add";
 import Edit from "./Edit";
+import ViewResume from "./ViewResume";
 import Communication from "./Communication";
 import TabelBase from "@view/base/TabelBase";
+import UploadFile from "./UploadFile";
 
 export default {
     mixins: [TabelBase],
     components: {
         Add,
         Edit,
-        Communication
+        ViewResume,
+        Communication,
+        UploadFile
     },
-    props: {},
-
-    created() {},
-    mounted() {},
-    watch: {},
-    computed: {},
     methods: {
-        // handleClick() {
-        //     let tr = event.target;
+        //点击行查看简历
+        showViewDialog(row) {
+            let that = this;
+            that.viewID = row.id;
+            that.viewDialog = true;
+        },
 
-        //     while (tr.nodeName != "TR") {
-        //         tr = tr.parentNode;
-        //     }
-        //     let button = tr.lastElementChild.children[0].children[0];
-        //     button.click();
-        // },
-        // showEditDialog(row) {
-        //     console.log(row);
-        //     console.log(TabelBase.methods.showEditDialog);
-        // },
-        // editItem() {
-        //     console.log(1);
-        // },
+        //上传弹出窗
+        showUploadFile(id) {
+            let that = this;
+            that.uploadFileID = id;
+            that.uploadFileDialog = true;
+        },
 
         showEditDialog(row) {
             let that = this;
@@ -256,7 +274,6 @@ export default {
 
         //沟通管理
         showCommunicationDialog(id) {
-            console.log(id);
             let that = this;
             that.CommunicationID = id;
             that.communicationDialog = true;
@@ -265,6 +282,9 @@ export default {
 
     data() {
         return {
+            //填写API获取的类型，由父类自动调用，不填不调用
+            apiType: "resume",
+
             tdata: [
                 {
                     id: 1,
@@ -280,8 +300,8 @@ export default {
                     recentPosition: "java工程师",
                     graduateSchool: "北京大学",
                     professional: "计算机",
-                    phone: "13923819974",
-                    email: "775803639@qq.com",
+                    phone: "13912349974",
+                    email: "723403639@qq.com",
                     englishLevel: "四级",
                     workingPlace: "深圳"
                 },
@@ -299,8 +319,8 @@ export default {
                     recentPosition: "java工程师",
                     graduateSchool: "北京大学",
                     professional: "计算机",
-                    phone: "13923819974",
-                    email: "775803639@qq.com",
+                    phone: "13912349974",
+                    email: "723403639@qq.com",
                     englishLevel: "四级",
                     workingPlace: "深圳"
                 }
@@ -308,7 +328,15 @@ export default {
 
             //沟通情况
             communicationDialog: false,
-            communicationID: 0
+            communicationID: 0,
+
+            //上传文件
+             uploadFileDialog: false,
+             uploadFileID: 0,
+
+            //查看
+            viewDialog: false,
+            viewID: 0
         };
     }
 };

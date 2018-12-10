@@ -20,6 +20,16 @@ export function getByID(data) {
     })
 }
 
+//新增
+export function add(data){
+    return request({
+        url: `${prefix}/add`,
+        method: 'post',
+        data: data
+    });
+}
+
+
 //修改
 export function edit(data) {
     return request({
