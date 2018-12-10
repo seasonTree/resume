@@ -127,10 +127,23 @@
                 <el-table-column
                     fixed="right"
                     label="操作"
-                    width="145"
+                    width="180"
                 >
 
                     <template slot-scope="scope">
+                        <el-tooltip
+                            effect="dark"
+                            content="添加附件"
+                            placement="top"
+                        >
+                            <el-button
+                                type="info"
+                                size="mini"
+                                icon="fa fa-folder-open"
+                                circle
+                                @click.stop="showUploadFile(scope.row.id)"
+                            ></el-button>
+                        </el-tooltip>
                         <el-tooltip
                             effect="dark"
                             content="沟通管理"
@@ -152,7 +165,7 @@
                             <el-button
                                 type="primary"
                                 size="mini"
-                                icon="el-icon-edit"
+                                icon="fa fa-edit"
                                 circle
                                 @click.stop="showEditDialog(scope.row.id)"
                             ></el-button>
@@ -212,6 +225,12 @@
         >
         </communication>
 
+        <upload-file
+            :show.sync="uploadFileDialog"
+            :resume_id="uploadFileID"
+        >
+        </upload-file>
+
     </div>
 </template>
 
@@ -222,6 +241,7 @@ import Edit from "./Edit";
 import ViewResume from "./ViewResume";
 import Communication from "./Communication";
 import TabelBase from "@view/base/TabelBase";
+import UploadFile from "./UploadFile";
 
 export default {
     mixins: [TabelBase],
@@ -229,7 +249,8 @@ export default {
         Add,
         Edit,
         ViewResume,
-        Communication
+        Communication,
+        UploadFile
     },
     methods: {
         //点击行查看简历
@@ -237,6 +258,13 @@ export default {
             let that = this;
             that.viewID = row.id;
             that.viewDialog = true;
+        },
+
+        //上传弹出窗
+        showUploadFile(id) {
+            let that = this;
+            that.uploadFileID = id;
+            that.uploadFileDialog = true;
         },
 
         showEditDialog(row) {
@@ -272,8 +300,8 @@ export default {
                     recentPosition: "java工程师",
                     graduateSchool: "北京大学",
                     professional: "计算机",
-                    phone: "13923819974",
-                    email: "775803639@qq.com",
+                    phone: "13912349974",
+                    email: "723403639@qq.com",
                     englishLevel: "四级",
                     workingPlace: "深圳"
                 },
@@ -291,8 +319,8 @@ export default {
                     recentPosition: "java工程师",
                     graduateSchool: "北京大学",
                     professional: "计算机",
-                    phone: "13923819974",
-                    email: "775803639@qq.com",
+                    phone: "13912349974",
+                    email: "723403639@qq.com",
                     englishLevel: "四级",
                     workingPlace: "深圳"
                 }
@@ -301,6 +329,10 @@ export default {
             //沟通情况
             communicationDialog: false,
             communicationID: 0,
+
+            //上传文件
+             uploadFileDialog: false,
+             uploadFileID: 0,
 
             //查看
             viewDialog: false,
