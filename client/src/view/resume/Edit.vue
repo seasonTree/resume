@@ -481,8 +481,7 @@
 
         <div
             slot="footer"
-            class="dialog-footer"
-           
+            class="dialog-footer"           
         >
             <el-button @click="closeDialog">取 消</el-button>
             <el-button>自动识别</el-button>

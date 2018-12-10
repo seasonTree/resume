@@ -40,8 +40,8 @@ export default {
                                 });
 
                                 that.closeDialog();
-                            } else if (res.error == 501) {
-                                that.$message.error(res.msg);
+                            } else {
+                                that.$message.error(res.msg || '新增失败，请重试.');
                             }
                         })
                         .catch(res => {

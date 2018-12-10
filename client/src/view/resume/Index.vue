@@ -10,14 +10,13 @@
                 >新增简历</el-button>
 
             </div>
-            <!-- <div @click="handleClick()"> -->
             <el-table
                 :data="tdata"
                 stripe
                 border
                 style="width: 100%"
                 :height="tabelHeight"
-                @row-click="showEditDialog"
+                @row-click="showViewDialog"
                 class="resume-table"
             >
 
@@ -147,7 +146,7 @@
                         </el-tooltip>
                         <el-tooltip
                             effect="dark"
-                            content="修改密码"
+                            content="修改"
                             placement="top"
                         >
                             <el-button
@@ -202,9 +201,14 @@
             @edit-item="editItem"
         ></edit>
 
+        <view-resume
+            :show.sync="viewDialog"
+            :id="viewID"
+        ></view-resume>
+
         <communication
             :show.sync="communicationDialog"
-            :id="communicationID"
+            :resume_id="communicationID"
         >
         </communication>
 
@@ -215,6 +219,7 @@
 <script>
 import Add from "./Add";
 import Edit from "./Edit";
+import ViewResume from "./ViewResume";
 import Communication from "./Communication";
 import TabelBase from "@view/base/TabelBase";
 
@@ -223,31 +228,16 @@ export default {
     components: {
         Add,
         Edit,
+        ViewResume,
         Communication
     },
-    props: {},
-
-    created() {},
-    mounted() {},
-    watch: {},
-    computed: {},
     methods: {
-        // handleClick() {
-        //     let tr = event.target;
-
-        //     while (tr.nodeName != "TR") {
-        //         tr = tr.parentNode;
-        //     }
-        //     let button = tr.lastElementChild.children[0].children[0];
-        //     button.click();
-        // },
-        // showEditDialog(row) {
-        //     console.log(row);
-        //     console.log(TabelBase.methods.showEditDialog);
-        // },
-        // editItem() {
-        //     console.log(1);
-        // },
+        //点击行查看简历
+        showViewDialog(row) {
+            let that = this;
+            that.viewID = row.id;
+            that.viewDialog = true;
+        },
 
         showEditDialog(row) {
             let that = this;
@@ -256,7 +246,6 @@ export default {
 
         //沟通管理
         showCommunicationDialog(id) {
-            console.log(id);
             let that = this;
             that.CommunicationID = id;
             that.communicationDialog = true;
@@ -265,6 +254,9 @@ export default {
 
     data() {
         return {
+            //填写API获取的类型，由父类自动调用，不填不调用
+            apiType: "resume",
+
             tdata: [
                 {
                     id: 1,
@@ -308,7 +300,11 @@ export default {
 
             //沟通情况
             communicationDialog: false,
-            communicationID: 0
+            communicationID: 0,
+
+            //查看
+            viewDialog: false,
+            viewID: 0
         };
     }
 };
