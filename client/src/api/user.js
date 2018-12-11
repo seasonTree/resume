@@ -64,7 +64,7 @@ export function logout(data) {
  */
 export function getUserInfo(data){
     return request({
-        url: `${prefix}/get_userInfo`,
+        url: `${prefix}/get_user_info`,
         method: 'get',
         params: data
     })
