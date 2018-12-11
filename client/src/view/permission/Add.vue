@@ -76,9 +76,21 @@
                     autocomplete="off"
                 ></el-input>
             </el-form-item>
+
+            <el-form-item
+                label="菜单地址"
+                prop="url"
+                v-if="form.p_type == 0"
+            >
+                <el-input
+                    v-model.trim="form.url"
+                    autocomplete="off"
+                ></el-input>
+            </el-form-item>
             <el-form-item
                 label="Api"
                 prop="api"
+                v-if="form.p_type == 1"
             >
                 <el-input
                     v-model.trim="form.api"
@@ -111,9 +123,9 @@ export default {
         show(newValue, oldValue) {
             let that = this;
 
-            if(newValue){
+            if (newValue) {
                 that.getPermissionData();
-            }else{
+            } else {
                 that.permissionData = [];
             }
         }
@@ -232,7 +244,7 @@ export default {
                 .get()
                 .then(res => {
                     if (res.code == 0) {
-                         that.permissionData = res.data;
+                        that.permissionData = res.data;
                     } else {
                         that.$message.error(
                             res.msg || "获取所有权限失败，请刷新后重试."
@@ -245,7 +257,7 @@ export default {
         },
 
         //添加之前处理下数据
-        beforeAdd(item){
+        beforeAdd(item) {
             //找到上级的id
             item.parent_id = item.top_class[item.top_class.length - 1];
         }

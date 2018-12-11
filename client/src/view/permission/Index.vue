@@ -75,6 +75,10 @@
                         </template>
                     </el-table-column>
                     <el-table-column
+                        prop="url"
+                        label="菜单地址"
+                    ></el-table-column>
+                    <el-table-column
                         prop="api"
                         label="接口"
                     ></el-table-column>
@@ -159,54 +163,60 @@ export default {
             sortDialog: false,
 
             tdata: [
-                //     {
-                //         id: 1,
-                //         p_name: "菜单页面",
-                //         api: "/ttttttt/ttttt",
-                //         ct_user: "6666666",
-                //         ct_time: "192.666245",
-                //         children: [
-                //             {
-                //                 id: 2,
-                //                 p_name: "功能页面",
-                //                 api: "/44444/444",
-                //                 ct_user: "44444444",
-                //                 ct_time: "444444444444444"
-                //             },
-                //             {
-                //                 id: 3,
-                //                 p_name: "功能页面2222",
-                //                 api: "/nnnnnn/nnn",
-                //                 ct_user: "nnnnnnn",
-                //                 ct_time: "nnnnnnnnnnnn",
-                //                 children: [
-                //                     {
-                //                         id: 4,
-                //                         p_name: "333333333333",
-                //                         api: "/33333",
-                //                         ct_user: "3333",
-                //                         ct_time: "3333333"
-                //                     }
-                //                 ]
-                //             }
-                //         ]
-                //     },
-                //     {
-                //         id: 16,
-                //         p_name: "菜单33",
-                //         api: "/vvvv/vvvvv",
-                //         ct_user: "6666666",
-                //         ct_time: "192.666245",
-                //         children: [
-                //             {
-                //                 id: 2,
-                //                 p_name: "功能页面",
-                //                 api: "/44444/444",
-                //                 ct_user: "44444444",
-                //                 ct_time: "444444444444444"
-                //             }
-                //         ]
-                //     }
+                    // {
+                    //     id: 1,
+                    //     p_name: "菜单页面",
+                    //     url: '/user/aaa',
+                    //     api: "/ttttttt/ttttt",
+                    //     ct_user: "6666666",
+                    //     ct_time: "192.666245",
+                    //     children: [
+                    //         {
+                    //             id: 2,
+                    //             p_name: "功能页面",
+                    //             url: '/user/aaa',
+                    //             api: "/44444/444",
+                    //             ct_user: "44444444",
+                    //             ct_time: "444444444444444"
+                    //         },
+                    //         {
+                    //             id: 3,
+                    //             p_name: "功能页面2222",
+                    //             url: '/user/aaa',
+                    //             api: "/nnnnnn/nnn",
+                    //             ct_user: "nnnnnnn",
+                    //             ct_time: "nnnnnnnnnnnn",
+                    //             children: [
+                    //                 {
+                    //                     id: 4,
+                    //                     p_name: "333333333333",
+                    //                     url: '/user/aaa',
+                    //                     api: "/33333",
+                    //                     ct_user: "3333",
+                    //                     ct_time: "3333333"
+                    //                 }
+                    //             ]
+                    //         }
+                    //     ]
+                    // },
+                    // {
+                    //     id: 16,
+                    //     p_name: "菜单33",
+                    //     api: "/vvvv/vvvvv",
+                    //     url: '/user/aaa',
+                    //     ct_user: "6666666",
+                    //     ct_time: "192.666245",
+                    //     children: [
+                    //         {
+                    //             id: 2,
+                    //             p_name: "功能页面",
+                    //             api: "/44444/444",
+                    //             url: '/user/aaa',
+                    //             ct_user: "44444444",
+                    //             ct_time: "444444444444444"
+                    //         }
+                    //     ]
+                    // }
             ]
         };
     },
