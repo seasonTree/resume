@@ -31,7 +31,7 @@
                                     type="primary"
                                     circle
                                     icon="el-icon-search"
-                                    @click="getData"
+                                    @click="getData(true)"
                                 ></el-button>
                             </el-row>
                         </el-col>

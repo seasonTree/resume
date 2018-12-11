@@ -311,8 +311,8 @@ class Resume extends Controller
                 $v = preg_replace("/:|：/",'',$v);
                 if (preg_match($rule['company'],$v,$p)) {
                     if (!preg_match($rule['special_characters'], $p[0])) {
-                        $work[$key_num]['company_name'] = $v;
-                        $v = str_replace($v,'',$v);
+                        $work[$key_num]['company_name'] = $p[0];
+                        $v = str_replace($p[0],'',$v);
 
                         $company_end = true;
                     }
@@ -351,6 +351,9 @@ class Resume extends Controller
 
                 }
                 
+            }
+            if ($v == '') {
+                continue;
             }
 
             // if (preg_match($rule['work_time'],$v,$preg)) {
@@ -608,8 +611,9 @@ class Resume extends Controller
                 $v = $v.$date;
 
             }
+            // dump($v);
             if (preg_match($rule['project_name'],$v,$preg) || preg_match($rule['project_rule'],$v)) {
-                if (preg_match($rule['project_rule'],$v)) {
+                if (preg_match($rule['project_rule'],$v) && !preg_match("/(:|：)\S/", $v)) {
                     $v = preg_replace("/:|：/",'',$v);
                 }
                 if ($project_time_end == true && $project_name_end == true && $job_end == true && !preg_match($rule['special_characters'],$v)) {
@@ -627,9 +631,11 @@ class Resume extends Controller
                 $v = str_replace($preg[0],'',$v);
                 $project_time_end = true;
             }
+            
             if (!preg_match($rule['special_characters'],$v) && $project_name_end == false) {
                 $v = preg_replace("/:|：/",'',$v);
-                if (!preg_match("/项目描述|项目职责|项目责任/",$v,$preg)) {
+                if (!preg_match("/^(项目描述|项目职责|项目责任|(\d+)|（\d+）)/",$v,$preg)) {
+                    
                     $project[$key_num]['project_name'] = $v;
                     $v = str_replace($v,'',$v);
                     $project_name_end = true;
@@ -639,9 +645,11 @@ class Resume extends Controller
             if (preg_match($rule['job'],$v,$preg) && $job_end == false) {
                 $v = preg_replace("/:|：/",'',$v);
                 if (!preg_match($rule['special_characters'],$v)) {
-                    $project[$key_num]['job'] = $v;
-                    $v = str_replace($v,'',$v);
-                    $job_end = true;
+                    if (!preg_match("/^(项目描述|项目职责|项目责任|(\d+)|（\d+）)/",$v,$preg)) {
+                        $project[$key_num]['job'] = $v;
+                        $v = str_replace($v,'',$v);
+                        $job_end = true;
+                    }
                 }
                 
             }
@@ -654,11 +662,11 @@ class Resume extends Controller
                     // continue;
                 }
             }
-            if ($project_name_end == false) {
-                //项目名称匹配失败。直接不匹配指向true
-                $project[$key_num]['project_name'] = '';
-                $job_end = true;
-            }
+            // if ($project_name_end == false) {
+            //     //项目名称匹配失败。直接不匹配指向true
+            //     $project[$key_num]['project_name'] = '';
+            //     $job_end = true;
+            // }
 
             if ($project_name_end == true && $project_time_end == true && $job_end == true) {
                 // if (!isset($project[$key_num]['envy_responsibility'])) {
@@ -673,6 +681,10 @@ class Resume extends Controller
                 if (!isset($project[$key_num]['content'])) {
 
                     // if (preg_match($rule['content'],$v,$preg)) {
+
+                        // $project[$key_num]['content'] = $preg[0];
+                    // }
+                    // else{
                         $project[$key_num]['content'] = $v;
                     // }
 
@@ -889,7 +901,7 @@ class Resume extends Controller
 
     public function skillExpertise($parm){
         //技能专长
-
+        return implode(" ",$parm);
     }
 
     public function getResumeData(){
