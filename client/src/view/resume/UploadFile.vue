@@ -90,6 +90,8 @@ export default {
     data() {
         return {
             uploadList: []
+            
+            
         };
     },
     methods: {
@@ -118,7 +120,9 @@ export default {
         afterClose() {
             let that = this;
             that.uploadList = [];
-        }
+        },
+
+        
     }
 };
 </script>

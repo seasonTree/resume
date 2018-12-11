@@ -49,7 +49,7 @@ export function logout(data) {
 
 /** 
  * 当前登录的用户
- * url: /api/user/get_current_user
+ * url: /api/user/get_user_info
  * @method get
  * @returns Object
  * {
@@ -62,9 +62,9 @@ export function logout(data) {
  *          }
  * }
  */
-export function getCurrentUser(data){
+export function getUserInfo(data){
     return request({
-        url: `${prefix}/get_current_user`,
+        url: `${prefix}/get_user_info`,
         method: 'get',
         params: data
     })

@@ -83,3 +83,6 @@ export function addCommunication(data){
     });
 }
 
+//分析简历
+// export function 
+
