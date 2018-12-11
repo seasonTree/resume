@@ -79,3 +79,36 @@ create table rs_user_permission
 	role_id bigint(20) not null comment '角色id',
 	p_id  bigint(20) not null comment '权限id'	
 );
+
+-- -----------------------------------------------------
+-- 简历
+-- -----------------------------------------------------
+drop table if exists rs_resume;
+create table rs_user_permission
+(
+	role_id bigint(20) not null comment '简历id',
+	name varchar(20) not null default '' comment '姓名',
+	phone varchar(20) not null default '' comment '电话',
+	birthday varchar(20) not null default '' comment '生日',
+	sex varchar(20) not null default '' comment '性别',
+	age varchar(20) not null default '' comment '年龄',
+	work_year varchar(20) not null default '' comment '工作经验',
+	political varchar(10) not null default '' comment '政治面貌',
+	native_place varchar(20) not null default '' comment '户口所在地',
+	domicile varchar(20) not null default '' comment '当前所在地',
+	email varchar(30) not null default '' comment '电子邮箱',
+	postal_code int(10) default Null comment '邮政编码',
+	expected_money varchar(30) not null default '' comment '期望薪资',
+	status varchar(20) not null default '' comment '状态',
+	expected_industry varchar(20) not null default '' comment '期望从事行业',
+	expected_job varchar(20) not null default '' comment '期望从事职业',
+	expected_address varchar(30) not null default '' comment '期望工作地点',
+	selfEvalation text comment '自我介绍',
+	school varchar(30) not null default '' comment '毕业学校',
+	educational varchar(10) not null default '' comment '学历',
+	speciality varchar(20) not null default '' comment '专业',
+	graduation_time varchar(20) not null default '' comment '在校时间',
+	skillExpertise text comment '专业技能',
+
+
+);

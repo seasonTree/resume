@@ -165,7 +165,8 @@ class Resume extends Controller
         // dump($parm);exit;
         $parm = implode("\n",$parm);
         $rule = config('config.resume_rule');
-        foreach ($rule as $string) {
+        $base_rule = config('config.base_rule');
+        foreach ($base_rule as $string) {
             //处理特定字符格式
             $parm = preg_replace("/$string/","\n".$string,$parm);
         }
@@ -205,7 +206,14 @@ class Resume extends Controller
                         }
                     }
                     unset($rule[$n]);
-                    $arr[$n] = $preg[0];
+                    $temp_str = preg_replace("/:|：/",'=',$preg[0]);
+                    if (isset(explode('=', $temp_str)[1])) {
+                        $arr[$n] = explode('=',$temp_str)[1];
+                    }
+                    else{
+                        $arr[$n] = $preg[0];
+                    }
+                    
                             
                     // dump($rule);
                 }

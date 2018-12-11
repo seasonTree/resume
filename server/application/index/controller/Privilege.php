@@ -5,7 +5,6 @@ use think\Request;
 
 class Privilege extends Controller
 {
-
 //	public function index (Request $request){
 //
 ////        halt($request->priData);
