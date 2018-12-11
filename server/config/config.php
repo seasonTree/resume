@@ -13,11 +13,11 @@ use think\facade\Env;
 // +----------------------------------------------------------------------
 // | 常用设置
 // +----------------------------------------------------------------------
-$speciality = file_get_contents('../extend/speciality.txt');//大学专业
-$surname = file_get_contents('../extend/surname.txt');//大学专业
-$city = file_get_contents('../extend/city.txt');//城市
-$job = file_get_contents('../extend/job.txt');//职业
-$industry = file_get_contents('../extend/industry.txt');//行业
+$speciality = trim(file_get_contents('../extend/speciality.txt'));//大学专业
+$surname = trim(file_get_contents('../extend/surname.txt'));//大学专业
+$city = trim(file_get_contents('../extend/city.txt'));//城市
+$job = trim(file_get_contents('../extend/job.txt'));//职业
+$industry = trim(file_get_contents('../extend/industry.txt'));//行业
 
 return [
     'mail' => [
@@ -68,6 +68,7 @@ return [
         '专业技能'  =>  'skillExpertise',
         '技能专长'  =>  'skillExpertise',
         '目前状况'  =>  'basicData',
+        '作品展示'  => 'basicData'
     ],
 
     'resume_rule' => [
@@ -91,7 +92,8 @@ return [
         // '现居住地',
         '到岗时间',
         '提供住房',
-        '当前状态'
+        '当前状态',
+        
 
         // '。'
 
@@ -142,10 +144,11 @@ return [
         'money' => "/\d+元\/(月|年)(以上|以下)?/",
         // 'content' => "/(.*)(协助|负责|项目|责任|描述|参与|产品|需求|开发|\d\,|\d\.|\d、)(.*)/",
         'content' => "/(.*)(带领|编写|工作|描述|负责|1,|1\.|1、)(.*)/",
-        'company_name' => "/(中关村|公司|集团|超市|科技|酒店|$city)/u",
-        'company' => "/(($city)(.*)(公司|集团|超市|科技|酒店)?((\(|（|\[)(\d+年\d+个月|\d+年|\d+个月)?(\)|）|\]))?)|(($city)?(.*)(公司|集团|超市|科技|酒店|在线)((\(|（|\[)(\d+年\d+个月|\d+年|\d+个月)?(\)|）|\]))?)/u",
+        'company_name' => "/(中关村|公司|集团|超市|科技|酒店|$city|局|学校|网络|通)/u",
+        'company' => "/(($city)(.*)(公司|集团|超市|科技|酒店|局|学校|网络|通)?((\(|（|\[)(\d+年\d+个月|\d+年|\d+个月)?(\)|）|\]))?)|(($city)?(.*)(公司|集团|超市|科技|酒店|在线|局|学校|通)((\(|（|\[)(\d+年\d+个月|\d+年|\d+个月)?(\)|）|\]))?)/u",
         'job' => "/($job)/u",
-        'industry' => "/^($industry)/u",
+        'industry' => "/所属行业|($industry)/u",
+        'special_characters' => "/(,|，|。|;|；|、|：|:)/"
 
     ],
 
@@ -155,7 +158,11 @@ return [
         // 'project_name' => "/(\d{4}(\/|\.|-)\d{1,2}(至|--|-)(\d{4}(\/|\.|-)\d{1,2}|至今)(.*))/u",
         'envy_responsibility' => "/(责任描述|项目责任|项目职责)(.*)/",
         // 'content' => "/(.*)(项目描述|1\,|1\.|1、)(.*)/",
-        'content' => "/(项目描述)(.*)/",
+        'content' => "/(项目描述)(:|：)(.*)/",
+        'special_characters' => "/(,|，|。|;|；|:|：|\.)/",
+        'project_name' => "/([^描述](.*)?(系统|结算|平台|项目|app|APP|客户|手机|后台|前台|网|在线|商|客户端|服务端|api|oms|h5|web|android|ios|金|宝|语音|企业|电话|会议|业务|票|通|信)(.*)?)|(^[A-Za-z])/i",
+        // 'project_name1' => "/[A-Za-z]/",
+        'job' => "/($job)/u",
     ],
 
     // 'selfEvaluation' => [ 'self_evaluation' => "/\+/" ],

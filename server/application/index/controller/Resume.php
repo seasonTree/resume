@@ -241,17 +241,19 @@ class Resume extends Controller
 
     public function workExperience($parm){
         //工作经历
+
         $rule = config('config.workExperience');
         unset($parm[0]);
         $work = [];
         $key_num = 0;
         $content = '';
-        $company_end = false;
-        $job_end = false;
-        $industry = false;
-        $work_time_end = false;
+        $company_end = true;
+        $job_end = true;
+        $industry = true;
+        $work_time_end = true;
         foreach ($parm as $k => $v) {
             $v = $this->trimall($v);
+            $v = str_replace('_','',$v);
             if ($v == '') {
                 continue;
             }
@@ -264,13 +266,25 @@ class Resume extends Controller
 
             // }
 
-            if (preg_match($rule['work_rule'],$v,$preg) ){
+            if (preg_match($rule['work_rule'],$v,$preg) || preg_match($rule['company_name'], $v)){
+                // dump($company_end);
+                // dump($work_time_end);
+                // dump($job_end);
+                // dump($industry);
+                // echo '------------------------';
+                $v = preg_replace("/:|：/",'',$v);
+                if (!preg_match($rule['special_characters'], $v)) {
+                    if ($company_end == true && $work_time_end == true && $job_end == true && $industry == true) {
 
-                    $job_end = false;
-                    $industry = false;
-                    $company_end = false;
-                    $work_time_end = false;
-                    $key_num = $k;
+                        $job_end = false;
+                        $industry = false;
+                        $company_end = false;
+                        $work_time_end = false;
+                       
+                        $key_num = $k;
+                        
+                    }
+                }
 
             }
 
@@ -278,29 +292,58 @@ class Resume extends Controller
                 //检测是否存在时间
                 $work[$key_num]['work_time'] = $preg[0];
                 $v = str_replace($preg[0],'',$v);
+                $v = preg_replace("/:|：/",'',$v);
                 $work_time_end = true;
             }
 
+
+
             if (preg_match($rule['company_name'],$v,$preg) && $company_end == false) {
+                $v = preg_replace("/:|：/",'',$v);
                 if (preg_match($rule['company'],$v,$p)) {
-                    $work[$key_num]['company_name'] = $p[0];
-                    $v = str_replace($p[0],'',$v);
-                    $company_end = true;
+                    if (!preg_match($rule['special_characters'], $p[0])) {
+                        $work[$key_num]['company_name'] = $v;
+                        $v = str_replace($v,'',$v);
+
+                        $company_end = true;
+                    }
+
                 }
                 
             }
-            
+
+            if ($v == '') {
+                continue;
+            }
+
             if (preg_match($rule['industry'],$v,$preg) && $industry == false) {
-                $work[$key_num]['industry'] = $preg[0];
-                $v = str_replace($preg[0],'',$v);
-                $industry = true;
+
+                $v = preg_replace("/:|：/",'',$v);
+
+                if (!preg_match($rule['special_characters'], $v)) {
+                    $work[$key_num]['industry'] = $v;
+                    $v = str_replace($v,'',$v);
+                    $industry = true;
+                }
+
             }
+
+            if ($v == '') {
+                continue;
+            }
+
             if (preg_match($rule['job'],$v,$preg) && $job_end == false) {
-                $work[$key_num]['job'] = $v;
-                $v = str_replace($preg[0],'',$v);
-                $job_end = true;
-            }
+                $v = preg_replace("/:|：/",'',$v);
+                $job = explode('|', $v)[0];
+                if (!preg_match($rule['special_characters'], $job)) {
+                    $work[$key_num]['job'] = $job;
+                    $v = str_replace($v,'',$v);
+                    $job_end = true;
+
+                }
                 
+            }
+
             // if (preg_match($rule['work_time'],$v,$preg)) {
 
             //     if ($company_end == true) {
@@ -402,26 +445,28 @@ class Resume extends Controller
                 if ($industry == false) {
                     //行业匹配失败
                     $work[$key_num]['industry'] = '';
-                    $industry == true;
+                    $industry = true;
                 }
                 if ($job_end == false) {
                     //职业匹配失败
                     $work[$key_num]['job'] = '';
-                    $job_end == true;
+                    $job_end = true;
                 }
             }
-            // if ($job_end == true && $industry == true) {
+            if ($job_end == true && $industry == true) {
                 
                 if (!isset($work[$key_num]['content'])) {
-                    if (preg_match($rule['content'],$v,$preg[0])) {
+                    // if (preg_match($rule['special_characters'], $v)) {
                         $work[$key_num]['content'] = $v;
-                    }
+                    // }
                 }
                 else{
                     $work[$key_num]['content'].= $v;
                 }
+            }
 
         }
+        // exit;
         return $work;
 
 
@@ -530,72 +575,173 @@ class Resume extends Controller
 
     public function projectExperience($parm){
         //项目经验
+        // dump($parm);exit;
         $rule = config('config.projectExperience');//项目经验匹配规则
         unset($parm[0]);//删除第零个元素
         $project = [];//最终结果集合
-        $mark = 0;//标记项目经验组下标
-        $content_end = false;//判断项目经验是否匹配结束的标记
-        $envy_responsibility_end = false;//判断责任描述是否匹配结束的标记
-        $mark_arr = [];//记录下标（用户获取上一个项目经验组来使用）
+        $project_time_end = true;
+        $project_name_end = true;
+        $envy_responsibility_end = true;//判断责任描述是否匹配结束的标记
+        $job_end = true;
+        $key_num = 0;
+
         foreach ($parm as $k => $v) {
             $v = $this->trimall($v);//转格式，去空格处理
-            if (preg_match($rule['project_rule'], $v)) {
-                //项目时间/名字
-                
-                if (preg_match($rule['project_time'], $v,$preg)) {
-                    
-                    $project[$k]['project_time'] = $preg[0];
-                    $v = preg_replace($rule['project_time'], '', $v);
-                    $project[$k]['project_name'] = $v;
-                    $mark = $k;
+            if ($v == '') {
+                continue;
+            }
+            if (preg_match("/^(软件环境|硬件环境|开发工具|责任描述)/",$v)) {
+                continue;
+            }
+            if (preg_match($rule['project_time'],$v,$preg)) {
+                $date = preg_replace("/\./",'/',$preg[0]);
+                $v = str_replace($preg[0],'',$v);
+                $v = $v.$date;
+
+            }
+            if (preg_match($rule['project_name'],$v,$preg) || preg_match($rule['project_rule'],$v)) {
+                $v = preg_replace("/:|：/",'',$v);
+                if ($project_time_end == true && $project_name_end == true && $job_end == true && !preg_match($rule['special_characters'],$v)) {
+                    $project_time_end = false;
+                    $project_name_end = false;
                     $envy_responsibility_end = false;
-                    $content_end = false;
+                    $job_end = false;
+                    $key_num = $k;
                 }
+            }
+            if (preg_match($rule['project_time'],$v,$preg) && $project_time_end == false) {
+                $v = preg_replace("/:|：/",'',$v);
+                $project[$key_num]['project_time'] = $preg[0];
+                
+                $v = str_replace($preg[0],'',$v);
+                $project_time_end = true;
+            }
+            if (!preg_match($rule['special_characters'],$v) && $project_name_end == false) {
+                $v = preg_replace("/:|：/",'',$v);
+                // if (preg_match($rule['project_name'],$v,$preg)) {
+                    $project[$key_num]['project_name'] = $v;
+                    $v = str_replace($v,'',$v);
+                    $project_name_end = true;
+                // }
 
-                $end_key = end($mark_arr);
+            }
+            if (preg_match($rule['job'],$v,$preg) && $job_end == false) {
+                $v = preg_replace("/:|：/",'',$v);
 
-                if ($end_key) {
-                    //检测最后一个数组中是否存在项目情况的内容，如果没有则表示匹配失败，直接截取这一段的内容作为填充(这种做法准确率降低)
-                    if (!isset($project[$end_key]['content']) && !isset($project[$end_key]['envy_responsibility'])) {
+                $project[$key_num]['job'] = $v;
+                $v = str_replace($v,'',$v);
+                $job_end = true;
+            }
+            if ($project_time_end == true && $project_name_end == true) {
 
-                        $begin = $end_key;
-                        $length = $k - $begin - 2;
-                        $content = array_slice($parm,$begin,$length);
-
-                        $project[$end_key]['content'] = implode('', $content);
-                    }
-                    
+                if ($job_end == false) {
+                    //职位匹配失败。直接不匹配指向true
+                    $project[$key_num]['job'] = '';
+                    $job_end = true;
+                    // continue;
                 }
-                $mark_arr[] = $k;
-
+            }
+            if ($project_name_end == false) {
+                //项目名称匹配失败。直接不匹配指向true
+                $project[$key_num]['project_name'] = '';
+                $job_end = true;
             }
 
-            if (!isset($project[$mark]['envy_responsibility']) && preg_match($rule['envy_responsibility'], $v,$preg)) {
-                $content_end = true;
-                $project[$mark]['envy_responsibility'] = $v;
-                continue;
-                
-            }
+            if ($project_name_end == true && $project_time_end == true && $job_end == true) {
+                // if (!isset($project[$key_num]['envy_responsibility'])) {
+                //     if (preg_match($rule['envy_responsibility'],$v,$preg)) {
+                //         $project[$key_num]['envy_responsibility'] = $v;
+                //     }
+                // }
+                // else{
+                //     $project[$key_num]['envy_responsibility'].= $v;
+                // }
 
-            if (isset($project[$mark]['envy_responsibility']) && $envy_responsibility_end == false) {
-                $project[$mark]['envy_responsibility'].= $v;
-            }
+                if (!isset($project[$key_num]['content'])) {
 
+                    // if (preg_match($rule['content'],$v,$preg)) {
+                        $project[$key_num]['content'] = $v;
+                    // }
 
-            if (!isset($project[$mark]['content']) && preg_match($rule['content'], $v,$preg)) {
-                $envy_responsibility_end = true;
-                $project[$mark]['content'] = $v;
-                continue;
-                
+                }
+                else{
+                    $project[$key_num]['content'].= $v;
+                }
             }
-
-            if (isset($project[$mark]['content']) && $content_end == false) {
-                $project[$mark]['content'].= $v;
-            }
+            
         }
         // exit;
         return $project;
     }
+
+    // public function projectExperience($parm){
+    //     //项目经验
+    //     $rule = config('config.projectExperience');//项目经验匹配规则
+    //     unset($parm[0]);//删除第零个元素
+    //     $project = [];//最终结果集合
+    //     $mark = 0;//标记项目经验组下标
+    //     $content_end = false;//判断项目经验是否匹配结束的标记
+    //     $envy_responsibility_end = false;//判断责任描述是否匹配结束的标记
+    //     $mark_arr = [];//记录下标（用户获取上一个项目经验组来使用）
+    //     foreach ($parm as $k => $v) {
+    //         $v = $this->trimall($v);//转格式，去空格处理
+    //         if (preg_match($rule['project_rule'], $v)) {
+    //             //项目时间/名字
+                
+    //             if (preg_match($rule['project_time'], $v,$preg)) {
+                    
+    //                 $project[$k]['project_time'] = $preg[0];
+    //                 $v = preg_replace($rule['project_time'], '', $v);
+    //                 $project[$k]['project_name'] = $v;
+    //                 $mark = $k;
+    //                 $envy_responsibility_end = false;
+    //                 $content_end = false;
+    //             }
+
+    //             $end_key = end($mark_arr);
+
+    //             if ($end_key) {
+    //                 //检测最后一个数组中是否存在项目情况的内容，如果没有则表示匹配失败，直接截取这一段的内容作为填充(这种做法准确率降低)
+    //                 if (!isset($project[$end_key]['content']) && !isset($project[$end_key]['envy_responsibility'])) {
+
+    //                     $begin = $end_key;
+    //                     $length = $k - $begin - 2;
+    //                     $content = array_slice($parm,$begin,$length);
+
+    //                     $project[$end_key]['content'] = implode('', $content);
+    //                 }
+                    
+    //             }
+    //             $mark_arr[] = $k;
+
+    //         }
+
+    //         if (!isset($project[$mark]['envy_responsibility']) && preg_match($rule['envy_responsibility'], $v,$preg)) {
+    //             $content_end = true;
+    //             $project[$mark]['envy_responsibility'] = $v;
+    //             continue;
+                
+    //         }
+
+    //         if (isset($project[$mark]['envy_responsibility']) && $envy_responsibility_end == false) {
+    //             $project[$mark]['envy_responsibility'].= $v;
+    //         }
+
+
+    //         if (!isset($project[$mark]['content']) && preg_match($rule['content'], $v,$preg)) {
+    //             $envy_responsibility_end = true;
+    //             $project[$mark]['content'] = $v;
+    //             continue;
+                
+    //         }
+
+    //         if (isset($project[$mark]['content']) && $content_end == false) {
+    //             $project[$mark]['content'].= $v;
+    //         }
+    //     }
+    //     // exit;
+    //     return $project;
+    // }
 
 
 
@@ -741,9 +887,13 @@ class Resume extends Controller
         }
         $rule = config('config.resume_rule');
 
+        $enter = ['软件环境','硬件环境','项目描述','责任描述','开发工具'];
         foreach ($rule as $k => $v) {
             //处理特定字符格式
             $content = preg_replace("/$v/","\n".$v."\n",$content);
+        }
+        foreach ($enter as $a => $b) {
+            $content = preg_replace("/$b/","\n".$v,$content);
         }
 
         $content = explode("\n",$content);
@@ -751,7 +901,7 @@ class Resume extends Controller
         array_unshift($content,'基本资料');
         // dump($content);exit;
         $begin = 0;
-        $rule = "/^(基本资料|自我评价|自我描述|自我介绍|目前状况|工作经历|工作业绩|工作经验|教育经历|教育背景|项目经验|项目经历|简历内容|技能特长|技能专长|专业技能|求职意向)/";
+        $rule = "/^(基本资料|自我评价|自我描述|自我介绍|目前状况|工作经历|工作业绩|工作经验|教育经历|教育背景|项目经验|项目经历|简历内容|技能特长|技能专长|专业技能|求职意向|作品展示)/";
         $arr = [];//分类集合
         $lt_index = count($content) - 1;
         $resume_title = config('config.resume_title');

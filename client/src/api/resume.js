@@ -56,6 +56,24 @@ export function getCommunication(data) {
     })
 }
 
+//添加附件
+export function uploadFile(data) {
+    return request({
+        url: `${prefix}/upload_file`,
+        method: 'post',
+        data: data
+    })
+}
+
+//获取附件列表
+export function getUploadFile(data) {
+    return request({
+        url: `${prefix}/get_upload_file`,
+        method: 'get',
+        params: data
+    })
+}
+
 //新增沟通
 export function addCommunication(data){
     return request({

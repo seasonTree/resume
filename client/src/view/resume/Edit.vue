@@ -325,7 +325,6 @@
                         >
                             <el-tabs
                                 v-model="activeName2"
-                                @tab-click="handleClick"
                             >
                                 <el-tab-pane
                                     label="用户管理"
@@ -482,9 +481,6 @@ export default {
         return {
             activeName: "second",
             activeName2: "first",
-            dialog: "dialog",
-            // elRoW: "elRoW",
-            //     apiType: "user",
 
             form: {
                 uname: "",
@@ -515,8 +511,12 @@ export default {
     },
 
     methods: {
-        handleClick(tab, event) {
-            console.log(tab, event);
+        
+        afterClose() {
+            let that = this;
+            that.activeName = "second";
+            that.activeName2 = "first";
+            that.analyzeContent = "";
         }
     }
 };
