@@ -163,12 +163,19 @@ class Resume extends Controller
     public function basicData($parm){
         //基本资料
         // dump($parm);exit;
+        $parm = implode("\n",$parm);
+        $rule = config('config.resume_rule');
+        foreach ($rule as $string) {
+            //处理特定字符格式
+            $parm = preg_replace("/$string/","\n".$string,$parm);
+        }
+        $parm = explode("\n",$parm);
         $arr = [];
         $rule = config('config.basicData');
         unset($parm[0]);
         foreach ($parm as $k => $v) {
             $v = $this->trimall($v);
-            $v = preg_replace("/(智联招聘|前程无忧|匹配度(:|：)\d{2}%)|个人简历/",'',$v);
+            $v = preg_replace("/(基本资料|ID:\d+|招聘网|智联招聘|前程无忧|匹配度(:|：)\d{2}%)|个人简历/",'',$v);
             // $v = phpanalysis($v);
             // dump($v);
             foreach ($rule as $n => $pattern) {
@@ -272,7 +279,9 @@ class Resume extends Controller
                 // dump($job_end);
                 // dump($industry);
                 // echo '------------------------';
-                $v = preg_replace("/:|：/",'',$v);
+                if (preg_match($rule['work_rule'],$v)) {
+                    $v = preg_replace("/:|：/",'',$v);
+                }
                 if (!preg_match($rule['special_characters'], $v)) {
                     if ($company_end == true && $work_time_end == true && $job_end == true && $industry == true) {
 
@@ -590,7 +599,7 @@ class Resume extends Controller
             if ($v == '') {
                 continue;
             }
-            if (preg_match("/^(软件环境|硬件环境|开发工具|责任描述)/",$v)) {
+            if (preg_match("/^(软件环境|硬件环境|开发工具|责任描述|当前状态)/",$v)) {
                 continue;
             }
             if (preg_match($rule['project_time'],$v,$preg)) {
@@ -600,7 +609,9 @@ class Resume extends Controller
 
             }
             if (preg_match($rule['project_name'],$v,$preg) || preg_match($rule['project_rule'],$v)) {
-                $v = preg_replace("/:|：/",'',$v);
+                if (preg_match($rule['project_rule'],$v)) {
+                    $v = preg_replace("/:|：/",'',$v);
+                }
                 if ($project_time_end == true && $project_name_end == true && $job_end == true && !preg_match($rule['special_characters'],$v)) {
                     $project_time_end = false;
                     $project_name_end = false;
@@ -618,19 +629,21 @@ class Resume extends Controller
             }
             if (!preg_match($rule['special_characters'],$v) && $project_name_end == false) {
                 $v = preg_replace("/:|：/",'',$v);
-                // if (preg_match($rule['project_name'],$v,$preg)) {
+                if (!preg_match("/项目描述|项目职责|项目责任/",$v,$preg)) {
                     $project[$key_num]['project_name'] = $v;
                     $v = str_replace($v,'',$v);
                     $project_name_end = true;
-                // }
+                }
 
             }
             if (preg_match($rule['job'],$v,$preg) && $job_end == false) {
                 $v = preg_replace("/:|：/",'',$v);
-
-                $project[$key_num]['job'] = $v;
-                $v = str_replace($v,'',$v);
-                $job_end = true;
+                if (!preg_match($rule['special_characters'],$v)) {
+                    $project[$key_num]['job'] = $v;
+                    $v = str_replace($v,'',$v);
+                    $job_end = true;
+                }
+                
             }
             if ($project_time_end == true && $project_name_end == true) {
 
@@ -887,14 +900,16 @@ class Resume extends Controller
         }
         $rule = config('config.resume_rule');
 
-        $enter = ['软件环境','硬件环境','项目描述','责任描述','开发工具'];
+        // $enter = ['软件环境','硬件环境','项目描述','责任描述','开发工具','(离职,正在找工作)','手机','当前状态'];
         foreach ($rule as $k => $v) {
             //处理特定字符格式
-            $content = preg_replace("/$v/","\n".$v."\n",$content);
+            $content = preg_replace("/$v/","\n".$v,$content);
         }
-        foreach ($enter as $a => $b) {
-            $content = preg_replace("/$b/","\n".$v,$content);
-        }
+        // foreach ($enter as $a => $b) {
+        //     $content = preg_replace("/$b/","\n".$b,$content);
+        // }
+
+
 
         $content = explode("\n",$content);
 
