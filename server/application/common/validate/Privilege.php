@@ -11,10 +11,10 @@ use think\Validate;
 class Privilege extends Validate{
     protected $rule=[
         'parent_id'=>'require',
-        'pri_name'=>'require',
+        'p_name'=>'require',
     ];
     protected $message=[
         'parent_id'=>'上级权限不能为空',
-        'pri_name'=>'权限名称不能为空',
+        'p_name'=>'权限名称不能为空',
     ];
 }

@@ -44,18 +44,20 @@ class Privilege extends Controller
     }
     public function add(){
 	    $data = input('post.data');
+	    echo '111';
+	    halt($_POST);
         $validate =validate('Privilege');
         if (!$validate->check($data)){
             $error =$validate->getError();
              return json(['data'=>'','code'=>1,'msg'=>$error]);
         }
         try{
-            $id =model('Privilege')->add($data);
+            $resData =model('Privilege')->add($data);
         }catch(\Exception $e){
             $error =$e->getMessage();
             return json(['message'=>$error]);
         }
-        return json(['data'=>'ok','code'=>0,'msg'=>'新增成功']);
+        return json(['data'=>$resData,'code'=>0,'msg'=>'新增成功']);
     }
     public function del(){
 	    $id = input('post.data');
