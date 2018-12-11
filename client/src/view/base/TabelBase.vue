@@ -46,7 +46,7 @@ export default {
         // //获取数据以后执行
         // afterGetDate(){},
 
-        getData() {
+        getData(isSearch) {
             let that = this,
                 params = {};
 
@@ -55,10 +55,12 @@ export default {
                 params = { ...that.search };
             }
 
-            that.pager.current = 1;
-            that.pager.total = 1;
-
             if (that.pager) {
+                if (isSearch) {
+                    that.pager.current = 1;
+                    that.pager.total = 1;
+                }
+
                 params["pageIndex"] = that.pager.current;
                 params["pageSize"] = that.pager.size;
             }
