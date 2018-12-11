@@ -90,7 +90,9 @@ export default {
             let that = this;
 
             that.$api.role
-                .getUser()
+                .getUser({
+                    role_id: that.id
+                })
                 .then(res => {
                     if (res.code == 0) {
                         that.roleUser = res.data;
@@ -111,7 +113,7 @@ export default {
 
             that.$api.role
                 .setRoleUser({
-                    id: that.id,
+                    role_id: that.id,
                     role_user: that.roleUser
                 })
                 .then(res => {
