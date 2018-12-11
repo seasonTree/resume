@@ -49,7 +49,7 @@ export function logout(data) {
 
 /** 
  * 当前登录的用户
- * url: /api/user/get_current_user
+ * url: /api/user/get_user_info
  * @method get
  * @returns Object
  * {
@@ -62,9 +62,9 @@ export function logout(data) {
  *          }
  * }
  */
-export function getCurrentUser(data){
+export function getUserInfo(data){
     return request({
-        url: `${prefix}/get_current_user`,
+        url: `${prefix}/get_user_info`,
         method: 'get',
         params: data
     })
@@ -101,7 +101,7 @@ export function changePassword(data) {
  * @method get
  * @param {Object} data 发送的数据
  *      {
- *          name：'张三' //根据用户名或姓名查找，可以不传
+ *          name：'张三' //根据用户名或姓名查找模糊查找，可以不传
  *          pageIndex： 1，
  *          pageSize： 10
  *      }
@@ -207,6 +207,7 @@ export function getByID(data){
  *          code: 0, // 0表示没问题，不为0表示出错
  *          msg: '提示信息',
  *          data: {
+ *              id: 1
  *              pesonal_name: '张三', //姓名
  *              phone: 1366666666
  *          }

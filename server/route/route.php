@@ -15,12 +15,12 @@ Route::get('think', function () {
 });
 
 Route::get('test','Resume/test');//测试用
-Route::post('api/resume/get_resume_data','Resume/getResumeData');//获取简历内容
+Route::post('api/resume/analyze','Resume/getResumeData');//获取简历内容
 
 
 Route::post('api/user/login','Login/login');//登录
 Route::post('api/user/logout','User/logOut');//退出登录
-Route::get('api/user/get_userInfo','User/getUserInfo');//获取用户信息
+Route::get('api/user/get_user_info','User/getUserInfo');//获取用户信息
 
 return [
 
