@@ -84,5 +84,11 @@ export function addCommunication(data){
 }
 
 //分析简历
-// export function 
+export function analyze(data){
+    return request({
+        url: `${prefix}/analyze`,
+        method: 'post',
+        data: data
+    });
+}
 

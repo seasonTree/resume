@@ -534,7 +534,21 @@ export default {
 
     methods: {
         //分析简历
-        analyze() {},
+        analyze() {
+            let that = this;
+
+            that.$api.resume
+                .analyze({
+                    content: that.analyzeContent
+                })
+                .then(res => {
+                    console.log('***************');
+                    console.log(res)
+                })
+                .catch(res => {
+                    that.$message.error("分析失败，请重试.");
+                });
+        },
 
         afterClose() {
             let that = this;
