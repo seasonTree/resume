@@ -1,6 +1,6 @@
 import request from '../common/request';
 
-const prefix = '/role';
+const prefix = '/permission';
 
 //获取权限列表
 export function get(data) {
