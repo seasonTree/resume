@@ -482,6 +482,8 @@ export default {
             activeName: "second",
             activeName2: "first",
 
+            analyzeContent: '',
+
             form: {
                 uname: "",
                 age: "",

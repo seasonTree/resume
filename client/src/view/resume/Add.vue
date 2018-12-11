@@ -51,11 +51,11 @@
                                 <div class="div-row">
                                     <el-form-item
                                         label="姓名"
-                                        prop="uname"
+                                        prop="name"
                                     >
                                         <el-input
                                             size="mini"
-                                            v-model.trim="form.uname"
+                                            v-model.trim="form.basicData.name"
                                             autocomplete="off"
                                         ></el-input>
                                     </el-form-item>
@@ -66,7 +66,7 @@
                                     >
                                         <el-input
                                             size="mini"
-                                            v-model.trim="form.age"
+                                            v-model.trim="form.basicData.age"
                                             autocomplete="off"
                                         ></el-input>
                                     </el-form-item>
@@ -78,18 +78,18 @@
                                     >
                                         <el-input
                                             size="mini"
-                                            v-model.trim="form.sex"
+                                            v-model.trim="form.basicData.sex"
                                             autocomplete="off"
                                         ></el-input>
                                     </el-form-item>
 
                                     <el-form-item
                                         label="学历"
-                                        prop="formalSchooling"
+                                        prop="educational"
                                     >
                                         <el-input
                                             size="mini"
-                                            v-model.trim="form.formalSchooling"
+                                            v-model.trim="form.educationalBackground.educational"
                                             autocomplete="off"
                                         ></el-input>
                                     </el-form-item>
@@ -121,11 +121,11 @@
                                 <div class="div-row">
                                     <el-form-item
                                         label="籍贯"
-                                        prop="nativePlace"
+                                        prop="native_place"
                                     >
                                         <el-input
                                             size="mini"
-                                            v-model.trim="form.nativePlace"
+                                            v-model.trim="form.basicData.native_place"
                                             autocomplete="off"
                                         ></el-input>
                                     </el-form-item>
@@ -145,11 +145,11 @@
                                 <div class="div-row">
                                     <el-form-item
                                         label="专业"
-                                        prop="professional"
+                                        prop="speciality"
                                     >
                                         <el-input
                                             size="mini"
-                                            v-model.trim="form.professional"
+                                            v-model.trim="form.educationalBackground.speciality"
                                             autocomplete="off"
                                         ></el-input>
                                     </el-form-item>
@@ -160,7 +160,7 @@
                                     >
                                         <el-input
                                             size="mini"
-                                            v-model.trim="form.computerSkills"
+                                            v-model.trim="form.ExpectToPay"
                                             autocomplete="off"
                                         ></el-input>
                                     </el-form-item>
@@ -169,11 +169,11 @@
                                 <div class="div-row">
                                     <el-form-item
                                         label="工作年限"
-                                        prop="workingYear"
+                                        prop="work_year"
                                     >
                                         <el-input
                                             size="mini"
-                                            v-model.trim="form.workingYear"
+                                            v-model.trim="form.basicData.work_year"
                                             autocomplete="off"
                                         ></el-input>
                                     </el-form-item>
@@ -184,7 +184,7 @@
                                     >
                                         <el-input
                                             size="mini"
-                                            v-model.trim="form.phone"
+                                            v-model.trim="form.basicData.phone"
                                             autocomplete="off"
                                         ></el-input>
                                     </el-form-item>
@@ -255,40 +255,40 @@
                                 >
                                     <el-input
                                         size="mini"
-                                        v-model.trim="form.email"
+                                        v-model.trim="form.basicData.email"
                                         autocomplete="off"
                                     ></el-input>
                                 </el-form-item>
 
                                 <el-form-item
                                     label="毕业院校"
-                                    prop="graduateSchool"
+                                    prop="school"
                                 >
                                     <el-input
                                         size="mini"
-                                        v-model.trim="form.graduateSchool"
+                                        v-model.trim="form.educationalBackground.school"
                                         autocomplete="off"
                                     ></el-input>
                                 </el-form-item>
 
                                 <el-form-item
                                     label="求职意向"
-                                    prop="computerSkills"
+                                    prop="expected_industry"
                                 >
                                     <el-input
                                         size="mini"
-                                        v-model.trim="form.computerSkills"
+                                        v-model.trim="form.basicData.expected_industry"
                                         autocomplete="off"
                                     ></el-input>
                                 </el-form-item>
 
                                 <el-form-item
                                     label="工作地点"
-                                    prop="workingPlace"
+                                    prop="expected_address"
                                 >
                                     <el-input
                                         size="mini"
-                                        v-model.trim="form.workingPlace"
+                                        v-model.trim="form.basicData.expected_address"
                                         autocomplete="off"
                                     ></el-input>
                                 </el-form-item>
@@ -299,7 +299,7 @@
                                 >
                                     <el-input
                                         size="mini"
-                                        v-model.trim="form.computerSkills"
+                                        v-model.trim="form.recentlyTheUnit"
                                         autocomplete="off"
                                     ></el-input>
                                 </el-form-item>
@@ -313,6 +313,7 @@
                                         v-model.trim="form.recentPosition"
                                         autocomplete="off"
                                     ></el-input>
+                                    <Math class="max apply"></Math>
                                 </el-form-item>
 
                             </div>
@@ -337,7 +338,15 @@
                                             <div class="sub-header"> 教育背景</div>
                                             <el-input
                                                 type="textarea"
-                                                v-model="form.desc1"
+                                                v-model="form.educationalBackground"
+                                                resize="none"
+                                            ></el-input>
+                                        </el-col>
+                                        <el-col class="right-item">
+                                            <div class="sub-header"> 培训经历</div>
+                                            <el-input
+                                                type="textarea"
+                                                v-model="form.trainingexperience"
                                                 resize="none"
                                             ></el-input>
                                         </el-col>
@@ -345,7 +354,7 @@
                                             <div class="sub-header"> 所修课程</div>
                                             <el-input
                                                 type="textarea"
-                                                v-model="form.desc3"
+                                                v-model="form.coursescompleted"
                                                 resize="none"
                                             ></el-input>
                                         </el-col>
@@ -353,15 +362,7 @@
                                             <div class="sub-header"> 所获证书</div>
                                             <el-input
                                                 type="textarea"
-                                                v-model="form.desc4"
-                                                resize="none"
-                                            ></el-input>
-                                        </el-col>
-                                        <el-col class="right-item">
-                                            <div class="sub-header"> 所获证书</div>
-                                            <el-input
-                                                type="textarea"
-                                                v-model="form.desc4"
+                                                v-model="form.obtainedcertificate"
                                                 resize="none"
                                             ></el-input>
                                         </el-col>
@@ -380,7 +381,7 @@
                                             <div class="sub-header"> 工作经历</div>
                                             <el-input
                                                 type="textarea"
-                                                v-model="form.desc1"
+                                                v-model="form.workExperience"
                                                 resize="none"
                                             ></el-input>
                                         </el-col>
@@ -388,7 +389,7 @@
                                             <div class="sub-header"> 项目经验</div>
                                             <el-input
                                                 type="textarea"
-                                                v-model="form.desc3"
+                                                v-model="form.projectExperience"
                                                 resize="none"
                                             ></el-input>
                                         </el-col>
@@ -396,7 +397,7 @@
                                             <div class="sub-header"> 个人技能</div>
                                             <el-input
                                                 type="textarea"
-                                                v-model="form.desc4"
+                                                v-model="form.personalskills"
                                                 resize="none"
                                             ></el-input>
                                         </el-col>
@@ -404,11 +405,10 @@
                                             <div class="sub-header"> 自我评价</div>
                                             <el-input
                                                 type="textarea"
-                                                v-model="form.desc4"
+                                                v-model="form.selfEvaluation"
                                                 resize="none"
                                             ></el-input>
                                         </el-col>
-
                                     </el-row>
                                 </el-tab-pane>
                                 <el-tab-pane
@@ -423,7 +423,7 @@
                                             <div class="sub2-header"> 自定义01</div>
                                             <el-input
                                                 type="textarea"
-                                                v-model="form.desc1"
+                                                v-model="form.custom01"
                                                 resize="none"
                                             ></el-input>
                                         </el-col>
@@ -431,7 +431,7 @@
                                             <div class="sub2-header"> 自定义02</div>
                                             <el-input
                                                 type="textarea"
-                                                v-model="form.desc3"
+                                                v-model="form.custom02"
                                                 resize="none"
                                             ></el-input>
                                         </el-col>
@@ -439,7 +439,7 @@
                                             <div class="sub2-header"> 自定义03</div>
                                             <el-input
                                                 type="textarea"
-                                                v-model="form.desc4"
+                                                v-model="form.custom03"
                                                 resize="none"
                                             ></el-input>
                                         </el-col>
@@ -479,7 +479,10 @@
             slot="footer"
             class="dialog-footer"
         >
-            <el-button @click="analyze">自动识别</el-button>
+            <el-button
+                @click="analyze"
+                type="success"
+            >自动识别</el-button>
             <el-button @click="closeDialog">取 消</el-button>
             <el-button
                 type="primary"
@@ -505,29 +508,60 @@ export default {
             analyzeContent: "",
 
             form: {
-                uname: "",
-                age: "",
-                sex: "",
-                formalSchooling: "",
-                workingYear: "",
-                phone: "",
+                basicData: {
+                    age: "",
+                    email: "",
+                    expected_address: "",
+                    expected_industry: "",
+                    expected_job: "",
+                    name: "",
+                    native_place: "",
+                    phone: "",
+                    sex: "",
+                    status:"",
+                    work_year: "",
+
+                },
+
                 height: "",
                 national: "",
+                ExpectToPay: "",
                 dateOfBirth: "",
                 politicalLandscape: "",
-                nativePlace: "",
-                address: "",
-                zipCode: "",
-                email: "",
-                graduateSchool: "",
-                professional: "",
                 englishLevel: "",
                 computerSkills: "",
-                computerSkills: "",
-                workingPlace: "",
-                ExpectToPay: "",
+                address: "",
                 recentlyTheUnit: "",
-                recentPosition: ""
+                recentPosition: "",
+
+                //教育背景
+                educationalBackground: {
+                    educational: "",
+                    graduation_time:"",
+                    school: "",
+                    speciality: "",
+                },
+                //  educationalBackground:"",
+
+
+                // 培训经历
+                trainingexperience: "",
+                // 所修课程
+                coursescommpleted: "",
+                // 所获证书
+                obtainedcertificate: "",
+
+                workExperience: "",
+                projectExperience:"",
+                //工作技能
+                personalskills: "",
+                selfEvaluation: "",
+
+
+                //自定义
+                custom01: "",
+                custom02: "",
+                custom03: ""
             }
         };
     },
@@ -542,8 +576,13 @@ export default {
                     content: that.analyzeContent
                 })
                 .then(res => {
-                    console.log('***************');
-                    console.log(res)
+                    // console.log("***************");
+                    that.form.basicData = res.data.basicData;
+                    that.form.educationalBackground = res.data.educationalBackground;
+                    that.form.selfEvaluation = res.data.selfEvaluation;
+
+                    that.activeName = 'second'
+                    console.log(res);
                 })
                 .catch(res => {
                     that.$message.error("分析失败，请重试.");

@@ -89,9 +89,7 @@ export default {
 
     data() {
         return {
-            uploadList: []
-            
-            
+            fileList: []            
         };
     },
     methods: {
