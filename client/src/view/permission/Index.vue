@@ -154,7 +154,7 @@ export default {
             //不查找
             search: false,
 
-            apiType: "role",
+            apiType: "permission",
             search: {
                 name: ""
             },

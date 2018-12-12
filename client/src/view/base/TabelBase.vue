@@ -69,7 +69,12 @@ export default {
                 .get(params)
                 .then(res => {
                     if (res.code == 0) {
-                        that.tdata = res.data.rows;
+
+                        if(res.data.row){
+                            that.tdata = res.data.rows;
+                        }else {
+                            that.tdata = res.data;
+                        }
 
                         // //获取数据以后
                         // that.afterGetDate(res.data.rows);

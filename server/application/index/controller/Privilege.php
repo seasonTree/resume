@@ -12,12 +12,11 @@ class Privilege extends Controller
 //
 //	}
 	//提供权限数据
-//	public function lst(){
-//        $model =model('Privilege');
-//        $data = $model->getTree();
-//        $count = count($data);
-//        return json(['data'=>$data,'count'=>$count,'code'=>0,'msg'=>'权限列表数据']);
-//    }
+	public function lst(){
+        $model =model('Privilege');
+        $data = $model->getTree();
+        return json(['data'=>$data,'code'=>0,'msg'=>'权限列表数据']);
+    }
     public function edit(){
         $priModel = model('Privilege');
 	    $data = input('post.data');
@@ -42,14 +41,13 @@ class Privilege extends Controller
 
     }
     public function add(){
-	    $data = input('post.data');
-	    echo '111';
-	    halt($_POST);
+	    $data = input('post.');
         $validate =validate('Privilege');
         if (!$validate->check($data)){
             $error =$validate->getError();
              return json(['data'=>'','code'=>1,'msg'=>$error]);
         }
+
         try{
             $resData =model('Privilege')->add($data);
         }catch(\Exception $e){
@@ -59,7 +57,7 @@ class Privilege extends Controller
         return json(['data'=>$resData,'code'=>0,'msg'=>'新增成功']);
     }
     public function del(){
-	    $id = input('post.data');
+	    $id = input('post.');
         $res['msg'] = \app\index\model\Privilege::destroy($id);
         if ($res['msg']){
             return json(['data'=>'ok','code'=>0,'msg'=>'删除成功']);

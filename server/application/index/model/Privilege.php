@@ -5,7 +5,7 @@ use think\Model;
 
 class Privilege extends Model
 {
-    protected $table = 'permission';
+    protected $table = 'rs_permission';
     protected static function init()
     {
         Privilege::event('after_delete',function ($Privilege){
@@ -34,7 +34,6 @@ class Privilege extends Model
     }
     public function getTree(){
         $data =$this->select()->toArray();
-
         return $this->_reSort($data);
     }
     private function _reSort($data,$parent_id=0,$level=0,$isClear=TRUE)

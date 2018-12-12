@@ -83,6 +83,7 @@ export function get(data) {
  *              api: "/vvvv/vvvvv",
  *              url: '/user/aaa',
  *              p_act_name: 'user_add', //按钮的英文名称
+ *              top_class: [0, 1] //层级
  *          }
  *      }
  */

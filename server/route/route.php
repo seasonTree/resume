@@ -21,6 +21,8 @@ Route::post('api/resume/analyze','Resume/getResumeData');//获取简历内容
 Route::post('api/user/login','Login/login');//登录
 Route::post('api/user/logout','User/logOut');//退出登录
 Route::get('api/user/get_user_info','User/getUserInfo');//获取用户信息
+Route::post('api/permission/add','Privilege/add');//添加权限信息
+Route::get('api/permission/list','Privilege/lst');
 
 return [
 

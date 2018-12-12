@@ -145,6 +145,7 @@ export default {
 
             form: {
                 top_class: [0],
+                url:'',
                 parent_id: 0,
                 p_name: "",
                 p_type: 0,
@@ -164,7 +165,7 @@ export default {
                             let that = this;
 
                             if (that.form.p_type == 1) {
-                                if (/[a-zA-z]/.test(value)) {
+                                if (!/[a-zA-z_]/.test(value)) {
                                     callback(
                                         new Error(
                                             "功能英文名称必须是英文，并且不为空."
@@ -183,7 +184,7 @@ export default {
     methods: {
         getPermissionData() {
             let that = this;
-
+            //
             // let arrData = [
             //     {
             //         id: 1,
@@ -237,7 +238,7 @@ export default {
             //         ]
             //     }
             // ];
-
+            //
             // that.permissionData = arrData;
 
             that.$api.permission
