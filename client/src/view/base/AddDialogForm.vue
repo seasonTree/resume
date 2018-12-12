@@ -16,7 +16,6 @@ export default {
         addCommit() {
             let that = this;
 
-            debugger
             that.$refs["form"].validate(valid => {
                 if (valid) {
                     //提交之前

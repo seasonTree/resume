@@ -109,6 +109,4 @@ create table rs_user_permission
 	speciality varchar(20) not null default '' comment '专业',
 	graduation_time varchar(20) not null default '' comment '在校时间',
 	skillExpertise text comment '专业技能',
-
-
 );

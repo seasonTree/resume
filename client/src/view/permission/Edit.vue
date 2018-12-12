@@ -170,6 +170,8 @@ export default {
                                         )
                                     );
                                 }
+                            } else {
+                                callback();
                             }
                         },
                         trigger: "blur"

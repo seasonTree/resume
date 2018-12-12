@@ -66,8 +66,8 @@ export default {
         return {
             form: {
                 id: 0,
-                passwd: '',
-                repasswd: ''
+                passwd: "",
+                repasswd: ""
             },
             formRules: {
                 passwd: [
@@ -99,6 +99,8 @@ export default {
                                 callback(
                                     new Error("两次的密码不一致，请重新输入.")
                                 );
+                            } else {
+                                callback();
                             }
                         },
                         trigger: "blur"
