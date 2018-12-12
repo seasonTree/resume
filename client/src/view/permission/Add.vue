@@ -67,6 +67,17 @@
             </el-form-item>
 
             <el-form-item
+                label="菜单地址"
+                prop="url"
+                v-if="form.p_type == 0"
+            >
+                <el-input
+                    v-model.trim="form.url"
+                    autocomplete="off"
+                ></el-input>
+            </el-form-item>
+
+            <el-form-item
                 label="功能英文名称"
                 prop="p_act_name"
                 v-if="form.p_type == 1"
@@ -77,16 +88,6 @@
                 ></el-input>
             </el-form-item>
 
-            <el-form-item
-                label="菜单地址"
-                prop="url"
-                v-if="form.p_type == 0"
-            >
-                <el-input
-                    v-model.trim="form.url"
-                    autocomplete="off"
-                ></el-input>
-            </el-form-item>
             <el-form-item
                 label="Api"
                 prop="api"
