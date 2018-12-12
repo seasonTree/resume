@@ -34,7 +34,32 @@ class Privilege extends Model
     }
     public function getTree(){
         $data =$this->select()->toArray();
-        return $this->_reSort($data);
+        $data = $this->_reSort($data);
+        $data =$this->getTrees($data);
+//        halt($data);
+
+        return $data;
+    }
+    /**
+     *获取树结构
+     */
+    public function getTrees($list,$pk='id',$pid='parent_id',$child='children',$root=0){
+        $tree=array();
+        foreach($list as $key=> $val){
+
+            if($val[$pid]==$root){
+                //获取当前$pid所有子类
+                unset($list[$key]);
+                if(! empty($list)){
+                    $child=getTree($list,$pk,$pid,$child,$val[$pk]);
+                    if(!empty($child)){
+                        $val['children']=$child;
+                    }
+                }
+                $tree[]=$val;
+            }
+        }
+        return $tree;
     }
     private function _reSort($data,$parent_id=0,$level=0,$isClear=TRUE)
     {
