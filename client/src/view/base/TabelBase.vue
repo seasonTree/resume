@@ -48,9 +48,16 @@ export default {
 
         getData(isSearch) {
             let that = this,
-                params = {};
+                params = {},
+                searchData = JSON.parse(JSON.stringify(that.search));
 
-            if (that.search) {
+            if (that.searchData) {
+                for(var key in that.searchData){
+                    if(that.searchData[i]){
+                        params[key] = that.searchData[key];
+                    }
+                }
+
                 //添加搜索天剑
                 params = { ...that.search };
             }
