@@ -162,14 +162,15 @@ export default {
                         validator: (rule, value, callback) => {
                             let that = this;
 
-                            if (that.form.p_type == 1) {
-                                if (/[a-zA-z]/.test(value)) {
+                            if (
+                                that.form.p_type == 1 &&
+                                !/[a-zA-z_]/.test(value)
+                            ) {
                                     callback(
                                         new Error(
                                             "功能英文名称必须是英文，并且不为空."
                                         )
                                     );
-                                }
                             } else {
                                 callback();
                             }
