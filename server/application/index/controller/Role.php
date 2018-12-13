@@ -12,6 +12,11 @@ class Role
 //		//角色主页
 //		return view('/user_role');
 //	}
+    public function getOne(){
+        $id = input('post.id');
+        $data =\app\index\model\Role::get($id);
+        return json(['data'=>$data,'code'=>0,'msg'=>'获取数据成功']);
+    }
     public function getRolePri(){
         $id = input('get.id');
         $data =model('RolePri')->where("role_id",$id)->select()->toArray();
@@ -80,35 +85,42 @@ class Role
         }
     }
     public function edit(){
-        $data =input('post.data');
-        if(empty($data['selected'])){
-            return json(['data'=>'','code'=>1,'msg'=>'请选择权限']);
-        }
-        $arr['role_name'] = $data['role_name'];
-        $arr['id'] = $data['id'];
-        foreach ($data['selected'] as $k =>$v){
-            $arr['pri_id'][] =$v['id'];
-        }
-        $data = $arr;
-        $validate =validate('Role');
-        if (!$validate->check($data)){
-            $error =$validate->getError();
-            return json(['data'=>'','code'=>1,'msg'=>$error]);
-        }
+        $data =input('post.');
+
+//        if(empty($data['selected'])){
+//            return json(['data'=>'','code'=>1,'msg'=>'请选择权限']);
+//        }
+//        $arr['role_name'] = $data['role_name'];
+//        $arr['id'] = $data['id'];
+//        foreach ($data['selected'] as $k =>$v){
+//            $arr['pri_id'][] =$v['id'];
+//        }
+//        $data = $arr;
+//        $validate =validate('Role');
+//        if (!$validate->check($data)){
+//            $error =$validate->getError();
+//            return json(['data'=>'','code'=>1,'msg'=>$error]);
+//        }
         $id=model('Role')->edit($data);
         if($id){
-            return json(['data'=>'','code'=>0,'msg'=>'修改成功']);
+            $data =\app\index\model\Role::get($id);
+            return json(['data'=>$data,'code'=>0,'msg'=>'修改成功']);
         }
     }
     public function del(){
-	    $data =input('post.data');
-	    if(!empty($data['username'])){
+	    $id =input('post.id');
+	    $data = model('UserRole')->where('role_id',$id)->select()->toArray();
+	    if(!empty($data)){
             return json(['data'=>'','code'=>1,'msg'=>'请清空用户列表']);
         }
-        if (model('role')->del($data['id'])){
-            return json(['data'=>'','code'=>0,'msg'=>'删除成功']);
-        }else{
+        try{
+            model('role')->del($id);
+            RolePri::where(['role_id'=>$id])->delete();
+
+        }catch (\Exception $e){
             return json(['data'=>'','code'=>1,'msg'=>'删除失败']);
         }
+        return json(['data'=>null,'code'=>0,'msg'=>'删除成功']);
+
     }
 }

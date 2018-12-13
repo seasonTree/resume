@@ -38,8 +38,11 @@ Route::post('api/permission/del','Privilege/del');//删除某条权限信息
 Route::get('api/permission/list','Privilege/lst');
 Route::get('api/role/list','Role/lst');
 Route::post('api/role/add','Role/add');
+Route::post('api/role/edit','Role/edit');
+Route::post('api/role/del','Role/del');
 Route::get('api/role/get_check_permission','Role/getRolePri');
 Route::post('api/role/set_role_permission','Role/setRolePri');
+Route::post('api/role/get_by_id','Role/getOne');
 
 
 return [
