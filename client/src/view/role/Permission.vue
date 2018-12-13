@@ -7,7 +7,7 @@
         :close-on-click-modal="false"
         width="400px"
     >
-        <div class="dialog-content">
+        <div class="dialog-content mb-20">
             <el-tree
                 :data="permissionData"
                 :default-checked-keys="defaultCheckKey"
