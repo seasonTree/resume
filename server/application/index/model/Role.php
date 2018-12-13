@@ -23,24 +23,24 @@ class Role extends Model
 //            }
 //
 //        });
-        Role::event('after_update',function ($Role){
-
-            $priIds=$Role->pri_id;
-            if (!empty($priIds)){
-                foreach($priIds as $k=>$v){
-                    $data[]=[
-                        'role_id'=>$Role->id,
-                        'pri_id'=>$v,
-                    ];
-                }
-                model("RolePri")->where('role_id='.$Role->id)->delete();
-                model("RolePri")->insertAll($data);
-            }
-
-        });
-        Role::event('after_delete',function ($Role){
-            model("RolePri")->where('role_id='.$Role->id)->delete();
-        });
+//        Role::event('after_update',function ($Role){
+//
+//            $priIds=$Role->pri_id;
+//            if (!empty($priIds)){
+//                foreach($priIds as $k=>$v){
+//                    $data[]=[
+//                        'role_id'=>$Role->id,
+//                        'pri_id'=>$v,
+//                    ];
+//                }
+//                model("RolePri")->where('role_id='.$Role->id)->delete();
+//                model("RolePri")->insertAll($data);
+//            }
+//
+//        });
+//        Role::event('after_delete',function ($Role){
+//            model("RolePri")->where('role_id='.$Role->id)->delete();
+//        });
     }
     public function add($data){
         $this->allowField(true)->save($data);
