@@ -187,11 +187,6 @@ export default {
                             url: "/resume/index",
                             name: "简历信息",
                             icon: "fa fa-address-card"
-                        },
-                        {
-                            url: "/resume/search",
-                            name: "简历搜索",
-                            icon: "fa fa-search-plus"
                         }
                     ]
                 },
@@ -257,6 +252,8 @@ export default {
                             callback(
                                 new Error("两次的密码不一致，请重新输入.")
                             );
+                        }else{
+                            callback();
                         }
                     }
                 })

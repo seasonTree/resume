@@ -57,7 +57,7 @@ export default {
     },
 
     watch: {
-        id(newValue, oldValue) {
+        show(newValue, oldValue) {
             let that = this;
             that.getUsers();
             that.getRoleUser();

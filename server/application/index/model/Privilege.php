@@ -5,7 +5,8 @@ use think\Model;
 
 class Privilege extends Model
 {
-    protected $table = 'permission';
+    protected $table = 'rs_permission';
+    public $data ='';
     protected static function init()
     {
         Privilege::event('after_delete',function ($Privilege){
@@ -29,13 +30,64 @@ class Privilege extends Model
         $num =$this->setField($data);
         return $num;
     }
-    public function getOne($id){
-        return self::get($id)->toArray();
+    public function del($id){
+       $chlids = $this->getChildren($id);
+       if(empty($chlids)){
+            return $res =Privilege::destroy($id);
+       }else{
+           return $res = false;
+       }
     }
+    public function getOne($id){
+        $this->data = $id;
+        $data =$this->select()->toArray();
+        $data = $this->_reSort($data);
+        $data =array_filter($data,function ($v,$k){
+          return array_filter($v,function ($vv,$kk){
+                return $kk == 'id' && $vv == $this->data ;
+            },1);
+        },1);
+        foreach ($data as $k =>$v){
+            $data = $v;
+        }
+        $data['top_class'] =[];
+        for ($a=0;$a<=$data['level'];$a++){
+
+            array_push($data['top_class'],$a);
+        }
+        return $data;
+    }
+    /**
+     * 获取权限列表数据
+    */
     public function getTree(){
         $data =$this->select()->toArray();
+        $data = $this->_reSort($data);
+        $data =$this->getTrees($data);
+//        halt($data);
 
-        return $this->_reSort($data);
+        return $data;
+    }
+    /**
+     *获取树结构
+     */
+    public function getTrees($list,$pk='id',$pid='parent_id',$child='children',$root=0){
+        $tree=array();
+        foreach($list as $key=> $val){
+
+            if($val[$pid]==$root){
+                //获取当前$pid所有子类
+                unset($list[$key]);
+                if(! empty($list)){
+                    $child=getTree($list,$pk,$pid,$child,$val[$pk]);
+                    if(!empty($child)){
+                        $val['children']=$child;
+                    }
+                }
+                $tree[]=$val;
+            }
+        }
+        return $tree;
     }
     private function _reSort($data,$parent_id=0,$level=0,$isClear=TRUE)
     {

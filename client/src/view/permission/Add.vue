@@ -55,48 +55,49 @@
                 ></el-input>
             </el-form-item>
 
-            <el-form-item
-                label="菜单图标"
-                prop="p_icon"
-                v-if="form.p_type == 0"
-            >
-                <el-input
-                    v-model.trim="form.p_icon"
-                    autocomplete="off"
-                ></el-input>
-            </el-form-item>
+            <div v-show="form.p_type == 0">
+                <el-form-item
+                    label="菜单图标"
+                    prop="p_icon"
+                >
+                    <el-input
+                        v-model.trim="form.p_icon"
+                        autocomplete="off"
+                    ></el-input>
+                </el-form-item>
 
-            <el-form-item
-                label="功能英文名称"
-                prop="p_act_name"
-                v-if="form.p_type == 1"
-            >
-                <el-input
-                    v-model.trim="form.p_act_name"
-                    autocomplete="off"
-                ></el-input>
-            </el-form-item>
+                <el-form-item
+                    label="菜单地址"
+                    prop="url"
+                >
+                    <el-input
+                        v-model.trim="form.url"
+                        autocomplete="off"
+                    ></el-input>
+                </el-form-item>
+            </div>
 
-            <el-form-item
-                label="菜单地址"
-                prop="url"
-                v-if="form.p_type == 0"
-            >
-                <el-input
-                    v-model.trim="form.url"
-                    autocomplete="off"
-                ></el-input>
-            </el-form-item>
-            <el-form-item
-                label="Api"
-                prop="api"
-                v-if="form.p_type == 1"
-            >
-                <el-input
-                    v-model.trim="form.api"
-                    autocomplete="off"
-                ></el-input>
-            </el-form-item>
+            <div v-show="form.p_type == 1">
+                <el-form-item
+                    label="功能英文名称"
+                    prop="p_act_name"
+                >
+                    <el-input
+                        v-model.trim="form.p_act_name"
+                        autocomplete="off"
+                    ></el-input>
+                </el-form-item>
+
+                <el-form-item
+                    label="Api"
+                    prop="api"
+                >
+                    <el-input
+                        v-model.trim="form.api"
+                        autocomplete="off"
+                    ></el-input>
+                </el-form-item>
+            </div>
 
         </el-form>
 
@@ -145,6 +146,7 @@ export default {
 
             form: {
                 top_class: [0],
+                url: "",
                 parent_id: 0,
                 p_name: "",
                 p_type: 0,
@@ -163,14 +165,17 @@ export default {
                         validator: (rule, value, callback) => {
                             let that = this;
 
-                            if (that.form.p_type == 1) {
-                                if (/[a-zA-z]/.test(value)) {
-                                    callback(
-                                        new Error(
-                                            "功能英文名称必须是英文，并且不为空."
-                                        )
-                                    );
-                                }
+                            if (
+                                that.form.p_type == 1 &&
+                                !/[a-zA-z_]/.test(value)
+                            ) {
+                                callback(
+                                    new Error(
+                                        "功能英文名称必须是英文，并且不为空."
+                                    )
+                                );
+                            }else{
+                                callback();
                             }
                         },
                         trigger: "blur"
@@ -183,7 +188,7 @@ export default {
     methods: {
         getPermissionData() {
             let that = this;
-
+            //
             // let arrData = [
             //     {
             //         id: 1,
@@ -237,7 +242,7 @@ export default {
             //         ]
             //     }
             // ];
-
+            //
             // that.permissionData = arrData;
 
             that.$api.permission

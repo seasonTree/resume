@@ -111,6 +111,7 @@ create table rs_resume
 	skillExpertise text comment '专业技能',
 
 
+
 );
 -- -----------------------------------------------------
 -- 上传
@@ -123,5 +124,6 @@ create table rs_resume_upload
 	resume_url varchar(100) not null default '' comment '简历文件对应的路径',
 	create_time datetime default CURRENT_TIMESTAMP not null comment '创建时间',
 	
+
 
 );

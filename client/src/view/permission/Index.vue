@@ -11,7 +11,7 @@
                 <el-button
                     type="primary"
                     @click="sortDialog = true"
-                >菜单排序</el-button>
+                >排序</el-button>
 
                 <!-- <el-row
                     type="flex"
@@ -154,7 +154,7 @@ export default {
             //不查找
             search: false,
 
-            apiType: "role",
+            apiType: "permission",
             search: {
                 name: ""
             },
@@ -253,7 +253,13 @@ export default {
         editItem(item) {
             let that = this;
             that.getData();
-        }
+        },
+
+        //删除之后
+        afterDel(item){
+            let that = this;
+            that.getData();
+        },
     }
 };
 </script>

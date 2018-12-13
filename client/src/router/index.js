@@ -67,16 +67,7 @@ const routes = [{
                     name: '简历信息',
                     paths: [ { name: '简历管理'}]
                 }
-            },
-            {
-                path: 'search',
-                component: () =>
-                    import('@view/resume_search/Index'),
-                meta: {
-                    name: '简历搜索',
-                    paths: [ { name: '简历管理'}]
-                }
-            },
+            }
         ]
     },
     {

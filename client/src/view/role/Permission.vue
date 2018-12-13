@@ -13,6 +13,7 @@
                 :default-checked-keys="defaultCheckKey"
                 show-checkbox
                 node-key="id"
+                :check-strictly="true"
                 :props="defaultProps"
                 default-expand-all
                 ref="tree"
@@ -109,7 +110,7 @@ export default {
         };
     },
     watch: {
-        id(newValue, oldValue) {
+        show(newValue, oldValue) {
             let that = this;
 
             //获取所有的权限列表
@@ -156,7 +157,7 @@ export default {
                         );
                     }
                 })
-                .then(res => {
+                .catch(res => {
                     that.$message.error("获当前角色权限失败，请刷新后重试.");
                 });
         },

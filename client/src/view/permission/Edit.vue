@@ -162,14 +162,17 @@ export default {
                         validator: (rule, value, callback) => {
                             let that = this;
 
-                            if (that.form.p_type == 1) {
-                                if (/[a-zA-z]/.test(value)) {
+                            if (
+                                that.form.p_type == 1 &&
+                                !/[a-zA-z_]/.test(value)
+                            ) {
                                     callback(
                                         new Error(
                                             "功能英文名称必须是英文，并且不为空."
                                         )
                                     );
-                                }
+                            } else {
+                                callback();
                             }
                         },
                         trigger: "blur"
@@ -180,6 +183,17 @@ export default {
     },
 
     methods: {
+
+        //在设置数据之前操作
+        beforeSetData(item){
+            let top_class = item.top_class;
+
+            //如果选中了，并且超过了一个，父的第一个id为0会对应不上，另外处理
+            if(top_class.length && top_class.length > 1 && top_class[0] == 0){
+                top_class.shift();
+            }
+        },
+
         getPermissionData() {
             let that = this;
 

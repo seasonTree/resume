@@ -117,6 +117,8 @@ export default {
                                         "用户必须是字母或数字，并且以字母开头."
                                     )
                                 );
+                            } else {
+                                callback();
                             }
                         },
                         trigger: "blur"
@@ -152,6 +154,8 @@ export default {
                                 callback(
                                     new Error("两次的密码不一致，请重新输入.")
                                 );
+                            } else {
+                                callback();
                             }
                         },
                         trigger: "blur"

@@ -165,7 +165,7 @@
                             <el-button
                                 type="primary"
                                 size="mini"
-                                icon="fa fa-edit"
+                                icon="el-icon-edit"
                                 circle
                                 @click.stop="showEditDialog(scope.row.id)"
                             ></el-button>

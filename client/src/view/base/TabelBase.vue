@@ -48,11 +48,18 @@ export default {
 
         getData(isSearch) {
             let that = this,
-                params = {};
+                params = {},
+                searchData = JSON.parse(JSON.stringify(that.search));
 
-            if (that.search) {
+            if (that.searchData) {
+                for(var key in that.searchData){
+                    if(that.searchData[i]){
+                        params[key] = that.searchData[key];
+                    }
+                }
+
                 //添加搜索天剑
-                params = { ...that.search };
+                // params = { ...that.search };
             }
 
             if (that.pager) {
@@ -69,7 +76,12 @@ export default {
                 .get(params)
                 .then(res => {
                     if (res.code == 0) {
-                        that.tdata = res.data.rows;
+
+                        if(res.data.row){
+                            that.tdata = res.data.rows;
+                        }else {
+                            that.tdata = res.data;
+                        }
 
                         // //获取数据以后
                         // that.afterGetDate(res.data.rows);
@@ -160,14 +172,17 @@ export default {
                                     duration: 800
                                 });
 
+                                let delItem = null;
                                 for (var i = 0; i < that.tdata.length; i++) {
                                     var item = that.tdata[i];
 
                                     if (item.id == id) {
-                                        that.tdata.splice(i, 1);
+                                        delItem = that.tdata.splice(i, 1);
                                         break;
                                     }
                                 }
+
+                                that.afterDel(delItem);
                             } else {
                                 that.$message.error(res.msg);
                             }
@@ -178,6 +193,9 @@ export default {
                 })
                 .catch(() => {});
         }
-    }
+    },
+
+    //删除之后
+    afterDel(item){},
 };
 </script>
