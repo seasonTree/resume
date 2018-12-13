@@ -20,8 +20,9 @@ class Privilege extends Controller
     public function edit(){
         $priModel = model('Privilege');
 	    $data = input('post.');
-	    $data['pri_name']=preg_replace('/-+/','',$data['pri_name']);
+//	    $data['pri_name']=preg_replace('/-+/','',$data['pri_name']);
 	    unset($data['level']);
+	    unset($data['top_class']);
         $validate =validate('Privilege');
         if (!$validate->check($data)){
             $error =$validate->getError();
