@@ -70,7 +70,7 @@ export default {
     },
 
     watch: {
-        id(newValue, oldValue) {
+        show(newValue, oldValue) {
             that.getCommunication();
         }
     },

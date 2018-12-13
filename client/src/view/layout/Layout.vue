@@ -187,11 +187,6 @@ export default {
                             url: "/resume/index",
                             name: "简历信息",
                             icon: "fa fa-address-card"
-                        },
-                        {
-                            url: "/resume/search",
-                            name: "简历搜索",
-                            icon: "fa fa-search-plus"
                         }
                     ]
                 },

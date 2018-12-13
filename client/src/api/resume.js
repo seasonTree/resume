@@ -92,3 +92,11 @@ export function analyze(data){
     });
 }
 
+//删除文件
+export function delFile(data){
+    return request({
+        url: `${prefix}/del_file`,
+        method: 'post',
+        data: data
+    });
+}

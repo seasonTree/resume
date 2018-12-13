@@ -17,6 +17,16 @@ Route::get('think', function () {
 Route::get('test','Resume/test');//测试用
 Route::post('api/resume/analyze','Resume/getResumeData');//获取简历内容
 
+Route::get('api/resume/list','');//获取简历列表，分页，数据放到row字段下，同时要返回total总记录数
+Route::post('api/resume/add','');//新增简历
+Route::post('api/resume/edit','');//修改简历
+Route::get('api/resume/get_by_id','');//根据id获取简历内容
+Route::post('api/resume/del','');//删除简历
+Route::get('api/resume/get_communication','');//获取沟通列表
+Route::post('api/resume/add_communication','');//添加沟通信息
+Route::get('api/resume/get_upload_file','');//获取附件列表
+Route::post('api/resume/upload_file','');//添加简历附件
+Route::post('api/resume/del_file','');//删除简历附件
 
 Route::post('api/user/login','Login/login');//登录
 Route::post('api/user/logout','User/logOut');//退出登录
@@ -30,6 +40,7 @@ Route::get('api/role/list','Role/lst');
 Route::post('api/role/add','Role/add');
 Route::get('api/role/get_check_permission','Role/getRolePri');
 Route::post('api/role/set_role_permission','Role/setRolePri');
+
 
 return [
 

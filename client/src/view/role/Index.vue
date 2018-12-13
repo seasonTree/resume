@@ -264,7 +264,9 @@ export default {
             let that = this;
             that.userRoleID = id;
             that.userDialog = true;
-        }
+        },
+
+        
     }
 };
 </script>

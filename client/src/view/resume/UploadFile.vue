@@ -14,6 +14,8 @@
                     height="400"
                     border
                     style="width: 100%"
+                    :data="tdata"
+                    stripe
                 >
                     <el-table-column
                         align="center"
@@ -36,6 +38,26 @@
                     >
                     </el-table-column>
 
+                    <el-table-column
+                        fixed="right"
+                        label="操作"
+                        width="180"
+                    >
+                        <el-tooltip
+                            effect="dark"
+                            content="删除"
+                            placement="bottom"
+                        >
+                            <el-button
+                                type="danger"
+                                size="mini"
+                                icon="el-icon-delete"
+                                circle
+                                @click.stop="delFile(scope.row.id, scope.$index)"
+                            ></el-button>
+                        </el-tooltip>
+                    </el-table-column>
+
                 </el-table>
             </template>
 
@@ -43,20 +65,14 @@
                 slot="footer"
                 class="dialog-footer"
             >
-                <!-- <el-button  type="primary">上传</el-button> -->
+
                 <el-upload
-                    action="https://jsonplaceholder.typicode.com/posts/"
+                    action="/api/resume/upload_file"
                     multiple
-                    :file-list="fileList"
+                    :on-success="uploadSuccess"
+                    :on-error="uploadError"
                 >
-                    <el-button
-                        size="small"
-                        type="primary"
-                    >点击上传</el-button>
-                    <div
-                        slot="tip"
-                        class="el-upload__tip"
-                    >只能上传jpg/png文件，且不超过500kb</div>
+                    <el-button type="primary">上传附件</el-button>
                 </el-upload>
                 <el-button @click="closeDialog">关 闭</el-button>
             </div>
@@ -82,14 +98,14 @@ export default {
     },
 
     watch: {
-        id(newValue, oldValue) {
+        show(newValue, oldValue) {
             that.getData();
         }
     },
 
     data() {
         return {
-            fileList: []            
+            tdata: []
         };
     },
     methods: {
@@ -102,7 +118,7 @@ export default {
                 })
                 .then(res => {
                     if (res.code == 0) {
-                        that.uploadList = res.data;
+                        that.tdata = res.data;
                     } else {
                         that.$message.error(
                             res.msg || "获取上传文件列表失败，请刷新后重试."
@@ -114,13 +130,77 @@ export default {
                 });
         },
 
+        //删除文件
+        delFile(id) {
+            let that = this;
+
+            that.$confirm("是否删除当前附件吗?", "提示", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                type: "warning"
+            })
+                .then(() => {
+                    that.$api.resume
+                        .del({
+                            id
+                        })
+                        .then(res => {
+                            if (res.code == 0) {
+                                that.$message({
+                                    message: "删除成功.",
+                                    type: "success",
+                                    duration: 800
+                                });
+
+                                let delItem = null;
+                                for (var i = 0; i < that.tdata.length; i++) {
+                                    var item = that.tdata[i];
+
+                                    if (item.id == id) {
+                                        that.tdata.splice(i, 1);
+                                        break;
+                                    }
+                                }
+                            } else {
+                                that.$message.error(res.msg);
+                            }
+                        })
+                        .catch(res => {
+                            that.$message.error("删除失败，请刷新后重试.");
+                        });
+                })
+                .catch(() => {});
+        },
+
+        //上传成功
+        uploadSuccess(response, file, fileList) {
+            let that = this;
+
+            if (res.code == 0) {
+                that.$message({
+                    message: "删除成功.",
+                    type: "success",
+                    duration: 800
+                });
+
+                let copyItem = JSON.parse(JSON.stringify(res.data));
+                that.tdata.unshift(copyItem);
+
+            } else {
+                that.$message.error(res.msg || "上传失败，请重试.");
+            }
+        },
+
+        //上传失败
+        uploadError(err, file, fileList) {
+            that.$message.error("上传失败，请重试.");
+        },
+
         //关闭后调用
         afterClose() {
             let that = this;
             that.uploadList = [];
-        },
-
-        
+        }
     }
 };
 </script>
