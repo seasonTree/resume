@@ -6,6 +6,7 @@ use think\Model;
 class Privilege extends Model
 {
     protected $table = 'rs_permission';
+    public $data ='';
     protected static function init()
     {
         Privilege::event('after_delete',function ($Privilege){
@@ -30,8 +31,27 @@ class Privilege extends Model
         return $num;
     }
     public function getOne($id){
-        return self::get($id)->toArray();
+        $this->data = $id;
+        $data =$this->select()->toArray();
+        $data = $this->_reSort($data);
+        $data =array_filter($data,function ($v,$k){
+          return array_filter($v,function ($vv,$kk){
+                return $kk == 'id' && $vv == $this->data ;
+            },1);
+        },1);
+        foreach ($data as $k =>$v){
+            $data = $v;
+        }
+        $data['top_class'] =[];
+        for ($a=0;$a<=$data['level'];$a++){
+
+            array_push($data['top_class'],$a);
+        }
+        return $data;
     }
+    /**
+     * 获取权限列表数据
+    */
     public function getTree(){
         $data =$this->select()->toArray();
         $data = $this->_reSort($data);

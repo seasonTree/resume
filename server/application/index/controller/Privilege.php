@@ -19,7 +19,7 @@ class Privilege extends Controller
     }
     public function edit(){
         $priModel = model('Privilege');
-	    $data = input('post.data');
+	    $data = input('post.');
 	    $data['pri_name']=preg_replace('/-+/','',$data['pri_name']);
 	    unset($data['level']);
         $validate =validate('Privilege');
@@ -39,6 +39,11 @@ class Privilege extends Controller
 
 	    return json(['data'=>'ok','code'=>0,'msg'=>'修改成功']);
 
+    }
+    public function getOne(){
+	    $data = input('post.');
+	    $data =model('Privilege')->getOne($data['id']);
+        return json(['data'=>$data,'code'=>0,'msg'=>'某条权限数据']);
     }
     public function add(){
 	    $data = input('post.');
