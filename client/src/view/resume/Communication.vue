@@ -18,6 +18,12 @@
                     <el-table-column
                         align="center"
                         prop="name"
+                        label="名字"
+                    >
+                    </el-table-column>
+                    <el-table-column
+                        align="center"
+                        prop="name"
                         label="时间"
                     >
                     </el-table-column>
@@ -25,10 +31,53 @@
                     <el-table-column
                         align="center"
                         prop="address"
-                        label="沟通内容"
+                        label="招聘负责人"
                     >
                     </el-table-column>
 
+                    <el-table-column
+                        align="center"
+                        prop="address"
+                        label="通过筛选"
+                    >
+                    </el-table-column>
+
+                    <el-table-column
+                        align="center"
+                        prop="address"
+                        label="安排面试"
+                    >
+                    </el-table-column>
+
+                    <el-table-column
+                        align="center"
+                        prop="address"
+                        label="到场"
+                    >
+                    </el-table-column>
+
+                    <el-table-column
+                        align="center"
+                        prop="address"
+                        label="通过面试"
+                    >
+                    </el-table-column>
+
+                    <el-table-column
+                        align="center"
+                        prop="address"
+                        label="入职"
+                    >
+                    </el-table-column>
+
+                    <el-table-column
+                        align="center"
+                        prop="address"
+                        label="操作"
+                    >
+
+                    
+                    </el-table-column>
                 </el-table>
             </template>
 
@@ -36,15 +85,19 @@
                 slot="footer"
                 class="dialog-footer"
             >
-                <el-button @click="addDialog = true"  type="primary">新增沟通</el-button>
+                <el-button
+                    @click="addDialog = true"
+                    type="primary"
+                >新增沟通</el-button>
                 <el-button @click="closeDialog">关 闭</el-button>
             </div>
         </el-dialog>
 
         <add-communication
             :show.sync="addDialog"
-            :resume_id="resume_id" 
-            @add-item="addItem">
+            :resume_id="resume_id"
+            @add-item="addItem"
+        >
         </add-communication>
     </div>
 
@@ -61,7 +114,6 @@ export default {
     mixins: [DialogForm],
 
     props: {
-
         //简历的id
         resume_id: {
             required: true,
@@ -81,7 +133,7 @@ export default {
             dialogVisible: false,
 
             //新增沟通
-            addDialog: false,
+            addDialog: false
         };
     },
     methods: {
@@ -121,4 +173,9 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+.custom-dialog{
+    width: 120%;
+    transform: translateX(-150px);
+
+}
 </style>

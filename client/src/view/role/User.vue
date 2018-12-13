@@ -7,7 +7,7 @@
         :close-on-click-modal="false"
         width="560px"
     >
-        <div class="dialog-content">
+        <div class="dialog-content mb-20">
             <el-transfer
                 filterable
                 filter-placeholder="请输入用户名"

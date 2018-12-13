@@ -2,6 +2,7 @@
 namespace app\index\controller;
 
 use app\index\model\RolePri;
+use app\index\model\UserRole;
 
 class Role
 {
@@ -81,8 +82,31 @@ class Role
         $id=model('Role')->add($data);
         if($id){
             $data = model('Role')->getOne($id);
-            return json(['data'=>$data,'code'=>0,'msg'=>'新增成功']);
+            return json(['data'=>$data[0],'code'=>0,'msg'=>'新增成功']);
         }
+    }
+    public function getUserById(){
+        $data = input('get.');
+        $data = model('UserRole')->alias('UR')
+//            ->join('user U','U.id=UR.user_id','left')
+            ->where('role_id',$data['role_id'])->select()->toArray();
+        $data =array_column($data,'user_id');
+        return json(['data'=>$data,'code'=>0,'msg'=>'获取数据成功']);
+    }
+    public function setRoleUser(){
+        $data = input('post.');
+        $arr = [];
+        try{
+            UserRole::where(['role_id'=>$data['role_id']])->delete();
+            foreach ($data['role_user'] as $k =>$v){
+                array_push($arr,['role_id'=>$data['role_id'],'user_id'=>$v]);
+            }
+            model('UserRole')->saveAll($arr);
+        }catch(\Exception $e){
+            return json(['data'=>$e->getMessage(),'code'=>1,'msg'=>'设置失败']);
+        }
+
+        return json(['data'=>null,'code'=>0,'msg'=>'设置成功']);
     }
     public function edit(){
         $data =input('post.');

@@ -94,53 +94,6 @@
                                         ></el-input>
                                     </el-form-item>
                                 </div>
-                                <div class="div-row">
-                                    <el-form-item
-                                        label="身高"
-                                        prop="height"
-                                    >
-                                        <el-input
-                                            size="mini"
-                                            v-model.trim="form.height"
-                                            autocomplete="off"
-                                        ></el-input>
-                                    </el-form-item>
-
-                                    <el-form-item
-                                        label="民族"
-                                        prop="national"
-                                    >
-                                        <el-input
-                                            size="mini"
-                                            v-model.trim="form.national"
-                                            autocomplete="off"
-                                        ></el-input>
-                                    </el-form-item>
-                                </div>
-
-                                <div class="div-row">
-                                    <el-form-item
-                                        label="籍贯"
-                                        prop="native_place"
-                                    >
-                                        <el-input
-                                            size="mini"
-                                            v-model.trim="form.basicData.native_place"
-                                            autocomplete="off"
-                                        ></el-input>
-                                    </el-form-item>
-
-                                    <el-form-item
-                                        label="邮编"
-                                        prop="zipCode"
-                                    >
-                                        <el-input
-                                            size="mini"
-                                            v-model.trim="form.zipCode"
-                                            autocomplete="off"
-                                        ></el-input>
-                                    </el-form-item>
-                                </div>
 
                                 <div class="div-row">
                                     <el-form-item
@@ -192,30 +145,6 @@
 
                                 <div class="div-row">
                                     <el-form-item
-                                        label="出生年月"
-                                        prop="dateOfBirth"
-                                    >
-                                        <el-input
-                                            size="mini"
-                                            v-model.trim="form.dateOfBirth"
-                                            autocomplete="off"
-                                        ></el-input>
-                                    </el-form-item>
-
-                                    <el-form-item
-                                        label="政治面貌"
-                                        prop="politicalLandscape"
-                                    >
-                                        <el-input
-                                            size="mini"
-                                            v-model.trim="form.politicalLandscape"
-                                            autocomplete="off"
-                                        ></el-input>
-                                    </el-form-item>
-                                </div>
-
-                                <div class="div-row">
-                                    <el-form-item
                                         label="英语水平"
                                         prop="englishLevel"
                                     >
@@ -227,18 +156,63 @@
                                     </el-form-item>
 
                                     <el-form-item
-                                        label="计算机水平"
-                                        prop="computerSkills"
+                                        label="工作地点"
+                                        prop="expected_address"
                                     >
                                         <el-input
                                             size="mini"
-                                            v-model.trim="form.computerSkills"
+                                            v-model.trim="form.basicData.expected_address"
                                             autocomplete="off"
                                         ></el-input>
                                     </el-form-item>
+
                                 </div>
 
                                 <el-form-item
+                                    label="籍贯"
+                                    prop="native_place"
+                                >
+                                    <el-input
+                                        size="mini"
+                                        v-model.trim="form.basicData.native_place"
+                                        autocomplete="off"
+                                    ></el-input>
+                                </el-form-item>
+
+                                <!-- <el-form-item
+                                        label="邮编"
+                                        prop="zipCode"
+                                    >
+                                        <el-input
+                                            size="mini"
+                                            v-model.trim="form.zipCode"
+                                            autocomplete="off"
+                                        ></el-input>
+                                    </el-form-item> -->
+
+                                <el-form-item
+                                    label="出生年月"
+                                    prop="dateOfBirth"
+                                >
+                                    <el-input
+                                        size="mini"
+                                        v-model.trim="form.dateOfBirth"
+                                        autocomplete="off"
+                                    ></el-input>
+                                </el-form-item>
+
+                                <!-- <el-form-item
+                                        label="政治面貌"
+                                        prop="politicalLandscape"
+                                    >
+                                        <el-input
+                                            size="mini"
+                                            v-model.trim="form.politicalLandscape"
+                                            autocomplete="off"
+                                        ></el-input>
+                                    </el-form-item> -->
+
+                                <!-- <el-form-item
                                     label="住址"
                                     prop="address"
                                 >
@@ -247,7 +221,7 @@
                                         v-model.trim="form.address"
                                         autocomplete="off"
                                     ></el-input>
-                                </el-form-item>
+                                </el-form-item> -->
 
                                 <el-form-item
                                     label="电子邮箱"
@@ -271,7 +245,7 @@
                                     ></el-input>
                                 </el-form-item>
 
-                                <el-form-item
+                                <!-- <el-form-item
                                     label="求职意向"
                                     prop="expected_industry"
                                 >
@@ -280,18 +254,7 @@
                                         v-model.trim="form.basicData.expected_industry"
                                         autocomplete="off"
                                     ></el-input>
-                                </el-form-item>
-
-                                <el-form-item
-                                    label="工作地点"
-                                    prop="expected_address"
-                                >
-                                    <el-input
-                                        size="mini"
-                                        v-model.trim="form.basicData.expected_address"
-                                        autocomplete="off"
-                                    ></el-input>
-                                </el-form-item>
+                                </el-form-item> -->
 
                                 <el-form-item
                                     label="最近单位"
@@ -343,57 +306,6 @@
                                             ></el-input>
                                         </el-col>
                                         <el-col class="right-item">
-                                            <div class="sub-header"> 培训经历</div>
-                                            <el-input
-                                                type="textarea"
-                                                v-model="form.trainingexperience"
-                                                resize="none"
-                                            ></el-input>
-                                        </el-col>
-                                        <el-col class="right-item">
-                                            <div class="sub-header"> 所修课程</div>
-                                            <el-input
-                                                type="textarea"
-                                                v-model="form.coursescompleted"
-                                                resize="none"
-                                            ></el-input>
-                                        </el-col>
-                                        <el-col class="right-item">
-                                            <div class="sub-header"> 所获证书</div>
-                                            <el-input
-                                                type="textarea"
-                                                v-model="form.obtainedcertificate"
-                                                resize="none"
-                                            ></el-input>
-                                        </el-col>
-                                    </el-row>
-                                </el-tab-pane>
-
-                                <el-tab-pane
-                                    label="配置管理"
-                                    name="second"
-                                >
-                                    <el-row
-                                        align="top"
-                                        class="row-height"
-                                    >
-                                        <el-col class="right-item">
-                                            <div class="sub-header"> 工作经历</div>
-                                            <el-input
-                                                type="textarea"
-                                                v-model="form.workExperience"
-                                                resize="none"
-                                            ></el-input>
-                                        </el-col>
-                                        <el-col class="right-item">
-                                            <div class="sub-header"> 项目经验</div>
-                                            <el-input
-                                                type="textarea"
-                                                v-model="form.projectExperience"
-                                                resize="none"
-                                            ></el-input>
-                                        </el-col>
-                                        <el-col class="right-item">
                                             <div class="sub-header"> 个人技能</div>
                                             <el-input
                                                 type="textarea"
@@ -409,11 +321,72 @@
                                                 resize="none"
                                             ></el-input>
                                         </el-col>
+                                        <!-- <el-col class="right-item">
+                                            <div class="sub-header"> 培训经历</div>
+                                            <el-input
+                                                type="textarea"
+                                                v-model="form.trainingexperience"
+                                                resize="none"
+                                            ></el-input>
+                                        </el-col> -->
+                                        <!-- <el-col class="right-item">
+                                            <div class="sub-header"> 所修课程</div>
+                                            <el-input
+                                                type="textarea"
+                                                v-model="form.coursescompleted"
+                                                resize="none"
+                                            ></el-input>
+                                        </el-col> -->
+                                        <el-col class="right-item">
+                                            <div class="sub-header"> 所获证书</div>
+                                            <el-input
+                                                type="textarea"
+                                                v-model="form.obtainedcertificate"
+                                                resize="none"
+                                            ></el-input>
+                                        </el-col>
                                     </el-row>
                                 </el-tab-pane>
+
+                                <el-tab-pane
+                                    label="工作经历"
+                                    name="second"
+                                >
+                                    <el-row
+                                        align="top"
+                                        class="row3-height"
+                                    >
+                                        <el-col class="right2-item">
+                                            <el-input
+                                                type="textarea"
+                                                v-model="form.custom01"
+                                                resize="none"
+                                            ></el-input>
+                                        </el-col>
+                                    </el-row>
+                                </el-tab-pane>
+
+                                <el-tab-pane
+                                    label="项目经验"
+                                    name="third"
+                                >
+                                    <el-row
+                                        align="top"
+                                        class="row3-height"
+                                    >
+                                        <el-col class="right2-item">
+                                            <el-input
+                                                type="textarea"
+                                                v-model="form.custom01"
+                                                resize="none"
+                                            ></el-input>
+                                        </el-col>
+                                    </el-row>
+                                </el-tab-pane>
+
                                 <el-tab-pane
                                     label="自定义信息"
-                                    name="third"
+                                    name="fourth"
                                 >
                                     <el-row
                                         align="top"
@@ -518,13 +491,10 @@ export default {
                     native_place: "",
                     phone: "",
                     sex: "",
-                    status:"",
-                    work_year: "",
-
+                    status: "",
+                    work_year: ""
                 },
 
-                height: "",
-                national: "",
                 ExpectToPay: "",
                 dateOfBirth: "",
                 politicalLandscape: "",
@@ -537,12 +507,11 @@ export default {
                 //教育背景
                 educationalBackground: {
                     educational: "",
-                    graduation_time:"",
+                    graduation_time: "",
                     school: "",
-                    speciality: "",
+                    speciality: ""
                 },
                 //  educationalBackground:"",
-
 
                 // 培训经历
                 trainingexperience: "",
@@ -552,11 +521,10 @@ export default {
                 obtainedcertificate: "",
 
                 workExperience: "",
-                projectExperience:"",
+                projectExperience: "",
                 //工作技能
                 personalskills: "",
                 selfEvaluation: "",
-
 
                 //自定义
                 custom01: "",
@@ -578,10 +546,11 @@ export default {
                 .then(res => {
                     // console.log("***************");
                     that.form.basicData = res.data.basicData;
-                    that.form.educationalBackground = res.data.educationalBackground;
+                    that.form.educationalBackground =
+                        res.data.educationalBackground;
                     that.form.selfEvaluation = res.data.selfEvaluation;
 
-                    that.activeName = 'second'
+                    that.activeName = "second";
                     console.log(res);
                 })
                 .catch(res => {
@@ -679,6 +648,25 @@ export default {
 
             textarea {
                 height: 100%;
+            }
+        }
+    }
+}
+
+.row3-height {
+    height: 100%;
+
+    .right2-item {
+        height: 100%;
+        position: relative;
+
+        .el-textarea {
+            position: absolute;
+            top: 4px;
+            bottom: 50px;
+
+            textarea {
+                height: 109.5%;
             }
         }
     }

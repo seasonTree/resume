@@ -2,7 +2,7 @@
     <el-container>
         <el-header class="header clearfix">
             <div class="inline-block title">
-                简历管理系统
+                招聘管理系统
             </div>
             <div class="pull-left">
 

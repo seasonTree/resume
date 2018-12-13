@@ -22,6 +22,13 @@
                         prop="name"
                         label="文件名"
                     >
+
+                        <template slot-scope="scope">
+                            <a
+                                :href="scope.row.url"
+                                :title="scope.row.name"
+                            >{{scope.row.name}}</a>
+                        </template>
                     </el-table-column>
 
                     <el-table-column
@@ -42,6 +49,7 @@
                         fixed="right"
                         label="操作"
                         width="180"
+                        align="center"
                     >
                         <el-tooltip
                             effect="dark"
@@ -71,6 +79,7 @@
                     multiple
                     :on-success="uploadSuccess"
                     :on-error="uploadError"
+                    :show-file-list="false"
                 >
                     <el-button type="primary">上传附件</el-button>
                 </el-upload>
@@ -183,9 +192,9 @@ export default {
                     duration: 800
                 });
 
-                let copyItem = JSON.parse(JSON.stringify(res.data));
-                that.tdata.unshift(copyItem);
+                let copyData = JSON.parse(JSON.stringify(res.data));
 
+                that.tdata.unshift(...copyItem);
             } else {
                 that.$message.error(res.msg || "上传失败，请重试.");
             }
@@ -193,7 +202,7 @@ export default {
 
         //上传失败
         uploadError(err, file, fileList) {
-            that.$message.error("上传失败，请重试.");
+            this.$message.error("上传失败，请重试.");
         },
 
         //关闭后调用
