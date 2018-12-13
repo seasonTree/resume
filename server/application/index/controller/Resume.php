@@ -3,6 +3,7 @@ namespace app\index\controller;
 use think\Controller;
 use think\facade\Session;
 use think\facade\Env;
+use think\index\model\ResumeUpload;
 require_once dirname(Env::get('ROOT_PATH')).'/server/extend/Analysis.php';
 require_once dirname(Env::get('ROOT_PATH')).'/server/extend/phpanalysis/phpanalysis.class.php';
 
@@ -129,7 +130,7 @@ class Resume extends Controller
 
     }
 
-        public function getData($str){
+    public function getData($str){
         //尝试获取内容
         $arr = [];
         $rule = config('config.rule');
@@ -166,6 +167,7 @@ class Resume extends Controller
         $parm = implode("\n",$parm);
         $rule = config('config.resume_rule');
         $base_rule = config('config.base_rule');
+        $base_replace_blank = config('config.base_replace_blank');
         foreach ($base_rule as $string) {
             //处理特定字符格式
             $parm = preg_replace("/$string/","\n".$string,$parm);
@@ -176,7 +178,7 @@ class Resume extends Controller
         unset($parm[0]);
         foreach ($parm as $k => $v) {
             $v = $this->trimall($v);
-            $v = preg_replace("/(基本资料|ID:\d+|招聘网|智联招聘|前程无忧|匹配度(:|：)\d{2}%)|个人简历/",'',$v);
+            $v = preg_replace($base_replace_blank,'',$v);
             // $v = phpanalysis($v);
             // dump($v);
             foreach ($rule as $n => $pattern) {
@@ -597,6 +599,9 @@ class Resume extends Controller
         //项目经验
         // dump($parm);exit;
         $rule = config('config.projectExperience');//项目经验匹配规则
+        $project_continue_field = config('config.project_continue_field');//跳过字段
+        $project_name_field = config('config.project_name_field');//过滤项目名
+        $project_job_field = config('config.project_job_field');//过滤项目职位
         unset($parm[0]);//删除第零个元素
         $project = [];//最终结果集合
         $project_time_end = true;
@@ -610,7 +615,7 @@ class Resume extends Controller
             if ($v == '') {
                 continue;
             }
-            if (preg_match("/^(软件环境|硬件环境|开发工具|责任描述|当前状态)/",$v)) {
+            if (preg_match($project_continue_field,$v)) {
                 continue;
             }
             if (preg_match($rule['project_time'],$v,$preg)) {
@@ -642,7 +647,7 @@ class Resume extends Controller
             
             if (!preg_match($rule['special_characters'],$v) && $project_name_end == false) {
                 $v = preg_replace("/:|：/",'',$v);
-                if (!preg_match("/^(项目描述|项目职责|项目责任|(\d+)|（\d+）)/",$v,$preg)) {
+                if (!preg_match($project_name_field,$v,$preg)) {
                     
                     $project[$key_num]['project_name'] = $v;
                     $v = str_replace($v,'',$v);
@@ -653,7 +658,7 @@ class Resume extends Controller
             if (preg_match($rule['job'],$v,$preg) && $job_end == false) {
                 $v = preg_replace("/:|：/",'',$v);
                 if (!preg_match($rule['special_characters'],$v)) {
-                    if (!preg_match("/^(项目描述|项目职责|项目责任|(\d+)|（\d+）)/",$v,$preg)) {
+                    if (!preg_match($project_job_field,$v,$preg)) {
                         $project[$key_num]['job'] = $v;
                         $v = str_replace($v,'',$v);
                         $job_end = true;
@@ -918,25 +923,18 @@ class Resume extends Controller
         if ($content == '') {
             return json(['code' => 1,'msg' => '缺少内容','data' => []]);
         }
-        $rule = config('config.resume_rule');
 
-        // $enter = ['软件环境','硬件环境','项目描述','责任描述','开发工具','(离职,正在找工作)','手机','当前状态'];
+        $rule = config('config.resume_rule');
         foreach ($rule as $k => $v) {
-            //处理特定字符格式
+            //处理特定字符格式,加换行
             $content = preg_replace("/$v/","\n".$v,$content);
         }
-        // foreach ($enter as $a => $b) {
-        //     $content = preg_replace("/$b/","\n".$b,$content);
-        // }
-
-
-
         $content = explode("\n",$content);
 
         array_unshift($content,'基本资料');
         // dump($content);exit;
         $begin = 0;
-        $rule = "/^(基本资料|自我评价|自我描述|自我介绍|目前状况|工作经历|工作业绩|工作经验|教育经历|教育背景|项目经验|项目经历|简历内容|技能特长|技能专长|专业技能|求职意向|作品展示)/";
+        $rule = config('config.group_title');
         $arr = [];//分类集合
         $lt_index = count($content) - 1;
         $resume_title = config('config.resume_title');
@@ -981,10 +979,38 @@ class Resume extends Controller
 
     }
 
-    function trimall($str){
+    public function trimall($str){
         $qian = array(" ","　","\t","\n","\r");
         return str_replace($qian, '', $str);  
     }
+
+    public function upload(){
+        //上传
+        $path = dirname(Env::get('ROOT_PATH')).'/client/dist/uploads/';
+        // 获取表单上传文件
+        $file = request()->file('file_name');
+        // 移动到框架应用根目录/uploads/ 目录下
+        $info = $file->validate(['size'=>2097152,'ext'=>'doc,docx,html,htm,mht'])->move($path);
+        if($info){
+            $upload = new ResumeUpload();
+            $data = array(
+                'resume_url' => $file_path.$info->getSaveName(),
+                'create_id'  => Session::get('user_info')['id'];
+                );
+            //入库操作
+            $data['id'] = $upload->add($data);
+            $data['create_time'] = date('Y-m-d H:i:s',time());
+                
+            
+            return json(['msg' => '上传成功','code' => 0,'data' => $data ]);
+        }else{
+            // 上传失败获取错误信息
+            return json(['msg' => $file->getError(),'code' => 1]);
+        }
+    }
+
+    
+
 
 
 

@@ -16,11 +16,13 @@ Route::get('think', function () {
 
 Route::get('test','Resume/test');//测试用
 Route::post('api/resume/analyze','Resume/getResumeData');//获取简历内容
-
+Route::post('api/resume/upload','Resume/upload');//预留上传简历的接口
 
 Route::post('api/user/login','Login/login');//登录
 Route::post('api/user/logout','User/logOut');//退出登录
 Route::get('api/user/get_user_info','User/getUserInfo');//获取用户信息
+
+
 
 return [
 

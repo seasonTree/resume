@@ -4,7 +4,7 @@
  *
  * doc,docx,mht,html,htm => string or array or html
  *
- * 目前支持，doc，docx，mht，html，htm格式
+ * 目前支持，doc，docx，mht，html，htm格式,不能100%解析，存在解析不了的问题
  *
  */
 class Analysis {

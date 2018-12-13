@@ -17,7 +17,7 @@ class User
 
     public function logOut(){
         //登出
-        Session::clear();
+        session(null);
         return json(['code' => 0,'msg' => '退出成功','data' => []]);
     }
 
