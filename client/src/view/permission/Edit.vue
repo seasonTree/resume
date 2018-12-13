@@ -188,7 +188,7 @@ export default {
             let top_class = item.top_class;
 
             //如果选中了，并且超过了一个，父的第一个id为0会对应不上，另外处理
-            if(top_class.length && top_class.length > 1 && stop_class[0] == 0){
+            if(top_class.length && top_class.length > 1 && top_class[0] == 0){
                 top_class.shift();
             }
         },

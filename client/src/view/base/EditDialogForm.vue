@@ -28,7 +28,7 @@ export default {
             
             //复制数值
             for(var key in newItem){
-                form[key] = newItem[key];
+                that.form[key] = newItem[key];
             }
         }
     },
