@@ -52,8 +52,8 @@ export default {
                 searchData = JSON.parse(JSON.stringify(that.search));
 
             if (that.searchData) {
-                for(var key in that.searchData){
-                    if(that.searchData[i]){
+                for (var key in that.searchData) {
+                    if (that.searchData[i]) {
                         params[key] = that.searchData[key];
                     }
                 }
@@ -76,10 +76,9 @@ export default {
                 .get(params)
                 .then(res => {
                     if (res.code == 0) {
-
-                        if(res.data.row){
+                        if (res.data.row) {
                             that.tdata = res.data.rows;
-                        }else {
+                        } else {
                             that.tdata = res.data;
                         }
 
@@ -165,6 +164,8 @@ export default {
                             id
                         })
                         .then(res => {
+                            debugger;
+
                             if (res.code == 0) {
                                 that.$message({
                                     message: "删除成功.",
@@ -192,10 +193,10 @@ export default {
                         });
                 })
                 .catch(() => {});
-        }
-    },
+        },
 
-    //删除之后
-    afterDel(item){},
+        //删除之后
+        afterDel(item) {}
+    }
 };
 </script>
