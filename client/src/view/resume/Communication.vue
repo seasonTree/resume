@@ -18,6 +18,12 @@
                     <el-table-column
                         align="center"
                         prop="name"
+                        label="名字"
+                    >
+                    </el-table-column>
+                    <el-table-column
+                        align="center"
+                        prop="name"
                         label="时间"
                     >
                     </el-table-column>
@@ -36,15 +42,19 @@
                 slot="footer"
                 class="dialog-footer"
             >
-                <el-button @click="addDialog = true"  type="primary">新增沟通</el-button>
+                <el-button
+                    @click="addDialog = true"
+                    type="primary"
+                >新增沟通</el-button>
                 <el-button @click="closeDialog">关 闭</el-button>
             </div>
         </el-dialog>
 
         <add-communication
             :show.sync="addDialog"
-            :resume_id="resume_id" 
-            @add-item="addItem">
+            :resume_id="resume_id"
+            @add-item="addItem"
+        >
         </add-communication>
     </div>
 
@@ -61,7 +71,6 @@ export default {
     mixins: [DialogForm],
 
     props: {
-
         //简历的id
         resume_id: {
             required: true,
@@ -81,7 +90,7 @@ export default {
             dialogVisible: false,
 
             //新增沟通
-            addDialog: false,
+            addDialog: false
         };
     },
     methods: {

@@ -9,6 +9,11 @@
                     @click="addDialog = true"
                 >新增简历</el-button>
 
+                <el-button
+                    type="primary"
+                    @click="addDialog = true"
+                >搜索</el-button>
+
             </div>
             <el-table
                 :data="tdata"
@@ -331,8 +336,8 @@ export default {
             communicationID: 0,
 
             //上传文件
-             uploadFileDialog: false,
-             uploadFileID: 0,
+            uploadFileDialog: false,
+            uploadFileID: 0,
 
             //查看
             viewDialog: false,
