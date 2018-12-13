@@ -48,7 +48,7 @@ export default {
                     that.$api[that.apiType]
                         .edit(that.form)
                         .then(res => {
-                            if (res.error == 0) {
+                            if (res.code == 0) {
                                 //修改成功后
                                 that.afterEdit(res.data);
 
@@ -64,7 +64,7 @@ export default {
                                 });
 
                                 that.closeDialog();
-                            } else if (res.error == 500 || res.error == 507) {
+                            } else{
                                 that.$message.error(res.msg);
                             }
                         })
