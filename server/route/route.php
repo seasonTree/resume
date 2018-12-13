@@ -24,7 +24,12 @@ Route::get('api/user/get_user_info','User/getUserInfo');//获取用户信息
 Route::post('api/permission/add','Privilege/add');//添加权限信息
 Route::post('api/permission/get_by_id','Privilege/getOne');//获取一条权限信息
 Route::post('api/permission/edit','Privilege/edit');//修改权限信息
+Route::post('api/permission/del','Privilege/del');//删除某条权限信息
 Route::get('api/permission/list','Privilege/lst');
+Route::get('api/role/list','Role/lst');
+Route::post('api/role/add','Role/add');
+Route::get('api/role/get_check_permission','Role/getRolePri');
+Route::post('api/role/set_role_permission','Role/setRolePri');
 
 return [
 

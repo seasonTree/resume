@@ -30,6 +30,14 @@ class Privilege extends Model
         $num =$this->setField($data);
         return $num;
     }
+    public function del($id){
+       $chlids = $this->getChildren($id);
+       if(empty($chlids)){
+            return $res =Privilege::destroy($id);
+       }else{
+           return $res = false;
+       }
+    }
     public function getOne($id){
         $this->data = $id;
         $data =$this->select()->toArray();

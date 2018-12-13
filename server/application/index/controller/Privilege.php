@@ -64,11 +64,11 @@ class Privilege extends Controller
     }
     public function del(){
 	    $id = input('post.');
-        $res['msg'] = \app\index\model\Privilege::destroy($id);
+        $res['msg'] = model('Privilege')->del($id['id']);
         if ($res['msg']){
-            return json(['data'=>'ok','code'=>0,'msg'=>'删除成功']);
+            return json(['data'=>null,'code'=>0,'msg'=>'删除成功']);
         }else{
-            return json(['data'=>'','code'=>1,'msg'=>'删除失败']);
+            return json(['data'=>'err','code'=>1,'msg'=>'删除失败']);
         }
 
     }

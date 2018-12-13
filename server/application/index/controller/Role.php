@@ -1,22 +1,51 @@
 <?php
 namespace app\index\controller;
 
+use app\index\model\RolePri;
+
 class Role
 {
+    public $data = '';
 //    protected $middleware =['Check'];
-	public function index(){
-       
-		//角色主页
-		return view('/user_role');
-	}
+//	public function index(){
+//
+//		//角色主页
+//		return view('/user_role');
+//	}
+    public function getRolePri(){
+        $id = input('get.id');
+        $data =model('RolePri')->where("role_id",$id)->select()->toArray();
+        $data =array_column($data,'p_id');
+        return json(['data'=>$data,'code'=>0,'msg'=>'获取数据成功']);
+    }
+    public function setRolePri(){
+        $data = input('post.');
+        $this->data = $data['id'];
+        $arr = [];
+        try{
+            RolePri::where(['role_id'=>$data['id']])->delete();
+            foreach ($data['permission'] as $k =>$v){
+                array_push($arr,['role_id'=>$data['id'],'p_id'=>$v]);
+            }
+            model('RolePri')->saveAll($arr);
+        }catch(\Exception $e){
+            return json(['data'=>$e->getMessage(),'code'=>1,'msg'=>'设置失败']);
+        }
+
+        return json(['data'=>null,'code'=>0,'msg'=>'设置成功']);
+
+
+    }
 	public function lst(){
+	    $data = input('get.');
+
         $list =model('Role')->lst();
 
-        foreach ($list as $k=>$v){
-            $v['username'] =array_unique(explode(',',$v['username']));$list[$k]['username'] =implode(',',$v['username']);
-            $v['pri_name'] =array_unique(explode(',',$v['pri_name']));$list[$k]['pri_name'] =implode(',',$v['pri_name']);
-            $v['pri_id'] =array_unique(explode(',',$v['pri_id']));$list[$k]['pri_id'] =implode(',',$v['pri_id']);
-        }
+//        foreach ($list as $k=>$v){
+//            $v['username'] =array_unique(explode(',',$v['username']));$list[$k]['username'] =implode(',',$v['username']);
+//            $v['pri_name'] =array_unique(explode(',',$v['pri_name']));$list[$k]['pri_name'] =implode(',',$v['pri_name']);
+//            $v['pri_id'] =array_unique(explode(',',$v['pri_id']));$list[$k]['pri_id'] =implode(',',$v['pri_id']);
+//        }
 
         $priData =model('privilege')->getTree();
 
@@ -25,27 +54,29 @@ class Role
             'role' => $priData
         ];
 
-        return json(['data'=>$data,'code'=>0,'msg'=>'获取数据成功']);
+        return json(['data'=>$list,'code'=>0,'msg'=>'获取数据成功']);
     }
     public function add(){
-	    $data = input('post.data');
-	    if(empty($data['selected'])){
-            return json(['data'=>'','code'=>1,'msg'=>'请选择权限']);
-        }
-	    $arr['role_name'] = $data['role_name'];
-        foreach ($data['selected'] as $k =>$v){
-            $arr['pri_id'][] =$v['id'];
-        }
-        $data = $arr;
-        $validate =validate('Role');
-        if (!$validate->check($data)){
-            $error =$validate->getError();
-            return json(['data'=>'','code'=>1,'msg'=>$error]);
-        }
+	    $data = input('post.');
+
+//	    if(empty($data['selected'])){
+//            return json(['data'=>'','code'=>1,'msg'=>'请选择权限']);
+//        }
+//	    $arr['role_name'] = $data['role_name'];
+//        foreach ($data['selected'] as $k =>$v){
+//            $arr['pri_id'][] =$v['id'];
+//        }
+//        $data = $arr;
+//        $validate =validate('Role');
+//        if (!$validate->check($data)){
+//            $error =$validate->getError();
+//            return json(['data'=>'','code'=>1,'msg'=>$error]);
+//        }
 
         $id=model('Role')->add($data);
         if($id){
-            return json(['data'=>'','code'=>0,'msg'=>'新增成功']);
+            $data = model('Role')->getOne($id);
+            return json(['data'=>$data,'code'=>0,'msg'=>'新增成功']);
         }
     }
     public function edit(){
