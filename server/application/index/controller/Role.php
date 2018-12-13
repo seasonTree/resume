@@ -88,8 +88,9 @@ class Role
     public function getUserById(){
         $data = input('get.');
         $data = model('UserRole')->alias('UR')
-            ->join('user U','U.id=UR.user_id','left')
+//            ->join('user U','U.id=UR.user_id','left')
             ->where('role_id',$data['role_id'])->select()->toArray();
+        $data =array_column($data,'user_id');
         return json(['data'=>$data,'code'=>0,'msg'=>'获取数据成功']);
     }
     public function setRoleUser(){
