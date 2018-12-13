@@ -31,10 +31,53 @@
                     <el-table-column
                         align="center"
                         prop="address"
-                        label="沟通内容"
+                        label="招聘负责人"
                     >
                     </el-table-column>
 
+                    <el-table-column
+                        align="center"
+                        prop="address"
+                        label="通过筛选"
+                    >
+                    </el-table-column>
+
+                    <el-table-column
+                        align="center"
+                        prop="address"
+                        label="安排面试"
+                    >
+                    </el-table-column>
+
+                    <el-table-column
+                        align="center"
+                        prop="address"
+                        label="到场"
+                    >
+                    </el-table-column>
+
+                    <el-table-column
+                        align="center"
+                        prop="address"
+                        label="通过面试"
+                    >
+                    </el-table-column>
+
+                    <el-table-column
+                        align="center"
+                        prop="address"
+                        label="入职"
+                    >
+                    </el-table-column>
+
+                    <el-table-column
+                        align="center"
+                        prop="address"
+                        label="操作"
+                    >
+
+                    
+                    </el-table-column>
                 </el-table>
             </template>
 
@@ -130,4 +173,9 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+.custom-dialog{
+    width: 120%;
+    transform: translateX(-150px);
+
+}
 </style>
