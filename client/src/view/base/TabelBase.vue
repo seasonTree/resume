@@ -59,7 +59,7 @@ export default {
                 }
 
                 //添加搜索天剑
-                params = { ...that.search };
+                // params = { ...that.search };
             }
 
             if (that.pager) {
