@@ -84,7 +84,7 @@ create table rs_user_permission
 -- 简历
 -- -----------------------------------------------------
 drop table if exists rs_resume;
-create table rs_user_permission
+create table rs_resume
 (
 	role_id bigint(20) not null comment '简历id',
 	name varchar(20) not null default '' comment '姓名',
@@ -109,4 +109,21 @@ create table rs_user_permission
 	speciality varchar(20) not null default '' comment '专业',
 	graduation_time varchar(20) not null default '' comment '在校时间',
 	skillExpertise text comment '专业技能',
+
+
+
+);
+-- -----------------------------------------------------
+-- 上传
+-- -----------------------------------------------------
+drop table if exists rs_resume_upload;
+create table rs_resume_upload
+(
+	id bigint(20) auto_increment primary key comment 'id',
+	create_id bigint(20) not null default 0 comment '上传人id',
+	resume_url varchar(100) not null default '' comment '简历文件对应的路径',
+	create_time datetime default CURRENT_TIMESTAMP not null comment '创建时间',
+	
+
+
 );
