@@ -164,7 +164,6 @@ export default {
                             id
                         })
                         .then(res => {
-                            debugger;
 
                             if (res.code == 0) {
                                 that.$message({
