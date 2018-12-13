@@ -23,6 +23,8 @@ export default {
         editItem(newValue, oldValue){
             let that = this,
                 newItem = deepClone(newValue);
+
+            that.beforeSetData(newItem);
             
             //复制数值
             for(var key in newItem){
@@ -32,6 +34,9 @@ export default {
     },
 
     methods: {
+        //在设置数据之前操作
+        beforeSetData(){},
+
         editCommit() {
             let that = this;
 
