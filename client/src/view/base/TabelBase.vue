@@ -172,14 +172,17 @@ export default {
                                     duration: 800
                                 });
 
+                                let delItem = null;
                                 for (var i = 0; i < that.tdata.length; i++) {
                                     var item = that.tdata[i];
 
                                     if (item.id == id) {
-                                        that.tdata.splice(i, 1);
+                                        delItem = that.tdata.splice(i, 1);
                                         break;
                                     }
                                 }
+
+                                that.afterDel(delItem);
                             } else {
                                 that.$message.error(res.msg);
                             }
@@ -190,6 +193,9 @@ export default {
                 })
                 .catch(() => {});
         }
-    }
+    },
+
+    //删除之后
+    afterDel(item){},
 };
 </script>

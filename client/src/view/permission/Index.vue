@@ -253,7 +253,13 @@ export default {
         editItem(item) {
             let that = this;
             that.getData();
-        }
+        },
+
+        //删除之后
+        afterDel(item){
+            let that = this;
+            that.getData();
+        },
     }
 };
 </script>
