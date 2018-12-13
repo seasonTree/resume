@@ -17,6 +17,11 @@ class User extends Model
         return $this->getOne($where);
     }
 
+    public function getUser($where){
+        //获取用户名
+        return User::where($where)->value('uname');
+    }
+
     public function getOne($where){
         //获取一条数据
         return User::where($where)->find();

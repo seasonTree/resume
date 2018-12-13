@@ -16,7 +16,7 @@ Route::get('think', function () {
 
 Route::get('test','Resume/test');//测试用
 Route::post('api/resume/analyze','Resume/getResumeData');//获取简历内容
-Route::post('api/resume/upload','Resume/upload');//预留上传简历的接口
+// Route::post('api/resume/upload','Resume/upload');//预留上传简历的接口
 
 Route::get('api/resume/list','');//获取简历列表，分页，数据放到row字段下，同时要返回total总记录数
 Route::post('api/resume/add','');//新增简历
@@ -25,8 +25,8 @@ Route::get('api/resume/get_by_id','');//根据id获取简历内容
 Route::post('api/resume/del','');//删除简历
 Route::get('api/resume/get_communication','');//获取沟通列表
 Route::post('api/resume/add_communication','');//添加沟通信息
-Route::get('api/resume/get_upload_file','');//获取附件列表
-Route::post('api/resume/upload_file','');//添加简历附件
+Route::get('api/resume/get_upload_file','Resume/uploadList');//获取附件列表
+Route::post('api/resume/upload_file','Resume/upload');//添加简历附件
 Route::post('api/resume/del_file','');//删除简历附件
 
 

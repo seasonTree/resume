@@ -17,6 +17,10 @@ class ResumeUpload extends Model
         return ResumeUpload::insertGetId($data);
     }
 
+    public function get($where = '1=1'){
+        //获取数据
+        return ResumeUpload::where($where)->select();
+    }
 
 
 }

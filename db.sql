@@ -86,29 +86,33 @@ create table rs_user_permission
 drop table if exists rs_resume;
 create table rs_resume
 (
-	role_id bigint(20) not null comment '简历id',
+	id bigint(20) not null comment '简历id',
 	name varchar(20) not null default '' comment '姓名',
 	phone varchar(20) not null default '' comment '电话',
 	birthday varchar(20) not null default '' comment '生日',
 	sex varchar(20) not null default '' comment '性别',
 	age varchar(20) not null default '' comment '年龄',
-	work_year varchar(20) not null default '' comment '工作经验',
-	political varchar(10) not null default '' comment '政治面貌',
+	work_year varchar(20) not null default '' comment '工作年限',
 	native_place varchar(20) not null default '' comment '户口所在地',
-	domicile varchar(20) not null default '' comment '当前所在地',
 	email varchar(30) not null default '' comment '电子邮箱',
-	postal_code int(10) default Null comment '邮政编码',
 	expected_money varchar(30) not null default '' comment '期望薪资',
 	status varchar(20) not null default '' comment '状态',
-	expected_industry varchar(20) not null default '' comment '期望从事行业',
-	expected_job varchar(20) not null default '' comment '期望从事职业',
+	english varchar(20) not null default '' comment '英语水平',
+	-- expected_industry varchar(20) not null default '' comment '期望从事行业',
+	-- expected_job varchar(20) not null default '' comment '期望从事职业',
 	expected_address varchar(30) not null default '' comment '期望工作地点',
 	selfEvalation text comment '自我介绍',
 	school varchar(30) not null default '' comment '毕业学校',
 	educational varchar(10) not null default '' comment '学历',
 	speciality varchar(20) not null default '' comment '专业',
-	graduation_time varchar(20) not null default '' comment '在校时间',
+	-- graduation_time varchar(20) not null default '' comment '在校时间',
 	skillExpertise text comment '专业技能',
+	work_experience text comment '工作经验',
+	project_experience text comment '项目经验',
+	ct_user varchar(64) default '' not null comment '创建人',
+	ct_time datetime default CURRENT_TIMESTAMP not null comment '创建时间',
+	mfy_user varchar(64) default '' not null comment '修改人',
+	mfy_time datetime default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP not null comment '修改时间'	
 
 
 
@@ -120,10 +124,28 @@ drop table if exists rs_resume_upload;
 create table rs_resume_upload
 (
 	id bigint(20) auto_increment primary key comment 'id',
-	create_id bigint(20) not null default 0 comment '上传人id',
-	resume_url varchar(100) not null default '' comment '简历文件对应的路径',
-	create_time datetime default CURRENT_TIMESTAMP not null comment '创建时间',
-	
+	file_name varchar(100) not null default '' comment '文件名',
+	resume_url varchar(255) not null default '' comment '简历文件对应的路径',
+	ct_user varchar(64) default '' null comment '创建人',
+	ct_time datetime default CURRENT_TIMESTAMP not null comment '创建时间',
 
+);
 
+-- -----------------------------------------------------
+-- 上传
+-- -----------------------------------------------------
+drop table if exists rs_communicate;
+create table rs_communicate
+(
+	id bigint(20) auto_increment primary key comment 'id',
+	screen tinyint(1) not null default 0 comment '是否通过筛选,1,是，0否',
+	arrange_interview tinyint(1) not null default 0 comment '是否安排面试',
+	arrive tinyint(1) not null default 0 comment '是否到场',
+	approved_interview tinyint(1) not null default 0 comment '是否通过面试',
+	entry tinyint(1) not null default 0 comment '是否入职',
+	ct_user varchar(64) default '' null comment '招聘负责人',
+	ct_time datetime default CURRENT_TIMESTAMP not null comment '创建时间',
+	mfy_user varchar(64) default '' not null comment '修改人',
+	mfy_time datetime default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP not null comment '修改时间',
+	resume_id bigint(20) not null default 0 comment '简历id'
 );
