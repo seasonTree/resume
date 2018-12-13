@@ -20,9 +20,9 @@ export default {
     },
 
     watch: {
-        editItem(newValue, oldValue){
+        show(newValue, oldValue){
             let that = this,
-                newItem = deepClone(newValue);
+                newItem = deepClone(that.editItem);
 
             that.beforeSetData(newItem);
             

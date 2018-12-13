@@ -11,7 +11,7 @@
                 <el-button
                     type="primary"
                     @click="sortDialog = true"
-                >菜单排序</el-button>
+                >排序</el-button>
 
                 <!-- <el-row
                     type="flex"

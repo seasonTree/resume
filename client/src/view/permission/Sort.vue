@@ -1,6 +1,6 @@
 <template>
     <el-dialog
-        title="菜单排序"
+        title="排序"
         :visible.sync="show"
         :before-close="closeDialog"
         class="custom-dialog"
