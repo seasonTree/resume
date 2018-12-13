@@ -45,6 +45,9 @@ Route::post('api/role/del','Role/del');
 Route::get('api/role/get_check_permission','Role/getRolePri');
 Route::post('api/role/set_role_permission','Role/setRolePri');
 Route::post('api/role/get_by_id','Role/getOne');
+Route::get('api/role/get_user_by_id','Role/getUserById');
+Route::post('api/role/set_role_user','Role/setRoleUser');
+Route::get('api/user/all_list','User/lst');
 
 
 

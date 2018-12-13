@@ -21,7 +21,9 @@ class User extends Model
         //获取一条数据
         return User::where($where)->find();
     }
-
+    public function lst(){
+        return $this->select()->toArray();
+    }
 
 
 }

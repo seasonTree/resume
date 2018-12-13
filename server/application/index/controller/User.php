@@ -25,5 +25,9 @@ class User
         //修改密码
         
     }
+    public function lst(){
+      $data = model('User')->lst();
+      return json(['code' => 0,'msg' => '退出成功','data' => $data]);
+    }
 
 }
