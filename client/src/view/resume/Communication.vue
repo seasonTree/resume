@@ -173,9 +173,4 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.custom-dialog{
-    width: 120%;
-    transform: translateX(-150px);
-
-}
 </style>
