@@ -23,8 +23,8 @@ Route::post('api/resume/add','Resume/addResume');//新增简历
 Route::post('api/resume/edit','Resume/editResume');//修改简历
 Route::get('api/resume/get_by_id','Resume/getResumeOne');//根据id获取简历内容
 Route::post('api/resume/del','Resume/delResume');//删除简历
-Route::get('api/resume/get_communication','');//获取沟通列表
-Route::post('api/resume/add_communication','');//添加沟通信息
+Route::get('api/resume/get_communication','Communicate/commList');//获取沟通列表
+Route::post('api/resume/add_communication','Communicate/addComm');//添加沟通信息
 Route::get('api/resume/get_upload_file','Resume/uploadList');//获取附件列表
 Route::post('api/resume/upload_file','Resume/upload');//添加简历附件
 Route::post('api/resume/del_file','');//删除简历附件

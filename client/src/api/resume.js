@@ -24,7 +24,7 @@ export function add(data){
 export function getByID(data){
     return request({
         url: `${prefix}/get_by_id`,
-        method: 'post',
+        method: 'get',
         data: data
     })
 }
