@@ -55,7 +55,7 @@
                                     >
                                         <el-input
                                             size="mini"
-                                            v-model.trim="form.basicData.name"
+                                            v-model.trim="form.name"
                                             autocomplete="off"
                                         ></el-input>
                                     </el-form-item>
@@ -66,7 +66,7 @@
                                     >
                                         <el-input
                                             size="mini"
-                                            v-model.trim="form.basicData.age"
+                                            v-model.trim="form.age"
                                             autocomplete="off"
                                         ></el-input>
                                     </el-form-item>
@@ -78,7 +78,7 @@
                                     >
                                         <el-input
                                             size="mini"
-                                            v-model.trim="form.basicData.sex"
+                                            v-model.trim="form.sex"
                                             autocomplete="off"
                                         ></el-input>
                                     </el-form-item>
@@ -89,7 +89,7 @@
                                     >
                                         <el-input
                                             size="mini"
-                                            v-model.trim="form.educationalBackground.educational"
+                                            v-model.trim="form.educational"
                                             autocomplete="off"
                                         ></el-input>
                                     </el-form-item>
@@ -102,7 +102,7 @@
                                     >
                                         <el-input
                                             size="mini"
-                                            v-model.trim="form.educationalBackground.speciality"
+                                            v-model.trim="form.speciality"
                                             autocomplete="off"
                                         ></el-input>
                                     </el-form-item>
@@ -113,7 +113,7 @@
                                     >
                                         <el-input
                                             size="mini"
-                                            v-model.trim="form.basicData.birthday"
+                                            v-model.trim="form.birthday"
                                             autocomplete="off"
                                         ></el-input>
                                     </el-form-item>
@@ -127,7 +127,7 @@
                                     >
                                         <el-input
                                             size="mini"
-                                            v-model.trim="form.basicData.expected_money"
+                                            v-model.trim="form.expected_money"
                                             autocomplete="off"
                                         ></el-input>
                                     </el-form-item>
@@ -138,7 +138,7 @@
                                     >
                                         <el-input
                                             size="mini"
-                                            v-model.trim="form.basicData.phone"
+                                            v-model.trim="form.phone"
                                             autocomplete="off"
                                         ></el-input>
                                     </el-form-item>
@@ -152,7 +152,7 @@
                                     >
                                         <el-input
                                             size="mini"
-                                            v-model.trim="form.basicData.native_place"
+                                            v-model.trim="form.native_place"
                                             autocomplete="off"
                                         ></el-input>
                                     </el-form-item>
@@ -163,7 +163,7 @@
                                     >
                                         <el-input
                                             size="mini"
-                                            v-model.trim="form.basicData.work_year"
+                                            v-model.trim="form.work_year"
                                             autocomplete="off"
                                         ></el-input>
                                     </el-form-item>
@@ -176,7 +176,7 @@
                                     >
                                         <el-input
                                             size="mini"
-                                            v-model.trim="form.basicData.english"
+                                            v-model.trim="form.english"
                                             autocomplete="off"
                                         ></el-input>
                                     </el-form-item>
@@ -199,7 +199,7 @@
                                 >
                                     <el-input
                                         size="mini"
-                                        v-model.trim="form.basicData.status"
+                                        v-model.trim="form.status"
                                         autocomplete="off"
                                     ></el-input>
                                 </el-form-item>
@@ -232,7 +232,7 @@
                                 >
                                     <el-input
                                         size="mini"
-                                        v-model.trim="form.basicData.email"
+                                        v-model.trim="form.email"
                                         autocomplete="off"
                                     ></el-input>
                                 </el-form-item>
@@ -244,7 +244,7 @@
 
                                     <el-input
                                         size="mini"
-                                        v-model.trim="form.educationalBackground.school"
+                                        v-model.trim="form.school"
                                         autocomplete="off"
                                     ></el-input>
                                 </el-form-item>
@@ -255,7 +255,7 @@
                                 >
                                     <el-input
                                         size="mini"
-                                        v-model.trim="form.basicData.expected_industry"
+                                        v-model.trim="form.expected_industry"
                                         autocomplete="off"
                                     ></el-input>
                                 </el-form-item> -->
@@ -485,7 +485,7 @@ export default {
             analyzeContent: "",
 
             form: {
-                basicData: {
+                
                     name: "",
                     age: "",
                     sex: "",
@@ -496,16 +496,17 @@ export default {
                     work_year: "",
                     english: "",
                     status: "",
-                    email: ""
-                },
+                    email: "",
+            
 
-                //教育背景
-                educationalBackground: {
+                //毕业时间
+                graduation_time:"",
+                projectExperience:"",
                     educational: "",
                     speciality: "",
                     expected_address: "",
-                    school: ""
-                },
+                    school: "",
+               
                 //  educationalBackground:"",
 
                 nearest_unit: "",
@@ -535,7 +536,7 @@ export default {
 
             that.$api.resume
                 .analyze({
-                    content: that.form
+                    content: that.analyzeContent
                 })
                 .then(res => {
                     console.log("***************");
@@ -559,11 +560,11 @@ export default {
             that.analyzeContent = "";
         },
         addCommit(){
-             let that = this;
+            let that = this;
 
-            that.$api.add
-                .analyze({
-                    content: that.analyzeContent
+            that.$api.resume
+                .add({
+                    data: that.form
                 })
                 .then(res => {
                     console.log("***************");
@@ -576,7 +577,7 @@ export default {
                     console.log("***************");
                 })
                 .catch(res => {
-                    that.$message.error("分析失败，请重试.");
+                    that.$message.error("获取失败，请重试.");
                 });
         }
     }

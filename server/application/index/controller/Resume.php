@@ -170,12 +170,12 @@ class Resume extends Controller
         if ($content == '') {
             return json(['code' => 1,'msg' => '缺少内容','data' => []]);
         }
-
         $rule = config('config.resume_rule');
         foreach ($rule as $k => $v) {
             //处理特定字符格式,加换行
             $content = preg_replace("/$v/","\n".$v,$content);
         }
+        
         $content = explode("\n",$content);
 
         array_unshift($content,'基本资料');
@@ -314,7 +314,7 @@ class Resume extends Controller
 
     public function addResume(){
         //添加简历
-        $data = input('post.');
+        $data = input('post.data');
         if (empty($data)) {
             return json(['msg' => '没有数据','code' => 2]);
         }
