@@ -76,7 +76,6 @@ export default {
                 .get(params)
                 .then(res => {
                     if (res.code == 0) {
-                        debugger
 
                         if (res.data.row) {
                             that.tdata = res.data.row;
