@@ -39,23 +39,16 @@ class Privilege extends Model
        }
     }
     public function getOne($id){
-        $this->data = $id;
-        $data =$this->select()->toArray();
-        $data = $this->_reSort($data);
-        $data =array_filter($data,function ($v,$k){
-          return array_filter($v,function ($vv,$kk){
-                return $kk == 'id' && $vv == $this->data ;
-            },1);
-        },1);
-        foreach ($data as $k =>$v){
-            $data = $v;
+        $data =Privilege::where(['id'=>$id])->find();
+        $this->data = $data;
+        $res = [];
+        while($data['parent_id'] != 0){
+            array_push($res,$data['parent_id']);
+            $data =Privilege::where(['id'=>$data['parent_id']])->find();
         }
-        $data['top_class'] =[];
-        for ($a=0;$a<=$data['level'];$a++){
-
-            array_push($data['top_class'],$a);
-        }
-        return $data;
+      $result = $this->data;
+      $result['top_class'] = $res;
+      return $result;
     }
     /**
      * 获取权限列表数据
