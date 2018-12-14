@@ -19,7 +19,7 @@ return [
     // // 用户名
     // 'username'        => 'root',
     // // 密码
-    // 'password'        => 'root',
+    // 'password'        => 'root', 
 
     // 服务器地址
     'hostname'        => '192.168.199.101',

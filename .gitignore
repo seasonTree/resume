@@ -8,3 +8,4 @@ client/dist/
 client/dist/upload
 server/runtime
 yarn.lock
+server/config/database.php
