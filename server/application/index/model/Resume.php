@@ -29,6 +29,10 @@ class Resume extends Model
 
     public function edit($data){
         //修改
+        $temp = $this->getOne(['id' => $data['id']]);
+        if ($temp['mfy_time'] != $data['mfy_time']) {
+            return json(['msg' => '该数据已经更变，请刷新','code' => 10,'data' => []]);
+        }
         return Resume::update($data);
     }
 
