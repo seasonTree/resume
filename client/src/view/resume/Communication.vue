@@ -7,6 +7,7 @@
             :before-close="closeDialog"
             class="custom-dialog"
             :close-on-click-modal="false"
+            width="60%"
         >
 
             <template>
@@ -173,9 +174,4 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.custom-dialog{
-    width: 120%;
-    transform: translateX(-150px);
-
-}
 </style>
