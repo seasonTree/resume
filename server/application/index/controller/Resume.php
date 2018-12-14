@@ -219,7 +219,15 @@ class Resume extends Controller
         }
         $list = [];
         foreach ($arr as $method => $parm) {
-            $list[] = $this->$method($parm);
+            // $list[$method] = $this->$method($parm);
+            $temp = $this->$method($parm);
+            if (is_array($temp)) {
+                $list = array_merge($list,$temp);
+            }
+            else{
+                $list[$method] = $temp;
+            }
+            
         }
 
         return json(['code' => 0,'msg' => '解析成功','data' => $list]);
