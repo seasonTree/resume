@@ -331,7 +331,7 @@ export function getAll(data){
     })
 }
 
-//获取当前用户的菜单
+//获取当前用户的权限
 export function getUserPermission(data){
     return request({
         url: `${prefix}/get_user_permission`,

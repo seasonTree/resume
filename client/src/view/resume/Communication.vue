@@ -124,7 +124,9 @@ export default {
 
     watch: {
         show(newValue, oldValue) {
-            that.getCommunication();
+            if(newValue){
+                that.getCommunication();
+            }
         }
     },
 

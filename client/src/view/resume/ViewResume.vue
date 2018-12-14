@@ -455,7 +455,10 @@ export default {
     watch: {
         show(newValue, oldValue) {
             let that = this;
-            that.getResume();
+
+            if(newValue){
+                that.getResume();
+            }
         }
     },
 

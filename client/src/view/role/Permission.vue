@@ -110,12 +110,14 @@ export default {
     },
     watch: {
         show(newValue, oldValue) {
-            let that = this;
+            if (newValue) {
+                let that = this;
 
-            //获取所有的权限列表
-            that.getPermissionData();
-            //获取当前角色的权限
-            that.getCheckPermission();
+                //获取所有的权限列表
+                that.getPermissionData();
+                //获取当前角色的权限
+                that.getCheckPermission();
+            }
         }
     },
     methods: {

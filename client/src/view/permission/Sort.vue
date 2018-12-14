@@ -44,8 +44,6 @@ export default {
 
             if (newValue) {
                 that.getPermissionData();
-            } else {
-                that.permissionData = [];
             }
         }
     },
@@ -173,6 +171,11 @@ export default {
                 .catch(res => {
                     that.$message.error("排序失败，请刷新后重试.");
                 });
+        },
+
+        afterClose(){
+            let that = this;
+            that.permissionData = [];
         }
     }
 };

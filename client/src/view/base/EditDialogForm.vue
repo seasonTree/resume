@@ -1,6 +1,6 @@
 <script>
 import DialogForm from "./DialogForm";
-import { deepClone } from '../../common/util';
+import { deepClone } from "../../common/util";
 export default {
     mixins: [DialogForm],
 
@@ -20,22 +20,24 @@ export default {
     },
 
     watch: {
-        show(newValue, oldValue){
-            let that = this,
-                newItem = deepClone(that.editItem);
+        show(newValue, oldValue) {
+            if (newValue) {
+                let that = this,
+                    newItem = deepClone(that.editItem);
 
-            that.beforeSetData(newItem);
-            
-            //复制数值
-            for(var key in newItem){
-                that.form[key] = newItem[key];
+                that.beforeSetData(newItem);
+
+                //复制数值
+                for (var key in newItem) {
+                    that.form[key] = newItem[key];
+                }
             }
         }
     },
 
     methods: {
         //在设置数据之前操作
-        beforeSetData(){},
+        beforeSetData() {},
 
         editCommit() {
             let that = this;
@@ -64,7 +66,7 @@ export default {
                                 });
 
                                 that.closeDialog();
-                            } else{
+                            } else {
                                 that.$message.error(res.msg);
                             }
                         })

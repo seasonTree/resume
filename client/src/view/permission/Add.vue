@@ -67,6 +67,16 @@
                 </el-form-item>
 
                 <el-form-item
+                    label="模块名称"
+                    prop="p_component"
+                >
+                    <el-input
+                        v-model.trim="form.p_component"
+                        autocomplete="off"
+                    ></el-input>
+                </el-form-item>
+
+                <el-form-item
                     label="菜单地址"
                     prop="url"
                 >
@@ -126,8 +136,6 @@ export default {
 
             if (newValue) {
                 that.getPermissionData();
-            } else {
-                that.permissionData = [];
             }
         }
     },
@@ -152,7 +160,8 @@ export default {
                 p_type: 0,
                 p_act_name: "",
                 p_icon: "",
-                api: ""
+                api: "",
+                p_component: ""
             },
 
             formRules: {
@@ -271,6 +280,7 @@ export default {
             let that = this;
 
             that.form.p_type = 0;
+            that.permissionData = [];
         }
     }
 };
