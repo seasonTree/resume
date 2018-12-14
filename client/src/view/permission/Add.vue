@@ -174,7 +174,7 @@ export default {
                                         "功能英文名称必须是英文，并且不为空."
                                     )
                                 );
-                            }else{
+                            } else {
                                 callback();
                             }
                         },
@@ -265,6 +265,12 @@ export default {
         beforeAdd(item) {
             //找到上级的id
             item.parent_id = item.top_class[item.top_class.length - 1];
+        },
+
+        afterClose() {
+            let that = this;
+
+            that.form.p_type = 0;
         }
     }
 };
