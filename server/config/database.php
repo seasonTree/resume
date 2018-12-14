@@ -20,7 +20,7 @@ return [
     // 'username'        => 'root',
     // // 密码
     // 'password'        => 'root', 
-
+   
     // 服务器地址
     'hostname'        => '192.168.199.101',
     // 数据库名
