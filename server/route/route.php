@@ -18,11 +18,11 @@ Route::get('test','Resume/test');//测试用
 Route::post('api/resume/analyze','Resume/getResumeData');//获取简历内容
 // Route::post('api/resume/upload','Resume/upload');//预留上传简历的接口
 
-Route::get('api/resume/list','');//获取简历列表，分页，数据放到row字段下，同时要返回total总记录数
-Route::post('api/resume/add','');//新增简历
-Route::post('api/resume/edit','');//修改简历
-Route::get('api/resume/get_by_id','');//根据id获取简历内容
-Route::post('api/resume/del','');//删除简历
+Route::get('api/resume/list','Resume/getResumeList');//获取简历列表，分页，数据放到row字段下，同时要返回total总记录数
+Route::post('api/resume/add','Resume/addResume');//新增简历
+Route::post('api/resume/edit','Resume/editResume');//修改简历
+Route::get('api/resume/get_by_id','Resume/getResumeOne');//根据id获取简历内容
+Route::post('api/resume/del','Resume/delResume');//删除简历
 Route::get('api/resume/get_communication','');//获取沟通列表
 Route::post('api/resume/add_communication','');//添加沟通信息
 Route::get('api/resume/get_upload_file','Resume/uploadList');//获取附件列表
@@ -48,6 +48,7 @@ Route::post('api/role/get_by_id','Role/getOne');
 Route::get('api/role/get_user_by_id','Role/getUserById');
 Route::post('api/role/set_role_user','Role/setRoleUser');
 Route::get('api/user/all_list','User/lst');
+Route::get('api/user/list','User/lstPage');
 
 
 
