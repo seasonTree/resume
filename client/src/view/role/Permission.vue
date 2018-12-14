@@ -15,7 +15,6 @@
                 node-key="id"
                 :check-strictly="true"
                 :props="defaultProps"
-                default-expand-all
                 ref="tree"
             >
             </el-tree>
@@ -208,7 +207,7 @@ export default {
 <style lang="less" scoped>
 .dialog-content {
     min-height: 300px;
-    max-height: 600px;
+    // max-height: 600px;
     padding: 10px;
     border: 1px solid #dcdfe6;
 }

@@ -252,7 +252,7 @@ export default {
                             callback(
                                 new Error("两次的密码不一致，请重新输入.")
                             );
-                        }else{
+                        } else {
                             callback();
                         }
                     }
@@ -282,9 +282,26 @@ export default {
         resize();
 
         window.onresize = resize;
+
+        that.getMenu();
     },
 
     methods: {
+        //获取当前菜单
+        getMenu() {
+            let that = this;
+
+            that.$api.user
+                .getUserPermission()
+                .then(res => {
+                    console.log('当前用户的权限');
+                    console.log(res);
+                })
+                .catch(res => {
+                    that.$message.error("获取菜单失败，请重试，请重试.");
+                });
+        },
+
         changePassword() {
             let that = this;
 
@@ -428,8 +445,8 @@ export default {
     border: 1px solid #e6e6e6;
     overflow-x: hidden !important;
     box-sizing: border-box;
-    
-    .el-menu{
+
+    .el-menu {
         border: none;
     }
 

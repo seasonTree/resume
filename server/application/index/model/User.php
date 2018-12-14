@@ -55,6 +55,15 @@ class User extends Model
         $num =$this->allowField(true)->save($data,['id'=>$data['id']]);
         return $num;
     }
+    public function getPriById($id){
+        $data =$this->alias('U')->field('U.id,R.role_name,P.*')
+            ->join('user_role UR','UR.user_id = U.id')
+            ->join('role R','UR.role_id = R.id')
+            ->join('user_permission UP','UP.role_id = R.id')
+            ->join('permission P','UP.p_id = P.id')
+            ->where(['U.id'=>$id])->select()->toArray();
+        return $data;
+    }
 
 
 }

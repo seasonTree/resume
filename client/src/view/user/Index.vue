@@ -83,12 +83,12 @@
                         <i
                             v-if="scope.row.status == 0"
                             class="fa fa-check right status-icon"
-                            @click="changeStatus(scope.row.id, 1)"
+                            @click="changeStatus(scope.row.id, 1, scope.row)"
                         ></i>
                         <i
                             v-if="scope.row.status == 1"
                             class="fa fa-ban ban status-icon"
-                            @click="changeStatus(scope.row.id, 0)"
+                            @click="changeStatus(scope.row.id, 0, scope.row)"
                         ></i>
                     </template>
                 </el-table-column>
@@ -232,7 +232,7 @@ export default {
     },
 
     methods: {
-        changeStatus(id, status) {
+        changeStatus(id, status, item) {
             let that = this;
 
             that.$api.user
@@ -247,6 +247,8 @@ export default {
                             type: "success",
                             duration: 800
                         });
+
+                        item.status = status;
                     } else {
                         that.$message.error(res.msg || "更新状态失败，请重试.");
                     }
