@@ -187,7 +187,7 @@
                                     >
                                         <el-input
                                             size="mini"
-                                            v-model.trim="form.educationalBackground.expected_address"
+                                            v-model.trim="form.expected_address"
                                             autocomplete="off"
                                         ></el-input>
                                     </el-form-item>
@@ -535,7 +535,7 @@ export default {
 
             that.$api.resume
                 .analyze({
-                    content: that.analyzeContent
+                    content: that.form
                 })
                 .then(res => {
                     console.log("***************");
@@ -557,6 +557,27 @@ export default {
             that.activeName = "second";
             that.activeName2 = "first";
             that.analyzeContent = "";
+        },
+        addCommit(){
+             let that = this;
+
+            that.$api.add
+                .analyze({
+                    content: that.analyzeContent
+                })
+                .then(res => {
+                    console.log("***************");
+                    // that.form.basicData = res.data.basicData;
+                    // that.form.educationalBackground = res.data.educationalBackground;
+                    // that.form.selfEvaluation = res.data.selfEvaluation;
+                    that.form = res.data;
+                    that.activeName = "second";
+                    console.log(res);
+                    console.log("***************");
+                })
+                .catch(res => {
+                    that.$message.error("分析失败，请重试.");
+                });
         }
     }
 };

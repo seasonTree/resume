@@ -290,46 +290,46 @@ export default {
             //填写API获取的类型，由父类自动调用，不填不调用
             apiType: "resume",
 
-            tdata: [
-                {
-                    id: 1,
-                    name: "王小虎",
-                    inPosition: "程序员",
-                    sex: "男",
-                    age: "11",
-                    edu: "本科",
-                    workAge: "三年",
-                    objective: "Java工程师",
-                    expectPay: "18k",
-                    recentlyUnit: "中软",
-                    recentPosition: "java工程师",
-                    graduateSchool: "北京大学",
-                    professional: "计算机",
-                    phone: "13912349974",
-                    email: "723403639@qq.com",
-                    englishLevel: "四级",
-                    workingPlace: "深圳"
-                },
-                {
-                    id: 2,
-                    name: "王小虎",
-                    inPosition: "程序员",
-                    sex: "男",
-                    age: "11",
-                    edu: "本科",
-                    workAge: "三年",
-                    objective: "Java工程师",
-                    expectPay: "18k",
-                    recentlyUnit: "中软",
-                    recentPosition: "java工程师",
-                    graduateSchool: "北京大学",
-                    professional: "计算机",
-                    phone: "13912349974",
-                    email: "723403639@qq.com",
-                    englishLevel: "四级",
-                    workingPlace: "深圳"
-                }
-            ],
+            // tdata: [
+            //     {
+            //         id: 1,
+            //         name: "王小虎",
+            //         inPosition: "程序员",
+            //         sex: "男",
+            //         age: "11",
+            //         edu: "本科",
+            //         workAge: "三年",
+            //         objective: "Java工程师",
+            //         expectPay: "18k",
+            //         recentlyUnit: "中软",
+            //         recentPosition: "java工程师",
+            //         graduateSchool: "北京大学",
+            //         professional: "计算机",
+            //         phone: "13912349974",
+            //         email: "723403639@qq.com",
+            //         englishLevel: "四级",
+            //         workingPlace: "深圳"
+            //     },
+            //     {
+            //         id: 2,
+            //         name: "王小虎",
+            //         inPosition: "程序员",
+            //         sex: "男",
+            //         age: "11",
+            //         edu: "本科",
+            //         workAge: "三年",
+            //         objective: "Java工程师",
+            //         expectPay: "18k",
+            //         recentlyUnit: "中软",
+            //         recentPosition: "java工程师",
+            //         graduateSchool: "北京大学",
+            //         professional: "计算机",
+            //         phone: "13912349974",
+            //         email: "723403639@qq.com",
+            //         englishLevel: "四级",
+            //         workingPlace: "深圳"
+            //     }
+            // ],
 
             //沟通情况
             communicationDialog: false,

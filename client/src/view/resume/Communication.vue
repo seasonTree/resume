@@ -6,7 +6,6 @@
             :visible.sync="show"
             :before-close="closeDialog"
             class="custom-dialog"
-           
             :close-on-click-modal="false"
             width="60%"
         >
