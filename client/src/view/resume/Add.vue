@@ -471,6 +471,7 @@
 
 <script>
 import AddDialogForm from "@view/base/AddDialogForm";
+
 export default {
     name: "Add",
     mixins: [AddDialogForm],
@@ -480,6 +481,7 @@ export default {
             activeName: "second",
             activeName2: "first",
             // dialog: "dialog",
+            apiType :'resume',
 
             //要分析的内容
             analyzeContent: "",
@@ -539,14 +541,11 @@ export default {
                     content: that.analyzeContent
                 })
                 .then(res => {
-                    console.log("***************");
-                    // that.form.basicData = res.data.basicData;
-                    // that.form.educationalBackground = res.data.educationalBackground;
-                    // that.form.selfEvaluation = res.data.selfEvaluation;
+                   
+                  
                     that.form = res.data;
                     that.activeName = "second";
-                    console.log(res);
-                    console.log("***************");
+                   
                 })
                 .catch(res => {
                     that.$message.error("分析失败，请重试.");
@@ -567,19 +566,20 @@ export default {
                     data: that.form
                 })
                 .then(res => {
-                    console.log("***************");
-                    // that.form.basicData = res.data.basicData;
-                    // that.form.educationalBackground = res.data.educationalBackground;
-                    // that.form.selfEvaluation = res.data.selfEvaluation;
-                    that.form = res.data;
-                    that.activeName = "second";
-                    console.log(res);
-                    console.log("***************");
+                    // console.log(that.addDialog);
+                    // console.log(that.tdata);
+                    that.addDialog=false;
+                   
+                    that.tdata.push(res.data);
+                   
+                   
                 })
                 .catch(res => {
                     that.$message.error("获取失败，请重试.");
                 });
-        }
+        },
+        
+
     }
 };
 </script>

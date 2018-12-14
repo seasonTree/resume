@@ -8,7 +8,8 @@ import {
 Vue.use(VueRouter);
 
 //指定name，组织数据方便
-const routes = [{
+const routes = [
+    {
 
         //登陆
         path: '/login',
@@ -126,6 +127,48 @@ const routes = [{
         "hidden": true
     }
 ];
+
+// const routes = [
+//     {
+//         //登陆
+//         path: '/login',
+//         component: () =>
+//             import('@view/login'),
+//         meta: {
+//             name: '登录',
+//         }
+//     },
+//     {
+//         path: '/',
+//         component: () => import('@view/layout/Layout'),
+//         redirect: '/dashboard',
+
+//         children: [{
+//             path: 'dashboard',
+//             component: () =>
+//                 import('@view/dashboard/Index'),
+//             meta: {
+//                 name: '首页',
+//                 icon: "list-alt"
+//             },
+//         }]
+//     },
+//     {
+//         path: '/403',
+//         component: () =>
+//             import('@view/error/Forbidden'),
+//     },
+//     {
+//         path: '/404',
+//         component: () =>
+//             import('@view/error/Forbidden'),
+//     },
+//     {
+//         "path": "*",
+//         "redirect": "/404",
+//         "hidden": true
+//     }
+// ];
 
 const router = new VueRouter({
     routes

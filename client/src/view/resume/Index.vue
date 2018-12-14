@@ -56,21 +56,15 @@
                 </el-table-column>
                 <el-table-column
                     fixed
-                    prop="edu"
+                    prop="educational"
                     label="学历"
                     width="100"
                 >
                 </el-table-column>
                 <el-table-column
                     fixed
-                    prop="workAge"
+                    prop="work_year"
                     label="工作年限"
-                    width="120"
-                >
-                </el-table-column>
-                <el-table-column
-                    prop="objective"
-                    label="求职意向"
                     width="120"
                 >
                 </el-table-column>
@@ -81,8 +75,8 @@
                 >
                 </el-table-column>
                 <el-table-column
-                    prop="expectPay"
-                    label="期望薪水"
+                    prop="expected_money"
+                    label="期望薪资"
                     width="150"
                 >
                 </el-table-column>
@@ -93,39 +87,39 @@
                 >
                 </el-table-column>
                 <el-table-column
-                    prop="recentlyUnit"
+                    prop="nearest_unit"
                     label="最近单位"
-                    width="200"
+                    width="220"
                 >
                 </el-table-column>
                 <el-table-column
-                    prop="recentPosition"
+                    prop="nearest_job"
                     label="最近职位"
                     width="120"
                 >
                 </el-table-column>
                 <el-table-column
-                    prop="graduateSchool"
+                    prop="school"
                     label="毕业院校"
                     width="300"
                 >
                 </el-table-column>
                 <el-table-column
-                    prop="professional"
+                    prop="speciality"
                     label="专业"
                     width="150"
                 >
                 </el-table-column>
 
                 <el-table-column
-                    prop="englishLevel"
+                    prop="english"
                     label="英语等级"
                     width="120"
                 >
                 </el-table-column>
                 <el-table-column
-                    prop="workingPlace"
-                    label="工作地点"
+                    prop="expected_address"
+                    label="期望工作地"
                     width="200"
                 >
                 </el-table-column>

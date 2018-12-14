@@ -260,9 +260,15 @@
                                     ></el-input>
                                     <Math class="max apply"></Math>
                                 </el-form-item>
+<<<<<<< HEAD
 
                             </div>
 
+=======
+
+                            </div>
+
+>>>>>>> 1ac08d87455ef01d31195399b2cbf1839404e10e
                             <!-- *****************基础信息******************* -->
                         </el-col>
 
@@ -430,7 +436,10 @@ export default {
     watch: {
         show(newValue, oldValue) {
             let that = this;
-            that.getResume();
+
+            if(newValue){
+                that.getResume();
+            }
         }
     },
 
@@ -439,8 +448,14 @@ export default {
             activeName: "second",
             activeName2: "first",
 
+<<<<<<< HEAD
             form: {
                  name: "",
+=======
+             form: {
+                
+                    name: "",
+>>>>>>> 1ac08d87455ef01d31195399b2cbf1839404e10e
                     age: "",
                     sex: "",
                     birthday: "",

@@ -108,7 +108,9 @@ export default {
 
     watch: {
         show(newValue, oldValue) {
-            that.getData();
+            if(newValue){
+                that.getData();
+            }
         }
     },
 

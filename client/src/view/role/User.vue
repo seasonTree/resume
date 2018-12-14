@@ -58,9 +58,11 @@ export default {
 
     watch: {
         show(newValue, oldValue) {
-            let that = this;
-            that.getUsers();
-            that.getRoleUser();
+            if (newValue) {
+                let that = this;
+                that.getUsers();
+                that.getRoleUser();
+            }
         }
     },
 

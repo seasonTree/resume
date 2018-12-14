@@ -161,6 +161,39 @@ let passRules = [
     }
 ];
 
+//获取菜单按钮功能
+const getMenuAndAction = (data, menu, action) => {
+    let quickTarget = {};
+
+    for (var i = 0; i < data.length; i++) {
+        var item = data[i];
+
+        if (item.p_type == 0) {
+            quickTarget[item.id] = {
+                url: item.url,
+                name: item.p_name,
+                icon: item.p_icon,
+                parent_id: item.parent_id
+            };
+        } else if (item.p_type == 1) {
+            action[item["p_act_name"]] = true;
+        }
+    }
+
+    for (var key in quickTarget) {
+        var item = quickTarget[key],
+            parent_id = item.parent_id;
+
+        if (item.parent_id == 0) {
+            menu.push(item);
+        } else if (parent_id != 0 && quickTarget[parent_id]) {
+            quickTarget[parent_id].children =
+                quickTarget[parent_id].children || [];
+            quickTarget[parent_id].children.push(item);
+        }
+    }
+};
+
 export default {
     name: "Layout",
     components: {
@@ -171,7 +204,6 @@ export default {
         return {
             bodyHeight: 500,
 
-            //TODO
             menu: [
                 {
                     url: "/dashboard",
@@ -181,7 +213,6 @@ export default {
                 {
                     name: "简历管理",
                     icon: "fa fa-address-book",
-
                     children: [
                         {
                             url: "/resume/index",
@@ -194,7 +225,6 @@ export default {
                     id: "5",
                     name: "用户管理",
                     icon: "fa fa-users",
-
                     children: [
                         {
                             url: "/user/index",
@@ -217,7 +247,6 @@ export default {
                     id: "6",
                     name: "报表",
                     icon: "fa fa-database",
-
                     children: [
                         {
                             url: "/report/personal_recruitment",
@@ -269,6 +298,13 @@ export default {
         ...mapGetters(["userInfo"])
     },
 
+    created() {
+        let that = this;
+
+        //获取当前菜单和功能
+        // that.getUserPermission();
+    },
+
     mounted() {
         const that = this,
             resize = () => {
@@ -282,23 +318,29 @@ export default {
         resize();
 
         window.onresize = resize;
-
-        that.getMenu();
     },
 
     methods: {
-        //获取当前菜单
-        getMenu() {
+        //获取当前菜单和功能
+        getUserPermission() {
             let that = this;
 
             that.$api.user
                 .getUserPermission()
                 .then(res => {
-                    console.log('当前用户的权限');
-                    console.log(res);
+                    if (res.code == 0) {
+                        let action = {};
+
+                        getMenuAndAction(res.data, that.menu, action);
+
+                        //设置action
+                        that.$store.commit("setActions", action);
+                    } else {
+                        sthat.$message.error("获取菜单失败，请重试.");
+                    }
                 })
                 .catch(res => {
-                    that.$message.error("获取菜单失败，请重试，请重试.");
+                    that.$message.error("获取菜单失败，请重试.");
                 });
         },
 

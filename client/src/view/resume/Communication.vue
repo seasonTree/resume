@@ -24,14 +24,14 @@
                     </el-table-column>
                     <el-table-column
                         align="center"
-                        prop="name"
+                        prop="ct_time"
                         label="时间"
                     >
                     </el-table-column>
 
                     <el-table-column
                         align="center"
-                        prop="address"
+                        prop="ct_user"
                         label="招聘负责人"
                     >
                     </el-table-column>
@@ -45,28 +45,28 @@
 
                     <el-table-column
                         align="center"
-                        prop="address"
+                        prop="arranger_interview "
                         label="安排面试"
                     >
                     </el-table-column>
 
                     <el-table-column
                         align="center"
-                        prop="address"
+                        prop="arrive "
                         label="到场"
                     >
                     </el-table-column>
 
                     <el-table-column
                         align="center"
-                        prop="address"
+                        prop="approved_interview "
                         label="通过面试"
                     >
                     </el-table-column>
 
                     <el-table-column
                         align="center"
-                        prop="address"
+                        prop="entry "
                         label="入职"
                     >
                     </el-table-column>
@@ -124,7 +124,9 @@ export default {
 
     watch: {
         show(newValue, oldValue) {
-            that.getCommunication();
+            if(newValue){
+                that.getCommunication();
+            }
         }
     },
 
