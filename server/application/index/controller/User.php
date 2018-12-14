@@ -27,7 +27,13 @@ class User
     }
     public function lst(){
       $data = model('User')->lst();
-      return json(['code' => 0,'msg' => '退出成功','data' => $data]);
+      return json(['code' => 0,'msg' => '获取数据成功','data' => $data]);
+    }
+    public function lstPage(){
+        $data = input('get.');
+        $data = model('User')->lstPage($data['pageIndex'],$data['pageSize']);
+        return json(['code' => 0,'msg' => '获取数据成功','data' => $data]);
+        halt($data);
     }
 
 }

@@ -48,6 +48,7 @@ Route::post('api/role/get_by_id','Role/getOne');
 Route::get('api/role/get_user_by_id','Role/getUserById');
 Route::post('api/role/set_role_user','Role/setRoleUser');
 Route::get('api/user/all_list','User/lst');
+Route::get('api/user/list','User/lstPage');
 
 
 

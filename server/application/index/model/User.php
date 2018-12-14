@@ -29,6 +29,20 @@ class User extends Model
     public function lst(){
         return $this->select()->toArray();
     }
+    public function lstPage($pageIndex,$pageSize){
+        if($pageIndex < 1){
+            $pageIndex = 1;
+        }
+        $offset = ($pageIndex - 1) * $pageSize;
+        $limitData = $this->limit($offset, $pageSize)->select();
+        $count = User::count();
+        $pageCount = ceil($count / $pageSize);
+        $data = [
+            'row' => $limitData,
+            'total' => $pageCount
+        ];
+        return $data;
+    }
 
 
 }
