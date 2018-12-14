@@ -49,6 +49,12 @@ Route::get('api/role/get_user_by_id','Role/getUserById');
 Route::post('api/role/set_role_user','Role/setRoleUser');
 Route::get('api/user/all_list','User/lst');
 Route::get('api/user/list','User/lstPage');
+Route::post('api/user/add','User/add');
+Route::post('api/user/edit','User/edit');
+Route::post('api/user/del','User/del');
+Route::post('api/user/change_user_passwd','User/changeUserPasswd');
+Route::post('api/user/change_status','User/changeStatus');
+Route::post('api/user/get_by_id','User/getOne');
 
 
 

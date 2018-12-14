@@ -33,7 +33,50 @@ class User
         $data = input('get.');
         $data = model('User')->lstPage($data['pageIndex'],$data['pageSize']);
         return json(['code' => 0,'msg' => '获取数据成功','data' => $data]);
-        halt($data);
-    }
 
+    }
+    public function getOne(){
+        $id = input('post.id');
+        $data = model('User')->getOne(['id'=>$id]);
+        return json(['data'=>$data,'code'=>0,'msg'=>'获取某条数据成功']);
+    }
+    public function edit(){
+        $data =input('post.');
+        $data['mfy_time'] = date('Y-m-d H:i:s');
+        $id=model('User')->edit($data);
+        if($id){
+            $data = model('User')->getOne(['id'=>$data['id']]);
+            return json(['data'=>$data,'code'=>0,'msg'=>'修改成功']);
+        }
+    }
+    public function add(){
+        $data = input('post.');
+        $data['passwd'] = hash('sha256',$data['passwd']);
+        $id=model('User')->add($data);
+        if($id){
+            $data = model('User')->getOne(['id'=>$id]);
+            return json(['data'=>$data,'code'=>0,'msg'=>'新增成功']);
+        }
+    }
+    public function del(){
+        $id = input('post.id');
+        if(model('User')->where(['id'=>$id])->delete()){
+            return json(['data'=>null,'code'=>0,'msg'=>'删除成功']);
+        }
+    }
+    public function changeStatus(){
+        $data = input('post.');
+        $data['passwd'] = hash('sha256',$data['passwd']);
+        if(model('User')->edit($data)){
+            $data = model('User')->getOne(['id'=>$data['id']]);
+        }
+        return json(['data'=>$data,'code'=>0,'msg'=>'修改状态成功']);
+    }
+    public function changeUserPasswd(){
+        $data = input('post.');
+        if(model('User')->edit($data)){
+            $data = model('User')->getOne(['id'=>$data['id']]);
+        }
+        return json(['data'=>$data,'code'=>0,'msg'=>'修改状态成功']);
+    }
 }

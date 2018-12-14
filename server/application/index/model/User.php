@@ -43,6 +43,18 @@ class User extends Model
         ];
         return $data;
     }
+    public function add($data){
+        $this->allowField(true)->save($data);
+        return $this->id;
+    }
+    public function edit($data){
+//        halt($data);
+        if (!is_array($data)){
+            return exception('传递数据不合法');
+        }
+        $num =$this->allowField(true)->save($data,['id'=>$data['id']]);
+        return $num;
+    }
 
 
 }
