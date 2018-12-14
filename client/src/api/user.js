@@ -330,3 +330,12 @@ export function getAll(data){
         params: data
     })
 }
+
+//获取当前用户的菜单
+export function getUserPermission(data){
+    return request({
+        url: `${prefix}/get_user_permission`,
+        method: 'get',
+        params: data
+    })
+}
