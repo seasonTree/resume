@@ -6,6 +6,7 @@
             :visible.sync="show"
             :before-close="closeDialog"
             class="custom-dialog"
+           
             :close-on-click-modal="false"
         >
 
@@ -173,9 +174,4 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.custom-dialog{
-    width: 120%;
-    transform: translateX(-150px);
-
-}
 </style>
