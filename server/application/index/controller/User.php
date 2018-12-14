@@ -66,7 +66,7 @@ class User
     }
     public function changeStatus(){
         $data = input('post.');
-        $data['passwd'] = hash('sha256',$data['passwd']);
+
         if(model('User')->edit($data)){
             $data = model('User')->getOne(['id'=>$data['id']]);
         }
@@ -74,6 +74,7 @@ class User
     }
     public function changeUserPasswd(){
         $data = input('post.');
+        $data['passwd'] = hash('sha256',$data['passwd']);
         if(model('User')->edit($data)){
             $data = model('User')->getOne(['id'=>$data['id']]);
         }
