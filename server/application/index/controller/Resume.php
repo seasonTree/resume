@@ -4,6 +4,7 @@ use think\Controller;
 use think\facade\Session;
 use think\facade\Env;
 use app\index\model\ResumeUpload;
+use app\index\model\Resume as ResumeModel;
 use app\index\model\User;
 require_once dirname(Env::get('ROOT_PATH')).'/server/extend/Analysis.php';
 require_once dirname(Env::get('ROOT_PATH')).'/server/extend/phpanalysis/phpanalysis.class.php';
@@ -239,10 +240,16 @@ class Resume extends Controller
         $info = $file->validate(['size'=>2097152,'ext'=>'doc,docx,html,htm,mht'])->move($path);
         if($info){
             $upload = new ResumeUpload();
+            $file_name = preg_replace("/\s/",'_',$_FILES['file']['name']);
+            $find = $upload->getOne(['file_name' => $file_name]);
+            if ($find) {
+                return json(['msg' => '文件已经存在','code' => 3]);
+            }
             $data = array(
                 'resume_url' => $path.$info->getSaveName(),
                 'ct_user'  => Session::get('user_info')['uname'],
-                'file_name'  => preg_replace("/\s/",'_',$_FILES['file']['name']),
+                'file_name'  => $file_name,
+                'resume_id' => input('id')//预留的简历id
                 );
             //入库操作
             $data['id'] = $upload->add($data);
@@ -261,7 +268,7 @@ class Resume extends Controller
         $upload = new ResumeUpload();
         $data = $upload->get(['resume_id' => $resume_id]);
         if ($data) {
-            return json(['msg' => '获取成功','code' => 0]);
+            return json(['msg' => '获取成功','code' => 0,'data' => $data]);
         }
         else{
             return json(['msg' => '获取失败','code' => 1]);
@@ -269,10 +276,110 @@ class Resume extends Controller
 
     }
 
+    public function getResumeList(){
+        //简历列表
+        $resume = new ResumeModel();
+        $data = $resume->get();
+        if ($data) {
+            return json(['msg' => '获取成功','code' => 0,'data' => $data]);
+        }
+        else{
+            return json(['msg' => '无数据','code' => 1]);
+        }
+    }
+
+    public function getResumeOne(){
+        //获取简历内容
+        $id = input('id');
+        if (empty($id)) {
+            return json(['msg' => 'id字段不存在','code' => 2]);
+        }
+        $resume = new ResumeModel();
+        $data = $resume->getOne(['id' => $id]);
+        if ($data) {
+            return json(['msg' => '获取成功','code' => 0,'data' => $data]);
+        }
+        else{
+            return json(['msg' => '获取失败','code' => 1]);
+        }
+    }
+
+    public function addResume(){
+        //添加简历
+        $data = input('post.');
+        if (empty($data)) {
+            return json(['msg' => '没有数据','code' => 2]);
+        }
+        $resume = new ResumeModel();
+        $id = $resume->add($data);
+        $data = $resume->getOne(['id' => $id]);
+        if ($data) {
+            return json(['msg' => '添加成功','code' => 0,'data' => $data]);
+        }
+        else{
+            return json(['msg' => '添加失败','code' => 1]);
+        }
+    }
+
+    public function editResume(){
+        //修改简历
+        $data = input('post.');
+        if (empty($data)) {
+            return json(['msg' => '没有数据','code' => 2]);
+        }
+        $resume = new ResumeModel();
+        $res = $resume->edit($data);
+        $data = $resume->getOne(['id' => $data['id']]);
+        if ($data) {
+            return json(['msg' => '修改成功','code' => 0,'data' => $data]);
+        }
+        else{
+            return json(['msg' => '修改失败','code' => 1]);
+        }
+    }
     
+    public function delResume(){
+        //删除简历
+        $id = input('id');
+        if (empty($id)) {
+            return json(['msg' => 'id字段不存在','code' => 2]);
+        }
+        $resume = new ResumeModel();
+        $res = $resume->del(['id' => $id]);
+        $upload = new ResumeUpload();
+        $data = $upload->get(['resume_id' => $id]);
+        foreach ($data as $k => $v) {
+            $upload->del(['id' => $v['id']]);
+            @unlink($v['resume_url']);
+        }
+        if ($res) {
+            return json(['msg' => '删除成功','code' => 0]);
+        }
+        else{
+            return json(['msg' => '删除失败','code' => 1]);
+        }
+    }
 
-
-
+    public function delFile(){
+        //删除简历文件
+        $id = input('id');
+        if (empty($id)) {
+            return json(['msg' => 'id字段不存在','code' => 2]);
+        }
+        $upload = new ResumeUpload();
+        $res = $upload->del(['id' => $id]);
+        $path = input('resume_rul');
+        if (empty($path)) {
+            return json(['msg' => '文件路径不存在','code' => 3]);
+        }
+        @unlink($path);
+        if ($res) {
+            return json(['msg' => '删除成功','code' => 0]);
+        }
+        else{
+            return json(['msg' => '删除失败','code' => 1]);
+        }
+    }
 
 
 }
