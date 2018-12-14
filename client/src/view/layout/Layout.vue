@@ -290,9 +290,10 @@ export default {
             let that = this;
 
             that.$api.user
-                .getXXX()
+                .getUserPermission()
                 .then(res => {
-                    
+                    console.log('当前用户的权限');
+                    console.log(res);
                 })
                 .catch(res => {
                     that.$message.error("获取菜单失败，请重试，请重试.");
