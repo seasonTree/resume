@@ -282,6 +282,8 @@ export default {
         resize();
 
         window.onresize = resize;
+
+        that.getMenu();
     },
 
     methods: {
