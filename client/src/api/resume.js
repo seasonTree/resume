@@ -25,7 +25,7 @@ export function getByID(data){
     return request({
         url: `${prefix}/get_by_id`,
         method: 'get',
-        data: data
+        params: data
     })
 }
 
