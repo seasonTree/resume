@@ -109,26 +109,29 @@ export function changePassword(data) {
  * {
  *      code: 0, // 0表示没问题，不为0表示出错
  *      msg: '提示信息',
- *      data: [
- *          {
- *              id: 1,
- *              uname: 'aaaa',
- *              pesonal_name: '张三',
- *              phone: 136666666,
- *              ct_user: '创建人'
- *              ct_time: '2018-01-01 12:30',
- *              status: 1, //禁止   
- *          },
- *          {
-  *             id: 2,
- *              uname: 'bbb',
- *              pesonal_name: '张四',
- *              phone: 136666666,
- *              ct_user: '创建人'
- *              ct_time: '2018-01-01 12:30',
- *              status: 0, //允许
- *          },
- *      ]
+ *      data: {
+ *          row: [
+ *              {
+ *                  id: 1,
+ *                  uname: 'aaaa',
+ *                  pesonal_name: '张三',
+ *                  phone: 136666666,
+ *                  ct_user: '创建人'
+ *                  ct_time: '2018-01-01 12:30',
+ *                  status: 1, //禁止   
+ *              },
+ *              {
+  *                 id: 2,
+ *                  uname: 'bbb',
+ *                  pesonal_name: '张四',
+ *                  phone: 136666666,
+ *                  ct_user: '创建人'
+ *                  ct_time: '2018-01-01 12:30',
+ *                  status: 0, //允许
+ *              },
+ *          ],
+ *          total: 100 //条数
+ *      }
  * }
  */
 export function get(data){

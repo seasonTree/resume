@@ -8,5 +8,11 @@ export default {
             state.user = user;
         }
         return user || {};
+    },
+
+    //功能权限
+    btnAction(state){
+        let action = state.btn_action;
+        return action;
     }
 }

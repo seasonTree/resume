@@ -7,5 +7,10 @@ export default {
     clearUserInfo(state, value){
         state.user = null;
         window.sessionStorage.removeItem('_user');
-    }
+    },
+
+    //设置功能权限
+    setActions(state, value){
+        state.btn_action = value;
+    },
 }
