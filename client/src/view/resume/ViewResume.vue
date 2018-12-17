@@ -479,20 +479,6 @@ export default {
             activeName: "second",
             activeName2: "first",
 
-<<<<<<< HEAD
-            form: {
-                name: "",
-                age: "",
-                sex: "",
-                birthday: "",
-                expected_money: "",
-                phone: "",
-                native_place: "",
-                work_year: "",
-                english: "",
-                status: "",
-                email: "",
-=======
              form: {
                     name: "",
                     age: "",
@@ -506,7 +492,6 @@ export default {
                     status: "",
                     email: "",
             
->>>>>>> df090ede1c098df13944ff25658f92d52eff9300
 
                 //毕业时间
                 graduation_time: "",
