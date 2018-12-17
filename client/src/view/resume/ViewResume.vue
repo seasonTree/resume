@@ -448,14 +448,9 @@ export default {
             activeName: "second",
             activeName2: "first",
 
-<<<<<<< HEAD
-            form: {
-                 name: "",
-=======
              form: {
-                
                     name: "",
->>>>>>> 1ac08d87455ef01d31195399b2cbf1839404e10e
+
                     age: "",
                     sex: "",
                     birthday: "",
