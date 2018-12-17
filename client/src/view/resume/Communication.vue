@@ -76,8 +76,22 @@
                         prop="address"
                         label="操作"
                     >
+                        <template slot-scope="scope">
+                            <el-tooltip
+                                effect="dark"
+                                content="添加附件"
+                                placement="top"
+                            >
+                                <el-button
+                                    type="info"
+                                    size="mini"
+                                    icon="fa fa-folder-open"
+                                    circle
+                                    @click.stop="showUploadFile(scope.row.id)"
+                                ></el-button>
+                            </el-tooltip>
+                        </template>
 
-                    
                     </el-table-column>
                 </el-table>
             </template>
@@ -124,7 +138,7 @@ export default {
 
     watch: {
         show(newValue, oldValue) {
-            if(newValue){
+            if (newValue) {
                 that.getCommunication();
             }
         }
@@ -137,6 +151,8 @@ export default {
 
             //新增沟通
             addDialog: false
+
+            
         };
     },
     methods: {

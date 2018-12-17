@@ -266,10 +266,11 @@ export default {
             that.uploadFileDialog = true;
         },
 
-        showEditDialog(row) {
-            let that = this;
-            that.editDialog = true;
-        },
+        // showEditDialog(id) {
+        //     console.log(id);
+        //     let that = this;
+        //     that.editDialog = true;
+        // },
 
         //沟通管理
         showCommunicationDialog(id) {

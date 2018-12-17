@@ -1,455 +1,506 @@
 <template>
     <el-dialog
-        title="修改简历"
+        title="查看简历"
         :visible.sync="show"
         :before-close="closeDialog"
         class="custom-dialog"
-        :close-on-click-modal="false"        
         top="4.5vh"
         width="60%"
     >
 
-        <el-tabs
-             v-model="activeName"
-            class="mb-20"
+        <el-form
+            :model="form"
+            label-width="90px"
+            class="form-container mb-20"
+            ref="form"
         >
-            <el-tab-pane
-                    label="粘贴简历"
-                    name="first">
-                    <el-input
-                        type="textarea"
-                        placeholder="请输入要分析的内容"
-                        v-model="analyzeContent"
-                        class="analyze-content"
-                        resize="none"
-                    >
-                    </el-input>
-                </el-tab-pane>
-            <el-tab-pane
-                label="手工输入"
-                name="second"
-            >
-                <el-form
-                    :model="form"
-                    :rules="formRules"
-                    label-width="90px"
-                    class="form-container"
-                    ref="form"
-                >
-                    <el-row :gutter="20">
-                        <!-- 基础信息 -->
-                        <el-col :span="12">
-                            <div class="grid-content bg-purple left-container">
-                                <div
-                                    class="sub-header"
-                                    style="margin-bottom: 10px;"
-                                >
-                                    基本信息
-                                </div>
-
-                                <div class="div-row">
-                                    <el-form-item
-                                        label="姓名"
-                                        prop="uname"
-                                    >
-                                        <el-input
-                                            size="mini"
-                                            v-model.trim="form.uname"
-                                            autocomplete="off"
-                                        ></el-input>
-                                    </el-form-item>
-
-                                    <el-form-item
-                                        label="年龄"
-                                        prop="age"
-                                    >
-                                        <el-input
-                                            size="mini"
-                                            v-model.trim="form.age"
-                                            autocomplete="off"
-                                        ></el-input>
-                                    </el-form-item>
-                                </div>
-                                <div class="div-row">
-                                    <el-form-item
-                                        label="性别"
-                                        prop="sex"
-                                    >
-                                        <el-input
-                                            size="mini"
-                                            v-model.trim="form.sex"
-                                            autocomplete="off"
-                                        ></el-input>
-                                    </el-form-item>
-
-                                    <el-form-item
-                                        label="学历"
-                                        prop="formalSchooling"
-                                    >
-                                        <el-input
-                                            size="mini"
-                                            v-model.trim="form.formalSchooling"
-                                            autocomplete="off"
-                                        ></el-input>
-                                    </el-form-item>
-                                </div>
-                                
-                                <div class="div-row">
-                                    <el-form-item
-                                        label="专业"
-                                        prop="professional"
-                                    >
-                                        <el-input
-                                            size="mini"
-                                            v-model.trim="form.professional"
-                                            autocomplete="off"
-                                        ></el-input>
-                                    </el-form-item>
-
-                                    <el-form-item
-                                        label="期望薪水"
-                                        prop="ExpectToPay"
-                                    >
-                                        <el-input
-                                            size="mini"
-                                            v-model.trim="form.computerSkills"
-                                            autocomplete="off"
-                                        ></el-input>
-                                    </el-form-item>
-                                </div>
-
-                                    
-
-                                
-
-                                <div class="div-row">
-                                    <el-form-item
-                                        label="工作年限"
-                                        prop="workingYear"
-                                    >
-                                        <el-input
-                                            size="mini"
-                                            v-model.trim="form.workingYear"
-                                            autocomplete="off"
-                                        ></el-input>
-                                    </el-form-item>
-
-                                    <el-form-item
-                                        label="移动电话"
-                                        prop="phone"
-                                    >
-                                        <el-input
-                                            size="mini"
-                                            v-model.trim="form.phone"
-                                            autocomplete="off"
-                                        ></el-input>
-                                    </el-form-item>
-                                </div>
-
-                                
-                                <div class="div-row">
-                                    <el-form-item
-                                        label="英语水平"
-                                        prop="englishLevel"
-                                    >
-                                        <el-input
-                                            size="mini"
-                                            v-model.trim="form.englishLevel"
-                                            autocomplete="off"
-                                        ></el-input>
-                                    </el-form-item>
-
-                                    <el-form-item
-                                    label="工作地点"
-                                    prop="workingPlace"
-                                >
-                                    <el-input
-                                        size="mini"
-                                        v-model.trim="form.workingPlace"
-                                        autocomplete="off"
-                                    ></el-input>
-                                </el-form-item>
-                                </div>
-
-                                <el-form-item
-                                        label="籍贯"
-                                        prop="nativePlace"
-                                    >
-                                        <el-input
-                                            size="mini"
-                                            v-model.trim="form.nativePlace"
-                                            autocomplete="off"
-                                        ></el-input>
-                                    </el-form-item>
-
-                                
-                                    <el-form-item
-                                        label="出生年月"
-                                        prop="dateOfBirth"
-                                    >
-                                        <el-input
-                                            size="mini"
-                                            v-model.trim="form.dateOfBirth"
-                                            autocomplete="off"
-                                        ></el-input>
-                                    </el-form-item>
-
-                                <el-form-item
-                                    label="电子邮箱"
-                                    prop="email"
-                                >
-                                    <el-input
-                                        size="mini"
-                                        v-model.trim="form.email"
-                                        autocomplete="off"
-                                    ></el-input>
-                                </el-form-item>
-
-                                <el-form-item
-                                    label="毕业院校"
-                                    prop="graduateSchool"
-                                >
-                                    <el-input
-                                        size="mini"
-                                        v-model.trim="form.graduateSchool"
-                                        autocomplete="off"
-                                    ></el-input>
-                                </el-form-item>
-
-                                <el-form-item
-                                    label="最近单位"
-                                    prop="recentlyTheUnit"
-                                >
-                                    <el-input
-                                        size="mini"
-                                        v-model.trim="form.computerSkills"
-                                        autocomplete="off"
-                                    ></el-input>
-                                </el-form-item>
-
-                                <el-form-item
-                                    label="最近职位"
-                                    prop="recentPosition"
-                                >
-                                    <el-input
-                                        size="mini"
-                                        v-model.trim="form.recentPosition"
-                                        autocomplete="off"
-                                    ></el-input>
-                                </el-form-item>
-
-                            </div>
-
-                            <!-- /* 888888888888888888888888888888888888888888888888888888888 */ -->
-                        </el-col>
-
-                        <el-col
-                            :span="12"
-                            class="right-container"
+            <el-row :gutter="20">
+                <!-- *****************基础信息******************* -->
+                <el-col :span="12">
+                    <div class="grid-content bg-purple left-container">
+                        <div
+                            class="sub-header"
+                            style="margin-bottom: 10px;"
                         >
-                            <el-tabs v-model="activeName2">
-                                <el-tab-pane
-                                    label="用户管理"
-                                    name="first"
-                                >
-                                    <el-row
-                                        align="top"
-                                        class="row-height"
-                                    >
-                                        <el-col class="right-item">
-                                            <div class="sub-header"> 教育背景</div>
-                                            <el-input
-                                                type="textarea"
-                                                v-model="form.educationalBackground"
-                                                resize="none"
-                                            ></el-input>
-                                        </el-col>
-                                        <el-col class="right-item">
-                                            <div class="sub-header"> 个人技能</div>
-                                            <el-input
-                                                type="textarea"
-                                                v-model="form.personalskills"
-                                                resize="none"
-                                            ></el-input>
-                                        </el-col>
-                                        <el-col class="right-item">
-                                            <div class="sub-header"> 自我评价</div>
-                                            <el-input
-                                                type="textarea"
-                                                v-model="form.selfEvaluation"
-                                                resize="none"
-                                            ></el-input>
-                                        </el-col>
-                                        <!-- <el-col class="right-item">
-                                            <div class="sub-header"> 培训经历</div>
-                                            <el-input
-                                                type="textarea"
-                                                v-model="form.trainingexperience"
-                                                resize="none"
-                                            ></el-input>
-                                        </el-col> -->
-                                        <!-- <el-col class="right-item">
-                                            <div class="sub-header"> 所修课程</div>
-                                            <el-input
-                                                type="textarea"
-                                                v-model="form.coursescompleted"
-                                                resize="none"
-                                            ></el-input>
-                                        </el-col> -->
-                                        <el-col class="right-item">
-                                            <div class="sub-header"> 所获证书</div>
-                                            <el-input
-                                                type="textarea"
-                                                v-model="form.obtainedcertificate"
-                                                resize="none"
-                                            ></el-input>
-                                        </el-col>
-                                    </el-row>
-                                </el-tab-pane>
+                            基本信息
+                        </div>
 
-                                <el-tab-pane
-                                    label="工作经历"
-                                    name="second"
-                                >
-                                    <el-row
-                                        align="top"
-                                        class="row3-height"
-                                    >
-                                        <el-col class="right2-item">
-                                            <el-input
-                                                type="textarea"
-                                                v-model="form.custom01"
-                                                resize="none"
-                                            ></el-input>
-                                        </el-col>
-                                    </el-row>
-                                </el-tab-pane>
+                        <div class="div-row">
+                            <el-form-item
+                                label="姓名"
+                                prop="name"
+                            >
+                                <el-input
+                                    size="mini"
+                                    v-model.trim="form.name"
+                                    autocomplete="off"
+                                ></el-input>
+                            </el-form-item>
 
-                                <el-tab-pane
-                                    label="项目经验"
-                                    name="third"
-                                >
-                                    <el-row
-                                        align="top"
-                                        class="row3-height"
-                                    >
-                                        <el-col class="right2-item">
-                                            <el-input
-                                                type="textarea"
-                                                v-model="form.custom01"
-                                                resize="none"
-                                            ></el-input>
-                                        </el-col>
-                                    </el-row>
-                                </el-tab-pane>
+                            <el-form-item
+                                label="年龄"
+                                prop="age"
+                            >
+                                <el-input
+                                    size="mini"
+                                    v-model.trim="form.age"
+                                    autocomplete="off"
+                                ></el-input>
+                            </el-form-item>
+                        </div>
+                        <div class="div-row">
+                            <el-form-item
+                                label="性别"
+                                prop="sex"
+                            >
+                                <el-input
+                                    size="mini"
+                                    v-model.trim="form.sex"
+                                    autocomplete="off"
+                                ></el-input>
+                            </el-form-item>
 
-                                <el-tab-pane
-                                    label="自定义信息"
-                                    name="fourth"
-                                >
-                                    <el-row
-                                        align="top"
-                                        class="row2-height"
-                                    >
-                                        <el-col class="right2-item">
-                                            <div class="sub2-header"> 自定义01</div>
-                                            <el-input
-                                                type="textarea"
-                                                v-model="form.custom01"
-                                                resize="none"
-                                            ></el-input>
-                                        </el-col>
-                                        <el-col class="right2-item">
-                                            <div class="sub2-header"> 自定义02</div>
-                                            <el-input
-                                                type="textarea"
-                                                v-model="form.custom02"
-                                                resize="none"
-                                            ></el-input>
-                                        </el-col>
-                                        <el-col class="right2-item">
-                                            <div class="sub2-header"> 自定义03</div>
-                                            <el-input
-                                                type="textarea"
-                                                v-model="form.custom03"
-                                                resize="none"
-                                            ></el-input>
-                                        </el-col>
-                                    </el-row>
-                                </el-tab-pane>
-                            </el-tabs>
-                        </el-col>
+                            <el-form-item
+                                label="学历"
+                                prop="educational"
+                            >
+                                <el-input
+                                    size="mini"
+                                    v-model.trim="form.educational"
+                                    autocomplete="off"
+                                ></el-input>
+                            </el-form-item>
+                        </div>
 
-                    </el-row>
+                        <div class="div-row">
+                            <el-form-item
+                                label="专业"
+                                prop="speciality"
+                            >
+                                <el-input
+                                    size="mini"
+                                    v-model.trim="form.speciality"
+                                    autocomplete="off"
+                                ></el-input>
+                            </el-form-item>
 
-                </el-form>
-            </el-tab-pane>
+                            <el-form-item
+                                label="生日"
+                                prop="birthday"
+                            >
+                                <el-input
+                                    size="mini"
+                                    v-model.trim="form.birthday"
+                                    autocomplete="off"
+                                ></el-input>
+                            </el-form-item>
 
-        </el-tabs>
+                        </div>
+
+                        <div class="div-row">
+                            <el-form-item
+                                label="期望薪资"
+                                prop="expected_money"
+                            >
+                                <el-input
+                                    size="mini"
+                                    v-model.trim="form.expected_money"
+                                    autocomplete="off"
+                                ></el-input>
+                            </el-form-item>
+
+                            <el-form-item
+                                label="移动电话"
+                                prop="phone"
+                            >
+                                <el-input
+                                    size="mini"
+                                    v-model.trim="form.phone"
+                                    autocomplete="off"
+                                ></el-input>
+                            </el-form-item>
+                        </div>
+
+                        <div class="div-row">
+
+                            <el-form-item
+                                label="户口所在地"
+                                prop="native_place"
+                            >
+                                <el-input
+                                    size="mini"
+                                    v-model.trim="form.native_place"
+                                    autocomplete="off"
+                                ></el-input>
+                            </el-form-item>
+
+                            <el-form-item
+                                label="工作年限"
+                                prop="work_year"
+                            >
+                                <el-input
+                                    size="mini"
+                                    v-model.trim="form.work_year"
+                                    autocomplete="off"
+                                ></el-input>
+                            </el-form-item>
+                        </div>
+
+                        <div class="div-row">
+                            <el-form-item
+                                label="英语水平"
+                                prop="english"
+                            >
+                                <el-input
+                                    size="mini"
+                                    v-model.trim="form.english"
+                                    autocomplete="off"
+                                ></el-input>
+                            </el-form-item>
+
+                            <el-form-item
+                                label="期望工作地"
+                                prop="expected_address"
+                            >
+                                <el-input
+                                    size="mini"
+                                    v-model.trim="form.expected_address"
+                                    autocomplete="off"
+                                ></el-input>
+                            </el-form-item>
+
+                        </div>
+                        <el-form-item
+                            label="状态"
+                            prop="status"
+                        >
+                            <el-input
+                                size="mini"
+                                v-model.trim="form.status"
+                                autocomplete="off"
+                            ></el-input>
+                        </el-form-item>
+
+                        <el-form-item
+                            label="电子邮箱"
+                            prop="email"
+                        >
+                            <el-input
+                                size="mini"
+                                v-model.trim="form.email"
+                                autocomplete="off"
+                            ></el-input>
+                        </el-form-item>
+
+                        <el-form-item
+                            label="毕业院校"
+                            prop="school"
+                        >
+
+                            <el-input
+                                size="mini"
+                                v-model.trim="form.school"
+                                autocomplete="off"
+                            ></el-input>
+                        </el-form-item>
+
+                        <el-form-item
+                            label="最近单位"
+                            prop="nearest_unit"
+                        >
+                            <el-input
+                                size="mini"
+                                v-model.trim="form.nearest_unit"
+                                autocomplete="off"
+                            ></el-input>
+                        </el-form-item>
+
+                        <el-form-item
+                            label="最近职位"
+                            prop="nearest_job"
+                        >
+                            <el-input
+                                size="mini"
+                                v-model.trim="form.nearest_job"
+                                autocomplete="off"
+                            ></el-input>
+                            
+                        </el-form-item>
+
+                    </div>
+
+                    <!-- *****************基础信息******************* -->
+                </el-col>
+
+                <el-col
+                    :span="12"
+                    class="right-container"
+                >
+                    <el-tabs v-model="activeName2">
+                        <el-tab-pane
+                            label="用户管理"
+                            name="first"
+                        >
+                            <el-row
+                                align="top"
+                                class="row-height"
+                            >
+                                <el-col class="right-item">
+                                    <div class="sub-header"> 教育背景</div>
+                                    <el-input
+                                        type="textarea"
+                                        v-model="form.educational"
+                                        resize="none"
+                                    ></el-input>
+                                </el-col>
+                                <el-col class="right-item">
+                                    <div class="sub-header"> 个人技能</div>
+                                    <el-input
+                                        type="textarea"
+                                        v-model="form.skillExpertise"
+                                        resize="none"
+                                    ></el-input>
+                                </el-col>
+                            </el-row>
+                        </el-tab-pane>
+                    </el-tabs>
+
+                    <!-- *****************基础信息******************* -->
+                </el-col>
+
+                <el-col
+                    :span="12"
+                    class="right-container"
+                >
+                    <el-tabs v-model="activeName2">
+                        <el-tab-pane
+                            label="用户管理"
+                            name="first"
+                        >
+                            <el-row
+                                align="top"
+                                class="row-height"
+                            >
+                                <el-col class="right-item">
+                                    <div class="sub-header"> 教育背景</div>
+                                    <el-input
+                                        type="textarea"
+                                        v-model="form.educational_background"
+                                        resize="none"
+                                    ></el-input>
+                                </el-col>
+                                <el-col class="right-item">
+                                    <div class="sub-header"> 个人技能</div>
+                                    <el-input
+                                        type="textarea"
+                                        v-model="form.skillExpertise"
+                                        resize="none"
+                                    ></el-input>
+                                </el-col>
+                                <el-col class="right-item">
+                                    <div class="sub-header"> 自我评价</div>
+                                    <el-input
+                                        type="textarea"
+                                        v-model="form.selfEvaluation"
+                                        resize="none"
+                                    ></el-input>
+                                </el-col>
+
+                                <el-col class="right-item">
+                                    <div class="sub-header"> 所获证书</div>
+                                    <el-input
+                                        type="textarea"
+                                        v-model="form.certificate"
+                                        resize="none"
+                                    ></el-input>
+                                </el-col>
+                            </el-row>
+                        </el-tab-pane>
+
+                        <el-tab-pane
+                            label="工作经历"
+                            name="second"
+                        >
+                            <el-row
+                                align="top"
+                                class="row3-height"
+                            >
+                                <el-col class="right2-item">
+                                    <el-input
+                                        type="textarea"
+                                        v-model="form.workExperience"
+                                        resize="none"
+                                    ></el-input>
+                                </el-col>
+                            </el-row>
+                        </el-tab-pane>
+
+                        <el-tab-pane
+                            label="项目经历"
+                            name="third"
+                        >
+                            <el-row
+                                align="top"
+                                class="row3-height"
+                            >
+                                <el-col class="right2-item">
+                                    <el-input
+                                        type="textarea"
+                                        v-model="form.projectExperience"
+                                        resize="none"
+                                    ></el-input>
+                                </el-col>
+                            </el-row>
+                        </el-tab-pane>
+
+                        <el-tab-pane
+                            label="自定义信息"
+                            name="fourth"
+                        >
+                            <el-row
+                                align="top"
+                                class="row2-height"
+                            >
+                                <el-col class="right2-item">
+                                    <div class="sub2-header"> 自定义01</div>
+                                    <el-input
+                                        type="textarea"
+                                        v-model="form.custom01"
+                                        resize="none"
+                                    ></el-input>
+                                </el-col>
+                                <el-col class="right2-item">
+                                    <div class="sub2-header"> 自定义02</div>
+                                    <el-input
+                                        type="textarea"
+                                        v-model="form.custom02"
+                                        resize="none"
+                                    ></el-input>
+                                </el-col>
+                                <el-col class="right2-item">
+                                    <div class="sub2-header"> 自定义03</div>
+                                    <el-input
+                                        type="textarea"
+                                        v-model="form.custom03"
+                                        resize="none"
+                                    ></el-input>
+                                </el-col>
+                            </el-row>
+                        </el-tab-pane>
+                    </el-tabs>
+                </el-col>
+            </el-row>
+        </el-form>
 
         <div
             slot="footer"
             class="dialog-footer"
         >
-            <el-button @click="closeDialog">取 消</el-button>
-            <el-button>自动识别</el-button>
-            <el-button
-                type="primary"
-                @click="addCommit"
-            >确 定</el-button>
-
+            <el-button @click="closeDialog">关闭</el-button>
+            <el-button type="primary">确 定</el-button>
         </div>
     </el-dialog>
 </template>
 
 <script>
-import AddDialogForm from "@view/base/AddDialogForm";
+import EditDialogForm from "@view/base/EditDialogForm";
 export default {
-    name: "Add",
-    mixins: [AddDialogForm],
+    name: "Edit",
+    mixins: [EditDialogForm],
+
+    
+
+    watch: {
+        show(newValue, oldValue) {
+            let that = this;
+            console.log(newValue,oldValue);
+            // if (newValue) {
+            //     that.getResume();
+            // }
+        }
+    },
 
     data() {
         return {
             activeName: "second",
             activeName2: "first",
 
-            analyzeContent: '',
-
             form: {
-                uname: "",
+                name: "",
                 age: "",
                 sex: "",
-                formalSchooling: "",
-                workingYear: "",
+                birthday: "",
+                expected_money: "",
                 phone: "",
-                height: "",
-                national: "",
-                dateOfBirth: "",
-                politicalLandscape: "",
-                nativePlace: "",
-                address: "",
-                zipCode: "",
+                native_place: "",
+                work_year: "",
+                english: "",
+                status: "",
                 email: "",
-                graduateSchool: "",
-                professional: "",
-                englishLevel: "",
-                computerSkills: "",
-                computerSkills: "",
-                workingPlace: "",
-                ExpectToPay: "",
-                recentlyTheUnit: "",
-                recentPosition: ""
+
+                //毕业时间
+                graduation_time: "",
+                projectExperience: "",
+                educational: "",
+                speciality: "",
+                expected_address: "",
+                school: "",
+
+                //  educationalBackground:"",
+                educational_background: "",
+                nearest_unit: "",
+                nearest_job: "",
+
+                skillExpertise: "",
+                selfEvaluation: "",
+                certificate: "",
+
+                workExperience: "",
+
+                //工作技能
+                personalskills: "",
+
+                //自定义
+                custom01: "",
+                custom02: "",
+                custom03: ""
             }
         };
     },
 
     methods: {
-        
+        // getResume() {
+        //     let that = this;
+        //     that.$api.resume
+        //         .getByID({
+        //             id: that.id
+        //         })
+        //         .then(res => {
+        //             if (res.code == 0) {
+        //                 that.form = res.data;
+        //             } else {
+        //                 that.$message.error(
+        //                     res.msg || "修改简历信息失败，请刷新后重试."
+        //                 );
+        //             }
+        //         })
+        //         .catch(res => {
+        //             that.$message.error("修改简历信息失败，请刷新后重试.");
+        //         });
+        // },
         afterClose() {
             let that = this;
             that.activeName = "second";
             that.activeName2 = "first";
             that.analyzeContent = "";
+
+            for (var key in that.form) {
+                var item = that.form[key];
+
+                if (item) {
+                    that.form[key] = "";
+                }
+            }
         }
     }
 };
