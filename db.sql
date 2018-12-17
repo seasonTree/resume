@@ -18,6 +18,7 @@ create table rs_user
 	ct_time datetime default CURRENT_TIMESTAMP not null comment '创建时间',
 	mfy_user varchar(64) default '' null comment '修改人',
 	mfy_time datetime default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP not null comment '修改时间',
+	token varchar(255) not null default '' comment '登录token'
 	unique index `user_uname` (`uname`)
 ) engine=InnoDB;
 

@@ -29,6 +29,9 @@ class User extends Model
     public function lst(){
         return $this->select()->toArray();
     }
+    public function updateToken($data){
+        return User::where(['id' => $data['id']])->update(['token' => $data['token']]);
+    }
     public function lstPage($pageIndex,$pageSize){
         if($pageIndex < 1){
             $pageIndex = 1;

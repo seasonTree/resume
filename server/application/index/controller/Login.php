@@ -29,6 +29,8 @@ class Login
                return json(['code' => 2,'msg' => '密码错误','data' => []]);
            }
            unset($res['passwd']);
+           $res['token'] = hash('sha256',$res['id'].time());
+           $user_model->updateToken($res);
            Session::set('user_info',$res);
            return json(['code' => 0,'msg' => '登录成功','data' => $res]);
        }
