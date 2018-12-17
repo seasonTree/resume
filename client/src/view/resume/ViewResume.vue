@@ -260,15 +260,11 @@
                                     ></el-input>
                                     <Math class="max apply"></Math>
                                 </el-form-item>
-<<<<<<< HEAD
+
 
                             </div>
 
-=======
 
-                            </div>
-
->>>>>>> 1ac08d87455ef01d31195399b2cbf1839404e10e
                             <!-- *****************基础信息******************* -->
                         </el-col>
 
@@ -450,10 +446,6 @@ export default {
 
              form: {
                     name: "",
-<<<<<<< HEAD
-=======
-
->>>>>>> c8ad4923be036feb089f99c42597b5226287fa5e
                     age: "",
                     sex: "",
                     birthday: "",
