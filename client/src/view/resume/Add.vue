@@ -7,6 +7,7 @@
         :close-on-click-modal="false"
         top="4.5vh"
         width="60%"
+        clearable="true"
     >
 
         <el-tabs
@@ -280,7 +281,6 @@
                                         v-model.trim="form.nearest_job"
                                         autocomplete="off"
                                     ></el-input>
-                                    <Math class="max apply"></Math>
                                 </el-form-item>
 
                             </div>
@@ -303,12 +303,15 @@
                                     >
                                         <el-col class="right-item">
                                             <div class="sub-header"> 教育背景</div>
+
                                             <el-input
                                                 type="textarea"
-                                                v-model="form.educational"
+                                                v-model="form.educational_background"
                                                 resize="none"
                                             ></el-input>
+
                                         </el-col>
+
                                         <el-col class="right-item">
                                             <div class="sub-header"> 个人技能</div>
                                             <el-input
@@ -481,34 +484,33 @@ export default {
             activeName: "second",
             activeName2: "first",
             // dialog: "dialog",
-            apiType :'resume',
+            apiType: "resume",
 
             //要分析的内容
             analyzeContent: "",
 
             form: {
-                
-                    name: "",
-                    age: "",
-                    sex: "",
-                    birthday: "",
-                    expected_money: "",
-                    phone: "",
-                    native_place: "",
-                    work_year: "",
-                    english: "",
-                    status: "",
-                    email: "",
-            
+                name: "",
+                age: "",
+                sex: "",
+                birthday: "",
+                expected_money: "",
+                phone: "",
+                native_place: "",
+                work_year: "",
+                english: "",
+                status: "",
+                email: "",
 
                 //毕业时间
-                graduation_time:"",
-                projectExperience:"",
-                    educational: "",
-                    speciality: "",
-                    expected_address: "",
-                    school: "",
-               
+                graduation_time: "",
+                projectExperience: "",
+                educational: "",
+                speciality: "",
+                expected_address: "",
+                school: "",
+
+                educational_background: "",
                 //  educationalBackground:"",
 
                 nearest_unit: "",
@@ -527,6 +529,37 @@ export default {
                 custom01: "",
                 custom02: "",
                 custom03: ""
+            },
+            formRules: {
+                // name: [
+                //     {
+                //         required: true,
+                //         message: "请输入用户名",
+                //         trigger: "blur"
+                //     },
+                //     {
+                //         min: 6,
+                //         max: 16,
+                //         message: "长度在6到16个字符",
+                //         trigger: "blur"
+                //     },
+                //     {
+                //         validator: (rule, value, callback) => {
+                //             if (!/^[a-zA-Z][\da-zA-Z]/.test(value)) {
+                //                 callback(
+                //                     new Error(
+                //                         "用户必须是字母或数字，并且以字母开头."
+                //                     )
+                //                 );
+                //             } else {
+                //                 callback();
+                //             }
+                //         },
+                //         trigger: "blur"
+                //     }
+                // ],
+                // phone: [{ type: "number", message: "电话必须为数字" }],
+             
             }
         };
     },
@@ -541,11 +574,8 @@ export default {
                     content: that.analyzeContent
                 })
                 .then(res => {
-                   
-                  
                     that.form = res.data;
                     that.activeName = "second";
-                   
                 })
                 .catch(res => {
                     that.$message.error("分析失败，请重试.");
@@ -557,7 +587,15 @@ export default {
             that.activeName = "second";
             that.activeName2 = "first";
             that.analyzeContent = "";
-        },
+
+            for (var key in that.form) {
+                var item = that.form[key];
+
+                if (item) {
+                    that.form[key] = "";
+                }
+            }
+        }
         // addCommit(){
         //     let that = this;
 
@@ -569,17 +607,14 @@ export default {
         //             // console.log(that.addDialog);
         //             // console.log(that.tdata);
         //             that.addDialog=false;
-                   
+
         //             that.tdata.push(res.data);
-                   
-                   
+
         //         })
         //         .catch(res => {
         //             that.$message.error("获取失败，请重试.");
         //         });
         // },
-        
-
     }
 };
 </script>
@@ -650,24 +685,24 @@ export default {
         }
     }
 }
-.row-height {
-    height: 100%;
+// .row-height {
+//     height: 100%;
 
-    .right-item {
-        height: 25.19%;
-        position: relative;
+//     .right-item {
+//         height: 25.19%;
+//         position: relative;
 
-        .el-textarea {
-            position: absolute;
-            top: 34px;
-            bottom: 10px;
+//         .el-textarea {
+//             position: absolute;
+//             top: 34px;
+//             bottom: 10px;
 
-            textarea {
-                height: 100%;
-            }
-        }
-    }
-}
+//             textarea {
+//                 height: 100%;
+//             }
+//         }
+//     }
+// }
 
 .row3-height {
     height: 100%;

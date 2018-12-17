@@ -15,12 +15,15 @@ export default {
     methods: {
         addCommit() {
             let that = this;
+          
 
             that.$refs["form"].validate(valid => {
                 if (valid) {
+                   
                     //提交之前
                     that.beforeAdd(that.form);
-
+                     console.log(that.form);
+               
                     that.$api[that.apiType]
                         .add(that.form)
                         .then(res => {
