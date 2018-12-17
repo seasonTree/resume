@@ -182,28 +182,6 @@
                             ></el-input>
                         </el-form-item>
 
-                        <!-- <el-form-item
-                                        label="政治面貌"
-                                        prop="politicalLandscape"
-                                    >
-                                        <el-input
-                                            size="mini"
-                                            v-model.trim="form.politicalLandscape"
-                                            autocomplete="off"
-                                        ></el-input>
-                                    </el-form-item> -->
-
-                        <!-- <el-form-item
-                                    label="住址"
-                                    prop="address"
-                                >
-                                    <el-input
-                                        size="mini"
-                                        v-model.trim="form.address"
-                                        autocomplete="off"
-                                    ></el-input>
-                                </el-form-item> -->
-
                         <el-form-item
                             label="电子邮箱"
                             prop="email"
@@ -226,17 +204,6 @@
                                 autocomplete="off"
                             ></el-input>
                         </el-form-item>
-
-                        <!-- <el-form-item
-                                    label="求职意向"
-                                    prop="expected_industry"
-                                >
-                                    <el-input
-                                        size="mini"
-                                        v-model.trim="form.expected_industry"
-                                        autocomplete="off"
-                                    ></el-input>
-                                </el-form-item> -->
 
                         <el-form-item
                             label="最近单位"
@@ -294,68 +261,51 @@
                                         v-model="form.skillExpertise"
                                         resize="none"
                                     ></el-input>
-                          
+                                </el-col>
+                            </el-row>
+                        </el-tab-pane>
+                    </el-tabs>
 
+                    <!-- *****************基础信息******************* -->
+                </el-col>
 
-                          
-
-
-                            <!-- *****************基础信息******************* -->
-                        </el-col>
-
-                        <el-col
-                            :span="12"
-                            class="right-container"
+                <el-col
+                    :span="12"
+                    class="right-container"
+                >
+                    <el-tabs v-model="activeName2">
+                        <el-tab-pane
+                            label="用户管理"
+                            name="first"
                         >
-                            <el-tabs v-model="activeName2">
-                                <el-tab-pane
-                                    label="用户管理"
-                                    name="first"
-                                >
-                                    <el-row
-                                        align="top"
-                                        class="row-height"
-                                    >
-                                        <el-col class="right-item">
-                                            <div class="sub-header"> 教育背景</div>
-                                            <el-input
-                                                type="textarea"
-                                                v-model="form.educational"
-                                                resize="none"
-                                            ></el-input>
-                                        </el-col>
-                                        <el-col class="right-item">
-                                            <div class="sub-header"> 个人技能</div>
-                                            <el-input
-                                                type="textarea"
-                                                v-model="form.skillExpertise"
-                                                resize="none"
-                                            ></el-input>
-                                        </el-col>
-                                        <el-col class="right-item">
-                                            <div class="sub-header"> 自我评价</div>
-                                            <el-input
-                                                type="textarea"
-                                                v-model="form.selfEvaluation"
-                                                resize="none"
-                                            ></el-input>
-                                        </el-col>
-                                        <!-- <el-col class="right-item">
-                                            <div class="sub-header"> 培训经历</div>
-                                            <el-input
-                                                type="textarea"
-                                                v-model="form.trainingexperience"
-                                                resize="none"
-                                            ></el-input>
-                                        </el-col> -->
-                                <!-- <el-col class="right-item">
-                                            <div class="sub-header"> 所修课程</div>
-                                            <el-input
-                                                type="textarea"
-                                                v-model="form.coursescompleted"
-                                                resize="none"
-                                            ></el-input>
-                                        </el-col> -->
+                            <el-row
+                                align="top"
+                                class="row-height"
+                            >
+                                <el-col class="right-item">
+                                    <div class="sub-header"> 教育背景</div>
+                                    <el-input
+                                        type="textarea"
+                                        v-model="form.educational"
+                                        resize="none"
+                                    ></el-input>
+                                </el-col>
+                                <el-col class="right-item">
+                                    <div class="sub-header"> 个人技能</div>
+                                    <el-input
+                                        type="textarea"
+                                        v-model="form.skillExpertise"
+                                        resize="none"
+                                    ></el-input>
+                                </el-col>
+                                <el-col class="right-item">
+                                    <div class="sub-header"> 自我评价</div>
+                                    <el-input
+                                        type="textarea"
+                                        v-model="form.selfEvaluation"
+                                        resize="none"
+                                    ></el-input>
+                                </el-col>
                                 <el-col class="right-item">
                                     <div class="sub-header"> 所获证书</div>
                                     <el-input
@@ -479,19 +429,18 @@ export default {
             activeName: "second",
             activeName2: "first",
 
-             form: {
-                    name: "",
-                    age: "",
-                    sex: "",
-                    birthday: "",
-                    expected_money: "",
-                    phone: "",
-                    native_place: "",
-                    work_year: "",
-                    english: "",
-                    status: "",
-                    email: "",
-            
+            form: {
+                name: "",
+                age: "",
+                sex: "",
+                birthday: "",
+                expected_money: "",
+                phone: "",
+                native_place: "",
+                work_year: "",
+                english: "",
+                status: "",
+                email: "",
 
                 //毕业时间
                 graduation_time: "",

@@ -22,11 +22,11 @@ const login = {
             },
         }]
     },
-    forbidden = {
-        path: '/403',
-        component: () =>
-            import('@view/error/Forbidden'),
-    },
+    // forbidden = {
+    //     path: '/403',
+    //     component: () =>
+    //         import('@view/error/Forbidden'),
+    // },
     notFound = {
         path: '/404',
         component: () =>
@@ -49,7 +49,6 @@ const genRouter = (data, useLayout) => {
         }
     }
 
-    menu.push(forbidden);
     menu.push(notFound);
     menu.push(notExists);
 }
