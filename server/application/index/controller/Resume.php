@@ -314,7 +314,7 @@ class Resume extends Controller
 
     public function addResume(){
         //添加简历
-        $data = input('post.data');
+        $data = input('post.');
         if (empty($data)) {
             return json(['msg' => '没有数据','code' => 2]);
         }
