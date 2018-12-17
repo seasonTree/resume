@@ -558,26 +558,26 @@ export default {
             that.activeName2 = "first";
             that.analyzeContent = "";
         },
-        addCommit(){
-            let that = this;
+        // addCommit(){
+        //     let that = this;
 
-            that.$api.resume
-                .add({
-                    data: that.form
-                })
-                .then(res => {
-                    // console.log(that.addDialog);
-                    // console.log(that.tdata);
-                    that.addDialog=false;
+        //     that.$api.resume
+        //         .add({
+        //             data: that.form
+        //         })
+        //         .then(res => {
+        //             // console.log(that.addDialog);
+        //             // console.log(that.tdata);
+        //             that.addDialog=false;
                    
-                    that.tdata.push(res.data);
+        //             that.tdata.push(res.data);
                    
                    
-                })
-                .catch(res => {
-                    that.$message.error("获取失败，请重试.");
-                });
-        },
+        //         })
+        //         .catch(res => {
+        //             that.$message.error("获取失败，请重试.");
+        //         });
+        // },
         
 
     }
