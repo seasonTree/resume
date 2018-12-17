@@ -449,8 +449,11 @@ export default {
             activeName2: "first",
 
              form: {
-                
                     name: "",
+<<<<<<< HEAD
+=======
+
+>>>>>>> c8ad4923be036feb089f99c42597b5226287fa5e
                     age: "",
                     sex: "",
                     birthday: "",
