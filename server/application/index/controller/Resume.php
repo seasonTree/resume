@@ -299,7 +299,8 @@ class Resume extends Controller
     public function getResumeOne(){
         //获取简历内容
         $id = input('id');
-        if (empty($id)) {
+   
+        if ($id =='') {
             return json(['msg' => 'id字段不存在','code' => 2]);
         }
         $resume = new ResumeModel();

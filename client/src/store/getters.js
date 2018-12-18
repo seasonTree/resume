@@ -1,25 +1,26 @@
 export default {
     userInfo(state) {
-        let user = state.user,
-            //todo，这里要改成用token做key
-            sessionUserInfo = window.sessionStorage.getItem('_user');
+        let user = state.user;
+        //     sessionUserInfo = null;
 
-        if (!user && sessionUserInfo) {
-            state.user = JSON.parse(sessionUserInfo);
-        }
-        return user;
+        // if (state.token) {
+        //     sessionUserInfo = window.sessionStorage.getItem(state.token)
+        // }
+
+        // if (!user && sessionUserInfo) {
+        //     state.user = JSON.parse(sessionUserInfo);
+        // }
+
+        console.log('6666666666666666666666');
+        console.log(user)
+
+        return user || {};
     },
 
     //获取菜单
     menu(state) {
-        let menu = state.menu,
-            //todo，这里要改成用token做key
-            sessionMenu = window.sessionStorage.getItem('6666666');
-
-        if (!menu && sessionMenu) {
-            state.menu = JSON.parse(sessionMenu);
-        }
-        return menu;
+        let menu = state.menu;
+        return menu || [];
     },
 
     //功能权限

@@ -1,5 +1,8 @@
 export default {
 
+    //token
+    token: null,
+
     //用户信息
     user: null,
 

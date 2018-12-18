@@ -171,7 +171,7 @@ export default {
         return {
             bodyHeight: 500,
 
-            menu: [
+            // menu: [
                 // {
                 //     url: "/dashboard",
                 //     name: "首页",
@@ -227,7 +227,7 @@ export default {
                 //     name: "测试",
                 //     icon: "fa fa-list-alt"
                 // }
-            ],
+            // ],
 
             changePasswordVisable: false,
 
@@ -264,7 +264,7 @@ export default {
     },
 
     computed: {
-        ...mapGetters(["userInfo"])
+        ...mapGetters(["userInfo", "menu"])
     },
 
     created() {

@@ -225,7 +225,7 @@
                                 v-model.trim="form.nearest_job"
                                 autocomplete="off"
                             ></el-input>
-                            <Math class="max apply"></Math>
+                         
                         </el-form-item>
 
                     </div>
@@ -250,7 +250,7 @@
                                     <div class="sub-header"> 教育背景</div>
                                     <el-input
                                         type="textarea"
-                                        v-model="form.educational"
+                                        v-model="form.educational_background"
                                         resize="none"
                                     ></el-input>
                                 </el-col>
@@ -449,7 +449,7 @@ export default {
                 speciality: "",
                 expected_address: "",
                 school: "",
-
+                educational_background: "",
                 //  educationalBackground:"",
 
                 nearest_unit: "",
