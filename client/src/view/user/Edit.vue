@@ -44,7 +44,7 @@
             >确 定</el-button>
         </div>
     </el-dialog>
-</template>``
+</template>
 
 <script>
 import EditDialogForm from "@view/base/EditDialogForm";

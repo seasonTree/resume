@@ -262,42 +262,6 @@
                                         resize="none"
                                     ></el-input>
                                 </el-col>
-                            </el-row>
-                        </el-tab-pane>
-                    </el-tabs>
-
-                    <!-- *****************基础信息******************* -->
-                </el-col>
-
-                <el-col
-                    :span="12"
-                    class="right-container"
-                >
-                    <el-tabs v-model="activeName2">
-                        <el-tab-pane
-                            label="用户管理"
-                            name="first"
-                        >
-                            <el-row
-                                align="top"
-                                class="row-height"
-                            >
-                                <el-col class="right-item">
-                                    <div class="sub-header"> 教育背景</div>
-                                    <el-input
-                                        type="textarea"
-                                        v-model="form.educational"
-                                        resize="none"
-                                    ></el-input>
-                                </el-col>
-                                <el-col class="right-item">
-                                    <div class="sub-header"> 个人技能</div>
-                                    <el-input
-                                        type="textarea"
-                                        v-model="form.skillExpertise"
-                                        resize="none"
-                                    ></el-input>
-                                </el-col>
                                 <el-col class="right-item">
                                     <div class="sub-header"> 自我评价</div>
                                     <el-input

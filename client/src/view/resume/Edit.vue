@@ -1,6 +1,6 @@
 <template>
     <el-dialog
-        title="查看简历"
+        title="修改简历"
         :visible.sync="show"
         :before-close="closeDialog"
         class="custom-dialog"
@@ -224,7 +224,7 @@
                                 v-model.trim="form.nearest_job"
                                 autocomplete="off"
                             ></el-input>
-                            
+
                         </el-form-item>
 
                     </div>
@@ -397,7 +397,10 @@
             class="dialog-footer"
         >
             <el-button @click="closeDialog">关闭</el-button>
-            <el-button type="primary">确 定</el-button>
+            <el-button
+                type="primary"
+                @click="editCommit"
+            >确 定</el-button>
         </div>
     </el-dialog>
 </template>
@@ -408,12 +411,10 @@ export default {
     name: "Edit",
     mixins: [EditDialogForm],
 
-    
-
     watch: {
         show(newValue, oldValue) {
             let that = this;
-            console.log(newValue,oldValue);
+            // console.log(newValue, oldValue);
             // if (newValue) {
             //     that.getResume();
             // }
@@ -422,9 +423,7 @@ export default {
 
     data() {
         return {
-            activeName: "second",
-            activeName2: "first",
-
+            apiType: "resume",
             form: {
                 name: "",
                 age: "",
@@ -464,30 +463,14 @@ export default {
                 custom01: "",
                 custom02: "",
                 custom03: ""
-            }
+            },
+
+            activeName: "second",
+            activeName2: "first"
         };
     },
 
     methods: {
-        // getResume() {
-        //     let that = this;
-        //     that.$api.resume
-        //         .getByID({
-        //             id: that.id
-        //         })
-        //         .then(res => {
-        //             if (res.code == 0) {
-        //                 that.form = res.data;
-        //             } else {
-        //                 that.$message.error(
-        //                     res.msg || "修改简历信息失败，请刷新后重试."
-        //                 );
-        //             }
-        //         })
-        //         .catch(res => {
-        //             that.$message.error("修改简历信息失败，请刷新后重试.");
-        //         });
-        // },
         afterClose() {
             let that = this;
             that.activeName = "second";
