@@ -270,7 +270,6 @@
                                         resize="none"
                                     ></el-input>
                                 </el-col>
-
                                 <el-col class="right-item">
                                     <div class="sub-header"> 所获证书</div>
                                     <el-input

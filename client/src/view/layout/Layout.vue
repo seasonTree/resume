@@ -40,7 +40,7 @@
                     background-color="#eff1f6"
                     router
                 >
-                    <menu-tree :menu="menu"></menu-tree>
+                    <menu-tree :menu="menu" ></menu-tree>
                 </el-menu>
             </el-aside>
 
@@ -161,39 +161,6 @@ let passRules = [
     }
 ];
 
-//获取菜单按钮功能
-const getMenuAndAction = (data, menu, action) => {
-    let quickTarget = {};
-
-    for (var i = 0; i < data.length; i++) {
-        var item = data[i];
-
-        if (item.p_type == 0) {
-            quickTarget[item.id] = {
-                url: item.url,
-                name: item.p_name,
-                icon: item.p_icon,
-                parent_id: item.parent_id
-            };
-        } else if (item.p_type == 1) {
-            action[item["p_act_name"]] = true;
-        }
-    }
-
-    for (var key in quickTarget) {
-        var item = quickTarget[key],
-            parent_id = item.parent_id;
-
-        if (item.parent_id == 0) {
-            menu.push(item);
-        } else if (parent_id != 0 && quickTarget[parent_id]) {
-            quickTarget[parent_id].children =
-                quickTarget[parent_id].children || [];
-            quickTarget[parent_id].children.push(item);
-        }
-    }
-};
-
 export default {
     name: "Layout",
     components: {
@@ -204,63 +171,63 @@ export default {
         return {
             bodyHeight: 500,
 
-            menu: [
-                {
-                    url: "/dashboard",
-                    name: "首页",
-                    icon: "fa fa-list-alt"
-                },
-                {
-                    name: "简历管理",
-                    icon: "fa fa-address-book",
-                    children: [
-                        {
-                            url: "/resume/index",
-                            name: "简历信息",
-                            icon: "fa fa-address-card"
-                        }
-                    ]
-                },
-                {
-                    id: "5",
-                    name: "用户管理",
-                    icon: "fa fa-users",
-                    children: [
-                        {
-                            url: "/user/index",
-                            name: "用户信息",
-                            icon: "fa fa-user-friends"
-                        },
-                        {
-                            url: "/user/role",
-                            name: "用户角色",
-                            icon: "fa fa-users-cog"
-                        },
-                        {
-                            url: "/user/permission",
-                            name: "用户权限",
-                            icon: "fa fa-user-shield"
-                        }
-                    ]
-                },
-                {
-                    id: "6",
-                    name: "报表",
-                    icon: "fa fa-database",
-                    children: [
-                        {
-                            url: "/report/personal_recruitment",
-                            name: "个人招聘统计",
-                            icon: "fa fa-user-friends"
-                        }
-                    ]
-                },
-                {
-                    url: "/test",
-                    name: "测试",
-                    icon: "fa fa-list-alt"
-                }
-            ],
+            // menu: [
+                // {
+                //     url: "/dashboard",
+                //     name: "首页",
+                //     icon: "fa fa-list-alt"
+                // },
+                // {
+                //     name: "简历管理",
+                //     icon: "fa fa-address-book",
+                //     children: [
+                //         {
+                //             url: "/resume/index",
+                //             name: "简历信息",
+                //             icon: "fa fa-address-card"
+                //         }
+                //     ]
+                // },
+                // {
+                //     id: "5",
+                //     name: "用户管理",
+                //     icon: "fa fa-users",
+                //     children: [
+                //         {
+                //             url: "/user/index",
+                //             name: "用户信息",
+                //             icon: "fa fa-user-friends"
+                //         },
+                //         {
+                //             url: "/user/role",
+                //             name: "用户角色",
+                //             icon: "fa fa-users-cog"
+                //         },
+                //         {
+                //             url: "/user/permission",
+                //             name: "用户权限",
+                //             icon: "fa fa-user-shield"
+                //         }
+                //     ]
+                // },
+                // {
+                //     id: "6",
+                //     name: "报表",
+                //     icon: "fa fa-database",
+                //     children: [
+                //         {
+                //             url: "/report/personal_recruitment",
+                //             name: "个人招聘统计",
+                //             icon: "fa fa-user-friends"
+                //         }
+                //     ]
+                // },
+                // {
+                //     url: "/test",
+                //     name: "测试",
+                //     icon: "fa fa-list-alt"
+                // }
+            // ],
 
             changePasswordVisable: false,
 
@@ -290,12 +257,14 @@ export default {
 
             changLoading: false,
 
-            mainBodyTimer: null
+            mainBodyTimer: null,
+
+            // showContent: false
         };
     },
 
     computed: {
-        ...mapGetters(["userInfo"])
+        ...mapGetters(["userInfo", "menu"])
     },
 
     created() {
@@ -321,28 +290,30 @@ export default {
     },
 
     methods: {
-        //获取当前菜单和功能
-        getUserPermission() {
-            let that = this;
+        // //获取当前菜单和功能
+        // getUserPermission() {
+        //     let that = this;
 
-            that.$api.user
-                .getUserPermission()
-                .then(res => {
-                    if (res.code == 0) {
-                        let action = {};
+        //     that.$api.user
+        //         .getUserPermission()
+        //         .then(res => {
+        //             if (res.code == 0) {
+        //                 let action = {};
 
-                        getMenuAndAction(res.data, that.menu, action);
+        //                 getMenuAndAction(res.data, that.menu, action);
 
-                        //设置action
-                        that.$store.commit("setActions", action);
-                    } else {
-                        sthat.$message.error("获取菜单失败，请重试.");
-                    }
-                })
-                .catch(res => {
-                    that.$message.error("获取菜单失败，请重试.");
-                });
-        },
+        //                 that.showContent = true;
+
+        //                 //设置action
+        //                 that.$store.commit("setActions", action);
+        //             } else {
+        //                 sthat.$message.error("获取菜单失败，请重试.");
+        //             }
+        //         })
+        //         .catch(res => {
+        //             that.$message.error("获取菜单失败，请重试.");
+        //         });
+        // },
 
         changePassword() {
             let that = this;

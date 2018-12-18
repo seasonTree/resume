@@ -1,18 +1,31 @@
 export default {
     userInfo(state) {
-        let user = state.user,
-            sessionUserInfo = window.sessionStorage.getItem('_user');
+        let user = state.user;
+        //     sessionUserInfo = null;
 
-        if (!user && sessionUserInfo) {
-            user = JSON.parse(sessionUserInfo);
-            state.user = user;
-        }
+        // if (state.token) {
+        //     sessionUserInfo = window.sessionStorage.getItem(state.token)
+        // }
+
+        // if (!user && sessionUserInfo) {
+        //     state.user = JSON.parse(sessionUserInfo);
+        // }
+
+        console.log('6666666666666666666666');
+        console.log(user)
+
         return user || {};
     },
 
+    //获取菜单
+    menu(state) {
+        let menu = state.menu;
+        return menu || [];
+    },
+
     //功能权限
-    btnAction(state){
-        let action = state.btn_action;
-        return action;
-    }
+    checkAction(state) {
+        // let action = state.btn_action;
+        // return action;
+    },
 }
