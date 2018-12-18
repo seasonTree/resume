@@ -11,9 +11,6 @@ export default {
         //     state.user = JSON.parse(sessionUserInfo);
         // }
 
-        console.log('6666666666666666666666');
-        console.log(user)
-
         return user || {};
     },
 

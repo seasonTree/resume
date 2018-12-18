@@ -82,13 +82,14 @@
                         prop="api"
                         label="接口"
                     ></el-table-column>
-                    <el-table-column
+                    <!-- <el-table-column
                         prop="ct_user"
                         label="创建人"
-                    ></el-table-column>
+                    ></el-table-column> -->
                     <el-table-column
                         prop="ct_time"
                         label="创建时间"
+                        width="150"
                     ></el-table-column>
                     <el-table-column
                         fixed="right"

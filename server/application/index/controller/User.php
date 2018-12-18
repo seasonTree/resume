@@ -81,11 +81,12 @@ class User
         return json(['data'=>$data,'code'=>0,'msg'=>'修改状态成功']);
     }
     /**
-        根据user id 获取权限
+     * 根据user id 获取权限
+     * 
      */
     public function getUserPermission(){
        $id =  Session::get('user_info.id');
-
+        
        $data = model('User')->getPriById($id);
         return json(['data'=>$data,'code'=>0,'msg'=>'获取权限成功']);
     }

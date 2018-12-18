@@ -69,11 +69,11 @@ const components = {
         require.ensure([], () => resolve(require("@view/resume/Index"))),
     "/user/index": resolve =>
         require.ensure([], () => resolve(require("@view/user/Index"))),
-    "/role/index": resolve =>
+    "/user/role": resolve =>
         require.ensure([], () => resolve(require("@view/role/Index"))),
-    "/permission/index": resolve =>
+    "/user/permission": resolve =>
         require.ensure([], () => resolve(require("@view/permission/Index"))),
-    "/report/personalRecruitment": resolve =>
+    "/report/personal_recruitment": resolve =>
         require.ensure([], () =>
             resolve(require("@view/report/PersonalRecruitment"))
         )
@@ -122,7 +122,7 @@ const getMenuData = data => {
                 routerQuickTarget[item.id]["redirect"] = `${item.url}/index`;
             } else {
                 //子
-                if (item.p_component) { //如果子页面注册了组件，表示这个是个功能页面
+                if (components[item.url]) { //如果子页面注册了组件，表示这个是个功能页面
                     //无法使用webpage的import的预编译,所以要预先定义组件列表
                     routerQuickTarget[item.id]["component"] = components[item.url];
 
@@ -305,10 +305,12 @@ let initRouter = false;
 
 router.beforeEach(async (to, from, next) => {
     let toPath = to.path;
-
+    
     //检查当前页面url是否存在, 在初始化调用
-    if(initRouter && !urlArr[toPath]){
-        router.push("/404");
+    if (initRouter && !urlArr[toPath]) {
+        next({
+            path: "/404"
+        });
         return;
     }
 
