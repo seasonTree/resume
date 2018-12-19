@@ -22,7 +22,7 @@ return [
     // 'password'        => 'root', 
    
     // 服务器地址
-    'hostname'        => '192.168.199.10',
+    'hostname'        => '192.168.199.134',
     // 数据库名
     'database'        => 'resume',
     // 用户名
