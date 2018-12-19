@@ -18,7 +18,7 @@ create table rs_user
 	ct_time datetime default CURRENT_TIMESTAMP not null comment '创建时间',
 	mfy_user varchar(64) default '' null comment '修改人',
 	mfy_time datetime default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP not null comment '修改时间',
-	token varchar(255) not null default '' comment '登录token'
+	token varchar(255) not null default '' comment '登录token',
 	unique index `user_uname` (`uname`)
 ) engine=InnoDB;
 
@@ -119,9 +119,6 @@ create table rs_resume
 	ct_time datetime default CURRENT_TIMESTAMP not null comment '创建时间',
 	mfy_user varchar(64) default '' not null comment '修改人',
 	mfy_time datetime default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP not null comment '修改时间'	
-
-
-
 );
 -- -----------------------------------------------------
 -- 上传
@@ -134,7 +131,6 @@ create table rs_resume_upload
 	resume_url varchar(255) not null default '' comment '简历文件对应的路径',
 	ct_user varchar(64) default '' null comment '创建人',
 	ct_time datetime default CURRENT_TIMESTAMP not null comment '创建时间',
-
 );
 
 -- -----------------------------------------------------
