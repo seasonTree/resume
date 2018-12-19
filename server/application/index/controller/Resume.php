@@ -389,6 +389,16 @@ class Resume extends Controller
             return json(['msg' => '删除失败','code' => 1]);
         }
     }
+    public function test(){
+        $sphinx = new \SphinxClient;
+        $sphinx->setServer("localhost", 9312);
+        $sphinx->setMatchMode(SPH_MATCH_ALL);   //匹配模式 ANY为关键词自动拆词，ALL为不拆词匹配（完全匹配）
+        $sphinx->SetArrayResult ( true );   //返回的结果集为数组
+        $result = $sphinx->query("数据","*");   //星号为所有索引源
+        $res = $sphinx->UpdateAttributes ('users',array('is_del'),array(18 => array(1)));
+
+        dump($result);
+    }
 
 
 }
