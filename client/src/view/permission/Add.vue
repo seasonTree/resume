@@ -66,7 +66,7 @@
                     ></el-input>
                 </el-form-item>
 
-                <el-form-item
+                <!-- <el-form-item
                     label="模块名称"
                     prop="p_component"
                 >
@@ -74,7 +74,7 @@
                         v-model.trim="form.p_component"
                         autocomplete="off"
                     ></el-input>
-                </el-form-item>
+                </el-form-item> -->
 
                 <el-form-item
                     label="菜单地址"
@@ -161,7 +161,7 @@ export default {
                 p_act_name: "",
                 p_icon: "",
                 api: "",
-                p_component: ""
+                // p_component: ""
             },
 
             formRules: {
