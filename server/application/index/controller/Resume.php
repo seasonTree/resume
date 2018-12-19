@@ -389,6 +389,9 @@ class Resume extends Controller
             return json(['msg' => '删除失败','code' => 1]);
         }
     }
+    public function test(){
+        phpinfo();
+    }
 
 
 }
