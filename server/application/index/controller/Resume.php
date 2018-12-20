@@ -291,7 +291,7 @@ class Resume extends Controller
         $count = $resume->count();
         dump($count);exit;
         if ($data) {
-            return json(['msg' => '获取成功','code' => 0,'data' => [ 'row' => $data,'total' => count($data)]);
+            return json(['msg' => '获取成功','code' => 0,'data' => [ 'row' => $data,'total' => count($data)]]);
         }
         else{
             return json(['msg' => '无数据','code' => 1]);
