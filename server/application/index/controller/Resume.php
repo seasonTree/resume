@@ -335,6 +335,7 @@ class Resume extends Controller
     public function editResume(){
         //修改简历
         $data = input('post.');
+        $data['mfy_user'] = Session::get('user_info')['uname'];
         if (empty($data)) {
             return json(['msg' => '没有数据','code' => 2]);
         }

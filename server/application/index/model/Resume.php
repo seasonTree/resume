@@ -19,7 +19,7 @@ class Resume extends Model
 
     public function get($where = '1=1'){
         //获取数据
-        return Resume::where($where)->select();
+        return Resume::field('id,name,phone,sex,age,work_year,email,expected_money,nearest_unit,nearest_job,english,expected_address,school,educational,speciality')->where($where)->select();
     }
 
     public function getOne($where = '1=1'){
