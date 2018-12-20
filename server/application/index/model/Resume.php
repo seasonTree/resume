@@ -41,7 +41,7 @@ class Resume extends Model
     }
 
     public function count($where = '1=1'){
-        return Resume::count('id');
+        return Resume::count();
     }
 
 
