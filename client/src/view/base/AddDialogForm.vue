@@ -22,7 +22,7 @@ export default {
                    
                     //提交之前
                     that.beforeAdd(that.form);
-                     console.log(that.form);
+                    //  console.log(that.form);
                
                     that.$api[that.apiType]
                         .add(that.form)
