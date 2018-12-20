@@ -39,7 +39,7 @@
                     ref="form"
                 >
                     <el-row :gutter="20">
-                        <!-- *****************基础信息******************* -->
+                        <!-- *****************基础信息***************** -->
                         <el-col :span="12">
                             <div class="grid-content bg-purple left-container">
                                 <div
