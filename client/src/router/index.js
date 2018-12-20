@@ -10,12 +10,12 @@ import {
 Vue.use(VueRouter);
 
 //快速索引，用于router的地址是否存在
-const urlArr = {
-    "/login": true,
-    "/dashboard": true,
-    "/error": true,
-    "/404": true,
-}
+// const urlArr = {
+//     "/login": true,
+//     "/dashboard": true,
+//     "/error": true,
+//     "/404": true,
+// }
 
 //基础的路由
 const routes = [{
@@ -47,13 +47,14 @@ const routes = [{
             notAuth: true
         }
     },
-    {
-        path: "/404",
-        component: () => import("@view/error/NotFound"),
-        meta: {
-            notAuth: true
-        }
-    }
+    //去除404页面，等待登陆后自动添加，未登录一直跳登录页面
+    // {
+    //     path: "/404",
+    //     component: () => import("@view/error/NotFound"),
+    //     meta: {
+    //         notAuth: true
+    //     }
+    // }
 ];
 
 
@@ -65,15 +66,28 @@ const components = {
     // "/user/permission": import("@view/permission/Index"),
     // "/report/personal_recruitment": import("@view/report/PersonalRecruitment")
 
-    "/resume/index": resolve =>
+    // "/resume/index": resolve =>
+    //     require.ensure([], () => resolve(require("@view/resume/Index"))),
+    // "/user/index": resolve =>
+    //     require.ensure([], () => resolve(require("@view/user/Index"))),
+    // "/user/role": resolve =>
+    //     require.ensure([], () => resolve(require("@view/role/Index"))),
+    // "/user/permission": resolve =>
+    //     require.ensure([], () => resolve(require("@view/permission/Index"))),
+    // "/report/personal_recruitment": resolve =>
+    //     require.ensure([], () =>
+    //         resolve(require("@view/report/PersonalRecruitment"))
+    //     )
+
+    "/resume/Index": resolve =>
         require.ensure([], () => resolve(require("@view/resume/Index"))),
-    "/user/index": resolve =>
+    "/user/Index": resolve =>
         require.ensure([], () => resolve(require("@view/user/Index"))),
-    "/user/role": resolve =>
+    "/role/Index": resolve =>
         require.ensure([], () => resolve(require("@view/role/Index"))),
-    "/user/permission": resolve =>
+    "/permission/Index": resolve =>
         require.ensure([], () => resolve(require("@view/permission/Index"))),
-    "/report/personal_recruitment": resolve =>
+    "/report/PersonalRecruitment": resolve =>
         require.ensure([], () =>
             resolve(require("@view/report/PersonalRecruitment"))
         )
@@ -122,12 +136,12 @@ const getMenuData = data => {
                 routerQuickTarget[item.id]["redirect"] = `${item.url}/index`;
             } else {
                 //子
-                if (components[item.url]) { //如果子页面注册了组件，表示这个是个功能页面
+                if (item.p_component) { //如果子页面注册了组件，表示这个是个功能页面
                     //无法使用webpage的import的预编译,所以要预先定义组件列表
-                    routerQuickTarget[item.id]["component"] = components[item.url];
+                    routerQuickTarget[item.id]["component"] = components[item.p_component];
 
                     //注入url快速索引表，用于检查页面
-                    urlArr[item.url] = true;
+                    // urlArr[item.url] = true;
                 }
             }
 
@@ -178,6 +192,15 @@ const getMenuData = data => {
             //---------------------------------------------
         }
     }
+
+    //最后追加404页面
+    routerArr.push({
+        path: "*",
+        component: () => import("@view/error/NotFound"),
+        meta: {
+            notAuth: true
+        }
+    });
 
     return {
         action,
@@ -306,16 +329,16 @@ let initRouter = false;
 router.beforeEach(async (to, from, next) => {
     let toPath = to.path;
 
-    //检查当前页面url是否存在, 在初始化后调用
-    if (initRouter && !urlArr[toPath]) {
-        next({
-            path: "/404"
-        });
-        return;
-    }
+    // //检查当前页面url是否存在, 在初始化后调用
+    // if (initRouter && !urlArr[toPath]) {
+    //     next({
+    //         path: "/404"
+    //     });
+    //     return;
+    // }
 
     //直接过滤掉的页面，不要验证
-    if (to.meta.notAuth) {
+    if (to.meta.notAuth === false) {
         next();
         return;
     }
