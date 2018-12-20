@@ -73,32 +73,49 @@
         border-bottom: 1px solid #dcdfe6;
         padding: 20px 20px 0;
     }
-
-    .dialog-footer{
-        > div{
+    .dialog-footer {
+        >div {
             display: inline-block;
             margin-right: 10px;
         }
-    }
-
-
-    // .dialog-content {
+    } // .dialog-content {
     //     margin: auto;
     //     margin-bottom: 20px;
     // }
 }
 
-.mb-20{
+.clear-float{
+    display: block;
+    clear: both;
+    content: "";
+    visibility: hidden;
+    height: 0;
+    zoom: 1
+}
+
+.clearfix::after {
+    .clear-float;
+}
+
+.mb-20 {
     margin-bottom: 20px;
 }
 
 .action-bar {
     margin-bottom: 10px;
+    .search-item {
+        display: inline-block;
+        margin: 0 10px 10px 0;
+    }
     .action-bar-right {
         float: right;
         >div {
             display: inline-block;
         }
+    }
+
+    &::after{
+        .clear-float
     }
 }
 

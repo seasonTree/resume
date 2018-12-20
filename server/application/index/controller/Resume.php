@@ -288,8 +288,9 @@ class Resume extends Controller
         //简历列表
         $resume = new ResumeModel();
         $data = $resume->get();
+        $count = $resume->getCount();
         if ($data) {
-            return json(['msg' => '获取成功','code' => 0,'data' => $data]);
+            return json(['msg' => '获取成功','code' => 0,'data' => [ 'row' => $data,'total' => $count]]);
         }
         else{
             return json(['msg' => '无数据','code' => 1]);
@@ -393,10 +394,10 @@ class Resume extends Controller
     public function test(){
         $sphinx = new \SphinxClient;
         $sphinx->setServer("localhost", 9312);
-        $sphinx->setMatchMode(SPH_MATCH_ALL);   //匹配模式 ANY为关键词自动拆词，ALL为不拆词匹配（完全匹配）
+        $sphinx->setMatchMode(SPH_MATCH_EXTENDED2);   //匹配模式 ANY为关键词自动拆词，ALL为不拆词匹配（完全匹配）
         $sphinx->SetArrayResult ( true );   //返回的结果集为数组
-        $result = $sphinx->query("","*");   //星号为所有索引源
-        $res = $sphinx->UpdateAttributes ('users',array('is_del'),array(18 => array(1)));
+        $result = $sphinx->query('"精通php"|"精通java"|"高并发"',"resume;edit_delta");   //星号为所有索引源
+        // $res = $sphinx->UpdateAttributes ('users',array('is_del'),array(18 => array(1)));
 
         dump($result);
     }

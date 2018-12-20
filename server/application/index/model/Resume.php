@@ -40,8 +40,8 @@ class Resume extends Model
         return Resume::where($where)->delete();
     }
 
-    public function test(){
-        phpinfo();
+    public function getCount($where = '1=1'){
+        return Resume::count();
     }
 
 

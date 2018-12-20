@@ -138,8 +138,8 @@ export const getLtWeek = () => {
     end.setTime(end.getTime() - oneDayTime * dayOfWeek - 1);
 
     return {
-        ltWeekStart: start.getFullYear() + '-' + (start.getMonth() + 1) + start.getDate(),
-        ltWeekEnd: end.getFullYear() + '-' + (end.getMonth() + 1) + end.getDate(),
+        ltWeekStart: start.getFullYear() + '-' + (start.getMonth() + 1) + '-' + start.getDate(),
+        ltWeekEnd: end.getFullYear() + '-' + (end.getMonth() + 1) + '-' + end.getDate(),
     }
 }
 
