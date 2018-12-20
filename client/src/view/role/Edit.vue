@@ -23,7 +23,7 @@
                 ></el-input>
             </el-form-item>
 
-            <el-form-item label="状态">
+            <!-- <el-form-item label="状态">
                 <el-switch
                     v-model="form.status"
                     active-color="#00c100"
@@ -31,7 +31,7 @@
                     :active-value="0"
                     :inactive-value="1"
                 ></el-switch>
-            </el-form-item>
+            </el-form-item> -->
         </el-form>
 
         <div
@@ -60,7 +60,7 @@ export default {
             form: {
                 id: 0,
                 role_name: "",
-                status: 0
+                // status: 0
             },
 
             formRules: {
