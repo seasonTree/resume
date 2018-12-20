@@ -19,7 +19,7 @@ class Resume extends Model
 
     public function get($where = '1=1'){
         //获取数据
-        return Resume::where($where)->select();
+        return Resume::field('id,name,phone,sex,age,work_year,email,expected_money,nearest_unit,nearest_job,english,expected_address,school,educational,speciality,mfy_time')->where($where)->select();
     }
 
     public function getOne($where = '1=1'){
@@ -33,6 +33,7 @@ class Resume extends Model
         if ($temp['mfy_time'] != $data['mfy_time']) {
             return json(['msg' => '该数据已经更变，请刷新','code' => 10,'data' => []]);
         }
+        unset($data['mfy_time']);
         return Resume::update($data);
     }
 
@@ -40,8 +41,8 @@ class Resume extends Model
         return Resume::where($where)->delete();
     }
 
-    public function test(){
-        phpinfo();
+    public function getCount($where = '1=1'){
+        return Resume::count();
     }
 
 
