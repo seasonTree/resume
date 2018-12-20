@@ -321,8 +321,8 @@ class Resume extends Controller
         }
 
         $resume = new ResumeModel();
-        dump($data);exit;
         $id = $resume->add($data);
+        dump($id);exit;
         $data = $resume->getOne(['id' => $id]);
         if ($data) {
             return json(['msg' => '添加成功','code' => 0,'data' => $data]);
