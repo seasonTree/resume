@@ -319,6 +319,7 @@ class Resume extends Controller
         if (empty($data)) {
             return json(['msg' => '没有数据','code' => 2]);
         }
+        dump($data);exit;
         $resume = new ResumeModel();
         $id = $resume->add($data);
         $data = $resume->getOne(['id' => $id]);
