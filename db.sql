@@ -18,7 +18,7 @@ create table rs_user
 	ct_time datetime default CURRENT_TIMESTAMP not null comment '创建时间',
 	mfy_user varchar(64) default '' null comment '修改人',
 	mfy_time datetime default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP not null comment '修改时间',
-	token varchar(255) not null default '' comment '登录token'
+	token varchar(255) not null default '' comment '登录token',
 	unique index `user_uname` (`uname`)
 ) engine=InnoDB;
 
@@ -119,9 +119,6 @@ create table rs_resume
 	ct_time datetime default CURRENT_TIMESTAMP not null comment '创建时间',
 	mfy_user varchar(64) default '' not null comment '修改人',
 	mfy_time datetime default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP not null comment '修改时间'	
-
-
-
 );
 -- -----------------------------------------------------
 -- 上传
@@ -133,8 +130,7 @@ create table rs_resume_upload
 	file_name varchar(100) not null default '' comment '文件名',
 	resume_url varchar(255) not null default '' comment '简历文件对应的路径',
 	ct_user varchar(64) default '' null comment '创建人',
-	ct_time datetime default CURRENT_TIMESTAMP not null comment '创建时间',
-
+	ct_time datetime default CURRENT_TIMESTAMP not null comment '创建时间'
 );
 
 -- -----------------------------------------------------
@@ -156,19 +152,20 @@ create table rs_communicate
 	resume_id bigint(20) not null default 0 comment '简历id'
 );
 
-INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, p_act_name, url, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (1, 0, '简历管理', 0, 'fa fa-address-book', '', '', '', 0, '', '2018-12-14 13:55:50', '', '2018-12-14 13:55:50');
+-- 插入菜单
+INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, p_act_name, url, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (1, 0, '简历管理', 0, 'fa fa-address-book', '', '/resume', '', 0, '', '2018-12-14 13:55:50', '', '2018-12-18 18:49:13');
 INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, p_act_name, url, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (2, 1, '简历信息', 0, 'fa fa-address-card', '', '/resume/index', '', 0, '', '2018-12-14 13:56:57', '', '2018-12-14 13:56:57');
-INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, p_act_name, url, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (3, 2, '查看简历列表数据', 1, '', 'resume_list', '',  '/api/resume/list', 0, '', '2018-12-14 13:58:37', '', '2018-12-14 13:58:37');
+INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, p_act_name, url, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (3, 2, '查看简历列表数据', 1, '', 'resume_list', '', '/api/resume/list', 0, '', '2018-12-14 13:58:37', '', '2018-12-14 13:58:37');
 INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, p_act_name, url, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (4, 2, '简历新增', 1, '', 'resume_add', '', '/api/resume/add', 0, '', '2018-12-14 13:59:15', '', '2018-12-14 13:59:15');
-INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, p_act_name, url, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (5, 2, '简历修改', 1, '', 'resume_edit', '',  '/api/resume/edit', 0, '', '2018-12-14 13:59:52', '', '2018-12-14 13:59:52');
-INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, p_act_name, url, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (6, 2, '简历删除', 1, '', 'resume_del', '',  '/api/resume/del', 0, '', '2018-12-14 14:15:13', '', '2018-12-14 14:15:13');
-INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, p_act_name, url, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (7, 2, '简历单条记录获取', 1, '', 'resume_get_row', '',  '/api/resume/get_by_id', 0, '', '2018-12-14 14:16:20', '', '2018-12-14 14:16:20');
-INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, p_act_name, url, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (8, 2, '获取简历沟通列表', 1, '', 'resume_commu_list', '',  '/api/resume/get_communication', 0, '', '2018-12-14 14:17:25', '', '2018-12-14 14:17:25');
+INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, p_act_name, url, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (5, 2, '简历修改', 1, '', 'resume_edit', '', '/api/resume/edit', 0, '', '2018-12-14 13:59:52', '', '2018-12-14 13:59:52');
+INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, p_act_name, url, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (6, 2, '简历删除', 1, '', 'resume_del', '', '/api/resume/del', 0, '', '2018-12-14 14:15:13', '', '2018-12-14 14:15:13');
+INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, p_act_name, url, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (7, 2, '简历单条记录获取', 1, '', 'resume_get_row', '', '/api/resume/get_by_id', 0, '', '2018-12-14 14:16:20', '', '2018-12-14 14:16:20');
+INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, p_act_name, url, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (8, 2, '获取简历沟通列表', 1, '', 'resume_commu_list', '', '/api/resume/get_communication', 0, '', '2018-12-14 14:17:25', '', '2018-12-14 14:17:25');
 INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, p_act_name, url, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (9, 2, '简历沟通新增', 1, '', 'resume_commu_add', '', '/api/resume/add_communication', 0, '', '2018-12-14 14:17:58', '', '2018-12-14 14:17:58');
 INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, p_act_name, url, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (10, 2, '简历文件上传', 1, '', 'resume_file_upload', '', '/api/resume/upload_file', 0, '', '2018-12-14 14:18:38', '', '2018-12-14 14:18:38');
 INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, p_act_name, url, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (11, 2, '获取简历文件列表', 1, '', 'resume_file_list', '', '/api/resume/get_upload_file', 0, '', '2018-12-14 14:19:36', '', '2018-12-14 14:19:36');
 INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, p_act_name, url, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (12, 2, '简历文件删除', 1, '', 'resume_file_del', '', '/api/resume/del_file', 0, '', '2018-12-14 14:20:32', '', '2018-12-14 14:20:32');
-INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, p_act_name, url, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (13, 0, '用户管理', 0, 'fa fa-users', '', '', '', 0, '', '2018-12-14 14:22:11', '', '2018-12-14 14:22:11');
+INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, p_act_name, url, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (13, 0, '用户管理', 0, 'fa fa-users', '', '/user', '', 0, '', '2018-12-14 14:22:11', '', '2018-12-18 18:49:13');
 INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, p_act_name, url, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (14, 13, '用户信息', 0, 'fa fa-user-friends', '', '/user/index', '', 0, '', '2018-12-14 14:23:25', '', '2018-12-14 14:23:25');
 INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, p_act_name, url, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (15, 13, '用户角色', 0, 'fa fa-users-cog', '', '/user/role', '', 0, '', '2018-12-14 14:24:07', '', '2018-12-14 14:24:07');
 INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, p_act_name, url, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (16, 13, '用户权限', 0, 'fa fa-user-shield', '', '/user/permission', '', 0, '', '2018-12-14 14:24:29', '', '2018-12-14 14:24:29');
@@ -194,3 +191,5 @@ INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, p_act_n
 INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, p_act_name, url, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (36, 16, '权限修改', 1, '', 'permiss_edit', '', '/api/permission/edit', 0, '', '2018-12-14 14:51:28', '', '2018-12-14 14:51:28');
 INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, p_act_name, url, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (37, 16, '权限删除', 1, '', 'permiss_del', '', '/api/permission/del', 0, '', '2018-12-14 14:52:51', '', '2018-12-14 14:52:51');
 INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, p_act_name, url, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (38, 16, '权限排序', 1, '', 'permiss_sort', '', '/api/permission/sort', 0, '', '2018-12-14 14:53:22', '', '2018-12-14 14:53:22');
+INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, p_act_name, url, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (39, 0, '报表', 0, 'fa fa-database', '', '/report', '', 0, '', '2018-12-18 18:36:06', '', '2018-12-18 18:49:13');
+INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, p_act_name, url, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (40, 39, '个人招聘统计', 0, 'fa fa-user-friends', '', '/report/personal_recruitment', '', 0, '', '2018-12-18 18:37:39', '', '2018-12-18 18:37:39');

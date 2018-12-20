@@ -16,6 +16,6 @@ export default {
 
     //设置功能权限
     setActions(state, value){
-        state.btn_action = value;
+        state.btn_act = value;
     },
 }

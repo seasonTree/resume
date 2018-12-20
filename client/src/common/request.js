@@ -1,9 +1,9 @@
 import axios from 'axios';
-import router from '../router';
+// import router from '../router';
 
 const instance = axios.create({
     baseURL: '/api', // api的base_url
-    timeout: 12000 // 请求超时时间
+    timeout: 6000 // 请求超时时间
 })
 // request拦截器
 instance.interceptors.request.use(
@@ -27,19 +27,19 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
     response => {
         const resp = response.data
-        if (response.status === 200) {
+        // if (response.status === 200) {
 
-            // if (resp.error == '403') {
-            //     that.$message.error("未登录.");
+        //     // if (resp.error == '403') {
+        //     //     that.$message.error("未登录.");
 
-            //     router.replace({
-            //         path: '/login',
-            //         query: {
-            //             redirect: router.currentRoute.fullPath
-            //         } //登录成功后跳入浏览的当前页面
-            //     })
-            // }
-        }
+        //     //     router.replace({
+        //     //         path: '/login',
+        //     //         query: {
+        //     //             redirect: router.currentRoute.fullPath
+        //     //         } //登录成功后跳入浏览的当前页面
+        //     //     })
+        //     // }
+        // }
 
         return resp;
     },

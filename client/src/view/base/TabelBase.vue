@@ -1,4 +1,6 @@
 <script>
+import { mapGetters } from "vuex";
+
 export default {
     name: "Tabel",
 
@@ -30,6 +32,8 @@ export default {
         if (that.apiType) {
             that.getData();
         }
+
+        // console.log(that.$check_pm('role_permiss_set'))
     },
 
     computed: {
@@ -39,10 +43,19 @@ export default {
             } else {
                 return this.bodyHeight - 80;
             }
-        }
+        },
+
+        //获取功能
+        // ...mapGetters(["btn_act"])
     },
 
     methods: {
+        // //检查权限
+        // checkUserPermission(key){
+        //     //如果btn_act不等于未定义的话就表示有权限
+        //     return !!btn_act[key];
+        // },
+
         // //获取数据以后执行
         // afterGetDate(){},
 

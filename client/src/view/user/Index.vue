@@ -78,6 +78,8 @@
                     fixed="right"
                     label="状态"
                     align="center"
+                    width="60"
+
                 >
                     <template slot-scope="scope">
                         <i

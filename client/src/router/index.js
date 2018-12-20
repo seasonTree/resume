@@ -69,11 +69,11 @@ const components = {
         require.ensure([], () => resolve(require("@view/resume/Index"))),
     "/user/index": resolve =>
         require.ensure([], () => resolve(require("@view/user/Index"))),
-    "/role/index": resolve =>
+    "/user/role": resolve =>
         require.ensure([], () => resolve(require("@view/role/Index"))),
-    "/permission/index": resolve =>
+    "/user/permission": resolve =>
         require.ensure([], () => resolve(require("@view/permission/Index"))),
-    "/report/personalRecruitment": resolve =>
+    "/report/personal_recruitment": resolve =>
         require.ensure([], () =>
             resolve(require("@view/report/PersonalRecruitment"))
         )
@@ -83,7 +83,7 @@ const components = {
 //使用的数组一定要保持顺序
 const getMenuData = data => {
     let quickTarget = {},
-        //做多份，防止menu里面过多的数据，用户处理路由的
+        //做多份，防止menu里面过多的数据，用于处理路由的
         routerQuickTarget = {},
         action = {},
         menu = [{
@@ -122,7 +122,7 @@ const getMenuData = data => {
                 routerQuickTarget[item.id]["redirect"] = `${item.url}/index`;
             } else {
                 //子
-                if (item.p_component) { //如果子页面注册了组件，表示这个是个功能页面
+                if (components[item.url]) { //如果子页面注册了组件，表示这个是个功能页面
                     //无法使用webpage的import的预编译,所以要预先定义组件列表
                     routerQuickTarget[item.id]["component"] = components[item.url];
 
@@ -306,9 +306,11 @@ let initRouter = false;
 router.beforeEach(async (to, from, next) => {
     let toPath = to.path;
 
-    //检查当前页面url是否存在, 在初始化调用
-    if(initRouter && !urlArr[toPath]){
-        router.push("/404");
+    //检查当前页面url是否存在, 在初始化后调用
+    if (initRouter && !urlArr[toPath]) {
+        next({
+            path: "/404"
+        });
         return;
     }
 
@@ -321,14 +323,25 @@ router.beforeEach(async (to, from, next) => {
     //获取当前登录的用户
     let user = store.getters.userInfo;
     if (!user.uname) {
-        let resp = await getUserInfo(),
-            udata = resp.data;
+        let checkError = false;
 
-        if (resp.code == 0) {
-            user = udata;
-            store.commit("setUserInfo", udata);
-        } else {
-            store.commit("clearUserInfo");
+        try {
+            let resp = await getUserInfo(),
+                udata = resp.data;
+
+            if (resp.code == 0) {
+                user = udata;
+                store.commit("setUserInfo", udata);
+            } else {
+                store.commit("clearUserInfo");
+            }
+        } catch (error) {
+            checkError = true;
+        } finally {
+            if (checkError) {
+                router.push("/error");
+                return;
+            }
         }
     }
 
@@ -336,33 +349,28 @@ router.beforeEach(async (to, from, next) => {
     if (user.uname) {
         //初始化菜单------------------------
 
-        try {
-            if (!initRouter) {
-                let suceess = await genRoute(router, store);
+        if (!initRouter) {
+            let suceess = await genRoute(router, store);
 
-                if (suceess) {
-                    initRouter = true;
-                    //一定要写toPath, 用于等待数据返回再次刷新
-                    next({
-                        path: toPath
-                    });
-                } else {
-                    //跳到出错页面
-                    router.push("/error");
-                }
-            } else { //menu都有了直接next
-                next();
+            if (suceess) {
+                initRouter = true;
+                //一定要写toPath, 用于等待数据返回再次刷新
+                next({
+                    path: toPath
+                });
+            } else {
+                //跳到出错页面
+                router.push("/error");
             }
-        } catch (e) {
-            router.push("/error");
+        } else if (toPath == "/login") {
+
+            //登录后还想跳到登录页面的，直接跳首页
+            router.replace("/dashboard");
+        } else { //menu都有了直接next
+            next();
         }
 
         //---------------------------
-
-        if (toPath == "/login") {
-            //登录后还想跳到登录页面的，直接跳首页
-            router.replace("/dashboard");
-        }
     } else if (toPath != "/login") {
         //没有登录,并且想跳到其他地方，直接跳到登录
         router.replace("/login");
