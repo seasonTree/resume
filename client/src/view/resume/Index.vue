@@ -1,20 +1,117 @@
 <template>
-
     <div>
-
         <el-row class="table-container">
             <div class="action-bar">
                 <el-button
                     type="primary"
                     @click="addDialog = true"
                 >新增简历</el-button>
-
-                <el-button
-                    type="primary"
-                    @click="addDialog = true"
-                >搜索</el-button>
-
             </div>
+
+            <div class="search">
+                <form>
+                    <el-row :gutter="20">
+                        <el-col :span="4">
+                            <el-input placeholder="姓名">
+                            </el-input>
+                        </el-col>
+                        <el-col :span="4">
+                            <el-input placeholder="性别">
+                            </el-input>
+                        </el-col>
+                        <el-col :span="4">
+                            <el-input placeholder="姓名">
+                            </el-input>
+                        </el-col>
+                        <el-col :span="4.9">
+                            <el-input placeholder="姓名">
+                            </el-input>
+                        </el-col>
+                        <el-col :span="4.9">
+                            <el-input></el-input>
+                        </el-col>
+                        <el-col :span="3.5">
+                            <el-button type="primary">搜索</el-button>
+                        </el-col>
+                    </el-row>
+
+                    <div
+                        class="dropdown"
+                        id="dropdown"
+                    >
+                        <el-row :gutter="20">
+                            <el-col :span="4.5">
+                                <el-input placeholder="姓名">
+                                </el-input>
+                            </el-col>
+                            <el-col :span="4.5">
+                                <el-input placeholder="性别">
+                                </el-input>
+                            </el-col>
+                            <el-col :span="4.5">
+                            <el-input placeholder="姓名">
+                            </el-input>
+                        </el-col>
+                        <el-col :span="4.5">
+                            <el-input placeholder="性别">
+                            </el-input>
+                        </el-col>
+                        <el-col :span="4.5">
+                            <el-input placeholder="姓名">
+                            </el-input>
+                        </el-col>
+
+                            <el-col :span="4.5">
+                                <el-input></el-input>
+                            </el-col>
+                            <el-col :span="4.5">
+                                <el-input></el-input>
+                            </el-col>
+                        </el-row>
+                        <el-row :gutter="20">
+                            <el-col :span="4.5">
+                                <el-input placeholder="姓名">
+                                </el-input>
+                            </el-col>
+                            <el-col :span="4.5">
+                                <el-input placeholder="性别">
+                                </el-input>
+                            </el-col>
+                            <el-col :span="4.5">
+                            <el-input placeholder="姓名">
+                            </el-input>
+                        </el-col>
+                        <el-col :span="4.5">
+                            <el-input placeholder="性别">
+                            </el-input>
+                        </el-col>
+                        <el-col :span="4.5">
+                            <el-input placeholder="姓名">
+                            </el-input>
+                        </el-col>
+
+                            <el-col :span="4.5">
+                                <el-input></el-input>
+                            </el-col>
+                            <el-col :span="4.5">
+                                <el-input></el-input>
+                            </el-col>
+                        </el-row>
+                    </div>
+
+                    <el-row
+                        :gutter="20"
+                        style="background:#ccc;margin:10px 1px;text-align:center;height:20px;display:block"
+                    >
+                        <div
+                            width="100%"
+                            @click="dropDown"
+                        >收起搜索条件</div>
+                    </el-row>
+
+                </form>
+            </div>
+
             <el-table
                 :data="tdata"
                 stripe
@@ -252,6 +349,17 @@ export default {
         UploadFile
     },
     methods: {
+        //点击搜索条件缩放
+        dropDown() {
+            let dropdown = document.getElementById("dropdown");
+            if (this.flag) {
+                dropdown.style.display = "none";
+                this.flag = false;
+            } else {
+                dropdown.style.display = "block";
+                this.flag = true;
+            }
+        },
         //点击行查看简历
         showViewDialog(row) {
             let that = this;
@@ -285,6 +393,17 @@ export default {
             //填写API获取的类型，由父类自动调用，不填不调用
             apiType: "resume",
 
+            options: [
+                {
+                    value: "选项1",
+                    label: "男"
+                },
+                {
+                    value: "选项2",
+                    label: "女"
+                }
+            ],
+            value: "",
             // tdata: [
             //     {
             //         id: 1,
@@ -336,7 +455,9 @@ export default {
 
             //查看
             viewDialog: false,
-            viewID: 0
+            viewID: 0,
+            //dropdown flag
+            flag: true
         };
     }
 };
@@ -346,6 +467,18 @@ export default {
     tbody {
         tr {
             cursor: pointer;
+        }
+    }
+}
+
+.margin {
+    margin: 5px;
+}
+.search {
+    .el-row {
+        margin-bottom: 10px;
+        &:last-child {
+            margin-bottom: 5px;
         }
     }
 }
