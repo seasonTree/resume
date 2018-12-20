@@ -265,9 +265,6 @@ export default {
 
     created() {
         let that = this;
-
-        //获取当前菜单和功能
-        // that.getUserPermission();
     },
 
     mounted() {
@@ -286,30 +283,6 @@ export default {
     },
 
     methods: {
-        // //获取当前菜单和功能
-        // getUserPermission() {
-        //     let that = this;
-
-        //     that.$api.user
-        //         .getUserPermission()
-        //         .then(res => {
-        //             if (res.code == 0) {
-        //                 let action = {};
-
-        //                 getMenuAndAction(res.data, that.menu, action);
-
-        //                 that.showContent = true;
-
-        //                 //设置action
-        //                 that.$store.commit("setActions", action);
-        //             } else {
-        //                 sthat.$message.error("获取菜单失败，请重试.");
-        //             }
-        //         })
-        //         .catch(res => {
-        //             that.$message.error("获取菜单失败，请重试.");
-        //         });
-        // },
 
         changePassword() {
             let that = this;
@@ -350,8 +323,12 @@ export default {
             that.$api.user
                 .logout()
                 .then(res => {
-                    that.$store.commit("clearUserInfo");
-                    that.$router.replace("/login");
+                    // that.$store.commit("clearUserInfo");
+
+                    //直接重刷页面，清除所有的router
+                    //因为vue-router不支持动态删除路由
+                    window.location.reload();
+                    // that.$router.replace("/login");
                 })
                 .catch(res => {
                     that.$message.error("退出失败,请重试.");

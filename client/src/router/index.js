@@ -1,6 +1,9 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import store from "../store";
+//组件模块登记
+import components from "./components";
+
 //因为全局路由守卫不能获取this，这里直接使用方法来获取是否登录
 import {
     getUserInfo,
@@ -56,42 +59,6 @@ const routes = [{
     //     }
     // }
 ];
-
-
-//主的组件
-const components = {
-    // "/resume/index": import("@view/resume/Index"),
-    // "/user/index": import("@view/user/Index"),
-    // "/user/role": import("@view/role/Index"),
-    // "/user/permission": import("@view/permission/Index"),
-    // "/report/personal_recruitment": import("@view/report/PersonalRecruitment")
-
-    // "/resume/index": resolve =>
-    //     require.ensure([], () => resolve(require("@view/resume/Index"))),
-    // "/user/index": resolve =>
-    //     require.ensure([], () => resolve(require("@view/user/Index"))),
-    // "/user/role": resolve =>
-    //     require.ensure([], () => resolve(require("@view/role/Index"))),
-    // "/user/permission": resolve =>
-    //     require.ensure([], () => resolve(require("@view/permission/Index"))),
-    // "/report/personal_recruitment": resolve =>
-    //     require.ensure([], () =>
-    //         resolve(require("@view/report/PersonalRecruitment"))
-    //     )
-
-    "/resume/Index": resolve =>
-        require.ensure([], () => resolve(require("@view/resume/Index"))),
-    "/user/Index": resolve =>
-        require.ensure([], () => resolve(require("@view/user/Index"))),
-    "/role/Index": resolve =>
-        require.ensure([], () => resolve(require("@view/role/Index"))),
-    "/permission/Index": resolve =>
-        require.ensure([], () => resolve(require("@view/permission/Index"))),
-    "/report/PersonalRecruitment": resolve =>
-        require.ensure([], () =>
-            resolve(require("@view/report/PersonalRecruitment"))
-        )
-};
 
 //获取菜单按钮功能
 //使用的数组一定要保持顺序
@@ -338,7 +305,7 @@ router.beforeEach(async (to, from, next) => {
     // }
 
     //直接过滤掉的页面，不要验证
-    if (to.meta.notAuth === false) {
+    if (to.meta.notAuth === true) {
         next();
         return;
     }

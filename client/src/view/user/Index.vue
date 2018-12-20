@@ -117,7 +117,7 @@
                         </el-tooltip>
                         <el-tooltip
                             effect="dark"
-                            content="修改密码"
+                            content="修改"
                             placement="top"
                         >
                             <el-button
