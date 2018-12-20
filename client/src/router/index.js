@@ -329,7 +329,7 @@ router.beforeEach(async (to, from, next) => {
             checkError = true;
         } finally {
             if (checkError) {
-                router.push("/error");
+                router.push("/login");
                 return;
             }
         }
