@@ -12,7 +12,6 @@
                 :data="permissionData"
                 node-key="id"
                 :props="defaultProps"
-                default-expand-all
                 ref="tree"
                 :draggable="true"
             >

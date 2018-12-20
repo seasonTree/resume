@@ -62,7 +62,7 @@
                         label="创建时间"
                     ></el-table-column>
 
-                    <el-table-column
+                    <!-- <el-table-column
                         fixed="right"
                         label="状态"
                         align="center"
@@ -80,7 +80,7 @@
                                 @click="changeStatus(scope.row.id, 0, scope.row)"
                             ></i>
                         </template>
-                    </el-table-column>
+                    </el-table-column> -->
 
                     <el-table-column
                         fixed="right"
@@ -228,31 +228,31 @@ export default {
         };
     },
     methods: {
-        changeStatus(id, status, item) {
-            let that = this;
+        // changeStatus(id, status, item) {
+        //     let that = this;
 
-            that.$api.role
-                .changeStatus({
-                    id,
-                    status
-                })
-                .then(res => {
-                    if (res.code == 0) {
-                        that.$message({
-                            message: "更新状态成功.",
-                            type: "success",
-                            duration: 800
-                        });
+        //     that.$api.role
+        //         .changeStatus({
+        //             id,
+        //             status
+        //         })
+        //         .then(res => {
+        //             if (res.code == 0) {
+        //                 that.$message({
+        //                     message: "更新状态成功.",
+        //                     type: "success",
+        //                     duration: 800
+        //                 });
 
-                        item.status = status;
-                    } else {
-                        that.$message.error(res.msg || "更新状态失败，请重试.");
-                    }
-                })
-                .catch(res => {
-                    that.$message.error("更新状态失败，请重试.");
-                });
-        },
+        //                 item.status = status;
+        //             } else {
+        //                 that.$message.error(res.msg || "更新状态失败，请重试.");
+        //             }
+        //         })
+        //         .catch(res => {
+        //             that.$message.error("更新状态失败，请重试.");
+        //         });
+        // },
 
         //设置当前的角色权限
         setRolePremission(id) {

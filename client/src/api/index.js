@@ -1,9 +1,11 @@
+import * as dashboard from './dashboard'
 import * as user from './user'
 import * as role from './role'
 import * as permission from './permission'
 import * as resume from './resume';
 
 const apis = {
+    dashboard,
     user,
     role,
     permission,

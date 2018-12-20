@@ -10,5 +10,5 @@ export default {
     menu: null,
 
     //按钮功能
-    btn_action: null,
+    btn_act: null,
 }
