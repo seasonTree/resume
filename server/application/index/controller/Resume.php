@@ -288,7 +288,7 @@ class Resume extends Controller
         //简历列表
         $resume = new ResumeModel();
         $data = $resume->get();
-        $count = $resume->count();
+        $count = $resume->getCount();
         dump($count);exit;
         if ($data) {
             return json(['msg' => '获取成功','code' => 0,'data' => [ 'row' => $data,'total' => count($data)]]);
