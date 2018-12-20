@@ -27,9 +27,9 @@ const components = {
         require.ensure([], () => resolve(require("@view/role/Index"))),
     "/permission/Index": resolve =>
         require.ensure([], () => resolve(require("@view/permission/Index"))),
-    "/report/PersonalRecruitment": resolve =>
+    "/report/personal_recruitment/Index": resolve =>
         require.ensure([], () =>
-            resolve(require("@view/report/PersonalRecruitment"))
+            resolve(require("@view/report/personal_recruitment/Index"))
         )
 };
 

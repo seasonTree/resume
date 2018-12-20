@@ -3,13 +3,15 @@ import * as user from './user'
 import * as role from './role'
 import * as permission from './permission'
 import * as resume from './resume';
+import * as person_recru from './person_recru';
 
 const apis = {
     dashboard,
     user,
     role,
     permission,
-    resume
+    resume,
+    person_recru
 }
 
 const install = function (Vue) {

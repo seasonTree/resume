@@ -174,7 +174,8 @@ module.exports = {
             '@src': `${srcPath}`,
             '@css': `${srcPath}/css`,
             '@view': `${srcPath}/view`,
-            '@component': `${srcPath}/component`
+            '@component': `${srcPath}/component`,
+            '@common': `${srcPath}/common`
         }
     },
 
