@@ -205,6 +205,7 @@
                                     ></el-input>
                                 </el-form-item>
 
+                              
                                 <!-- <el-form-item
                                         label="政治面貌"
                                         prop="politicalLandscape"
@@ -559,7 +560,6 @@ export default {
                 //     }
                 // ],
                 // phone: [{ type: "number", message: "电话必须为数字" }],
-             
             }
         };
     },

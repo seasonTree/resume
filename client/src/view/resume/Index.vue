@@ -12,26 +12,52 @@
                 <form>
                     <el-row :gutter="20">
                         <el-col :span="4">
-                            <el-input placeholder="姓名">
+                            <el-input
+                                placeholder="姓名"
+                                size="small"
+                            >
                             </el-input>
                         </el-col>
                         <el-col :span="4">
-                            <el-input placeholder="性别">
+                            <el-select
+                                size="small"
+                                v-model="value"
+                                placeholder="性别"
+                            >
+                                <el-option
+                                    v-for="item in options"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value"
+                                >
+                                </el-option>
+                            </el-select>
+                        </el-col>
+                        <el-col :span="4">
+                            <el-input
+                                placeholder="姓名"
+                                size="small"
+                            >
                             </el-input>
                         </el-col>
                         <el-col :span="4">
-                            <el-input placeholder="姓名">
+                            <el-input
+                                placeholder="姓名"
+                                size="small"
+                            >
                             </el-input>
                         </el-col>
-                        <el-col :span="4.9">
-                            <el-input placeholder="姓名">
-                            </el-input>
-                        </el-col>
-                        <el-col :span="4.9">
-                            <el-input></el-input>
+                        <el-col :span="4">
+                            <el-input
+                                placeholder="姓名"
+                                size="small"
+                            ></el-input>
                         </el-col>
                         <el-col :span="3.5">
-                            <el-button type="primary">搜索</el-button>
+                            <el-button
+                                type="primary"
+                                size="mini"
+                            >搜索</el-button>
                         </el-col>
                     </el-row>
 
@@ -41,71 +67,102 @@
                     >
                         <el-row :gutter="20">
                             <el-col :span="4.5">
-                                <el-input placeholder="姓名">
+                                <el-input
+                                    placeholder="姓名"
+                                    size="small"
+                                >
                                 </el-input>
                             </el-col>
                             <el-col :span="4.5">
-                                <el-input placeholder="性别">
+                                <el-input
+                                    placeholder="性别"
+                                    size="small"
+                                >
                                 </el-input>
                             </el-col>
                             <el-col :span="4.5">
-                            <el-input placeholder="姓名">
-                            </el-input>
-                        </el-col>
-                        <el-col :span="4.5">
-                            <el-input placeholder="性别">
-                            </el-input>
-                        </el-col>
-                        <el-col :span="4.5">
-                            <el-input placeholder="姓名">
-                            </el-input>
-                        </el-col>
+                                <el-input
+                                    placeholder="姓名"
+                                    size="small"
+                                >
+                                </el-input>
+                            </el-col>
+                            <el-col :span="4.5">
+                                <el-input
+                                    placeholder="性别"
+                                    size="small"
+                                >
+                                </el-input>
+                            </el-col>
+                            <el-col :span="4.5">
+                                <el-input
+                                    placeholder="姓名"
+                                    size="small"
+                                >
+                                </el-input>
+                            </el-col>
 
                             <el-col :span="4.5">
-                                <el-input></el-input>
+                                <el-input size="small"></el-input>
                             </el-col>
                             <el-col :span="4.5">
-                                <el-input></el-input>
+                                <el-input size="small"></el-input>
                             </el-col>
                         </el-row>
                         <el-row :gutter="20">
                             <el-col :span="4.5">
-                                <el-input placeholder="姓名">
+                                <el-input
+                                    placeholder="姓名"
+                                    size="small"
+                                >
                                 </el-input>
                             </el-col>
                             <el-col :span="4.5">
-                                <el-input placeholder="性别">
+                                <el-input
+                                    placeholder="性别"
+                                    size="small"
+                                >
                                 </el-input>
                             </el-col>
                             <el-col :span="4.5">
-                            <el-input placeholder="姓名">
-                            </el-input>
-                        </el-col>
-                        <el-col :span="4.5">
-                            <el-input placeholder="性别">
-                            </el-input>
-                        </el-col>
-                        <el-col :span="4.5">
-                            <el-input placeholder="姓名">
-                            </el-input>
-                        </el-col>
+                                <el-input
+                                    placeholder="姓名"
+                                    size="small"
+                                >
+                                </el-input>
+                            </el-col>
+                            <el-col :span="4.5">
+                                <el-input
+                                    placeholder="性别"
+                                    size="small"
+                                >
+                                </el-input>
+                            </el-col>
+                            <el-col :span="4.5">
+                                <el-input
+                                    placeholder="姓名"
+                                    size="small"
+                                >
+                                </el-input>
+                            </el-col>
 
                             <el-col :span="4.5">
-                                <el-input></el-input>
+                                <el-input size="small"></el-input>
                             </el-col>
                             <el-col :span="4.5">
-                                <el-input></el-input>
+                                <el-input size="small"></el-input>
                             </el-col>
                         </el-row>
                     </div>
 
                     <el-row
                         :gutter="20"
-                        style="background:#ccc;margin:10px 1px;text-align:center;height:20px;display:block"
+                        style="background:#eee;margin:10px 1px;text-align:center;height:20px;display:block"
                     >
                         <div
                             width="100%"
                             @click="dropDown"
+                             class="fa status-icon el-icon-caret-bottom"
                         >收起搜索条件</div>
                     </el-row>
 
@@ -392,7 +449,6 @@ export default {
         return {
             //填写API获取的类型，由父类自动调用，不填不调用
             apiType: "resume",
-
             options: [
                 {
                     value: "选项1",
@@ -404,6 +460,7 @@ export default {
                 }
             ],
             value: "",
+
             // tdata: [
             //     {
             //         id: 1,

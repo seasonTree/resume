@@ -10,91 +10,139 @@
             width="60%"
         >
 
-            <template>
-                <el-table
-                    height="400"
-                    border
-                    style="width: 100%"
+            <el-table
+                height="400"
+                border
+                style="width: 100%"
+                :data="commData"
+            >
+                <el-table-column
+                    align="center"
+                    prop="name"
+                    label="名字"
                 >
-                    <el-table-column
-                        align="center"
-                        prop="name"
-                        label="名字"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                        align="center"
-                        prop="ct_time"
-                        label="时间"
-                    >
-                    </el-table-column>
 
-                    <el-table-column
-                        align="center"
-                        prop="ct_user"
-                        label="招聘负责人"
-                    >
-                    </el-table-column>
+                </el-table-column>
+                <el-table-column
+                    align="center"
+                    prop="ct_time"
+                    label="时间"
+                >
+                </el-table-column>
 
-                    <el-table-column
-                        align="center"
-                        prop="address"
-                        label="通过筛选"
-                    >
-                    </el-table-column>
+                <el-table-column
+                    align="center"
+                    prop="ct_user"
+                    label="招聘负责人"
+                >
+                </el-table-column>
 
-                    <el-table-column
-                        align="center"
-                        prop="arranger_interview "
-                        label="安排面试"
-                    >
-                    </el-table-column>
+                <el-table-column
+                    align="center"
+                    prop="address"
+                    label="通过筛选"
+                >
 
-                    <el-table-column
-                        align="center"
-                        prop="arrive "
-                        label="到场"
-                    >
-                    </el-table-column>
+                    <template slot-scope="scope">
+                        <el-switch
+                            v-model="value1"
+                            active-color="#13ce66"
+                            inactive-color="#ff4949"
+                        >
+                        </el-switch>
+                    </template>
 
-                    <el-table-column
-                        align="center"
-                        prop="approved_interview "
-                        label="通过面试"
-                    >
-                    </el-table-column>
+                </el-table-column>
 
-                    <el-table-column
-                        align="center"
-                        prop="entry "
-                        label="入职"
-                    >
-                    </el-table-column>
+                <el-table-column
+                    align="center"
+                    prop="arranger_interview "
+                    label="安排面试"
+                >
 
-                    <el-table-column
-                        align="center"
-                        prop="address"
-                        label="操作"
-                    >
-                        <template slot-scope="scope">
-                            <el-tooltip
-                                effect="dark"
-                                content="添加附件"
-                                placement="top"
-                            >
-                                <el-button
-                                    type="info"
-                                    size="mini"
-                                    icon="fa fa-folder-open"
-                                    circle
-                                    @click.stop="showUploadFile(scope.row.id)"
-                                ></el-button>
-                            </el-tooltip>
-                        </template>
+                    <template slot-scope="scope">
+                        <el-switch
+                            v-model="value2"
+                            active-color="#13ce66"
+                            inactive-color="#ff4949"
+                        >
+                        </el-switch>
+                    </template>
 
-                    </el-table-column>
-                </el-table>
-            </template>
+                </el-table-column>
+
+                <el-table-column
+                    align="center"
+                    prop="arrive "
+                    label="到场"
+                >
+
+                    <template slot-scope="scope">
+                        <el-switch
+                            v-model="value3"
+                            active-color="#13ce66"
+                            inactive-color="#ff4949"
+                        >
+                        </el-switch>
+                    </template>
+
+                </el-table-column>
+
+                <el-table-column
+                    align="center"
+                    prop="approved_interview "
+                    label="通过面试"
+                >
+
+                    <template slot-scope="scope">
+                        <el-switch
+                            v-model="value4"
+                            active-color="#13ce66"
+                            inactive-color="#ff4949"
+                        >
+                        </el-switch>
+                    </template>
+                </el-table-column>
+
+                <el-table-column
+                    align="center"
+                    prop="entry "
+                    label="入职"
+                >
+
+                    <template slot-scope="scope">
+                        <el-switch
+                            v-model="value5"
+                            active-color="#13ce66"
+                            inactive-color="#ff4949"
+                        >
+                        </el-switch>
+                    </template>
+                </el-table-column>
+
+                <el-table-column
+                    align="center"
+                    prop="address"
+                    label="操作"
+                >
+                    <template slot-scope="scope">
+                        <el-tooltip
+                            effect="dark"
+                            content="添加附件"
+                            placement="top"
+                        >
+                            <el-button
+                                type="info"
+                                size="mini"
+                                icon="fa fa-folder-open"
+                                circle
+                                @click.stop="showUploadFile(scope.row.id)"
+                            ></el-button>
+                        </el-tooltip>
+                    </template>
+
+                </el-table-column>
+            </el-table>
 
             <div
                 slot="footer"
@@ -134,25 +182,40 @@ export default {
             required: true,
             type: Number
         }
+        // show:{
+        //     type:Boolean,
+        //     default:false,
+        // }
     },
 
     watch: {
-        show(newValue, oldValue) {
-            if (newValue) {
-                that.getCommunication();
-            }
-        }
+        // show(newValue, oldValue) {
+        //     let that = this;
+        //     if (newValue) {
+        //         that.getCommunication();
+        //     }
+        // }
     },
 
     data() {
         return {
-            commData: [],
+            commData: [
+                {
+                    name: "小猪",
+                    ct_time:"1",
+                    ct_user:"Pig"
+                }
+            ],
+
+            value1: true,
+            value2: true,
+            value3: true,
+            value4: true,
+            value5: true,
             dialogVisible: false,
 
             //新增沟通
             addDialog: false
-
-            
         };
     },
     methods: {
@@ -160,6 +223,33 @@ export default {
         addItem(item) {
             let that = this;
             that.tdata.unshift(item);
+        },
+
+        //判断
+        changeStatus(id, status, item) {
+            let that = this;
+
+            that.$api.user
+                .changeStatus({
+                    id,
+                    status
+                })
+                .then(res => {
+                    if (res.code == 0) {
+                        that.$message({
+                            message: "更新状态成功.",
+                            type: "success",
+                            duration: 800
+                        });
+
+                        item.status = status;
+                    } else {
+                        that.$message.error(res.msg || "更新状态失败，请重试.");
+                    }
+                })
+                .catch(res => {
+                    that.$message.error("更新状态失败，请重试.");
+                });
         },
 
         getCommunication() {
