@@ -109,6 +109,7 @@ export default {
     watch: {
         show(newValue, oldValue) {
             if(newValue){
+                let that = this;
                 that.getData();
             }
         }

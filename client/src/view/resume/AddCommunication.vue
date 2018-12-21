@@ -83,7 +83,7 @@ export default {
         addCommit() {
             let that = this;
 
-            that.from.resume_id = that.resume_id;
+            that.form.resume_id = that.resume_id;
 
             that.$refs["form"].validate(valid => {
                 if (valid) {

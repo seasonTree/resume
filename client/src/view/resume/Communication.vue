@@ -151,13 +151,7 @@ export default {
 
     data() {
         return {
-            commData: [
-                {
-                    name: "小猪",
-                    ct_time:"1",
-                    ct_user:"Pig"
-                }
-            ],
+            commData: [],
 
             value1: true,
             value2: true,
@@ -174,7 +168,7 @@ export default {
         //新增沟通
         addItem(item) {
             let that = this;
-            that.tdata.unshift(item);
+            that.commData.unshift(item);
         },
 
         //判断
