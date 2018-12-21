@@ -160,7 +160,6 @@ export default {
 
             recruHead: [
                 { prop: "id", label: "招聘负责人", fixed: "left" },
-                { prop: "id", label: "日期", fixed: "left" },
                 { prop: "id", label: "通过筛选", fixed: "left" },
                 { prop: "id", label: "安排面试", fixed: "left" },
                 { prop: "id", label: "到场", fixed: "left" },
@@ -238,14 +237,14 @@ export default {
 
             that.pieData = that.tdata;
 
-            // that.pieData = [
-            //     { uname: "1/1", count: 1393 },
-            //     { uname: "1/2", count: 3530 },
-            //     { uname: "1/3", count: 2923 },
-            //     { uname: "1/4", count: 1723 },
-            //     { uname: "1/5", count: 3792 },
-            //     { uname: "1/6", count: 4593 }
-            // ];
+            that.pieData = [
+                { uname: "1/1", count: 1393 },
+                { uname: "1/2", count: 3530 },
+                { uname: "1/3", count: 2923 },
+                { uname: "1/4", count: 1723 },
+                { uname: "1/5", count: 3792 },
+                { uname: "1/6", count: 4593 }
+            ];
 
             that.showChart = true;
         },
