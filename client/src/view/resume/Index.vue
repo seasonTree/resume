@@ -14,13 +14,11 @@
                         <el-col :span="4">
                             <el-input
                                 placeholder="姓名"
-                                size="small"
                             >
                             </el-input>
                         </el-col>
                         <el-col :span="4">
                             <el-select
-                                size="small"
                                 v-model="value"
                                 placeholder="性别"
                             >
@@ -36,27 +34,23 @@
                         <el-col :span="4">
                             <el-input
                                 placeholder="姓名"
-                                size="small"
                             >
                             </el-input>
                         </el-col>
                         <el-col :span="4">
                             <el-input
                                 placeholder="姓名"
-                                size="small"
                             >
                             </el-input>
                         </el-col>
                         <el-col :span="4">
                             <el-input
                                 placeholder="姓名"
-                                size="small"
                             ></el-input>
                         </el-col>
-                        <el-col :span="3.5">
+                        <el-col :span="4">
                             <el-button
                                 type="primary"
-                                size="mini"
                             >搜索</el-button>
                         </el-col>
                     </el-row>
@@ -65,50 +59,6 @@
                         class="dropdown"
                         id="dropdown"
                     >
-                        <el-row :gutter="20">
-                            <el-col :span="4.5">
-                                <el-input
-                                    placeholder="姓名"
-                                    size="small"
-                                >
-                                </el-input>
-                            </el-col>
-                            <el-col :span="4.5">
-                                <el-input
-                                    placeholder="性别"
-                                    size="small"
-                                >
-                                </el-input>
-                            </el-col>
-                            <el-col :span="4.5">
-                                <el-input
-                                    placeholder="姓名"
-                                    size="small"
-                                >
-                                </el-input>
-                            </el-col>
-                            <el-col :span="4.5">
-                                <el-input
-                                    placeholder="性别"
-                                    size="small"
-                                >
-                                </el-input>
-                            </el-col>
-                            <el-col :span="4.5">
-                                <el-input
-                                    placeholder="姓名"
-                                    size="small"
-                                >
-                                </el-input>
-                            </el-col>
-
-                            <el-col :span="4.5">
-                                <el-input size="small"></el-input>
-                            </el-col>
-                            <el-col :span="4.5">
-                                <el-input size="small"></el-input>
-                            </el-col>
-                        </el-row>
                         <el-row :gutter="20">
                             <el-col :span="4.5">
                                 <el-input
