@@ -26,6 +26,11 @@ class User extends Model
         //获取一条数据
         return User::where($where)->find();
     }
+
+    public function getUserInfo($where = '1=1'){
+        //获取部分字段
+        return User::field('uname,personal_name,ct_user')->where($where)->select()->toArray();
+    }
     public function lst(){
         return $this->select()->toArray();
     }

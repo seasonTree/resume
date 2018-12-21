@@ -59,5 +59,43 @@ class Report extends Controller
 
     	return json(['msg' => 0,'data' => $data]);
     }
+
+    public function recruitmentList(){
+    	//针对招聘负责人的列表
+    	$resume = new Resume();
+    	$candidate = $resume->getCandidate();
+    	$comm = new Communicate();
+    	$data = []; //最终数据
+    	$user_arr = [];//临时数组,记录是否有重复数据用于叠加
+    	$key = 1;//data数组的key
+    	$user = new User();
+    	$user_data = $user->getUserInfo();
+    	foreach ($user_data as $k => $v) {
+    		$temp_data = $comm->getCommInfo(['ct_user' => $v['uname']]);
+    		if (empty($temp_data)) {
+    			continue;
+    		}
+    		foreach ($temp_data as $a => $b) {
+    			if (array_key_exists($b['resume_id'],$user_arr)) {
+    				foreach ($b as $n => $m) {
+    					if ($m == 0 || $n == 'resume_id') {
+    						continue;
+    					}
+    					$data[$user_arr[$b['resume_id']]][$n] = 1;  
+    				}
+    			}
+    			else{
+    				$b['id'] = $key;
+    				$data[$key] = $b;
+	    			$user_arr[$b['resume_id']] = $key;
+	    			$key++;
+    			}
+    			
+    		}
+    		$user_arr = [];
+    	}
+
+    	return json(['msg' => 0,'data' => $data]);
+    }
     
 }
