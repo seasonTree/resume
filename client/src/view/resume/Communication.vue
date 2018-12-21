@@ -14,14 +14,13 @@
                 height="400"
                 border
                 style="width: 100%"
-                :data="commData"
+                class="mb-20"
             >
                 <el-table-column
                     align="center"
                     prop="name"
                     label="名字"
                 >
-
                 </el-table-column>
                 <el-table-column
                     align="center"
@@ -34,6 +33,7 @@
                     align="center"
                     prop="ct_user"
                     label="招聘负责人"
+                    width="100"
                 >
                 </el-table-column>
 
@@ -42,16 +42,6 @@
                     prop="address"
                     label="通过筛选"
                 >
-
-                    <template slot-scope="scope">
-                        <el-switch
-                            v-model="value1"
-                            active-color="#13ce66"
-                            inactive-color="#ff4949"
-                        >
-                        </el-switch>
-                    </template>
-
                 </el-table-column>
 
                 <el-table-column
@@ -59,16 +49,6 @@
                     prop="arranger_interview "
                     label="安排面试"
                 >
-
-                    <template slot-scope="scope">
-                        <el-switch
-                            v-model="value2"
-                            active-color="#13ce66"
-                            inactive-color="#ff4949"
-                        >
-                        </el-switch>
-                    </template>
-
                 </el-table-column>
 
                 <el-table-column
@@ -76,16 +56,6 @@
                     prop="arrive "
                     label="到场"
                 >
-
-                    <template slot-scope="scope">
-                        <el-switch
-                            v-model="value3"
-                            active-color="#13ce66"
-                            inactive-color="#ff4949"
-                        >
-                        </el-switch>
-                    </template>
-
                 </el-table-column>
 
                 <el-table-column
@@ -93,15 +63,6 @@
                     prop="approved_interview "
                     label="通过面试"
                 >
-
-                    <template slot-scope="scope">
-                        <el-switch
-                            v-model="value4"
-                            active-color="#13ce66"
-                            inactive-color="#ff4949"
-                        >
-                        </el-switch>
-                    </template>
                 </el-table-column>
 
                 <el-table-column
@@ -109,15 +70,6 @@
                     prop="entry "
                     label="入职"
                 >
-
-                    <template slot-scope="scope">
-                        <el-switch
-                            v-model="value5"
-                            active-color="#13ce66"
-                            inactive-color="#ff4949"
-                        >
-                        </el-switch>
-                    </template>
                 </el-table-column>
 
                 <el-table-column
@@ -189,12 +141,12 @@ export default {
     },
 
     watch: {
-        // show(newValue, oldValue) {
-        //     let that = this;
-        //     if (newValue) {
-        //         that.getCommunication();
-        //     }
-        // }
+        show(newValue, oldValue) {
+            if (newValue) {
+                let that = this;
+                that.getCommunication();
+            }
+        }
     },
 
     data() {

@@ -28,7 +28,7 @@
                             :value="0"
                         ></el-option>
                         <el-option
-                            label="人员统计"
+                            label="候选人跟踪表"
                             :value="1"
                         ></el-option>
                     </el-select>
@@ -39,10 +39,11 @@
                     v-if="search.type == 1"
                 >
                     <el-input
-                        placeholder="请输入招聘人"
+                        placeholder="选择招聘人"
                         v-model="search.recru"
                         clearable
                         :focus="handleRecruFind"
+                        :disabled="true"
                     >
 
                         <el-button
@@ -64,11 +65,6 @@
                 </div>
 
                 <div class="action-bar-right">
-                    <el-button
-                        type="primary"
-                        @click="genChart"
-                        v-if="search.type == 0"
-                    >生成入职图表</el-button>
                     <el-button
                         type="primary"
                         @click="exportExcel"
@@ -111,24 +107,18 @@
             @user-list="setSelectUser"
         ></user>
 
-        <chart
-            :show.sync="showChart"
-            :pieData="pieData"
-        ></chart>
     </div>
 </template>
 
 <script>
 import ReportBase from "@view/base/ReportBase";
 import User from "./User";
-import Chart from "./Chart";
 import { getLtWeek, getLtMonth } from "@common/util";
 export default {
     mixins: [ReportBase],
 
     components: {
-        User,
-        Chart
+        User
     },
 
     created() {
@@ -160,7 +150,7 @@ export default {
 
             recruHead: [
                 { prop: "id", label: "招聘负责人", fixed: "left" },
-                { prop: "id", label: "日期", fixed: "left" },
+                { prop: "id", label: "候选人", fixed: "left" },
                 { prop: "id", label: "通过筛选", fixed: "left" },
                 { prop: "id", label: "安排面试", fixed: "left" },
                 { prop: "id", label: "到场", fixed: "left" },
@@ -172,6 +162,7 @@ export default {
                 { prop: "id", label: "候选人", fixed: "left" },
                 { prop: "id", label: "联系电话", fixed: "left" },
                 { prop: "id", label: "邮件", fixed: "left" },
+                { prop: "id", label: "毕业院校", fixed: "left" },
                 { prop: "id", label: "学历", fixed: "left" },
                 { prop: "id", label: "毕业年份", fixed: "left" },
                 { prop: "id", label: "工作年限", fixed: "left" },
@@ -186,12 +177,8 @@ export default {
             },
 
             //选中的条件
-            selectUser: "",
+            selectUser: [],
             showSelectUser: false,
-
-            //图表
-            showChart: false,
-            pieData: [],
 
             pickerOptions: {
                 shortcuts: [
@@ -224,30 +211,14 @@ export default {
     methods: {
         setSelectUser(users) {
             let that = this;
-            that.search.recru = users.join(",");
+            that.search.recru = users.slUserPerson.join(",");
+            that.selectUser = users.slUser;
         },
 
         handleRecruFind() {
             let that = this;
-            that.selectUser = that.search.recru;
+            // that.selectUser = that.search.recru;
             that.showSelectUser = true;
-        },
-
-        genChart() {
-            let that = this;
-
-            that.pieData = that.tdata;
-
-            // that.pieData = [
-            //     { uname: "1/1", count: 1393 },
-            //     { uname: "1/2", count: 3530 },
-            //     { uname: "1/3", count: 2923 },
-            //     { uname: "1/4", count: 1723 },
-            //     { uname: "1/5", count: 3792 },
-            //     { uname: "1/6", count: 4593 }
-            // ];
-
-            that.showChart = true;
         },
 
         //导出excel
@@ -257,7 +228,7 @@ export default {
                     dtfm: that.search.dateRange[0],
                     dtto: that.search.dateRange[1],
                     type: that.search.type,
-                    ur: that.search.recru
+                    ur: that.selectUser.join(',')
                 },
                 pArr = [];
 

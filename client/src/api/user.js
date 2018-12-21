@@ -114,7 +114,7 @@ export function changePassword(data) {
  *              {
  *                  id: 1,
  *                  uname: 'aaaa',
- *                  pesonal_name: '张三',
+ *                  personal_name: '张三',
  *                  phone: 136666666,
  *                  ct_user: '创建人'
  *                  ct_time: '2018-01-01 12:30',
@@ -123,7 +123,7 @@ export function changePassword(data) {
  *              {
   *                 id: 2,
  *                  uname: 'bbb',
- *                  pesonal_name: '张四',
+ *                  personal_name: '张四',
  *                  phone: 136666666,
  *                  ct_user: '创建人'
  *                  ct_time: '2018-01-01 12:30',
@@ -180,7 +180,7 @@ export function changeStatus(data){
  *          msg: '提示信息',
  *          data: {
  *              id: 1,
- *              pesonal_name: '张三', //姓名
+ *              personal_name: '张三', //姓名
  *              phone: 1366666666
  *          }
  *      }
@@ -200,7 +200,7 @@ export function getByID(data){
  * @param {Object} data 发送的数据
  *      {
  *          uname： '用户名', ^[a-zA-Z][\da-zA-Z]， 用户必须是字母或数字，并且以字母开头
- *          pesonal_name: '姓名',
+ *          personal_name: '姓名',
  *          phone: 136666666,
  *          passwd: '密码'
  *          repasswd: '确认密码'
@@ -211,7 +211,7 @@ export function getByID(data){
  *          msg: '提示信息',
  *          data: {
  *              id: 1
- *              pesonal_name: '张三', //姓名
+ *              personal_name: '张三', //姓名
  *              phone: 1366666666
  *          }
  *      }
@@ -231,7 +231,7 @@ export function add(data){
  * @param {Object} data 修改的数据
  *      {
  *          id: 1
- *          pesonal_name: '姓名',
+ *          personal_name: '姓名',
  *          phone: 136666666,
  *      }
  * @returns
@@ -240,7 +240,7 @@ export function add(data){
  *          msg: '提示信息',
  *          data: {
  *              id: 1
- *              pesonal_name: '张三', //姓名
+ *              personal_name: '张三', //姓名
  *              phone: 1366666666
  *          }
  *      }
