@@ -28,67 +28,77 @@
                 </el-date-picker>
 
                 <el-row>
+
+                    <div class="AddCom_div-row">
+                        <el-form-item
+                            style="display: flex"
+                            label="通过筛选："
+                            prop="screen"
+                        >
+                            <el-switch
+                                v-model="form.screen"
+                                active-color="#13ce66"
+                                inactive-color="#ff4949"
+                            >
+                            </el-switch>
+                        </el-form-item>
+
+                        <el-form-item
+                            label="安排面试："
+                            prop="arrange_interview"
+                            style="display: flex"
+                        >
+                            <el-switch
+                                v-model="form.arrange_interview"
+                                active-color="#13ce66"
+                                inactive-color="#ff4949"
+                            >
+                            </el-switch>
+                        </el-form-item>
+                           <el-form-item
+                            label="是否入职："
+                            prop="approved_interview"
+                            style="display: flex"
+                        >
+                            <el-switch
+                                v-model="form.approved_interview"
+                                active-color="#13ce66"
+                                inactive-color="#ff4949"
+                            >
+                            </el-switch>
+                        </el-form-item>
+                    </div>
+                    <div class="AddCom_div-row2">
+                        <el-form-item
+                            style="display: flex"
+                            label="是否到场："
+                            prop="arrive"
+                        >
+                            <el-switch
+                                v-model="form.arrive"
+                                active-color="#13ce66"
+                                inactive-color="#ff4949"
+                            >
+                            </el-switch>
+                        </el-form-item>
+
+                        <el-form-item
+                            label="通过面试："
+                            prop="approved_interview"
+                            style="display: flex"
+                        >
+                            <el-switch
+                                v-model="form.approved_interview"
+                                active-color="#13ce66"
+                                inactive-color="#ff4949"
+                            >
+                            </el-switch>
+                        </el-form-item>
+                    </div>
                 
-                   
-                        <div class="AddCom_div-row">
-                            <el-form-item
-                                style="display: flex"
-                                label="通过筛选："
-                                prop="screen"
-                            >
-                                <el-switch
-                                    v-model="form.screen"
-                                    active-color="#13ce66"
-                                    inactive-color="#ff4949"
-                                >
-                                </el-switch>
-                            </el-form-item>
 
-                            <el-form-item
-                                label="安排面试："
-                                prop="arrange_interview"
-                                style="display: flex"
-                            >
-                                <el-switch
-                                    v-model="form.arrange_interview"
-                                    active-color="#13ce66"
-                                    inactive-color="#ff4949"
-                                >
-                                </el-switch>
-                            </el-form-item>
-                        </div>
-                        <div class="AddCom_div-row">
-                            <el-form-item
-                                style="display: flex"
-                                label="是否到场："
-                                prop="arrive"
-                            >
-                               <el-switch
-                                    v-model="form.arrive"
-                                    active-color="#13ce66"
-                                    inactive-color="#ff4949"
-                                >
-                                </el-switch>
-                            </el-form-item>
-
-                            <el-form-item
-                                label="通过面试："
-                                prop="approved_interview"
-                                style="display: flex"
-                            >
-                                <el-switch
-                                    v-model="form.approved_interview"
-                                    active-color="#13ce66"
-                                    inactive-color="#ff4949"
-                                >
-                                </el-switch>
-                            </el-form-item>
-                        </div>
-
-            </el-row>
+                </el-row>
             </el-form-item>
- 
-            
 
             <el-form-item
                 label=""
@@ -136,13 +146,12 @@ export default {
     data() {
         return {
             apiType: "resume",
-            form:{
-                screen:true,
-                arrange_interview:true,
-                arrive:true,
-                approved_interview:true,
-                content:'',
-                
+            form: {
+                screen: false,
+                arrange_interview: false,
+                arrive: false,
+                approved_interview: false,
+                content: ""
             },
             date: "",
             content: ""
@@ -152,7 +161,7 @@ export default {
         addCommit() {
             let that = this;
             that.form.resume_id = that.resume_id;
-        
+
             that.$refs["form"].validate(valid => {
                 if (valid) {
                     that.$api[that.apiType]
@@ -189,8 +198,12 @@ export default {
 <style lang="less" scoped>
 .AddCom_div-row {
     display: flex;
-    width: 60%;
-    align-content: space-between;
-    justify-content:space-between;
+    
+    justify-content: space-between;
+}
+.AddCom_div-row2 {
+    display: flex;
+    width: 63%;
+    justify-content: space-between;
 }
 </style>
