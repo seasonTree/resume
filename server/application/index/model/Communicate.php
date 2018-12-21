@@ -19,7 +19,11 @@ class Communicate extends Model
 
     public function get($where = '1=1'){
         //获取数据
-        return Communicate::where($where)->select();
+        return Communicate::alias('a')
+                          ->join('rs_user b','a.ct_user = b.uname')
+                          ->field('a.*,b.personal_name')
+                          ->where($where)
+                          ->select();
     }
 
     public function getOne($where = '1=1'){
@@ -32,5 +36,9 @@ class Communicate extends Model
         return Communicate::where($where)->delete();
     }
 
+    public function getCount($where = '1=1'){
+        //获取条数
+        return Communicate::where($where)->count();
+    }
 
 }
