@@ -24,7 +24,7 @@
                     :props="cascaderProps"
                     filterable
                     change-on-select
-                    class="select-width"
+                    class="permission-select-width"
                 ></el-cascader>
             </el-form-item>
 
@@ -32,7 +32,7 @@
                 <el-select
                     v-model="form.p_type"
                     placeholder="请选择类型"
-                    class="select-width"
+                    class="permission-select-width"
                 >
                     <el-option
                         label="菜单"
@@ -286,7 +286,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.select-width {
+.permission-select-width {
     width: 100%;
 }
 </style>

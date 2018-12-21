@@ -21,7 +21,7 @@
                     <el-select
                         v-model="search.type"
                         placeholder="请选择统计类型"
-                        class="select-width"
+                        class="report-person-select-width"
                     >
                         <el-option
                             label="招聘负责人统计"
@@ -248,7 +248,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.select-width {
+.report-person-select-width {
     width: 160px;
 }
 </style>

@@ -25,7 +25,7 @@ const copyFile = require('copy-webpack-plugin');
 try {
     fs.statSync(outputPath);
 } catch (error) {
-    fs.mkdirSync(outputPath);    
+    fs.mkdirSync(outputPath);
 }
 
 //创建uplaod文件
@@ -88,6 +88,7 @@ let plugins = [
     new happyPack({ //多线程打包css
         id: 'postcss',
         loaders: ["css-loader?-autoprefixer!postcss-loader"],
+        // loaders: ["css-loader?-autoprefixer", "postcss-loader"],
         threadPool: happyThreadPool,
         // cache: true,
         verbose: true
@@ -96,6 +97,7 @@ let plugins = [
         id: 'postless',
         //https://segmentfault.com/q/1010000009157879，注意编译顺序
         loaders: ['css-loader?-autoprefixer!postcss-loader!less-loader'],
+        // loaders: ['css-loader?-autoprefixer', "postcss-loader", "less-loader"],
         threadPool: happyThreadPool,
         // cache: true,
         verbose: true
@@ -120,7 +122,7 @@ let plugins = [
             force: true,
         }
     ]),
-    
+
     //热更新
     // new webpack.HotModuleReplacementPlugin(),
     // new webpack.NoEmitOnErrorsPlugin(),
@@ -198,13 +200,24 @@ module.exports = {
                     extractCSS: true,
                     loaders: {
                         css: extractTextPlugin.extract({
+                            //加入happypack后，会导致vue的css的scoped失效
                             use: ["happypack/loader?id=postcss"],
+                            // use: ["css-loader?-autoprefixer", "postcss-loader"],
                             fallback: 'vue-style-loader',
                         }),
                         less: extractTextPlugin.extract({
+                            //加入happypack后，会导致vue的css的scoped失效
                             use: ["happypack/loader?id=postless"],
-                            fallback: 'vue-style-loader'
+                            // use: ['css-loader?-autoprefixer', "postcss-loader", "less-loader"],
+                            fallback: 'vue-style-loader',
                         }),
+                    },
+                    //转换src
+                    transformToRequire: {
+                        video: ["src", "poster"],
+                        source: "src",
+                        img: "src",
+                        image: "xlink:href"
                     }
                 }
             },
@@ -217,14 +230,18 @@ module.exports = {
                 test: /\.css$/,
                 use: extractTextPlugin.extract({ //单独打包
                     fallback: "style-loader", //一定要加fallback
+                    //加入happypack后，会导致vue的css的scoped失效
                     use: ["happypack/loader?id=postcss"]
+                    // use: ["css-loader?-autoprefixer", "postcss-loader"]
                 }),
             },
             {
                 test: /\.less$/,
                 use: extractTextPlugin.extract({ //单独打包
                     fallback: 'style-loader', //一定要加fallback
+                    //加入happypack后，会导致vue的css的scoped失效
                     use: ["happypack/loader?id=postless"]
+                    // use: ['css-loader?-autoprefixer', "postcss-loader", "less-loader"]
                 }),
             },
             {
