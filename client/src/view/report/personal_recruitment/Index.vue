@@ -160,6 +160,7 @@ export default {
 
             recruHead: [
                 { prop: "id", label: "招聘负责人", fixed: "left" },
+                { prop: "id", label: "候选人", fixed: "left" },
                 { prop: "id", label: "通过筛选", fixed: "left" },
                 { prop: "id", label: "安排面试", fixed: "left" },
                 { prop: "id", label: "到场", fixed: "left" },
@@ -171,6 +172,7 @@ export default {
                 { prop: "id", label: "候选人", fixed: "left" },
                 { prop: "id", label: "联系电话", fixed: "left" },
                 { prop: "id", label: "邮件", fixed: "left" },
+                { prop: "id", label: "毕业院校", fixed: "left" },
                 { prop: "id", label: "学历", fixed: "left" },
                 { prop: "id", label: "毕业年份", fixed: "left" },
                 { prop: "id", label: "工作年限", fixed: "left" },
