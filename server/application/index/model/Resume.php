@@ -31,7 +31,7 @@ class Resume extends Model
         //修改
         $temp = $this->getOne(['id' => $data['id']]);
         if ($temp['mfy_time'] != $data['mfy_time']) {
-            return json(['msg' => '该数据已经更变，请刷新','code' => 10,'data' => []]);
+            return false;
         }
         unset($data['mfy_time']);
         return Resume::update($data);
@@ -44,6 +44,16 @@ class Resume extends Model
     public function getCount($where = '1=1'){
         return Resume::where($where)->count();
     }
+
+    public function getCandidate($where = '1=1'){
+        //获取候选人
+        return Resume::where($where)
+                     ->field('id,name,phone,email,school,educational,graduation_time,work_year,source,ct_user')
+                     ->select()
+                     ->toArray();
+    }
+
+
 
 
 }
