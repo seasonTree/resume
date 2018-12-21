@@ -55,7 +55,7 @@
                 ></el-table-column>
 
                 <el-table-column
-                    prop="pesonal_name"
+                    prop="personal_name"
                     label="姓名"
                 ></el-table-column>
 
@@ -205,7 +205,7 @@ export default {
                 // {
                 //     id: 1,
                 //     uname: "123",
-                //     pesonal_name: "aaaaa",
+                //     personal_name: "aaaaa",
                 //     phone: 128154444,
                 //     status: 1,
                 //     ct_user: "创建人",
@@ -216,7 +216,7 @@ export default {
                 //  {
                 //     id: 1,
                 //     uname: "123",
-                //     pesonal_name: "aaaaa",
+                //     personal_name: "aaaaa",
                 //     phone: 128154444,
                 //     status: 1,
                 //     ct_user: "创建人",

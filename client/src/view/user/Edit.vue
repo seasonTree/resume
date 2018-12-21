@@ -14,10 +14,10 @@
         >
             <el-form-item
                 label="姓名"
-                prop="pesonal_name"
+                prop="personal_name"
             >
                 <el-input
-                    v-model.trim="form.pesonal_name"
+                    v-model.trim="form.personal_name"
                     autocomplete="off"
                 ></el-input>
             </el-form-item>
@@ -57,7 +57,7 @@ export default {
             apiType: "user",
             form: {
                 id: 0,
-                pesonal_name: '',
+                personal_name: '',
                 phone: ''
             }
         };

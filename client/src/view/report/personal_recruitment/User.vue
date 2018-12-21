@@ -15,7 +15,7 @@
                 v-model="slUser"
                 :props="{
                     key: 'uname',
-                    label: 'uname'
+                    label: 'personal_name'
                 }"
                 :data="users"
             >
@@ -37,13 +37,14 @@
 
 <script>
 import DialogForm from "../../base/DialogForm";
+import { deepClone } from "@common/util";
 export default {
     name: "User",
     mixins: [DialogForm],
 
     props: {
         selectUser: {
-            type: String,
+            type: Array,
             required: true
         }
     },
@@ -51,7 +52,7 @@ export default {
     data() {
         return {
             users: [],
-            slUser: [],
+            slUser: []
         };
     },
 
@@ -61,7 +62,9 @@ export default {
                 let that = this;
                 that.getUsers();
 
-                that.slUser  = that.selectUser == ""? [] : that.selectUser.split(',')
+                that.slUser = deepClone(that.selectUser);
+
+                // that.slUser  = that.selectUser == ""? [] : that.selectUser.split(',')
             }
         }
     },
@@ -75,12 +78,13 @@ export default {
                 .getAll()
                 .then(res => {
                     if (res.code == 0) {
-
                         //删除admin用户
-                        for(var i = 0; i < res.data.length; i++){
+                        for (var i = 0; i < res.data.length; i++) {
                             var item = res.data[i];
 
-                            if(item.id == 1){
+                            item.personal_name = item.personal_name || item.uname;
+
+                            if (item.id == 1) {
                                 res.data.splice(i, 1);
                                 break;
                             }
@@ -100,8 +104,28 @@ export default {
 
         //获取当前角色的用户
         selectCommit() {
-            let that = this;
-            that.$emit('user-list', that.slUser);
+            let that = this,
+                quickArray = [i],
+                personalArray = [];
+
+            for (var i = 0; i < that.slUser.length; i++) {
+                var item = that.slUser[i];
+
+                quickArray[item] = true;
+            }
+
+            for (var i = 0; i < that.users.length; i++) {
+                var item = that.users[i];
+
+                if (quickArray[item.uname]) {
+                    personalArray.push(item.personal_name);
+                }
+            }
+
+            that.$emit("user-list", {
+                slUser: that.slUser,
+                slUserPerson: personalArray
+            });
             that.closeDialog();
         },
 
