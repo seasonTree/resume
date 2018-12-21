@@ -11,6 +11,7 @@
 
             <template>
                 <el-table
+                    class="mb-20"
                     height="400"
                     border
                     style="width: 100%"
@@ -108,7 +109,7 @@ export default {
 
     watch: {
         show(newValue, oldValue) {
-            if(newValue){
+            if (newValue) {
                 let that = this;
                 that.getData();
             }

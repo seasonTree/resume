@@ -18,12 +18,6 @@
             >
                 <el-table-column
                     align="center"
-                    prop="name"
-                    label="名字"
-                >
-                </el-table-column>
-                <el-table-column
-                    align="center"
                     prop="ct_time"
                     label="时间"
                 >
@@ -152,12 +146,6 @@ export default {
     data() {
         return {
             commData: [],
-
-            value1: true,
-            value2: true,
-            value3: true,
-            value4: true,
-            value5: true,
             dialogVisible: false,
 
             //新增沟通

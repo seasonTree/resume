@@ -27,6 +27,7 @@ class Communicate
     public function addComm(){
       //添加沟通
       $data = input('post.');
+     
       $comm = new CommunicateModel();
       $res = $comm->add($data);
       if ($data) {

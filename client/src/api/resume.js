@@ -65,6 +65,16 @@ export function uploadFile(data) {
     })
 }
 
+//批量
+export function getImport(data) {
+    return request({
+        url: `${prefix}/import`,
+        method: 'post',
+        data: data
+    })
+}
+
+
 //获取附件列表
 export function getUploadFile(data) {
     return request({
