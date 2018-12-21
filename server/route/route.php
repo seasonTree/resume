@@ -14,6 +14,9 @@ Route::get('think', function () {
     return 'hello,ThinkPHP5!';
 });
 
+//主页的数据
+Route::post('api/dashboard/get','');//获取简历内容
+
 Route::get('test','Resume/test');//测试用
 Route::post('api/resume/analyze','Resume/getResumeData');//获取简历内容
 // Route::post('api/resume/upload','Resume/upload');//预留上传简历的接口
