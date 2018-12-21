@@ -200,7 +200,6 @@ export default {
 
         getCommunication() {
             let that = this;
-
             that.$api.resume
                 .getCommunication({
                     resume_id: that.resume_id
