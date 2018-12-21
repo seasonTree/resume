@@ -6,6 +6,10 @@
                     type="primary"
                     @click="addDialog = true"
                 >新增简历</el-button>
+                <el-button
+                    type="primary"
+                    @click="ImportDialog = true"
+                >批量导入</el-button>
             </div>
 
             <div class="search">
@@ -334,6 +338,12 @@
         >
         </upload-file>
 
+       <import
+            :show.sync="ImportDialog"
+            :resume_id="ImportID"
+        >
+        </import>
+
     </div>
 </template>
 
@@ -345,6 +355,7 @@ import ViewResume from "./ViewResume";
 import Communication from "./Communication";
 import TabelBase from "@view/base/TabelBase";
 import UploadFile from "./UploadFile";
+import Import from "./Import";
 
 export default {
     mixins: [TabelBase],
@@ -353,7 +364,8 @@ export default {
         Edit,
         ViewResume,
         Communication,
-        UploadFile
+        UploadFile,
+        Import,
     },
     methods: {
         //点击搜索条件缩放
@@ -381,6 +393,13 @@ export default {
             that.uploadFileDialog = true;
         },
 
+        //批量导入弹出窗
+        showImport() {
+            let that = this;
+            that.ImportID = id;
+            that.ImportDialog = true;
+        },
+
         // showEditDialog(id) {
         //     console.log(id);
         //     let that = this;
@@ -390,7 +409,7 @@ export default {
         //沟通管理
         showCommunicationDialog(id) {
             let that = this;
-            that.CommunicationID = id;
+            that.communicationID = id;
             that.communicationDialog = true;
         }
     },
@@ -459,6 +478,11 @@ export default {
             //上传文件
             uploadFileDialog: false,
             uploadFileID: 0,
+
+            //批量导入
+            ImportDialog: false,
+            ImportID:0,
+
 
             //查看
             viewDialog: false,

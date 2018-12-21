@@ -320,7 +320,7 @@ class Resume extends Controller
         if (empty($data)) {
             return json(['msg' => '没有数据','code' => 2]);
         }
-
+        $data['ct_user'] = Session::get('user_info')['uname'];
         $resume = new ResumeModel();
         $id = $resume->add($data);
         $data['id'] = $id;
@@ -342,11 +342,11 @@ class Resume extends Controller
         $resume = new ResumeModel();
         $res = $resume->edit($data);
         $data = $resume->getOne(['id' => $data['id']]);
-        if ($data) {
+        if ($data && $res) {
             return json(['msg' => '修改成功','code' => 0,'data' => $data]);
         }
         else{
-            return json(['msg' => '修改失败','code' => 1]);
+            return json(['msg' => '修改失败，请刷新','code' => 1]);
         }
     }
     

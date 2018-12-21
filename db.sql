@@ -119,7 +119,9 @@ create table rs_resume
 	ct_user varchar(64) default '' not null comment '创建人',
 	ct_time datetime default CURRENT_TIMESTAMP not null comment '创建时间',
 	mfy_user varchar(64) default '' not null comment '修改人',
-	mfy_time datetime default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP not null comment '修改时间'	
+	mfy_time datetime default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP not null comment '修改时间',
+	is_del tinyint(1) default 0 not null comment '伪删除',
+	source varchar(50) default '' not null comment '简历来源'	
 );
 -- -----------------------------------------------------
 -- 上传
@@ -150,7 +152,8 @@ create table rs_communicate
 	ct_time datetime default CURRENT_TIMESTAMP not null comment '创建时间',
 	mfy_user varchar(64) default '' not null comment '修改人',
 	mfy_time datetime default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP not null comment '修改时间',
-	resume_id bigint(20) not null default 0 comment '简历id'
+	resume_id bigint(20) not null default 0 comment '简历id',
+	content varchar(255) not null default '' comment '具体内容'
 );
 
 -- 插入菜单

@@ -60,7 +60,7 @@ Route::post('api/user/change_user_passwd','User/changeUserPasswd');
 Route::post('api/user/change_status','User/changeStatus');
 Route::post('api/user/get_by_id','User/getOne');
 
-
+Route::get('api/test','Report/candidateList');//获取个人招聘统计候选人跟踪报表
 
 
 return [

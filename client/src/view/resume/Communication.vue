@@ -11,21 +11,18 @@
         >
 
             <el-table
+                :data="commData"
                 height="400"
                 border
                 style="width: 100%"
                 class="mb-20"
+               
             >
-                <el-table-column
-                    align="center"
-                    prop="name"
-                    label="名字"
-                >
-                </el-table-column>
                 <el-table-column
                     align="center"
                     prop="ct_time"
                     label="时间"
+                    width="180"
                 >
                 </el-table-column>
 
@@ -39,16 +36,40 @@
 
                 <el-table-column
                     align="center"
-                    prop="address"
+                    prop="screen"
                     label="通过筛选"
                 >
+                <template slot-scope="scope">
+                         <i
+                            v-if="scope.row.arrive == 0"
+                            class="fa fa-check right status-icon"
+                            @click="changeStatus(scope.row.id, 1, scope.row)"
+                        ></i>
+                        <i
+                            v-if="scope.row.arrive == 1"
+                            class="fa fa-ban ban status-icon"
+                            @click="changeStatus(scope.row.id, 0, scope.row)"
+                        ></i>
+                    </template>
                 </el-table-column>
 
                 <el-table-column
                     align="center"
-                    prop="arranger_interview "
+                    prop="arrange_interview "
                     label="安排面试"
                 >
+                <template slot-scope="scope">
+                       <i
+                            v-if="scope.row.arrive == 0"
+                            class="fa fa-check right status-icon"
+                            @click="changeStatus(scope.row.id, 1, scope.row)"
+                        ></i>
+                        <i
+                            v-if="scope.row.arrive == 1"
+                            class="fa fa-ban ban status-icon"
+                            @click="changeStatus(scope.row.id, 0, scope.row)"
+                        ></i>
+                    </template>
                 </el-table-column>
 
                 <el-table-column
@@ -56,6 +77,18 @@
                     prop="arrive "
                     label="到场"
                 >
+                <template slot-scope="scope">
+                        <i
+                            v-if="scope.row.arrive == 0"
+                            class="fa fa-check right status-icon"
+                            @click="changeStatus(scope.row.id, 1, scope.row)"
+                        ></i>
+                        <i
+                            v-if="scope.row.arrive == 1"
+                            class="fa fa-ban ban status-icon"
+                            @click="changeStatus(scope.row.id, 0, scope.row)"
+                        ></i>
+                    </template>
                 </el-table-column>
 
                 <el-table-column
@@ -63,6 +96,14 @@
                     prop="approved_interview "
                     label="通过面试"
                 >
+                <template slot-scope="scope">
+                        <i
+                            v-if="scope.row.approved_interview == 0"
+                            class="fa fa-check right status-icon"
+                            @click="changeStatus(scope.row.id, 1, scope.row)"
+                        ></i>
+                        
+                    </template>
                 </el-table-column>
 
                 <el-table-column
@@ -76,6 +117,7 @@
                     align="center"
                     prop="address"
                     label="操作"
+                    width="50"
                 >
                     <template slot-scope="scope">
                         <el-tooltip
@@ -84,11 +126,11 @@
                             placement="top"
                         >
                             <el-button
-                                type="info"
+                                type="primary"
                                 size="mini"
-                                icon="fa fa-folder-open"
+                                icon="el-icon-edit"
                                 circle
-                                @click.stop="showUploadFile(scope.row.id)"
+                                @click.stop="showEditDialog(scope.row.id)"
                             ></el-button>
                         </el-tooltip>
                     </template>
@@ -152,12 +194,6 @@ export default {
     data() {
         return {
             commData: [],
-
-            value1: true,
-            value2: true,
-            value3: true,
-            value4: true,
-            value5: true,
             dialogVisible: false,
 
             //新增沟通
@@ -200,7 +236,6 @@ export default {
 
         getCommunication() {
             let that = this;
-
             that.$api.resume
                 .getCommunication({
                     resume_id: that.resume_id

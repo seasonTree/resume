@@ -28,7 +28,11 @@ class Communicate extends Model
 
     public function getOne($where = '1=1'){
         //获取一条数据
-        return Communicate::where($where)->find();
+        return Communicate::alias('a')
+                          ->join('rs_user b','a.ct_user = b.uname')
+                          ->field('a.*,b.personal_name')
+                          ->where($where)
+                          ->find();
     }
 
     public function del($where){
@@ -39,6 +43,25 @@ class Communicate extends Model
     public function getCount($where = '1=1'){
         //获取条数
         return Communicate::where($where)->count();
+    }
+
+    public function edit($data){
+        //修改
+        $temp = $this->getOne(['id' => $data['id']]);
+        if ($temp['mfy_time'] != $data['mfy_time']) {
+            return false;
+        }
+        unset($data['mfy_time']);
+        return Communicate::update($data);
+    }
+
+    public function getComm($where = '1=1'){
+        //获取沟通信息，部分字段
+        return Communicate::alias('a')
+                          ->join('rs_user b','a.ct_user = b.uname')
+                          ->field('a.id,a.ct_user,b.personal_name')
+                          ->where($where)
+                          ->select();
     }
 
 }
