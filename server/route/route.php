@@ -15,7 +15,7 @@ Route::get('think', function () {
 });
 
 //主页的数据
-Route::post('api/dashboard/get','');//获取简历内容
+Route::get('api/dashboard/get','Index/indexList');//获取简历内容
 
 Route::get('test','Resume/test');//测试用
 Route::post('api/resume/analyze','Resume/getResumeData');//获取简历内容
