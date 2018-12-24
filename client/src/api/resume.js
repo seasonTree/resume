@@ -47,14 +47,7 @@ export function del(data){
     });
 }
 
-//获取沟通信息
-export function getCommunication(data) {
-    return request({
-        url: `${prefix}/get_communication`,
-        method: 'get',
-        params: data
-    })
-}
+
 
 //添加附件
 export function uploadFile(data) {
@@ -66,9 +59,9 @@ export function uploadFile(data) {
 }
 
 //批量
-export function getImport(data) {
+export function getImportExecl(data) {
     return request({
-        url: `${prefix}/import`,
+        url: `${prefix}/import_execl`,
         method: 'post',
         data: data
     })
@@ -93,14 +86,14 @@ export function addCommunication(data){
     });
 }
 
-//修改沟通
-export function editCommunication(data){
-    return request({
-        url: `${prefix}/edit_communication`,
-        method: 'post',
-        data: data
-    });
-}
+// //修改沟通
+// export function editCommunication(data){
+//     return request({
+//         url: `${prefix}/edit_communication`,
+//         method: 'post',
+//         data: data
+//     });
+// }
 
 //分析简历
 export function analyze(data){
@@ -118,4 +111,14 @@ export function delFile(data){
         method: 'post',
         data: data
     });
+}
+
+
+//检查是否存在
+export function checkName(data) {
+    return request({
+        url: `${prefix}/check_name`,
+        method: 'get',
+        params: data
+    })
 }

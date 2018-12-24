@@ -205,7 +205,6 @@
                                     ></el-input>
                                 </el-form-item>
 
-                              
                                 <!-- <el-form-item
                                         label="政治面貌"
                                         prop="politicalLandscape"
@@ -580,6 +579,82 @@ export default {
                 .catch(res => {
                     that.$message.error("分析失败，请重试.");
                 });
+        },
+
+        commit(){
+
+        },
+
+        addCommit() {
+            let that = this;
+
+            that.$refs["form"].validate(valid =>  {
+                if (valid) {
+                    
+                    that.$api[that.apiType].checkName(
+                        {
+                            name: that.form.name
+                        }
+                    ).then(res =>{
+                        if(res.code == 0){
+                            if(res.data.length){
+                                //var a = json.parse(josn.stringify(res.data))
+                                thtat.dddd  = a;
+                                that.sssdia = true;
+
+                                //
+                                //<div :item="ddd" @contine-commit="commit"></div>
+
+                                //dialog
+                                //继续录入
+                                that.$emit('contine-commit');
+
+                                //取消录入
+                                // this.closeDialog()
+
+                            }else{
+                                that.commit()
+                            }
+                        }else{
+                            
+
+                            // ths.meee.show(res.msg || '检名字是啊白')
+                        }
+                    }).catch(res =>{
+
+                    });
+
+
+                    that.$api[that.apiType]
+                        .add(that.form)
+                        .then(res => {
+                            if (res.code == 0) {
+                                //新增成功后
+                                that.afterAdd(res.data);
+
+                                that.$emit(
+                                    "add-item",
+                                    JSON.parse(JSON.stringify(res.data))
+                                );
+
+                                that.$message({
+                                    message: "新增成功.",
+                                    type: "success",
+                                    duration: 800
+                                });
+
+                                that.closeDialog();
+                            } else {
+                                that.$message.error(
+                                    res.msg || "新增失败，请重试."
+                                );
+                            }
+                        })
+                        .catch(res => {
+                            that.$message.error("新增失败，请重试.");
+                        });
+                }
+            });
         },
 
         afterClose() {

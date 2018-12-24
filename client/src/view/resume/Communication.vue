@@ -11,7 +11,7 @@
         >
 
             <el-table
-                :data="commData"
+                :data="tdata"
                 height="400"
                 border
                 style="width: 100%"
@@ -196,12 +196,13 @@ export default {
 
     data() {
         return {
-            commData: [],
+            tdata: [],
             dialogVisible: false,
 
             //新增沟通
             addDialog: false,
 
+            //修改窗口
             editDialog: false,
             currentEditItem: {}
         };
@@ -226,16 +227,16 @@ export default {
                             citem[key] = item[key];
                         }
                     }
+                    break;
                 }
             }
         },
 
         showEditDialog(id) {
             let that = this;
-            that.editDialog= true,
           
             that.$api.communication
-                .getByIDCom({
+                .getByID({
                     id
                 })
                 .then(res => {
@@ -243,7 +244,7 @@ export default {
                     if (res.code == 0) {
                         that.currentEditItem = res.data;
                     } else {
-                        that.$message.error(res.msg);
+                        that.$message.error(res.msg || "获取数据失败，请重试.");
                     }
 
                     that.editDialog = true;
@@ -281,13 +282,13 @@ export default {
 
         getCommunication() {
             let that = this;
-            that.$api.resume
-                .getCommunication({
+            that.$api.communication
+                .get({
                     resume_id: that.resume_id
                 })
                 .then(res => {
                     if (res.code == 0) {
-                        that.commData = res.data;
+                        that.tdata = res.data;
                     } else {
                         that.$message.error(
                             res.msg || "获取沟通信息失败，请刷新后重试."
@@ -302,7 +303,7 @@ export default {
         //关闭后调用
         afterClose() {
             let that = this;
-            that.commData = [];
+            that.tdata = [];
         }
     }
 };
