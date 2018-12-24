@@ -38,7 +38,7 @@ export default {
                 params = {};
 
             if (that.search) {
-                //添加搜索天剑
+                //添加搜索条件
                 params = { ...that.search };
             }
 
