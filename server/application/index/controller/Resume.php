@@ -248,9 +248,17 @@ class Resume extends Controller
         $user = new User();
         foreach ($personal_name as $k => $v) {
             $data[$k]['ct_user'] = $user->getUser(['personal_name' => $v]);
+            unset($data[$k]['personal_name']);
         }
-        $resume = new Resume();
-        
+        $resume = new ResumeModel();
+        $res = $resume->addAll($data);
+        if ($res) {
+            return json(['msg' => '添加成功','code' => 0,'data' => []]);
+        }
+        else{
+            return json(['msg' => '添加失败','code' => 1,'data' => []]);
+        }
+
     }
 
     public function uploadResume(){

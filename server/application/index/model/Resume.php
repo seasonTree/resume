@@ -21,7 +21,10 @@ class Resume extends Model
         //获取数据
         return Resume::field('id,name,phone,sex,age,work_year,email,expected_money,nearest_unit,nearest_job,english,expected_address,school,educational,speciality,mfy_time')->where($where)->order('mfy_time desc')->select();
     }
-
+    public function addAll($data){
+        //添加全部
+        return Resume::insertAll($data);
+    }
     public function getOne($where = '1=1'){
         //获取一条数据
         return Resume::where($where)->find();
@@ -51,6 +54,12 @@ class Resume extends Model
                      ->field('id,name,phone,email,school,educational,graduation_time,work_year,source,ct_user')
                      ->select()
                      ->toArray();
+    }
+
+    public function getUname($where){
+        //获取候选人名字
+        return Resume::where($where)->value('name'); 
+        
     }
 
 

@@ -139,6 +139,8 @@ export default {
                 }
 
                 that.tdata = [];
+                that.pager.current = 1;
+                that.pager.total = 1;
             },
             immediate: true
         }
@@ -149,25 +151,30 @@ export default {
             thead: [],
 
             recruHead: [
-                { prop: "id", label: "招聘负责人", fixed: "left" },
-                { prop: "id", label: "候选人", fixed: "left" },
-                { prop: "id", label: "通过筛选", fixed: "left" },
-                { prop: "id", label: "安排面试", fixed: "left" },
-                { prop: "id", label: "到场", fixed: "left" },
-                { prop: "id", label: "通过面试", fixed: "left" },
-                { prop: "id", label: "入职", fixed: "left" }
+                { prop: "personal_name", label: "招聘负责人", fixed: "left" },
+                { prop: "name", label: "候选人", fixed: "left" },
+                { prop: "screen", label: "通过筛选", fixed: "left" },
+                { prop: "arrange_interview", label: "安排面试", fixed: "left" },
+                { prop: "arrive", label: "到场", fixed: "left" },
+                {
+                    prop: "approved_interview",
+                    label: "通过面试",
+                    fixed: "left"
+                },
+                { prop: "entry", label: "入职", fixed: "left" }
             ],
+
             personHead: [
-                { prop: "id", label: "招聘负责人", fixed: "left" },
-                { prop: "id", label: "候选人", fixed: "left" },
-                { prop: "id", label: "联系电话", fixed: "left" },
-                { prop: "id", label: "邮件", fixed: "left" },
-                { prop: "id", label: "毕业院校", fixed: "left" },
-                { prop: "id", label: "学历", fixed: "left" },
-                { prop: "id", label: "毕业年份", fixed: "left" },
-                { prop: "id", label: "工作年限", fixed: "left" },
-                { prop: "id", label: "简历来源", fixed: "left" },
-                { prop: "id", label: "沟通次数", fixed: "left" }
+                { prop: "personal_name", label: "招聘负责人", fixed: "left" },
+                { prop: "name", label: "候选人", fixed: "left" },
+                { prop: "phone", label: "联系电话", fixed: "left" },
+                { prop: "email", label: "邮件", fixed: "left" },
+                { prop: "school", label: "毕业院校", fixed: "left" },
+                { prop: "educational", label: "学历", fixed: "left" },
+                { prop: "graduation_time", label: "毕业年份", fixed: "left" },
+                { prop: "work_year", label: "工作年限", fixed: "left" },
+                { prop: "source", label: "简历来源", fixed: "left" },
+                { prop: "communicate_count", label: "沟通次数", fixed: "left" }
             ],
 
             search: {
@@ -179,6 +186,12 @@ export default {
             //选中的条件
             selectUser: [],
             showSelectUser: false,
+
+            pager: {
+                total: 1,
+                current: 1,
+                size: 2
+            },
 
             pickerOptions: {
                 shortcuts: [
@@ -209,6 +222,82 @@ export default {
     },
 
     methods: {
+        getData() {
+            let that = this,
+                params = {
+                    dtfm: that.search.dateRange[0],
+                    dtto: that.search.dateRange[1]
+                };
+
+            that.pager.current = 1;
+            // that.pager.total = 1;
+
+            if (that.search.type == 0) {
+                that.getRecruitmentList(params);
+            } else if (that.search.type == 1) {
+                params["ur"] = that.selectUser.join(",");
+                that.getCandidateList(params);
+            }
+        },
+
+        //获取 招聘负责人统计的报表
+        getRecruitmentList(params) {
+            let that = this;
+
+            that.$api.person_recru
+                .recruitment_list(params)
+                .then(res => {
+                    if (res.code == 0) {
+                        that.reportData = res.data;
+
+                        if (that.pager) {
+                            that.pager.total = that.reportData.length;
+
+                            that.tdata = that.reportData.slice(
+                                0,
+                                that.pager.size
+                            );
+                        }
+                    } else {
+                        that.$message.error(
+                            res.msg || "获取数据失败，请刷新后重试."
+                        );
+                    }
+                })
+                .catch(res => {
+                    that.$message.error("获取数据失败，请刷新后重试.");
+                });
+        },
+
+        //获取个人招聘统计候选人跟踪报表
+        getCandidateList(params) {
+            let that = this;
+
+            that.$api.person_recru
+                .candidate_list(params)
+                .then(res => {
+                    if (res.code == 0) {
+                        that.reportData = res.data;
+
+                        if (that.pager) {
+                            that.pager.total = that.reportData.length;
+
+                            that.tdata = that.reportData.slice(
+                                0,
+                                that.pager.size
+                            );
+                        }
+                    } else {
+                        that.$message.error(
+                            res.msg || "获取数据失败，请刷新后重试."
+                        );
+                    }
+                })
+                .catch(res => {
+                    that.$message.error("获取数据失败，请刷新后重试.");
+                });
+        },
+
         setSelectUser(users) {
             let that = this;
             that.search.recru = users.slUserPerson.join(",");
@@ -228,14 +317,14 @@ export default {
                     dtfm: that.search.dateRange[0],
                     dtto: that.search.dateRange[1],
                     type: that.search.type,
-                    ur: that.selectUser.join(',')
+                    ur: that.selectUser.join(",")
                 },
                 pArr = [];
 
             for (var key in pObj) {
                 var item = pObj[key];
 
-                if (item) {
+                if (item !== null && item !== undefined && item !== '') {
                     pArr.push(key + "=" + item);
                 }
             }

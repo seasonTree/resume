@@ -12,6 +12,8 @@ class Report extends Controller
 
     public function candidateList(){
     	//候选人报表
+    	$input = input('get.');
+
     	$resume = new Resume();
     	$candidate = $resume->getCandidate();
     	$comm = new Communicate();
@@ -56,8 +58,7 @@ class Report extends Controller
     		}
     		$user_arr = [];//清空临时数组
     	}
-
-    	return json(['msg' => 0,'data' => $data]);
+    	return json([ 'msg' => '获取成功','code' => 0,'data' => array_merge($data) ]);
     }
 
     public function recruitmentList(){
@@ -70,6 +71,7 @@ class Report extends Controller
     	$key = 1;//data数组的key
     	$user = new User();
     	$user_data = $user->getUserInfo();
+
     	foreach ($user_data as $k => $v) {
     		$temp_data = $comm->getCommInfo(['ct_user' => $v['uname']]);
     		if (empty($temp_data)) {
@@ -81,12 +83,15 @@ class Report extends Controller
     					if ($m == 0 || $n == 'resume_id') {
     						continue;
     					}
+    					
     					$data[$user_arr[$b['resume_id']]][$n] = 1;  
     				}
     			}
     			else{
     				$b['id'] = $key;
     				$data[$key] = $b;
+    				$data[$key]['personal_name'] = $v['personal_name'];
+    				$data[$key]['name'] = $resume->getUname(['id' => $b['resume_id']]);
 	    			$user_arr[$b['resume_id']] = $key;
 	    			$key++;
     			}
@@ -94,8 +99,18 @@ class Report extends Controller
     		}
     		$user_arr = [];
     	}
+    	return json([ 'msg' => '获取成功','code' => 0,'data' => array_merge($data) ]);
+    }
 
-    	return json(['msg' => 0,'data' => $data]);
+    public function export(){
+    	//数据导出
+
+    	if ($type == 1) {
+    		
+    	}
+    	if ($type == 2) {
+    		
+    	}
     }
     
 }

@@ -71,4 +71,6 @@ class Communicate extends Model
                           ->toArray();
     }
 
+
+
 }
