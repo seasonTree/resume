@@ -63,14 +63,11 @@ Route::post('api/user/change_user_passwd','User/changeUserPasswd');
 Route::post('api/user/change_status','User/changeStatus');
 Route::post('api/user/get_by_id','User/getOne');
 
-<<<<<<< HEAD
 Route::get('api/report/person_recru/candidate_list','Report/candidateList');//获取个人招聘统计候选人跟踪报表
 Route::get('api/report/person_recru/recruitment_list','Report/recruitmentList');//获取 招聘负责人统计的报表
-=======
 Route::get('api/','Report/candidateList');//获取个人招聘统计候选人跟踪报表
 Route::get('api/','Report/recruitmentList');//获取 招聘负责人统计的报表
 Route::get('api/','Report/searchCandidate');//搜索查询个人照片统计候选人跟踪表
->>>>>>> 0818bdf03b89108e2bcd6dbe5624165daa235fac
 
 
 return [
