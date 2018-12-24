@@ -12,6 +12,8 @@ class Report extends Controller
 
     public function candidateList(){
     	//候选人报表
+    	$input = input('get.');
+
     	$resume = new Resume();
     	$candidate = $resume->getCandidate();
     	$comm = new Communicate();
@@ -56,8 +58,7 @@ class Report extends Controller
     		}
     		$user_arr = [];//清空临时数组
     	}
-
-    	return json(['msg' => '获取成功','code' => 0,'data' => $data]);
+    	return json([ 'msg' => '获取成功','code' => 0,'data' => array_merge($data) ]);
     }
 
     public function recruitmentList(){
@@ -98,7 +99,7 @@ class Report extends Controller
     		}
     		$user_arr = [];
     	}
-    	return json(['msg' => '获取成功','code' => 0,'data' => $data]);
+    	return json([ 'msg' => '获取成功','code' => 0,'data' => array_merge($data) ]);
     }
 
     public function export(){
