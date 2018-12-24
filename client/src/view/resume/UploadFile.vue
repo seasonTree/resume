@@ -76,7 +76,7 @@
             >
 
                 <el-upload
-                    action="/api/resume/upload_file"
+                    :action="uploadUrl"
                     multiple
                     :on-success="uploadSuccess"
                     :on-error="uploadError"
@@ -113,6 +113,12 @@ export default {
                 let that = this;
                 that.getData();
             }
+        }
+    },
+
+    computed: {
+        uploadUrl() {
+            return '/api/resume/upload_file?resume_id' + this.resume_id;
         }
     },
 
