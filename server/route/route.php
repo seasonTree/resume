@@ -65,7 +65,7 @@ Route::post('api/user/get_by_id','User/getOne');
 
 Route::get('api/','Report/candidateList');//获取个人招聘统计候选人跟踪报表
 Route::get('api/','Report/recruitmentList');//获取 招聘负责人统计的报表
-Route::get('api/','Report/searchCandidate');//搜索查询个人照片统计候选人跟踪表
+Route::get('api/','Report/searchCandidate');//搜索查询个人招聘统计候选人跟踪表
 
 
 return [
