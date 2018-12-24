@@ -56,6 +56,12 @@ class Resume extends Model
                      ->toArray();
     }
 
+    public function getUname($where){
+        //获取候选人名字
+        return Resume::where($where)->value('name'); 
+        
+    }
+
 
 
 

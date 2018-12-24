@@ -133,7 +133,8 @@ create table rs_resume_upload
 	file_name varchar(100) not null default '' comment '文件名',
 	resume_url varchar(255) not null default '' comment '简历文件对应的路径',
 	ct_user varchar(64) default '' null comment '创建人',
-	ct_time datetime default CURRENT_TIMESTAMP not null comment '创建时间'
+	ct_time datetime default CURRENT_TIMESTAMP not null comment '创建时间',
+	resume_id bigint(20) not null default 0 comment '简历id'
 );
 
 -- -----------------------------------------------------
