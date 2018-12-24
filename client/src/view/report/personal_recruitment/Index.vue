@@ -149,12 +149,16 @@ export default {
             thead: [],
 
             recruHead: [
-                { prop: "id", label: "招聘负责人", fixed: "left" },
-                { prop: "id", label: "候选人", fixed: "left" },
+                { prop: "personal_name", label: "招聘负责人", fixed: "left" },
+                { prop: "name", label: "候选人", fixed: "left" },
                 { prop: "screen", label: "通过筛选", fixed: "left" },
                 { prop: "arrange_interview", label: "安排面试", fixed: "left" },
                 { prop: "arrive", label: "到场", fixed: "left" },
-                { prop: "approved_interview", label: "通过面试", fixed: "left" },
+                {
+                    prop: "approved_interview",
+                    label: "通过面试",
+                    fixed: "left"
+                },
                 { prop: "entry", label: "入职", fixed: "left" }
             ],
 
@@ -246,7 +250,7 @@ export default {
                                 that.pager.size
                             );
                         }
-                    } else if (res.code) {
+                    } else {
                         that.$message.error(
                             res.msg || "获取数据失败，请刷新后重试."
                         );
@@ -275,7 +279,7 @@ export default {
                                 that.pager.size
                             );
                         }
-                    } else if (res.code) {
+                    } else {
                         that.$message.error(
                             res.msg || "获取数据失败，请刷新后重试."
                         );
