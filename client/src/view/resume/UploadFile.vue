@@ -20,7 +20,7 @@
                 >
                     <el-table-column
                         align="center"
-                        prop="name"
+                        prop="file_name"
                         label="文件名"
                     >
 
@@ -34,14 +34,14 @@
 
                     <el-table-column
                         align="center"
-                        prop="address"
+                        prop="ct_time"
                         label="上传时间"
                     >
                     </el-table-column>
 
                     <el-table-column
                         align="center"
-                        prop="address"
+                        prop="ct_uesr"
                         label="上传人"
                     >
                     </el-table-column>

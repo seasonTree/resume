@@ -6,6 +6,8 @@ use think\facade\Env;
 use app\index\model\ResumeUpload;
 use app\index\model\Resume as ResumeModel;
 use app\index\model\User;
+use PHPExcel_IOFactory;
+use PHPExcel;
 require_once dirname(Env::get('ROOT_PATH')).'/server/extend/Analysis.php';
 require_once dirname(Env::get('ROOT_PATH')).'/server/extend/phpanalysis/phpanalysis.class.php';
 
@@ -237,6 +239,79 @@ class Resume extends Controller
     public function trimall($str){
         $qian = array(" ","　","\t","\n","\r");
         return str_replace($qian, '', $str);  
+    }
+
+    public function importResume(){
+        //导入简历
+        $data = input('post.');
+        $personal_name = array_column($data,'personal_name');
+        $user = new User();
+        foreach ($personal_name as $k => $v) {
+            $data[$k]['ct_user'] = $user->getUser(['personal_name' => $v]);
+        }
+        $resume = new Resume();
+        
+    }
+
+    public function uploadResume(){
+        //导入简历
+        $path = dirname(Env::get('ROOT_PATH')).'/client/dist/uploads/';
+        // 获取表单上传文件
+        $file = request()->file('file');
+        // 移动到框架应用根目录/uploads/ 目录下
+        $info = $file->validate(['size'=>2097152,'ext'=>'doc,docx,html,htm,mht'])->move($path);
+        if($info){
+            $file = $path.$info->getSaveName();//获取路径
+            $data = $this->readResume($file);
+            if (empty($data)) {
+                return json(['msg' => '没有数据','code' => 2]);
+            }
+            return json(['msg' => '上传成功','code' => 0,'data' => $data ]);
+        }else{
+            // 上传失败获取错误信息
+            return json(['msg' => $file->getError(),'code' => 1]);
+        }
+    }
+
+    public function readResume($file){
+        //解析简历
+        // $file = dirname(Env::get('ROOT_PATH')).'/client/dist/uploads/test.xlsx';
+        if( pathinfo($file)['extension'] =='xlsx' )
+        {
+          $obj = \PHPExcel_IOFactory::createReader('Excel2007');
+        }
+        else
+        {
+          $obj = \PHPExcel_IOFactory::createReader('Excel5');
+        }
+
+        //实例化
+        $obj_excel = $obj->load($file,$encode = 'utf-8');
+        $sheet = $obj_excel -> getSheet(0);
+        $total = $sheet -> getHighestRow(); // 取得总行数
+        $data = [];
+        for($i = 2;$i <= $total;$i++){
+            if (empty($obj_excel -> getActiveSheet() -> getCell("B".$i)->getValue())) {
+                continue;
+            }
+            $data[$i]['personal_name'] = $obj_excel -> getActiveSheet() -> getCell("A".$i)->getValue();
+            $data[$i]['ct_time'] = $obj_excel -> getActiveSheet() -> getCell("B".$i)->getValue();
+            $data[$i]['nearest_job'] = $obj_excel -> getActiveSheet() -> getCell("C".$i)->getValue();
+            $data[$i]['name'] = $obj_excel -> getActiveSheet() -> getCell("D".$i)->getValue();
+            $data[$i]['phone'] = $obj_excel -> getActiveSheet() -> getCell("E".$i)->getValue();
+            $data[$i]['email'] = $obj_excel -> getActiveSheet() -> getCell("F".$i)->getValue();
+            $data[$i]['school'] = $obj_excel -> getActiveSheet() -> getCell("G".$i)->getValue();
+            $data[$i]['educational'] = $obj_excel -> getActiveSheet() -> getCell("H".$i)->getValue();
+            $data[$i]['graduation_time'] = $obj_excel -> getActiveSheet() -> getCell("I".$i)->getValue();
+            $data[$i]['work_year'] = $obj_excel -> getActiveSheet() -> getCell("J".$i)->getValue();
+            $data[$i]['source'] = $obj_excel -> getActiveSheet() -> getCell("K".$i)->getValue();
+            $data[$i]['custom1'] = $obj_excel -> getActiveSheet() -> getCell("M".$i)->getValue();
+            $data[$i]['custom2'] = $obj_excel -> getActiveSheet() -> getCell("N".$i)->getValue();
+            $data[$i]['custom3'] = $obj_excel -> getActiveSheet() -> getCell("L".$i)->getValue();
+
+        }
+        return $data;
+
     }
 
     public function upload(){

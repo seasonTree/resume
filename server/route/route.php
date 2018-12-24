@@ -28,9 +28,12 @@ Route::get('api/resume/get_by_id','Resume/getResumeOne');//根据id获取简历�
 Route::post('api/resume/del','Resume/delResume');//删除简历
 Route::get('api/resume/get_communication','Communicate/commList');//获取沟通列表
 Route::post('api/resume/add_communication','Communicate/addComm');//添加沟通信息
+Route::get('api/','Communicate/getComm');//根据id获取一条沟通信息
 Route::get('api/resume/get_upload_file','Resume/uploadList');//获取附件列表
 Route::post('api/resume/upload_file','Resume/upload');//添加简历附件
 Route::post('api/resume/del_file','');//删除简历附件
+Route::post('api/resume/import','Resume/importResume');//上传简历
+Route::get('api/test','Resume/readResume');//获取简历内容
 
 
 Route::post('api/user/login','Login/login');//登录
@@ -60,8 +63,14 @@ Route::post('api/user/change_user_passwd','User/changeUserPasswd');
 Route::post('api/user/change_status','User/changeStatus');
 Route::post('api/user/get_by_id','User/getOne');
 
+<<<<<<< HEAD
 Route::get('api/report/person_recru/candidate_list','Report/candidateList');//获取个人招聘统计候选人跟踪报表
 Route::get('api/report/person_recru/recruitment_list','Report/recruitmentList');//获取 招聘负责人统计的报表
+=======
+Route::get('api/','Report/candidateList');//获取个人招聘统计候选人跟踪报表
+Route::get('api/','Report/recruitmentList');//获取 招聘负责人统计的报表
+Route::get('api/','Report/searchCandidate');//搜索查询个人照片统计候选人跟踪表
+>>>>>>> 0818bdf03b89108e2bcd6dbe5624165daa235fac
 
 
 return [

@@ -135,7 +135,6 @@
 
                 <el-upload
                     action="/api/resume/upload_file"
-                    multiple
                     :on-success="uploadSuccess"
                     :on-error="uploadError"
                     :show-file-list="false"
@@ -170,7 +169,7 @@ export default {
         show(newValue, oldValue) {
             if (newValue) {
                 let that = this;
-                that.getData();
+                // that.getData();
             }
         }
     },
@@ -181,25 +180,25 @@ export default {
         };
     },
     methods: {
-        getData() {
-            let that = this;
-            that.$api.resume
-                .getImport({
-                    resume_id: that.resume_id
-                })
-                .then(res => {
-                    if (res.code == 0) {
-                        that.tdata = res.data;
-                    } else {
-                        that.$message.error(
-                            res.msg || "获取文件列表失败，请刷新后重试."
-                        );
-                    }
-                })
-                .catch(res => {
-                    that.$message.error("获取文件列表失败，请刷新后重试.");
-                });
-        },
+        // getData() {
+        //     let that = this;
+        //     that.$api.resume
+        //         .getImport({
+        //             resume_id: that.resume_id
+        //         })
+        //         .then(res => {
+        //             if (res.code == 0) {
+        //                 that.tdata = res.data;
+        //             } else {
+        //                 that.$message.error(
+        //                     res.msg || "获取文件列表失败，请刷新后重试."
+        //                 );
+        //             }
+        //         })
+        //         .catch(res => {
+        //             that.$message.error("获取文件列表失败，请刷新后重试.");
+        //         });
+        // },
 
         // //删除文件
         // delFile(id) {
@@ -267,11 +266,11 @@ export default {
             this.$message.error("上传失败，请重试.");
         },
 
-        //关闭后调用
-        afterClose() {
-            let that = this;
-            that.uploadList = [];
-        }
+        // //关闭后调用
+        // afterClose() {
+        //     let that = this;
+        //     that.uploadList = [];
+        // }
     }
 };
 </script>

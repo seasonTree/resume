@@ -16,10 +16,10 @@
         >
             <el-form-item
                 label="沟通日期"
-                prop="ct_time"
+                prop="communicate_time"
             >
                 <el-date-picker
-                    v-model="form.ct_time"
+                    v-model="form.communicate_time"
                     type="date"
                     placeholder="选择日期"
                     forma="yyyy-MM-dd"
@@ -29,7 +29,7 @@
 
                 <el-row>
 
-                    <div class="AddCom_div-row">
+                    <div class="addcom_div-row">
                         <el-form-item
                             style="display: flex"
                             label="通过筛选："
@@ -55,20 +55,6 @@
                             >
                             </el-switch>
                         </el-form-item>
-                           <el-form-item
-                            label="是否入职："
-                            prop="approved_interview"
-                            style="display: flex"
-                        >
-                            <el-switch
-                                v-model="form.approved_interview"
-                                active-color="#13ce66"
-                                inactive-color="#ff4949"
-                            >
-                            </el-switch>
-                        </el-form-item>
-                    </div>
-                    <div class="AddCom_div-row2">
                         <el-form-item
                             style="display: flex"
                             label="是否到场："
@@ -81,7 +67,8 @@
                             >
                             </el-switch>
                         </el-form-item>
-
+                    </div>
+                    <div class="addcom_div-row2">
                         <el-form-item
                             label="通过面试："
                             prop="approved_interview"
@@ -89,6 +76,18 @@
                         >
                             <el-switch
                                 v-model="form.approved_interview"
+                                active-color="#13ce66"
+                                inactive-color="#ff4949"
+                            >
+                            </el-switch>
+                        </el-form-item>
+                        <el-form-item
+                            label="是否入职："
+                            prop="entry"
+                            style="display: flex"
+                        >
+                            <el-switch
+                                v-model="form.entry"
                                 active-color="#13ce66"
                                 inactive-color="#ff4949"
                             >
@@ -132,7 +131,6 @@
 import AddDialogForm from "../base/AddDialogForm";
 export default {
     name: "AddCommunication",
-    components: {},
     mixins: [AddDialogForm],
 
     props: {
@@ -151,10 +149,12 @@ export default {
                 arrange_interview: false,
                 arrive: false,
                 approved_interview: false,
-                content: ""
+                entry:false,
+                content: "",
+                communicate_time: new Date()
             },
-            date: "",
-            content: ""
+            // date: "",?
+            // content: ""
         };
     },
     methods: {
@@ -191,17 +191,17 @@ export default {
                         });
                 }
             });
-        }
+        },
     }
 };
 </script>
 <style lang="less" scoped>
-.AddCom_div-row {
+.addcom_div-row {
     display: flex;
     
     justify-content: space-between;
 }
-.AddCom_div-row2 {
+.addcom_div-row2 {
     display: flex;
     width: 63%;
     justify-content: space-between;

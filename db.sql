@@ -153,7 +153,8 @@ create table rs_communicate
 	mfy_user varchar(64) default '' not null comment '修改人',
 	mfy_time datetime default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP not null comment '修改时间',
 	resume_id bigint(20) not null default 0 comment '简历id',
-	content varchar(255) not null default '' comment '具体内容'
+	content varchar(255) not null default '' comment '具体内容',
+	communicate_time varchar(50) not null default '' comment '沟通时间'
 );
 
 -- 插入菜单
