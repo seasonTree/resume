@@ -3,6 +3,7 @@ import * as user from './user'
 import * as role from './role'
 import * as permission from './permission'
 import * as resume from './resume';
+import * as communication from './communication';
 import * as person_recru from './person_recru';
 
 const apis = {
@@ -11,7 +12,8 @@ const apis = {
     role,
     permission,
     resume,
-    person_recru
+    person_recru,
+    communication
 }
 
 const install = function (Vue) {

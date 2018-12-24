@@ -56,32 +56,6 @@
                             </el-switch>
                         </el-form-item>
                         <el-form-item
-                            style="display: flex"
-                            label="是否到场："
-                            prop="arrive"
-                        >
-                            <el-switch
-                                v-model="form.arrive"
-                                active-color="#13ce66"
-                                inactive-color="#ff4949"
-                            >
-                            </el-switch>
-                        </el-form-item>
-                    </div>
-                    <div class="addcom_div-row2">
-                        <el-form-item
-                            label="通过面试："
-                            prop="approved_interview"
-                            style="display: flex"
-                        >
-                            <el-switch
-                                v-model="form.approved_interview"
-                                active-color="#13ce66"
-                                inactive-color="#ff4949"
-                            >
-                            </el-switch>
-                        </el-form-item>
-                        <el-form-item
                             label="是否入职："
                             prop="entry"
                             style="display: flex"
@@ -94,7 +68,33 @@
                             </el-switch>
                         </el-form-item>
                     </div>
-                
+                    <div class="addcom_div-row2">
+                        <el-form-item
+                            style="display: flex"
+                            label="是否到场："
+                            prop="arrive"
+                        >
+                            <el-switch
+                                v-model="form.arrive"
+                                active-color="#13ce66"
+                                inactive-color="#ff4949"
+                            >
+                            </el-switch>
+                        </el-form-item>
+
+                        <el-form-item
+                            label="通过面试："
+                            prop="approved_interview"
+                            style="display: flex"
+                        >
+                            <el-switch
+                                v-model="form.approved_interview"
+                                active-color="#13ce66"
+                                inactive-color="#ff4949"
+                            >
+                            </el-switch>
+                        </el-form-item>
+                    </div>
 
                 </el-row>
             </el-form-item>
@@ -121,24 +121,24 @@
             <el-button @click="closeDialog">取 消</el-button>
             <el-button
                 type="primary"
-                @click="addCommit"
+                @click="editCommit"
             >确 定</el-button>
         </div>
     </el-dialog>
 </template>
 
 <script>
-import AddDialogForm from "../base/AddDialogForm";
+import EditDialogForm from "../base/EditDialogForm";
 export default {
-    name: "AddCommunication",
-    mixins: [AddDialogForm],
+    name: "EditCommunication",
+    mixins: [EditDialogForm],
 
     props: {
         //简历的id
-        resume_id: {
-            required: true,
-            type: Number
-        }
+        // resume_id: {
+        //     required: true,
+        //     type: Number
+        // }
     },
 
     data() {
@@ -149,23 +149,22 @@ export default {
                 arrange_interview: false,
                 arrive: false,
                 approved_interview: false,
-                entry:false,
+                entry: false,
                 content: "",
                 communicate_time: new Date()
-            },
-            // date: "",?
-            // content: ""
+            }
         };
     },
+
     methods: {
-        addCommit() {
+        editCommit() {
             let that = this;
             that.form.resume_id = that.resume_id;
 
             that.$refs["form"].validate(valid => {
                 if (valid) {
                     that.$api[that.apiType]
-                        .addCommunication(that.form)
+                        .editCommunication(that.form)
                         .then(res => {
                             if (res.code == 0) {
                                 that.$emit(
@@ -174,7 +173,7 @@ export default {
                                 );
 
                                 that.$message({
-                                    message: "新增成功.",
+                                    message: "修改成功.",
                                     type: "success",
                                     duration: 800
                                 });
@@ -182,23 +181,23 @@ export default {
                                 that.closeDialog();
                             } else {
                                 that.$message.error(
-                                    res.msg || "新增失败，请重试."
+                                    res.msg || "修改失败，请重试."
                                 );
                             }
                         })
                         .catch(res => {
-                            that.$message.error("新增失败，请重试.");
+                            that.$message.error("修改失败，请重试.");
                         });
                 }
             });
-        },
+        }
     }
 };
 </script>
 <style lang="less" scoped>
 .addcom_div-row {
     display: flex;
-    
+
     justify-content: space-between;
 }
 .addcom_div-row2 {

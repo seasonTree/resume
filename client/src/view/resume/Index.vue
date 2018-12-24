@@ -340,7 +340,6 @@
 
        <import
             :show.sync="ImportDialog"
-            :resume_id="ImportID"
         >
         </import>
 
@@ -396,7 +395,6 @@ export default {
         //批量导入弹出窗
         showImport() {
             let that = this;
-            that.ImportID = id;
             that.ImportDialog = true;
         },
 

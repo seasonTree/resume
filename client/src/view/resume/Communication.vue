@@ -16,7 +16,6 @@
                 border
                 style="width: 100%"
                 class="mb-20"
-               
             >
                 <el-table-column
                     align="center"
@@ -39,16 +38,11 @@
                     prop="screen"
                     label="通过筛选"
                 >
-                <template slot-scope="scope">
-                         <i
-                            v-if="scope.row.arrive == 0"
+                    <template slot-scope="scope">
+                        <i
+                            v-if="scope.row.screen == 1"
                             class="fa fa-check right status-icon"
                             @click="changeStatus(scope.row.id, 1, scope.row)"
-                        ></i>
-                        <i
-                            v-if="scope.row.arrive == 1"
-                            class="fa fa-ban ban status-icon"
-                            @click="changeStatus(scope.row.id, 0, scope.row)"
                         ></i>
                     </template>
                 </el-table-column>
@@ -58,16 +52,11 @@
                     prop="arrange_interview "
                     label="安排面试"
                 >
-                <template slot-scope="scope">
-                       <i
-                            v-if="scope.row.arrive == 0"
+                    <template slot-scope="scope">
+                        <i
+                            v-if="scope.row.arrange_interview == 1"
                             class="fa fa-check right status-icon"
                             @click="changeStatus(scope.row.id, 1, scope.row)"
-                        ></i>
-                        <i
-                            v-if="scope.row.arrive == 1"
-                            class="fa fa-ban ban status-icon"
-                            @click="changeStatus(scope.row.id, 0, scope.row)"
                         ></i>
                     </template>
                 </el-table-column>
@@ -77,17 +66,13 @@
                     prop="arrive "
                     label="到场"
                 >
-                <template slot-scope="scope">
+                    <template slot-scope="scope">
                         <i
-                            v-if="scope.row.arrive == 0"
+                            v-if="scope.row.arrive == 1"
                             class="fa fa-check right status-icon"
                             @click="changeStatus(scope.row.id, 1, scope.row)"
                         ></i>
-                        <i
-                            v-if="scope.row.arrive == 1"
-                            class="fa fa-ban ban status-icon"
-                            @click="changeStatus(scope.row.id, 0, scope.row)"
-                        ></i>
+
                     </template>
                 </el-table-column>
 
@@ -96,13 +81,13 @@
                     prop="approved_interview "
                     label="通过面试"
                 >
-                <template slot-scope="scope">
+                    <template slot-scope="scope">
                         <i
-                            v-if="scope.row.approved_interview == 0"
+                            v-if="scope.row.approved_interview == 1"
                             class="fa fa-check right status-icon"
                             @click="changeStatus(scope.row.id, 1, scope.row)"
                         ></i>
-                        
+
                     </template>
                 </el-table-column>
 
@@ -111,6 +96,14 @@
                     prop="entry "
                     label="入职"
                 >
+                    <template slot-scope="scope">
+                        <i
+                            v-if="scope.row.entry == 1"
+                            class="fa fa-check right status-icon"
+                            @click="changeStatus(scope.row.id, 1, scope.row)"
+                        ></i>
+
+                    </template>
                 </el-table-column>
 
                 <el-table-column
@@ -122,7 +115,7 @@
                     <template slot-scope="scope">
                         <el-tooltip
                             effect="dark"
-                            content="添加附件"
+                            content="修改"
                             placement="top"
                         >
                             <el-button
@@ -133,6 +126,7 @@
                                 @click.stop="showEditDialog(scope.row.id)"
                             ></el-button>
                         </el-tooltip>
+
                     </template>
 
                 </el-table-column>
@@ -156,6 +150,13 @@
             @add-item="addItem"
         >
         </add-communication>
+
+        <edit-communication
+            :show.sync="editDialog"
+            :edit-item="currentEditItem"
+            @edit-item="editItem"
+        >
+        </edit-communication>
     </div>
 
 </template>
@@ -163,10 +164,12 @@
 <script>
 import DialogForm from "../base/DialogForm";
 import AddCommunication from "./AddCommunication";
+import EditCommunication from "./EditCommunication";
 export default {
     name: "Communication",
     components: {
-        AddCommunication
+        AddCommunication,
+        EditCommunication
     },
     mixins: [DialogForm],
 
@@ -197,42 +200,84 @@ export default {
             dialogVisible: false,
 
             //新增沟通
-            addDialog: false
+            addDialog: false,
+
+            editDialog: false,
+            currentEditItem: {}
         };
     },
     methods: {
         //新增沟通
         addItem(item) {
             let that = this;
+            // console.log(item);
             that.commData.unshift(item);
         },
 
-        //判断
-        changeStatus(id, status, item) {
+        editItem(item) {
             let that = this;
 
-            that.$api.user
-                .changeStatus({
-                    id,
-                    status
+            for (var i = 0; i < that.tdata.length; i++) {
+                var citem = that.tdata[i];
+
+                if (citem.id == item.id) {
+                    for (var key in item) {
+                        if (key != "id") {
+                            citem[key] = item[key];
+                        }
+                    }
+                }
+            }
+        },
+
+        showEditDialog(id) {
+            let that = this;
+            that.editDialog= true,
+          
+            that.$api.communication
+                .getByIDCom({
+                    id
                 })
                 .then(res => {
+                
                     if (res.code == 0) {
-                        that.$message({
-                            message: "更新状态成功.",
-                            type: "success",
-                            duration: 800
-                        });
-
-                        item.status = status;
+                        that.currentEditItem = res.data;
                     } else {
-                        that.$message.error(res.msg || "更新状态失败，请重试.");
+                        that.$message.error(res.msg);
                     }
+
+                    that.editDialog = true;
                 })
                 .catch(res => {
-                    that.$message.error("更新状态失败，请重试.");
+                    that.$message.error("获取数据失败，请重试.");
                 });
         },
+        //判断
+        // changeStatus(id, status, item) {
+        //     let that = this;
+
+        //     that.$api.user
+        //         .changeStatus({
+        //             id,
+        //             status
+        //         })
+        //         .then(res => {
+        //             if (res.code == 0) {
+        //                 that.$message({
+        //                     message: "更新状态成功.",
+        //                     type: "success",
+        //                     duration: 800
+        //                 });
+
+        //                 item.status = status;
+        //             } else {
+        //                 that.$message.error(res.msg || "更新状态失败，请重试.");
+        //             }
+        //         })
+        //         .catch(res => {
+        //             that.$message.error("更新状态失败，请重试.");
+        //         });
+        // },
 
         getCommunication() {
             let that = this;

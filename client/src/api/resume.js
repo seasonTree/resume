@@ -93,6 +93,15 @@ export function addCommunication(data){
     });
 }
 
+//修改沟通
+export function editCommunication(data){
+    return request({
+        url: `${prefix}/edit_communication`,
+        method: 'post',
+        data: data
+    });
+}
+
 //分析简历
 export function analyze(data){
     return request({
