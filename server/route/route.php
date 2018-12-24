@@ -31,6 +31,8 @@ Route::post('api/resume/add_communication','Communicate/addComm');//添加沟通
 Route::get('api/resume/get_upload_file','Resume/uploadList');//获取附件列表
 Route::post('api/resume/upload_file','Resume/upload');//添加简历附件
 Route::post('api/resume/del_file','');//删除简历附件
+Route::post('api/resume/import','Resume/importResume');//上传简历
+Route::get('api/test','Resume/readResume');//获取简历内容
 
 
 Route::post('api/user/login','Login/login');//登录
@@ -61,7 +63,8 @@ Route::post('api/user/change_status','User/changeStatus');
 Route::post('api/user/get_by_id','User/getOne');
 
 Route::get('api/','Report/candidateList');//获取个人招聘统计候选人跟踪报表
-Route::get('api/test','Report/recruitmentList');//获取 招聘负责人统计的报表
+Route::get('api/','Report/recruitmentList');//获取 招聘负责人统计的报表
+Route::get('api/','Report/searchCandidate');//搜索查询个人照片统计候选人跟踪表
 
 
 return [

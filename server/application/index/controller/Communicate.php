@@ -54,4 +54,22 @@ class Communicate
        }
     }
 
+    public function getComm(){
+      //根据id获取沟通
+      $id = input('id');
+      $comm = new Communicate();
+      $data = $comm->getOne(['id' => $id]);
+      if ($data) {
+         return json(['msg' => '获取成功','code' => 0,'data' => $data]);
+      }
+      else{
+         return json(['msg' => '获取失败','code' => 0,'data' => []]);
+      }
+    }
+
+    public function searchCandidate(){
+      //查询招聘负责人列表
+
+    }
+
 }
