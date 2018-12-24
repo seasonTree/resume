@@ -118,7 +118,7 @@ export default {
 
     computed: {
         uploadUrl() {
-            return '/api/resume/upload_file?resume_id' + this.resume_id;
+            return '/api/resume/upload_file?resume_id=' + this.resume_id;
         }
     },
 
