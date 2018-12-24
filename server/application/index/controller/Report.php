@@ -57,7 +57,7 @@ class Report extends Controller
     		$user_arr = [];//清空临时数组
     	}
 
-    	return json(['msg' => 0,'data' => $data]);
+    	return json(['msg' => '获取成功','code' => 0,'data' => $data]);
     }
 
     public function recruitmentList(){
@@ -98,7 +98,18 @@ class Report extends Controller
     		}
     		$user_arr = [];
     	}
-    	return json(['msg' => 0,'data' => $data]);
+    	return json(['msg' => '获取成功','code' => 0,'data' => $data]);
+    }
+
+    public function export(){
+    	//数据导出
+
+    	if ($type == 1) {
+    		
+    	}
+    	if ($type == 2) {
+    		
+    	}
     }
     
 }
