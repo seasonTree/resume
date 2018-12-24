@@ -10,7 +10,7 @@
                     :span="12"
                 >
                     <div class="block-content">
-                        <div>昨天简历更新了{{ltInsert}}份</div>
+                        <div>昨天简历更新了{{yesterday_resume}}份</div>
                     </div>
                 </el-col>
                 <el-col
@@ -18,7 +18,7 @@
                     :span="12"
                 >
                     <div class="block-content">
-                        <div>昨天简历沟通了{{ltComm}}份</div>
+                        <div>昨天简历沟通了{{yesterday_communicate}}份</div>
                     </div>
                 </el-col>
             </el-col>
@@ -32,7 +32,7 @@
                     :span="12"
                 >
                     <div class="block-content">
-                        <div>上周简历更新了{{ltWeekInsert}}份</div>
+                        <div>上周简历更新了{{last_week_resume}}份</div>
                     </div>
                 </el-col>
                 <el-col
@@ -40,7 +40,7 @@
                     :span="12"
                 >
                     <div class="block-content">
-                        <div>上周简历沟通了{{ltWeekComm}}份</div>
+                        <div>上周简历沟通了{{last_week_communicate}}份</div>
                     </div>
                 </el-col>
             </el-col>
@@ -53,10 +53,10 @@
 export default {
     data() {
         return {
-            ltInsert: 0,
-            ltComm: 0,
-            ltWeekInsert: 0,
-            ltWeekComm: 0
+            yesterday_resume: 0,
+            yesterday_communicate: 0,
+            last_week_resume: 0,
+            last_week_communicate: 0
         };
     },
     created() {
@@ -70,10 +70,10 @@ export default {
                 .get()
                 .then(res => {
                     if (res.code == 0) {
-                        that.ltInsert = res.data.ltInsert;
-                        that.ltComm = res.data.ltComm;
-                        that.ltWeekInsert = res.data.ltWeekInsert;
-                        that.ltWeekComm = res.data.ltWeekComm;
+                        that.yesterday_resume = res.data.yesterday_resume;
+                        that.yesterday_communicate = res.data.yesterday_communicate;
+                        that.last_week_resume = res.data.last_week_resume;
+                        that.last_week_communicate = res.data.last_week_communicate;
                     } else if (res.code) {
                         that.$message.error(
                             res.msg || "获取数据失败，请刷新后重试."

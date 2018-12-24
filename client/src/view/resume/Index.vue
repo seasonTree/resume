@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-row class="table-container">
+        <el-row class="table-container resume">
             <div class="action-bar">
                 <el-button
                     type="primary"
@@ -16,9 +16,7 @@
                 <form>
                     <el-row :gutter="20">
                         <el-col :span="4">
-                            <el-input
-                                placeholder="姓名"
-                            >
+                            <el-input placeholder="姓名">
                             </el-input>
                         </el-col>
                         <el-col :span="4">
@@ -36,78 +34,76 @@
                             </el-select>
                         </el-col>
                         <el-col :span="4">
-                            <el-input
-                                placeholder="姓名"
-                            >
+                            <el-input placeholder="姓名">
                             </el-input>
                         </el-col>
                         <el-col :span="4">
-                            <el-input
-                                placeholder="姓名"
-                            >
+                            <el-input placeholder="姓名">
                             </el-input>
                         </el-col>
                         <el-col :span="4">
-                            <el-input
-                                placeholder="姓名"
-                            ></el-input>
+                            <el-input placeholder="姓名"></el-input>
                         </el-col>
                         <el-col :span="4">
-                            <el-button
-                                type="primary"
-                            >搜索</el-button>
+                            <el-button type="primary">搜索</el-button>
                         </el-col>
                     </el-row>
 
-                    <div
-                        class="dropdown"
-                        id="dropdown"
+                    <transition
+                        @before-enter="searchCollapseBeforeEnter"
+                        @enter="searchCollapseEnter"
+                        @after-enter="searchCollapseAfterEnter"
+                        @before-leave="searchCollapseBeforeLeave"
+                        @leave="searchCollapseLeave"
+                        @after-leave="searchCollapseAfterLeave"
                     >
-                        <el-row :gutter="20">
-                            <el-col :span="4.5">
-                                <el-input
-                                    placeholder="姓名"
-                                    size="small"
-                                >
-                                </el-input>
-                            </el-col>
-                            <el-col :span="4.5">
-                                <el-input
-                                    placeholder="性别"
-                                    size="small"
-                                >
-                                </el-input>
-                            </el-col>
-                            <el-col :span="4.5">
-                                <el-input
-                                    placeholder="姓名"
-                                    size="small"
-                                >
-                                </el-input>
-                            </el-col>
-                            <el-col :span="4.5">
-                                <el-input
-                                    placeholder="性别"
-                                    size="small"
-                                >
-                                </el-input>
-                            </el-col>
-                            <el-col :span="4.5">
-                                <el-input
-                                    placeholder="姓名"
-                                    size="small"
-                                >
-                                </el-input>
-                            </el-col>
+                        <div v-show="showOtherSearch">
+                            <el-row :gutter="20">
+                                <el-col :span="4.5">
+                                    <el-input
+                                        placeholder="姓名"
+                                        size="small"
+                                    >
+                                    </el-input>
+                                </el-col>
+                                <el-col :span="4.5">
+                                    <el-input
+                                        placeholder="性别"
+                                        size="small"
+                                    >
+                                    </el-input>
+                                </el-col>
+                                <el-col :span="4.5">
+                                    <el-input
+                                        placeholder="姓名"
+                                        size="small"
+                                    >
+                                    </el-input>
+                                </el-col>
+                                <el-col :span="4.5">
+                                    <el-input
+                                        placeholder="性别"
+                                        size="small"
+                                    >
+                                    </el-input>
+                                </el-col>
+                                <el-col :span="4.5">
+                                    <el-input
+                                        placeholder="姓名"
+                                        size="small"
+                                    >
+                                    </el-input>
+                                </el-col>
 
-                            <el-col :span="4.5">
-                                <el-input size="small"></el-input>
-                            </el-col>
-                            <el-col :span="4.5">
-                                <el-input size="small"></el-input>
-                            </el-col>
-                        </el-row>
-                    </div>
+                                <el-col :span="4.5">
+                                    <el-input size="small"></el-input>
+                                </el-col>
+                                <el-col :span="4.5">
+                                    <el-input size="small"></el-input>
+                                </el-col>
+                            </el-row>
+                        </div>
+                    </transition>
 
                     <el-row
                         :gutter="20"
@@ -115,8 +111,8 @@
                     >
                         <div
                             width="100%"
-                            @click="dropDown"
-                             class="fa status-icon el-icon-caret-bottom"
+                            @click="showOtherSearch = !showOtherSearch"
+                            class="fa status-icon el-icon-caret-bottom"
                         >收起搜索条件</div>
                     </el-row>
 
@@ -130,7 +126,7 @@
                 style="width: 100%"
                 :height="tabelHeight"
                 @row-click="showViewDialog"
-                class="resume-table"
+                class="table"
             >
 
                 <el-table-column
@@ -338,7 +334,7 @@
         >
         </upload-file>
 
-       <import
+        <import
             :show.sync="ImportDialog"
         >
         </import>
@@ -355,6 +351,7 @@ import Communication from "./Communication";
 import TabelBase from "@view/base/TabelBase";
 import UploadFile from "./UploadFile";
 import Import from "./Import";
+import { addClass, removeClass } from "@common/util";
 
 export default {
     mixins: [TabelBase],
@@ -364,20 +361,21 @@ export default {
         ViewResume,
         Communication,
         UploadFile,
-        Import,
+        Import
     },
     methods: {
         //点击搜索条件缩放
-        dropDown() {
-            let dropdown = document.getElementById("dropdown");
-            if (this.flag) {
-                dropdown.style.display = "none";
-                this.flag = false;
-            } else {
-                dropdown.style.display = "block";
-                this.flag = true;
-            }
-        },
+        // dropDown() {
+        //     let dropdown = document.getElementById("dropdown");
+        //     if (this.flag) {
+        //         dropdown.style.display = "none";
+        //         this.flag = false;
+        //     } else {
+        //         dropdown.style.display = "block";
+        //         this.flag = true;
+        //     }
+        // },
+
         //点击行查看简历
         showViewDialog(row) {
             let that = this;
@@ -409,7 +407,51 @@ export default {
             let that = this;
             that.communicationID = id;
             that.communicationDialog = true;
+        },
+
+        //动画效果-----------------------
+
+        //搜索框进入之前
+        searchCollapseBeforeEnter(el) {
+            addClass(el, "search-collapse");            
+            el.style.height = 0;
+        },
+
+        //搜索框进入
+        searchCollapseEnter(el) {
+            if (el.scrollHeight !== 0) {
+                el.style.height = el.scrollHeight + "px";
+            }
+
+            el.style.overflow = "hidden";
+        },
+
+        //搜索框进入之后
+        searchCollapseAfterEnter(el) {
+            removeClass(el, "search-collapse");
+        },
+
+        //搜索框退出之前
+        searchCollapseBeforeLeave(el) {
+            el.style.height = el.scrollHeight + "px";
+            el.style.overflow = "hidden";
+        },
+
+        //搜索框退出
+        searchCollapseLeave(el) {
+            if (el.scrollHeight !== 0) {
+                // for safari: add class after set height, or it will jump to zero height suddenly, weired
+                addClass(el, "search-collapse");
+                el.style.height = 0;    
+            }
+        },
+
+        //搜索框退出之后
+        searchCollapseAfterLeave(el) {
+            removeClass(el, 'search-collapse');
         }
+
+        //动画效果-----------------------
     },
 
     data() {
@@ -479,36 +521,40 @@ export default {
 
             //批量导入
             ImportDialog: false,
-            ImportID:0,
-
+            ImportID: 0,
 
             //查看
             viewDialog: false,
             viewID: 0,
             //dropdown flag
-            flag: true
+            // flag: true
+
+            showOtherSearch: false
         };
     }
 };
 </script>
 <style lang="less" scoped>
-.resume-table {
-    tbody {
-        tr {
-            cursor: pointer;
+.resume {
+    .table {
+        tbody {
+            tr {
+                cursor: pointer;
+            }
         }
     }
-}
 
-.margin {
-    margin: 5px;
-}
-.search {
-    .el-row {
-        margin-bottom: 10px;
-        &:last-child {
-            margin-bottom: 5px;
+    .search {
+        .el-row {
+            margin-bottom: 10px;
+            &:last-child {
+                margin-bottom: 5px;
+            }
         }
+    }
+
+    .search-collapse {
+        transition: all .3s ease-in-out;
     }
 }
 </style>
