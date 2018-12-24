@@ -139,6 +139,8 @@ export default {
                 }
 
                 that.tdata = [];
+                that.pager.current = 1;
+                that.pager.total = 1;
             },
             immediate: true
         }
@@ -185,6 +187,12 @@ export default {
             selectUser: [],
             showSelectUser: false,
 
+            pager: {
+                total: 1,
+                current: 1,
+                size: 2
+            },
+
             pickerOptions: {
                 shortcuts: [
                     {
@@ -222,22 +230,22 @@ export default {
                 };
 
             that.pager.current = 1;
-            that.pager.total = 1;
+            // that.pager.total = 1;
 
             if (that.search.type == 0) {
-                that.getRecruitmentList();
+                that.getRecruitmentList(params);
             } else if (that.search.type == 1) {
                 params["ur"] = that.selectUser.join(",");
-                that.getCandidateList();
+                that.getCandidateList(params);
             }
         },
 
-        //获取个人招聘统计候选人跟踪报表
-        getCandidateList() {
+        //获取 招聘负责人统计的报表
+        getRecruitmentList(params) {
             let that = this;
 
             that.$api.person_recru
-                .candidate_list()
+                .recruitment_list(params)
                 .then(res => {
                     if (res.code == 0) {
                         that.reportData = res.data;
@@ -261,12 +269,12 @@ export default {
                 });
         },
 
-        //获取 招聘负责人统计的报
-        getRecruitmentList() {
+        //获取个人招聘统计候选人跟踪报表
+        getCandidateList(params) {
             let that = this;
 
             that.$api.person_recru
-                .recruitment_list()
+                .candidate_list(params)
                 .then(res => {
                     if (res.code == 0) {
                         that.reportData = res.data;
@@ -316,7 +324,7 @@ export default {
             for (var key in pObj) {
                 var item = pObj[key];
 
-                if (item) {
+                if (item !== null && item !== undefined && item !== '') {
                     pArr.push(key + "=" + item);
                 }
             }

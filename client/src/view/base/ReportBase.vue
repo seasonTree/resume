@@ -43,7 +43,7 @@ export default {
             }
 
             that.pager.current = 1;
-            that.pager.total = 1;
+            // that.pager.total = 1;
 
             that.$api[that.apiType]
                 .get(params)
@@ -77,9 +77,9 @@ export default {
                 that.pager.current = index;
 
                 //更新表格的内容
-                that.tdata = that.reportData.splice(
+                that.tdata = that.reportData.slice(
                     that.pager.size * (index - 1),
-                    that.pager.size
+                    that.pager.size * (index - 1) + that.pager.size
                 );
             }
         }

@@ -78,7 +78,7 @@ export default {
             if (that.pager) {
                 if (isSearch) {
                     that.pager.current = 1;
-                    that.pager.total = 1;
+                    // that.pager.total = 1;
                 }
 
                 params["pageIndex"] = that.pager.current;
@@ -100,7 +100,7 @@ export default {
                         // that.afterGetDate(res.data.rows);
 
                         if (that.pager) {
-                            that.pager.total = res.data.count || 1;
+                            that.pager.total = res.data.count || 0;
                         }
                     } else if (res.code) {
                         that.$message.error(

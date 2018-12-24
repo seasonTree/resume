@@ -78,17 +78,17 @@ export default {
                 .getAll()
                 .then(res => {
                     if (res.code == 0) {
-                        //删除admin用户
-                        for (var i = 0; i < res.data.length; i++) {
-                            var item = res.data[i];
+                        // //删除admin用户
+                        // for (var i = 0; i < res.data.length; i++) {
+                        //     var item = res.data[i];
 
-                            item.personal_name = item.personal_name || item.uname;
+                        //     item.personal_name = item.personal_name || item.uname;
 
-                            if (item.id == 1) {
-                                res.data.splice(i, 1);
-                                break;
-                            }
-                        }
+                        //     if (item.id == 1) {
+                        //         res.data.splice(i, 1);
+                        //         break;
+                        //     }
+                        // }
 
                         that.users = res.data;
                     } else {
