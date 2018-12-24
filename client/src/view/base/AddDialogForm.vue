@@ -16,7 +16,6 @@ export default {
         addCommit() {
             let that = this;
           
-
             that.$refs["form"].validate(valid => {
                 if (valid) {
                    

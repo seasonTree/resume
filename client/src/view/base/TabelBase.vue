@@ -139,7 +139,7 @@ export default {
                     if (res.code == 0) {
                         that.currentEditItem = res.data;
                     } else {
-                        that.$message.error(res.msg);
+                        that.$message.error(res.msg || "获取数据失败，请重试.");
                     }
 
                     that.editDialog = true;
@@ -161,6 +161,7 @@ export default {
                             citem[key] = item[key];
                         }
                     }
+                    break;
                 }
             }
         },

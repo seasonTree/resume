@@ -153,7 +153,7 @@
 <script>
 import DialogForm from "../base/DialogForm";
 export default {
-    name: "Import",
+    name: "ImportExcel",
 
     mixins: [DialogForm],
 
