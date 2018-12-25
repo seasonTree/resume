@@ -1,5 +1,5 @@
 <template>
-    <div class="wrapper">
+    <div>
 
         <el-dialog
             title="沟通管理"
@@ -253,6 +253,7 @@ export default {
                     that.$message.error("获取数据失败，请重试.");
                 });
         },
+        
         //判断
         // changeStatus(id, status, item) {
         //     let that = this;

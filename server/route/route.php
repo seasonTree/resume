@@ -34,6 +34,8 @@ Route::get('api/resume/get_upload_file','Resume/uploadList');//获取附件列�
 Route::post('api/resume/upload_file','Resume/upload');//添加简历附件
 Route::post('api/resume/del_file','');//删除简历附件
 Route::post('api/resume/import','Resume/importResume');//上传简历
+Route::post('api/resume/check_name','');//检查重名的简历
+
 Route::get('api/test','Resume/readResume');//获取简历内容
 
 

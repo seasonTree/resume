@@ -1,5 +1,5 @@
 <template>
-    <div class="wrapper">
+    <div>
 
         <el-dialog
             title="批量导入"
