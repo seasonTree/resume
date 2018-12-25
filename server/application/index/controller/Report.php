@@ -45,14 +45,26 @@ class Report extends Controller
     		}
     		$communicate = $comm->getComm($where)->toArray();
     		if (empty($communicate)) {
-
-    			//没有任何沟通情况，沟通为0，直接跳过
-    			$candidate[$k]['communicate_count'] = 0;
-    			$personal_name = $user->getOne(['uname' => $v['ct_user']]);
-    			$candidate[$k]['personal_name'] = $personal_name['personal_name'];
-    			$candidate[$k]['id'] = $key;
-    			$data[$key] = $candidate[$k];
-    			$key++;
+    			if (isset($in_user)) {
+    				if (in_array($v['ct_user'],$in_user)) {
+    					$candidate[$k]['communicate_count'] = 0;
+		    			$personal_name = $user->getOne(['uname' => $v['ct_user']]);
+		    			$candidate[$k]['personal_name'] = $personal_name['personal_name'];
+		    			$candidate[$k]['id'] = $key;
+		    			$data[$key] = $candidate[$k];
+		    			$key++;
+    				}
+    			}
+    			else{
+    				//没有任何沟通情况，沟通为0，直接跳过
+	    			$candidate[$k]['communicate_count'] = 0;
+	    			$personal_name = $user->getOne(['uname' => $v['ct_user']]);
+	    			$candidate[$k]['personal_name'] = $personal_name['personal_name'];
+	    			$candidate[$k]['id'] = $key;
+	    			$data[$key] = $candidate[$k];
+	    			$key++;
+    			}
+    			
     			continue;
     		}
     		foreach ($communicate as $a => $b) {
@@ -78,14 +90,27 @@ class Report extends Controller
 
     			}
     		}
-    		if (!array_key_exists($v['ct_user'], $user_arr)) {
+    		if (!array_key_exists($v['ct_user'], $user_arr)){
     			//没有任何沟通情况，沟通为0，直接跳过
-    			$candidate[$k]['communicate_count'] = 0;
-    			$personal_name = $user->getOne(['uname' => $v['ct_user']]);
-    			$candidate[$k]['personal_name'] = $personal_name['personal_name'];
-    			$candidate[$k]['id'] = $key;
-    			$data[$key] = $candidate[$k];
-    			$key++;
+    			if (isset($in_user)) {
+    				if (in_array($v['ct_user'],$in_user)) {
+    					$candidate[$k]['communicate_count'] = 0;
+		    			$personal_name = $user->getOne(['uname' => $v['ct_user']]);
+		    			$candidate[$k]['personal_name'] = $personal_name['personal_name'];
+		    			$candidate[$k]['id'] = $key;
+		    			$data[$key] = $candidate[$k];
+		    			$key++;
+    				}
+    			}
+    			else{
+    				$candidate[$k]['communicate_count'] = 0;
+	    			$personal_name = $user->getOne(['uname' => $v['ct_user']]);
+	    			$candidate[$k]['personal_name'] = $personal_name['personal_name'];
+	    			$candidate[$k]['id'] = $key;
+	    			$data[$key] = $candidate[$k];
+	    			$key++;
+    			}
+    			
     		}
     		$user_arr = [];//清空临时数组
     	}
