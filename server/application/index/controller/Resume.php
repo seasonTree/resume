@@ -267,6 +267,7 @@ class Resume extends Controller
 
     public function uploadResume(){
         //导入简历
+
         $path = dirname(Env::get('ROOT_PATH')).'/client/dist/uploads/';
         // 获取表单上传文件
         $file = request()->file('file');
@@ -278,7 +279,7 @@ class Resume extends Controller
             if (empty($data)) {
                 return json(['msg' => '没有数据','code' => 2]);
             }
-            return json(['msg' => '上传成功','code' => 0,'data' => $data ]);
+            return json(['msg' => '上传成功','code' => 0,'data' => array_merge($data) ]);
         }else{
             // 上传失败获取错误信息
             return json(['msg' => $file->getError(),'code' => 1]);
@@ -344,7 +345,7 @@ class Resume extends Controller
                 'resume_url' => $path.$info->getSaveName(),
                 'ct_user'  => Session::get('user_info')['uname'],
                 'file_name'  => $file_name,
-                'resume_id' => input('id')//预留的简历id
+                'resume_id' => input('resume_id')//预留的简历id
                 );
             //入库操作
             $data['id'] = $upload->add($data);
@@ -359,15 +360,18 @@ class Resume extends Controller
 
     public function uploadList(){
         //上传列表
-        $resume_id = input('id');
+
+        $resume_id = input('resume_id');
         $upload = new ResumeUpload();
-        $data = $upload->get(['resume_id' => $resume_id]);
-        if ($data) {
-            return json(['msg' => '获取成功','code' => 0,'data' => $data]);
+        $user = new User();
+        $data = $upload->get(['resume_id' => $resume_id])->toArray();
+
+        foreach ($data as $k => $v) {
+            $data[$k]['personal_name'] = $user->getUserName(['uname' => $v['ct_user']]);
         }
-        else{
-            return json(['msg' => '获取失败','code' => 1]);
-        }
+        return json(['msg' => '获取成功','code' => 0,'data' => $data]);
+        
+
 
     }
 

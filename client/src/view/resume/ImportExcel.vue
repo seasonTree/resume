@@ -135,7 +135,7 @@
             >
 
                 <el-upload
-                    action="/api/resume/upload_file"
+                    action="/api/resume/upload_excel"
                     :on-success="uploadSuccess"
                     :on-error="uploadError"
                     :show-file-list="false"
