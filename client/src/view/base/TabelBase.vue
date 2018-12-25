@@ -22,8 +22,15 @@ export default {
             addDialog: false,
             editDialog: false,
             currentEditItem: {},
-            search: {}
+            search: {},
+            tabelHeight: 300
         };
+    },
+
+    watch:{
+        bodyHeight(newValue, oldValue){
+            this.resizeTable();
+        }
     },
 
     created() {
@@ -36,23 +43,27 @@ export default {
         // console.log(that.$check_pm('role_permiss_set'))
     },
 
+    mounted() {
+        let that = this;
+
+        setTimeout(() => {
+            that.resizeTable();    
+        }, 0);        
+    },
+
     computed: {
-        tabelHeight() {
-            let height = 300;
-
-            if (this.pager) {
-                height = this.bodyHeight - 145;
-            } else {
-                height = this.bodyHeight - 105;
-            }
-
-            if(this.$refs.search){
-                height -= this.$refs.search.offsetHeight;
-            }
-
-            return height < 300? 300: height;
-        },
-
+        // tabelHeight() {
+        //     let height = 300;
+        //     if (this.pager) {
+        //         height = this.bodyHeight - 145;
+        //     } else {
+        //         height = this.bodyHeight - 105;
+        //     }
+        //     if(this.$refs.search){
+        //         height -= this.$refs.search.offsetHeight;
+        //     }
+        //     return height < 300? 300: height;
+        // },
         //获取功能
         // ...mapGetters(["btn_act"])
     },
@@ -66,6 +77,24 @@ export default {
 
         // //获取数据以后执行
         // afterGetDate(){},
+
+        resizeTable() {
+            let that = this,
+                height = that.bodyHeight;
+
+            if (that.pager) {
+                height = that.bodyHeight - 145;
+            } else {
+                height = that.bodyHeight - 105;
+            }
+
+            if (that.$refs.search) {
+                height -= that.$refs.search.offsetHeight;
+            }
+
+            that.tabelHeight = height;
+            that.$forceUpdate();
+        },
 
         getData(isSearch) {
             let that = this,
@@ -97,7 +126,6 @@ export default {
                 .get(params)
                 .then(res => {
                     if (res.code == 0) {
-
                         if (res.data.row) {
                             that.tdata = res.data.row;
                         } else {
@@ -143,7 +171,6 @@ export default {
                     id
                 })
                 .then(res => {
-                
                     if (res.code == 0) {
                         that.currentEditItem = res.data;
                     } else {
@@ -188,7 +215,6 @@ export default {
                             id
                         })
                         .then(res => {
-
                             if (res.code == 0) {
                                 that.$message({
                                     message: "删除成功.",
