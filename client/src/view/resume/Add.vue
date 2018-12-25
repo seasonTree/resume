@@ -599,7 +599,7 @@ export default {
                         if(res.code == 0){
                             if(res.data.length){
                                 //var a = json.parse(josn.stringify(res.data))
-                                thtat.dddd  = a;
+                                that.dddd  = a;
                                 that.sssdia = true;
 
                                 //
@@ -607,7 +607,7 @@ export default {
 
                                 //dialog
                                 //继续录入
-                                that.$emit('contine-commit');
+                                that.$emit('countion-commit');
 
                                 //取消录入
                                 // this.closeDialog()
