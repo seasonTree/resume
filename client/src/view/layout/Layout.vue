@@ -410,7 +410,7 @@ export default {
 
         .main-body {
             position: absolute;
-            overflow: hidden;
+            overflow: auto;
             top: 55px;
             bottom: 40px;
         }

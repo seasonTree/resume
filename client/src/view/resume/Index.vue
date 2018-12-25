@@ -12,15 +12,18 @@
                 >批量导入</el-button>
             </div>
 
-            <div class="search">
-                <form>
+            <div class="search" ref="search">
                     <el-row :gutter="20">
                         <el-col :span="4">
-                            <el-input placeholder="姓名">
+                            <el-input
+                                size="small"
+                                placeholder="姓名"
+                            >
                             </el-input>
                         </el-col>
                         <el-col :span="4">
                             <el-select
+                                size="small"
                                 v-model="value"
                                 placeholder="性别"
                             >
@@ -34,18 +37,30 @@
                             </el-select>
                         </el-col>
                         <el-col :span="4">
-                            <el-input placeholder="姓名">
+                            <el-input
+                                size="small"
+                                placeholder="姓名"
+                            >
                             </el-input>
                         </el-col>
                         <el-col :span="4">
-                            <el-input placeholder="姓名">
+                            <el-input
+                                size="small"
+                                placeholder="姓名"
+                            >
                             </el-input>
                         </el-col>
                         <el-col :span="4">
-                            <el-input placeholder="姓名"></el-input>
+                            <el-input
+                                size="small"
+                                placeholder="姓名"
+                            ></el-input>
                         </el-col>
                         <el-col :span="4">
-                            <el-button type="primary">搜索</el-button>
+                            <el-button
+                                size="medium"
+                                type="primary"
+                            >搜索</el-button>
                         </el-col>
                     </el-row>
 
@@ -57,49 +72,52 @@
                         @leave="searchCollapseLeave"
                         @after-leave="searchCollapseAfterLeave"
                     >
-                        <div v-show="showOtherSearch">
+                        <div
+                            v-show="showOtherSearch"
+                            class="other-search-detail"
+                        >
                             <el-row :gutter="20">
-                                <el-col :span="4.5">
+                                <el-col :span="4">
                                     <el-input
-                                        placeholder="姓名"
+                                        placeholder=""
                                         size="small"
                                     >
                                     </el-input>
                                 </el-col>
-                                <el-col :span="4.5">
+                                <el-col :span="4">
                                     <el-input
-                                        placeholder="性别"
+                                        placeholder=""
                                         size="small"
                                     >
                                     </el-input>
                                 </el-col>
-                                <el-col :span="4.5">
+                                <el-col :span="4">
                                     <el-input
-                                        placeholder="姓名"
+                                        placeholder=""
                                         size="small"
                                     >
                                     </el-input>
                                 </el-col>
-                                <el-col :span="4.5">
+                                <el-col :span="4">
                                     <el-input
-                                        placeholder="性别"
+                                        placeholder=""
                                         size="small"
                                     >
                                     </el-input>
                                 </el-col>
-                                <el-col :span="4.5">
+                                <el-col :span="4">
                                     <el-input
-                                        placeholder="姓名"
+                                        placeholder=""
                                         size="small"
                                     >
                                     </el-input>
                                 </el-col>
-
-                                <el-col :span="4.5">
-                                    <el-input size="small"></el-input>
-                                </el-col>
-                                <el-col :span="4.5">
-                                    <el-input size="small"></el-input>
+                                <el-col :span="4">
+                                    <el-input
+                                        placeholder=""
+                                        size="small"
+                                    >
+                                    </el-input>
                                 </el-col>
                             </el-row>
                         </div>
@@ -107,16 +125,22 @@
 
                     <el-row
                         :gutter="20"
-                        style="background:#eee;margin:10px 1px;text-align:center;height:20px;display:block"
+                        style=""
                     >
-                        <div
-                            width="100%"
-                            @click="showOtherSearch = !showOtherSearch"
-                            class="fa status-icon el-icon-caret-bottom"
-                        >收起搜索条件</div>
+                        <div class="other-search-container">
+                            <a
+                                @click="showOtherSearch = !showOtherSearch"
+                                href="javascript:void(0)"
+                                class="other-search"
+                            >
+                                <i
+                                    class="fa fa-angle-double-down"
+                                    :class="{ 'up-icon' : showOtherSearch}"
+                                ></i>
+                                搜索条件
+                            </a>
+                        </div>
                     </el-row>
-
-                </form>
             </div>
 
             <el-table
@@ -334,9 +358,7 @@
         >
         </upload-file>
 
-        <importExcel
-            :show.sync="ImportExcelDialog"
-        >
+        <importExcel :show.sync="ImportExcelDialog">
         </importExcel>
 
     </div>
@@ -365,15 +387,13 @@ export default {
     },
     methods: {
         //点击搜索条件缩放
-        // dropDown() {
-        //     let dropdown = document.getElementById("dropdown");
-        //     if (this.flag) {
-        //         dropdown.style.display = "none";
-        //         this.flag = false;
-        //     } else {
-        //         dropdown.style.display = "block";
-        //         this.flag = true;
-        //     }
+        // searchClick(e) {
+        //    this.showOtherSearch = !this.showOtherSearch
+        //    if(e.target.className == 'fa status-icon el-icon-caret-bottom'){
+        //        e.target.className = 'fa status-icon el-icon-caret-top'
+        //    }else{
+        //        e.target.className = 'fa status-icon el-icon-caret-bottom'
+        //    }
         // },
 
         //点击行查看简历
@@ -413,7 +433,7 @@ export default {
 
         //搜索框进入之前
         searchCollapseBeforeEnter(el) {
-            addClass(el, "search-collapse");            
+            addClass(el, "search-collapse");
             el.style.height = 0;
         },
 
@@ -442,13 +462,13 @@ export default {
             if (el.scrollHeight !== 0) {
                 // for safari: add class after set height, or it will jump to zero height suddenly, weired
                 addClass(el, "search-collapse");
-                el.style.height = 0;    
+                el.style.height = 0;
             }
         },
 
         //搜索框退出之后
         searchCollapseAfterLeave(el) {
-            removeClass(el, 'search-collapse');
+            removeClass(el, "search-collapse");
         }
 
         //动画效果-----------------------
@@ -551,10 +571,35 @@ export default {
                 margin-bottom: 5px;
             }
         }
+
+        .other-search-detail {
+            border-bottom: 1px solid #e3e3e3;
+            padding-bottom: 6px;
+            margin-bottom: 10px;
+        }
+
+        .other-search-container {
+            margin-bottom: 10px;
+            font-size: 15px;
+            text-align: center;
+
+            .other-search {
+                text-decoration: none;
+                color: #03b9b9;
+
+                i {
+                    transition: all 0.3s;
+
+                    &.up-icon {
+                        transform: rotate(180deg);
+                    }
+                }
+            }
+        }
     }
 
     .search-collapse {
-        transition: all .3s ease-in-out;
+        transition: all 0.3s ease-in-out;
     }
 }
 </style>

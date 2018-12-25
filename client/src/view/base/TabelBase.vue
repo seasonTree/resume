@@ -38,11 +38,19 @@ export default {
 
     computed: {
         tabelHeight() {
+            let height = 300;
+
             if (this.pager) {
-                return this.bodyHeight - 130;
+                height = this.bodyHeight - 145;
             } else {
-                return this.bodyHeight - 80;
+                height = this.bodyHeight - 105;
             }
+
+            if(this.$refs.search){
+                height -= this.$refs.search.offsetHeight;
+            }
+
+            return height < 300? 300: height;
         },
 
         //获取功能
@@ -100,7 +108,7 @@ export default {
                         // that.afterGetDate(res.data.rows);
 
                         if (that.pager) {
-                            that.pager.total = res.data.count || 0;
+                            that.pager.total = res.data.total || 1;
                         }
                     } else if (res.code) {
                         that.$message.error(
