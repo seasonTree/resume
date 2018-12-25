@@ -451,6 +451,9 @@ export default {
         commit() {
             let that = this;
 
+            //清空重名表格的数据
+            that.resumeData = [];
+
             that.$refs["form"].validate(valid => {
                 if (valid) {
                     //提交之前
@@ -523,6 +526,9 @@ export default {
             that.activeName = "second";
             that.activeName2 = "first";
             that.analyzeContent = "";
+
+            //清空重名表格的数据
+            that.resumeData = [];
 
             for (var key in that.form) {
                 var item = that.form[key];
