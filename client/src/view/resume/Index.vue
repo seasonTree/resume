@@ -595,7 +595,7 @@ export default {
                 }
 
                 i {
-                    transition: rotate 0.3s;
+                    transition: transform 0.2s;
 
                     &.up-icon {
                         transform: rotate(180deg);
