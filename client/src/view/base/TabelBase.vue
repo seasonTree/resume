@@ -27,8 +27,8 @@ export default {
         };
     },
 
-    watch:{
-        bodyHeight(newValue, oldValue){
+    watch: {
+        bodyHeight(newValue, oldValue) {
             this.resizeTable();
         }
     },
@@ -47,8 +47,8 @@ export default {
         let that = this;
 
         setTimeout(() => {
-            that.resizeTable();    
-        }, 0);        
+            that.resizeTable();
+        }, 0);
     },
 
     computed: {
@@ -82,18 +82,13 @@ export default {
             let that = this,
                 height = that.bodyHeight;
 
-            if (that.pager) {
-                height = that.bodyHeight - 145;
-            } else {
-                height = that.bodyHeight - 105;
-            }
+            that.pager ? (height -= 145) : (height -= 105);
 
             if (that.$refs.search) {
                 height -= that.$refs.search.offsetHeight;
             }
 
             that.tabelHeight = height;
-            that.$forceUpdate();
         },
 
         getData(isSearch) {

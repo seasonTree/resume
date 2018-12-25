@@ -18,21 +18,41 @@ export default {
                 current: 1,
                 size: 10
             },
-            search: {}
+            search: {},
+            tabelHeight: 300
         };
     },
 
     computed: {
-        tabelHeight() {
-            if (this.pager) {
-                return this.bodyHeight - 130;
-            } else {
-                return this.bodyHeight - 80;
-            }
-        }
+        // tabelHeight() {
+        //     if (this.pager) {
+        //         return this.bodyHeight - 130;
+        //     } else {
+        //         return this.bodyHeight - 80;
+        //     }
+        // }
+    },
+
+    mounted() {
+        let that = this;
+
+        setTimeout(() => {
+            that.resizeTable();
+        }, 0);
     },
 
     methods: {
+        resizeTable() {
+            let that = this,
+                height = that.bodyHeight - 165;
+
+            if (that.$refs.search) {
+                height -= that.$refs.search.offsetHeight;
+            }
+
+            that.tabelHeight = height;
+        },
+
         getData() {
             let that = this,
                 params = {};
