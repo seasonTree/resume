@@ -26,7 +26,7 @@
 
                         <template slot-scope="scope">
                             <a
-                                :href="scope.row.resume_url"
+                                :href="scope.row.download_url"
                                 :title="scope.row.file_name"
                             >{{scope.row.file_name}}</a>
                         </template>
@@ -145,6 +145,13 @@ export default {
                 })
                 .then(res => {
                     if (res.code == 0) {
+                        for(var i = 0; i < res.data.length; i++){
+                            var item = res.data[i];
+
+                            item.download_url = '/api/resume/download?url=' + decodeURIComponent(item.url);
+                        }
+
+
                         that.tdata = res.data;
                     } else {
                         that.$message.error(
