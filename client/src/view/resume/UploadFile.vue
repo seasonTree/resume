@@ -76,11 +76,17 @@
             >
 
                 <el-upload
-                    :action="uploadUrl"
+                    action="/api/resume/upload_file"
                     multiple
                     :on-success="uploadSuccess"
                     :on-error="uploadError"
                     :show-file-list="false"
+                    :data="otherParams"
+                    accept="application/vnd.ms-excel,.csv,
+                        application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
+                        application/msword,
+                        application/vnd.openxmlformats-officedocument.wordprocessingml.document,
+                        text/html,message/rfc822"
                 >
                     <el-button type="primary">上传附件</el-button>
                 </el-upload>
@@ -117,8 +123,8 @@ export default {
     },
 
     computed: {
-        uploadUrl() {
-            return '/api/resume/upload_file?resume_id=' + this.resume_id;
+        otherParams() {
+            return { resume_id: this.resume_id };
         }
     },
 
@@ -150,7 +156,7 @@ export default {
         },
 
         //删除文件
-        delFile(id) {
+        delFile(id, index) {
             let that = this;
 
             that.$confirm("是否删除当前附件吗?", "提示", {
@@ -160,7 +166,7 @@ export default {
             })
                 .then(() => {
                     that.$api.resume
-                        .del({
+                        .delFile({
                             id
                         })
                         .then(res => {
@@ -171,15 +177,7 @@ export default {
                                     duration: 800
                                 });
 
-                                let delItem = null;
-                                for (var i = 0; i < that.tdata.length; i++) {
-                                    var item = that.tdata[i];
-
-                                    if (item.id == id) {
-                                        that.tdata.splice(i, 1);
-                                        break;
-                                    }
-                                }
+                                that.tdata.splice(index, 1);
                             } else {
                                 that.$message.error(res.msg);
                             }
@@ -204,7 +202,7 @@ export default {
 
                 let copyData = JSON.parse(JSON.stringify(res.data));
 
-                that.tdata.unshift(...copyItem);
+                that.tdata.unshift(...copyData);
             } else {
                 that.$message.error(res.msg || "上传失败，请重试.");
             }

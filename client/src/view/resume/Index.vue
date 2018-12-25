@@ -336,6 +336,7 @@
 
         <importExcel
             :show.sync="ImportExcelDialog"
+            :refresh-data="getData"
         >
         </importExcel>
 
