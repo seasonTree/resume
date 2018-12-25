@@ -631,6 +631,9 @@ export default {
                                     );
                                     that.resumeCheckDialog = true;
                                 } else {
+                                    //清空重名表格的数据
+                                    that.resumeData = [];
+
                                     that.commit();
                                 }
                             } else {
@@ -651,6 +654,9 @@ export default {
             that.activeName = "second";
             that.activeName2 = "first";
             that.analyzeContent = "";
+
+            //清空重名表格的数据
+            that.resumeData = [];
 
             for (var key in that.form) {
                 var item = that.form[key];
