@@ -39,6 +39,8 @@
                                 v-model="form.screen"
                                 active-color="#13ce66"
                                 inactive-color="#ff4949"
+                                :inactive-value="0"
+                                :active-value="1"
                             >
                             </el-switch>
                         </el-form-item>
@@ -52,6 +54,8 @@
                                 v-model="form.arrange_interview"
                                 active-color="#13ce66"
                                 inactive-color="#ff4949"
+                                :inactive-value="0"
+                                :active-value="1"
                             >
                             </el-switch>
                         </el-form-item>
@@ -64,6 +68,8 @@
                                 v-model="form.arrive"
                                 active-color="#13ce66"
                                 inactive-color="#ff4949"
+                                :inactive-value="0"
+                                :active-value="1"
                             >
                             </el-switch>
                         </el-form-item>
@@ -78,6 +84,8 @@
                                 v-model="form.approved_interview"
                                 active-color="#13ce66"
                                 inactive-color="#ff4949"
+                                :inactive-value="0"
+                                :active-value="1"
                             >
                             </el-switch>
                         </el-form-item>
@@ -90,11 +98,12 @@
                                 v-model="form.entry"
                                 active-color="#13ce66"
                                 inactive-color="#ff4949"
+                                :inactive-value="0"
+                                :active-value="1"
                             >
                             </el-switch>
                         </el-form-item>
                     </div>
-                
 
                 </el-row>
             </el-form-item>
@@ -143,62 +152,62 @@ export default {
 
     data() {
         return {
-            apiType: "resume",
+            apiType: "communication",
             form: {
-                screen: false,
-                arrange_interview: false,
-                arrive: false,
-                approved_interview: false,
-                entry:false,
+                screen: 0,
+                arrange_interview: 0,
+                arrive: 0,
+                approved_interview: 0,
+                entry: 0,
                 content: "",
                 communicate_time: new Date()
-            },
+            }
             // date: "",?
             // content: ""
         };
     },
     methods: {
-        addCommit() {
-            let that = this;
-            that.form.resume_id = that.resume_id;
+        // addCommit() {
+        //     let that = this;
+        //     that.form.resume_id = that.resume_id;
 
-            that.$refs["form"].validate(valid => {
-                if (valid) {
-                    that.$api[that.apiType]
-                        .addCommunication(that.form)
-                        .then(res => {
-                            if (res.code == 0) {
-                                that.$emit(
-                                    "add-item",
-                                    JSON.parse(JSON.stringify(res.data))
-                                );
+        //     that.$refs["form"].validate(valid => {
+        //         if (valid) {
+        //             that.$api[that.apiType]
+        //                 .addCommunication(that.form)
+        //                 .then(res => {
+        //                     if (res.code == 0) {
+        //                         that.$emit(
+        //                             "add-item",
+        //                             JSON.parse(JSON.stringify(res.data))
+        //                         );
 
-                                that.$message({
-                                    message: "新增成功.",
-                                    type: "success",
-                                    duration: 800
-                                });
+        //                         that.$message({
+        //                             message: "新增成功.",
+        //                             type: "success",
+        //                             duration: 800
+        //                         });
 
-                                that.closeDialog();
-                            } else {
-                                that.$message.error(
-                                    res.msg || "新增失败，请重试."
-                                );
-                            }
-                        })
-                        .catch(res => {
-                            that.$message.error("新增失败，请重试.");
-                        });
-                }
-            });
-        },
+        //                         that.closeDialog();
+        //                     } else {
+        //                         that.$message.error(
+        //                             res.msg || "新增失败，请重试."
+        //                         );
+        //                     }
+        //                 })
+        //                 .catch(res => {
+        //                     that.$message.error("新增失败，请重试.");
+        //                 });
+        //         }
+        //     });
+        // }
     }
 };
 </script>
 <style lang="less" scoped>
 .addcom_div-row {
     display: flex;
-    
+
     justify-content: space-between;
 }
 .addcom_div-row2 {

@@ -1,7 +1,7 @@
 <template>
     <el-dialog
         top="20vh"
-        title="新增沟通信息"
+        title="修改沟通信息"
         :visible.sync="show"
         :before-close="closeDialog"
         class="custom-dialog"
@@ -39,6 +39,8 @@
                                 v-model="form.screen"
                                 active-color="#13ce66"
                                 inactive-color="#ff4949"
+                                :inactive-value="0"
+                                :active-value="1"
                             >
                             </el-switch>
                         </el-form-item>
@@ -52,23 +54,12 @@
                                 v-model="form.arrange_interview"
                                 active-color="#13ce66"
                                 inactive-color="#ff4949"
+                                :inactive-value="0"
+                                :active-value="1"
                             >
                             </el-switch>
                         </el-form-item>
-                        <el-form-item
-                            label="是否入职："
-                            prop="entry"
-                            style="display: flex"
-                        >
-                            <el-switch
-                                v-model="form.entry"
-                                active-color="#13ce66"
-                                inactive-color="#ff4949"
-                            >
-                            </el-switch>
-                        </el-form-item>
-                    </div>
-                    <div class="addcom_div-row2">
+
                         <el-form-item
                             style="display: flex"
                             label="是否到场："
@@ -78,10 +69,15 @@
                                 v-model="form.arrive"
                                 active-color="#13ce66"
                                 inactive-color="#ff4949"
+                                :inactive-value="0"
+                                :active-value="1"
                             >
                             </el-switch>
                         </el-form-item>
 
+                       
+                    </div>
+                    <div class="addcom_div-row2">
                         <el-form-item
                             label="通过面试："
                             prop="approved_interview"
@@ -91,6 +87,23 @@
                                 v-model="form.approved_interview"
                                 active-color="#13ce66"
                                 inactive-color="#ff4949"
+                                :inactive-value="0"
+                                :active-value="1"
+                            >
+                            </el-switch>
+                        </el-form-item>
+
+                         <el-form-item
+                            label="是否入职："
+                            prop="entry"
+                            style="display: flex"
+                        >
+                            <el-switch
+                                v-model="form.entry"
+                                active-color="#13ce66"
+                                inactive-color="#ff4949"
+                                :inactive-value="0"
+                                :active-value="1"
                             >
                             </el-switch>
                         </el-form-item>
@@ -133,64 +146,65 @@ export default {
     name: "EditCommunication",
     mixins: [EditDialogForm],
 
-    props: {
-        //简历的id
-        // resume_id: {
-        //     required: true,
-        //     type: Number
-        // }
-    },
+    // props: {
+    //     //简历的id
+    //     // resume_id: {
+    //     //     required: true,
+    //     //     type: Number
+    //     // }
+    // },
 
     data() {
         return {
-            apiType: "resume",
+            apiType: "communication",
             form: {
-                screen: false,
-                arrange_interview: false,
-                arrive: false,
-                approved_interview: false,
-                entry: false,
+                screen: 0,
+                arrange_interview: 0,
+                arrive: 0,
+                approved_interview: 0,
+                entry: 0,
                 content: "",
-                communicate_time: new Date()
+                communicate_time: ''
             }
         };
     },
 
     methods: {
-        editCommit() {
-            let that = this;
-            that.form.resume_id = that.resume_id;
+        // editCommit() {
+        //     let that = this;
+        //     that.form.resume_id = that.resume_id;
 
-            that.$refs["form"].validate(valid => {
-                if (valid) {
-                    that.$api[that.apiType]
-                        .editCommunication(that.form)
-                        .then(res => {
-                            if (res.code == 0) {
-                                that.$emit(
-                                    "add-item",
-                                    JSON.parse(JSON.stringify(res.data))
-                                );
+        //     that.$refs["form"].validate(valid => {
+        //         if (valid) {
+        //             that.$api.communication
+        //                 .editCommunication(that.form)
+        //                 .then(res => {
+        //                     if (res.code == 0) {
+        //                         that.$emit(
+        //                             "edit-item",
+        //                             JSON.parse(JSON.stringify(res.data))
+        //                         );
 
-                                that.$message({
-                                    message: "修改成功.",
-                                    type: "success",
-                                    duration: 800
-                                });
+        //                         that.$message({
+        //                             message: "修改成功.",
+        //                             type: "success",
+        //                             duration: 800
+        //                         });
 
-                                that.closeDialog();
-                            } else {
-                                that.$message.error(
-                                    res.msg || "修改失败，请重试."
-                                );
-                            }
-                        })
-                        .catch(res => {
-                            that.$message.error("修改失败，请重试.");
-                        });
-                }
-            });
-        }
+        //                         that.closeDialog();
+        //                     } else {
+        //                         that.$message.error(
+        //                             res.msg || "修改失败，请重试."
+        //                         );
+        //                     }
+        //                 })
+        //                 .catch(res => {
+        //                     that.$message.error("修改失败，请重试.");
+        //                 });
+        //         }
+        //     });
+        // }
+
     }
 };
 </script>

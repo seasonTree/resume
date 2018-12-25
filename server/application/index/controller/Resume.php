@@ -13,7 +13,11 @@ require_once dirname(Env::get('ROOT_PATH')).'/server/extend/phpanalysis/phpanaly
 
 class Resume extends Controller
 {	
-
+    public function checkName(){
+        $name = input('get.name');
+        $data = model('resume')->get(['name'=>$name]);
+        return json(['code' => 0,'msg' => 'ok','data' => $data]);
+    }
     public function index()
     {
         return view('/index');

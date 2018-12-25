@@ -236,7 +236,12 @@ export default {
             if (that.search.type == 0) {
                 that.getRecruitmentList(params);
             } else if (that.search.type == 1) {
-                params["ur"] = that.selectUser.join(",");
+                let urs = that.selectUser.join(",");
+
+                if(urs){
+                    params["ur"] = urs;
+                }
+                
                 that.getCandidateList(params);
             }
         },

@@ -390,7 +390,6 @@ export default {
 
     data() {
         return {
-            activeName: "second",
             activeName2: "first",
 
             form: {
@@ -455,6 +454,20 @@ export default {
                 .catch(res => {
                     that.$message.error("获取简历信息失败，请刷新后重试.");
                 });
+        },
+
+
+        afterClose() {
+            let that = this;
+            that.activeName2 = "first";
+
+            for (var key in that.form) {
+                var item = that.form[key];
+
+                if (item) {
+                    that.form[key] = "";
+                }
+            }
         }
     }
 };

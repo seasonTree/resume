@@ -8,7 +8,7 @@
                 >新增简历</el-button>
                 <el-button
                     type="primary"
-                    @click="ImportDialog = true"
+                    @click="ImportExcelDialog = true"
                 >批量导入</el-button>
             </div>
 
@@ -334,10 +334,10 @@
         >
         </upload-file>
 
-        <import
-            :show.sync="ImportDialog"
+        <importExcel
+            :show.sync="ImportExcelDialog"
         >
-        </import>
+        </importExcel>
 
     </div>
 </template>
@@ -350,7 +350,7 @@ import ViewResume from "./ViewResume";
 import Communication from "./Communication";
 import TabelBase from "@view/base/TabelBase";
 import UploadFile from "./UploadFile";
-import Import from "./Import";
+import ImportExcel from "./ImportExcel";
 import { addClass, removeClass } from "@common/util";
 
 export default {
@@ -361,7 +361,7 @@ export default {
         ViewResume,
         Communication,
         UploadFile,
-        Import
+        ImportExcel
     },
     methods: {
         //点击搜索条件缩放
@@ -391,9 +391,9 @@ export default {
         },
 
         //批量导入弹出窗
-        showImport() {
+        showImportExcel() {
             let that = this;
-            that.ImportDialog = true;
+            that.ImportExcelDialog = true;
         },
 
         // showEditDialog(id) {
@@ -520,8 +520,8 @@ export default {
             uploadFileID: 0,
 
             //批量导入
-            ImportDialog: false,
-            ImportID: 0,
+            ImportExcelDialog: false,
+            ImportExcelID: 0,
 
             //查看
             viewDialog: false,

@@ -47,7 +47,7 @@ class Communicate extends Model
 
     public function edit($data){
         //修改
-        $temp = $this->getOne(['id' => $data['id']]);
+        $temp = $this->getOne(['a.id' => $data['id']]);
         if ($temp['mfy_time'] != $data['mfy_time']) {
             return false;
         }

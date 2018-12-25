@@ -45,9 +45,9 @@ class Communicate
       $data['mfy_user'] = Session::get('user_info')['uname'];
       $comm = new CommunicateModel();
       $res = $comm->edit($data);
-      $data = $comm->getOne(['id' => $res]);
+      $data = $comm->getOne(['a.id' => $data['id']]);
       if ($data && $res) {
-         return json(['msg' => '修改成功','code' => 0,'data' => []]);
+         return json(['msg' => '修改成功','code' => 0,'data' => $data]);
        }
        else{
          return json(['msg' => '修改失败,请刷新','code' => 1,'data' => []]);
@@ -58,7 +58,7 @@ class Communicate
       //根据id获取沟通
       $id = input('id');
       $comm = new CommunicateModel();
-      $data = $comm->getOne(['id' => $id]);
+      $data = $comm->getOne(['a.id' => $id]);
       if ($data) {
          return json(['msg' => '获取成功','code' => 0,'data' => $data]);
       }
