@@ -14,6 +14,7 @@
                         :picker-options="pickerOptions"
                         forma="yyyy-MM-dd"
                         value-format="yyyy-MM-dd"
+                        :clearable="false"
                     >
                     </el-date-picker>
                 </div>
@@ -187,11 +188,11 @@ export default {
             selectUser: [],
             showSelectUser: false,
 
-            pager: {
-                total: 1,
-                current: 1,
-                size: 2
-            },
+            // pager: {
+            //     total: 1,
+            //     current: 1,
+            //     size: 2
+            // },
 
             pickerOptions: {
                 shortcuts: [

@@ -57,18 +57,22 @@ class Communicate extends Model
 
     public function getComm($where = '1=1'){
         //获取沟通信息，部分字段
+
         return Communicate::alias('a')
                           ->join('rs_user b','a.ct_user = b.uname')
-                          ->field('a.id,a.ct_user,b.personal_name')
+                          ->field('a.resume_id,a.id,a.ct_user,b.personal_name,a.communicate_time')
                           ->where($where)
                           ->select();
     }
     public function getCommInfo($where = '1=1'){
         //获取沟通信息部分字段
-        return Communicate::field('screen,arrange_interview,arrive,approved_interview,entry,ct_user,resume_id')
+      // echo $where;exit;
+        return Communicate::field('screen,arrange_interview,arrive,approved_interview,entry,ct_user,resume_id,communicate_time')
                           ->where($where)
                           ->select()
                           ->toArray();
+      
+
     }
 
 
