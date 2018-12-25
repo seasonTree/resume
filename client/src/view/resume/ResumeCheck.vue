@@ -1,10 +1,10 @@
 <template>
     <div>
         <el-dialog
-            title="沟通管理"
+            title="重名列表"
             :visible.sync="show"
             :before-close="closeDialog"
-            class="custom-dialog"
+            class="custom-dialog resume-check"
             :close-on-click-modal="false"
             width="80%"
         >
@@ -14,9 +14,8 @@
                 stripe
                 border
                 style="width: 100%"
-                :height="tabelHeight"
                 @row-click="showViewDialog"
-                class="table"
+                class="table mb-20"
             >
 
                 <el-table-column
@@ -130,6 +129,11 @@
                 >继续录入</el-button>
             </div>
         </el-dialog>
+
+        <view-resume
+            :show.sync="viewDialog"
+            :id="viewID"
+        ></view-resume>
     </div>
 </template>
 
@@ -167,11 +171,22 @@ export default {
         },
 
         //向上抛出事件
-        continueCommit(){
-            this.$emit('continue-commit');
+        continueCommit() {
+            let that = this;
+            that.$emit("continue-commit");
+            that.closeDialog();
         }
     }
 };
 </script>
 <style lang="less" scoped>
+.resume-check {
+    .table {
+        tbody {
+            tr {
+                cursor: pointer;
+            }
+        }
+    }
+}
 </style>
