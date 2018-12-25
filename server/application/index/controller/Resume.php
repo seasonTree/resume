@@ -271,7 +271,7 @@ class Resume extends Controller
         // 获取表单上传文件
         $file = request()->file('file');
         // 移动到框架应用根目录/uploads/ 目录下
-        $info = $file->validate(['size'=>2097152,'ext'=>'doc,docx,html,htm,mht'])->move($path);
+        $info = $file->validate(['size'=>2097152,'ext'=>'xlsx,xls'])->move($path);
         if($info){
             $file = $path.$info->getSaveName();//获取路径
             $data = $this->readResume($file);

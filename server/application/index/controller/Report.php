@@ -29,16 +29,20 @@ class Report extends Controller
     	$user_arr = [];//临时数组,记录是否有重复数据用于叠加
     	$key = 1;//data数组的key
     	$user = new User();
+    	if (isset($parm['ur'])) {
+			$in_user = explode(',',$parm['ur']);
+			$where_in = implode("','",$in_user);
+			
+    	}
     	foreach ($candidate as $k => $v) {
     		$where = "communicate_time between '$parm[dtfm]' and '$parm[dtto]' and resume_id = $v[id]";
-    		if ($parm['ur'] != '') {
-    			$in_user = implode("','",explode(',',$parm['ur']));
-    			$where.= " and a.ct_user in('$in_user')";
-    		}
-    		// if (isset($parm['ur'])) {
+    		// if ($parm['ur'] != '') {
     		// 	$in_user = implode("','",explode(',',$parm['ur']));
     		// 	$where.= " and a.ct_user in('$in_user')";
     		// }
+    		if (isset($in_user)) {
+    			$where.= " and a.ct_user in('$where_in')";
+    		}
     		$communicate = $comm->getComm($where)->toArray();
     		if (empty($communicate)) {
 

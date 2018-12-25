@@ -36,7 +36,7 @@ Route::post('api/resume/del_file','');//删除简历附件
 Route::post('api/resume/import','Resume/importResume');//上传简历
 Route::get('api/resume/check_name','Resume/checkName');//检查重名的简历
 
-Route::get('api/test','Resume/readResume');//获取简历内容
+Route::post('api/test','Resume/uploadResume');//上传excel简历
 
 
 Route::post('api/user/login','Login/login');//登录
