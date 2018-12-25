@@ -22,6 +22,10 @@ class OperateBehavior extends Controller
      */
     protected $exclude = [
         '/',
+        '/api/user/login',
+        '/api/user/get_user_info',
+        '/api/user/get_user_permission',
+
         'index/index',
         'login/loginout',
         'transaction/lst',//获取交易报告的数据
@@ -108,12 +112,15 @@ class OperateBehavior extends Controller
      * 权限验证
      */
     public function run()
-    {   
-        
+    {
+//        if(!in_array($_SERVER['SCRIPT_URL'],$this->exclude)){
+//            halt($_SERVER);
+//        }
+
         // //获取当前访问路由
         // $url = getActionUrl();
-        // $userid = Session::get('user_info')['id'] ? Session::get('user_info')['id'] : 0;
-        
+         $userid = Session::get('user_info')['id'] ? Session::get('user_info')['id'] : 0;
+
         // if (in_array($url, $this->login)) {
         //     if (checkLogin() && $url != 'user/sendmessage') {
         //         $this->redirect('user/userInfo');
