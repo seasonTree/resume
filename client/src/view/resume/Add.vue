@@ -486,7 +486,10 @@ import ResumeCheck from "./ResumeCheck";
 
 export default {
     name: "Add",
-    mixins: [AddDialogForm, ResumeCheck],
+    mixins: [AddDialogForm],
+    components: {
+        ResumeCheck
+    },
 
     data() {
         return {

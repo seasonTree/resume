@@ -382,7 +382,10 @@ import ResumeCheck from "./ResumeCheck";
 
 export default {
     name: "Edit",
-    mixins: [EditDialogForm, ResumeCheck],
+    mixins: [EditDialogForm],
+    components: {
+        ResumeCheck
+    },
 
     // watch: {
     //     show(newValue, oldValue) {
