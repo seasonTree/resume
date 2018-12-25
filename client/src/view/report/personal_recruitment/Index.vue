@@ -14,6 +14,7 @@
                         :picker-options="pickerOptions"
                         forma="yyyy-MM-dd"
                         value-format="yyyy-MM-dd"
+                        :clearable="false"
                     >
                     </el-date-picker>
                 </div>
@@ -38,8 +39,8 @@
                     class="search-item"
                     v-if="search.type == 1"
                 >
-                    <el-input
-                        placeholder="选择招聘人"
+                    <!-- <el-input
+                        placeholder="选择负责人"
                         v-model="search.recru"
                         clearable
                         :focus="handleRecruFind"
@@ -52,7 +53,25 @@
                             @click="handleRecruFind"
                         ></el-button>
 
-                    </el-input>
+                    </el-input> -->
+
+                    <el-select
+                        v-model="selectUser"
+                        multiple
+                        collapse-tags
+                        placeholder="选择负责人"
+                        clearable
+                        autocomplete
+                        filterable
+                    >
+                        <el-option
+                            v-for="item in users"
+                            :key="item.uname"
+                            :label="item.personal_name"
+                            :value="item.uname"
+                        >
+                        </el-option>
+                    </el-select>
                 </div>
 
                 <div class="search-item">
@@ -101,24 +120,24 @@
             </el-pagination>
         </el-row>
 
-        <user
+        <!-- <user
             :show.sync="showSelectUser"
             :selectUser="selectUser"
             @user-list="setSelectUser"
-        ></user>
+        ></user> -->
 
     </div>
 </template>
 
 <script>
 import ReportBase from "@view/base/ReportBase";
-import User from "./User";
+// import User from "./User";
 import { getLtWeek, getLtMonth } from "@common/util";
 export default {
     mixins: [ReportBase],
 
     components: {
-        User
+        // User
     },
 
     created() {
@@ -126,6 +145,8 @@ export default {
             ltWeek = getLtWeek();
 
         that.search.dateRange = [ltWeek.ltWeekStart, ltWeek.ltWeekEnd];
+
+        that.getUsers();
     },
 
     watch: {
@@ -184,14 +205,17 @@ export default {
             },
 
             //选中的条件
-            selectUser: [],
-            showSelectUser: false,
+            // selectUser: [],
+            // showSelectUser: false,
 
-            pager: {
-                total: 1,
-                current: 1,
-                size: 2
-            },
+            // pager: {
+            //     total: 1,
+            //     current: 1,
+            //     size: 2
+            // },
+
+            selectUser: [],
+            users: [],
 
             pickerOptions: {
                 shortcuts: [
@@ -222,6 +246,33 @@ export default {
     },
 
     methods: {
+        //获取所用的用户
+        getUsers() {
+            let that = this;
+
+            that.$api.user
+                .getAll()
+                .then(res => {
+                    if (res.code == 0) {
+                        for (var i = 0; i < res.data.length; i++) {
+                            var item = res.data[i];
+
+                            item.personal_name =
+                                item.personal_name || item.uname;
+                        }
+
+                        that.users = res.data;
+                    } else {
+                        that.$message.error(
+                            res.msg || "获取所有用户失败，请刷新后重试."
+                        );
+                    }
+                })
+                .catch(res => {
+                    that.$message.error("获取所有用户失败，请刷新后重试.");
+                });
+        },
+
         getData() {
             let that = this,
                 params = {
@@ -237,10 +288,10 @@ export default {
             } else if (that.search.type == 1) {
                 let urs = that.selectUser.join(",");
 
-                if(urs){
+                if (urs) {
                     params["ur"] = urs;
                 }
-                
+
                 that.getCandidateList(params);
             }
         },
@@ -329,7 +380,7 @@ export default {
             for (var key in pObj) {
                 var item = pObj[key];
 
-                if (item !== null && item !== undefined && item !== '') {
+                if (item !== null && item !== undefined && item !== "") {
                     pArr.push(key + "=" + item);
                 }
             }

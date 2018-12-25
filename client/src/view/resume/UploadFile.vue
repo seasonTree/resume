@@ -26,9 +26,9 @@
 
                         <template slot-scope="scope">
                             <a
-                                :href="scope.row.url"
-                                :title="scope.row.name"
-                            >{{scope.row.name}}</a>
+                                :href="scope.row.download_url"
+                                :title="scope.row.file_name"
+                            >{{scope.row.file_name}}</a>
                         </template>
                     </el-table-column>
 
@@ -41,7 +41,7 @@
 
                     <el-table-column
                         align="center"
-                        prop="ct_uesr"
+                        prop="personal_name"
                         label="上传人"
                     >
                     </el-table-column>
@@ -49,22 +49,24 @@
                     <el-table-column
                         fixed="right"
                         label="操作"
-                        width="180"
+                        width="60"
                         align="center"
                     >
-                        <el-tooltip
-                            effect="dark"
-                            content="删除"
-                            placement="bottom"
-                        >
-                            <el-button
-                                type="danger"
-                                size="mini"
-                                icon="el-icon-delete"
-                                circle
-                                @click.stop="delFile(scope.row.id, scope.$index)"
-                            ></el-button>
-                        </el-tooltip>
+                        <template slot-scope="scope">
+                            <el-tooltip
+                                effect="dark"
+                                content="删除"
+                                placement="bottom"
+                            >
+                                <el-button
+                                    type="danger"
+                                    icon="el-icon-delete"
+                                    size="mini"
+                                    circle
+                                    @click.stop="delFile(scope.row, scope.$index)"
+                                ></el-button>
+                            </el-tooltip>
+                        </template>
                     </el-table-column>
 
                 </el-table>
@@ -76,11 +78,17 @@
             >
 
                 <el-upload
-                    :action="uploadUrl"
+                    action="/api/resume/upload_file"
                     multiple
                     :on-success="uploadSuccess"
                     :on-error="uploadError"
                     :show-file-list="false"
+                    :data="otherParams"
+                    accept="application/vnd.ms-excel,.csv,
+                        application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
+                        application/msword,
+                        application/vnd.openxmlformats-officedocument.wordprocessingml.document,
+                        text/html,message/rfc822"
                 >
                     <el-button type="primary">上传附件</el-button>
                 </el-upload>
@@ -117,8 +125,8 @@ export default {
     },
 
     computed: {
-        uploadUrl() {
-            return '/api/resume/upload_file?resume_id=' + this.resume_id;
+        otherParams() {
+            return { resume_id: this.resume_id };
         }
     },
 
@@ -137,6 +145,13 @@ export default {
                 })
                 .then(res => {
                     if (res.code == 0) {
+                        for(var i = 0; i < res.data.length; i++){
+                            var item = res.data[i];
+
+                            item.download_url = '/api/resume/download?url=' + decodeURIComponent(item.url);
+                        }
+
+
                         that.tdata = res.data;
                     } else {
                         that.$message.error(
@@ -150,7 +165,7 @@ export default {
         },
 
         //删除文件
-        delFile(id) {
+        delFile(row, index) {
             let that = this;
 
             that.$confirm("是否删除当前附件吗?", "提示", {
@@ -160,8 +175,9 @@ export default {
             })
                 .then(() => {
                     that.$api.resume
-                        .del({
-                            id
+                        .delFile({
+                            id: row.id,
+                            resume_url: row.resume_url
                         })
                         .then(res => {
                             if (res.code == 0) {
@@ -171,15 +187,7 @@ export default {
                                     duration: 800
                                 });
 
-                                let delItem = null;
-                                for (var i = 0; i < that.tdata.length; i++) {
-                                    var item = that.tdata[i];
-
-                                    if (item.id == id) {
-                                        that.tdata.splice(i, 1);
-                                        break;
-                                    }
-                                }
+                                that.tdata.splice(index, 1);
                             } else {
                                 that.$message.error(res.msg);
                             }
@@ -192,7 +200,7 @@ export default {
         },
 
         //上传成功
-        uploadSuccess(response, file, fileList) {
+        uploadSuccess(res, file, fileList) {
             let that = this;
 
             if (res.code == 0) {
@@ -204,7 +212,7 @@ export default {
 
                 let copyData = JSON.parse(JSON.stringify(res.data));
 
-                that.tdata.unshift(...copyItem);
+                that.tdata.unshift(...copyData);
             } else {
                 that.$message.error(res.msg || "上传失败，请重试.");
             }
@@ -218,7 +226,7 @@ export default {
         //关闭后调用
         afterClose() {
             let that = this;
-            that.uploadList = [];
+            that.tdata = [];
         }
     }
 };

@@ -32,11 +32,11 @@ Route::post('api/resume/add','Communicate/addComm');//添加沟通信息
 Route::get('api/communication/get_by_id','Communicate/getComm');//根据id获取一条沟通信息
 Route::get('api/resume/get_upload_file','Resume/uploadList');//获取附件列表
 Route::post('api/resume/upload_file','Resume/upload');//添加简历附件
-Route::post('api/resume/del_file','');//删除简历附件
-Route::post('api/resume/import','Resume/importResume');//上传简历
+Route::post('api/resume/del_file','Resume/delFile');//删除简历附件
+Route::post('api/resume/batch_add','Resume/importResume');//批量插入
 Route::get('api/resume/check_name','Resume/checkName');//检查重名的简历
 
-Route::get('api/test','Resume/readResume');//获取简历内容
+Route::post('api/resume/upload_excel','Resume/uploadResume');//上传excel简历
 
 
 Route::post('api/user/login','Login/login');//登录
@@ -71,7 +71,7 @@ Route::post('api/user/get_by_id','User/getOne');
 Route::get('api/report/person_recru/candidate_list','Report/candidateList');//获取个人招聘统计候选人跟踪报表
 Route::get('api/report/person_recru/recruitment_list','Report/recruitmentList');//获取 招聘负责人统计的报表
 
-
+Route::get('person_recru/export','Report/export');//导出
 
 
 return [

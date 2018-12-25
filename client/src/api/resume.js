@@ -58,14 +58,14 @@ export function uploadFile(data) {
     })
 }
 
-//批量
-export function getImportExecl(data) {
-    return request({
-        url: `${prefix}/import_execl`,
-        method: 'post',
-        data: data
-    })
-}
+// //批量
+// export function getImportExecl(data) {
+//     return request({
+//         url: `${prefix}/import_execl`,
+//         method: 'post',
+//         data: data
+//     })
+// }
 
 
 //获取附件列表
@@ -121,4 +121,13 @@ export function checkName(data) {
         method: 'get',
         params: data
     })
+}
+
+//批量新增
+export function batchAdd(data){
+    return request({
+        url: `${prefix}/batch_add`,
+        method: 'post',
+        data: data
+    });    
 }

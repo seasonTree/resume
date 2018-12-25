@@ -358,7 +358,14 @@
         >
         </upload-file>
 
+<<<<<<< HEAD
         <importExcel :show.sync="ImportExcelDialog">
+=======
+        <importExcel
+            :show.sync="ImportExcelDialog"
+            :refresh-data="getData"
+        >
+>>>>>>> 2d0348840f42b4de161348996e76ea91a80bee3a
         </importExcel>
 
     </div>
