@@ -658,7 +658,8 @@ class Resume extends Controller
         $sphinx->setServer("localhost", 9312);
         $sphinx->setMatchMode(SPH_MATCH_EXTENDED2);   //匹配模式 ANY为关键词自动拆词，ALL为不拆词匹配（完全匹配），EXTENDED2,多词匹配
         $sphinx->SetArrayResult ( true );   //返回的结果集为数组
-        $result = $sphinx->query('"高并发"|"c++"',"resume");   //星号为所有索引源
+        $result = $sphinx->query('',"resume");   //星号为所有索引源
+        // $result = $sphinx->query('"高并发"|"c++"',"resume");   //星号为所有索引源
         // $res = $sphinx->UpdateAttributes ('users',array('is_del'),array(18 => array(1)));
 
         dump($result);
