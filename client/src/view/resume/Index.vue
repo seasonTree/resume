@@ -224,7 +224,7 @@
                         <el-row :gutter="20">
                             <el-col :span="24">
                                 <el-input
-                                    v-model="search.search_other"
+                                    v-model="search.other"
                                     prop=""
                                     placeholder="其他条件..."
                                     size="small"
@@ -613,7 +613,7 @@ export default {
                 school: "",
                 speciality: "",
                 english: "",
-                search_other: ""
+                other: ""
             },
 
             // search.name
