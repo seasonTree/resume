@@ -683,10 +683,33 @@ class Resume extends Controller
         $res = $sphinx->query("@sex 男","resume");   //星号为所有索引源
         // $result = $sphinx->query('"高并发"|"c++"',"resume");   //星号为所有索引源
         // $res = $sphinx->UpdateAttributes ('users',array('is_del'),array(18 => array(1)));
+        $arr = [];
+        $arr['name'] = isset($input['name'])?$input['name']:'';
+        $arr['sex'] = isset($input['sex'])?$input['sex']:'';
+        $arr['educational'] = isset($input['educational'])?$input['educational']:'';
+        $arr['phone'] = isset($input['phone'])?$input['phone']:'';
+        $arr['email'] = isset($input['email'])?$input['email']:'';
+        $arr['expected_job'] = isset($input['expected_job'])?$input['expected_job']:'';
+        $arr['status'] = isset($input['status'])?$input['status']:'';
+        $arr['school'] = isset($input['school'])?$input['school']:'';
+        $arr['speciality'] = isset($input['speciality'])?$input['speciality']:'';
+        $arr['english'] = isset($input['english'])?$input['english']:'';
+        $phinx_where = '';
+        $count_arr = count($arr);
+        $n = 1;
+        foreach ($arr as $k => $v) {
+            if ($count_arr == $n) {
+                $phinx_where.= "@$k $v";
+            }
+            else{
+                $phinx_where.= "@$k $v & ";
+            }
+            $n++;
+        }
+
+        $data1 = $sphinx->query($phinx_where,"resume");   //星号为所有索引源
         $data = array_column($result['matches'],'id');
-        dump($result);
-        dump($res);
-        dump($data);
+        dump($data1);
     }
 
 
