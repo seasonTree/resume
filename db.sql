@@ -102,7 +102,7 @@ create table rs_resume
 	status varchar(20) not null default '' comment '状态',
 	english varchar(20) not null default '' comment '英语水平',
 	-- expected_industry varchar(20) not null default '' comment '期望从事行业',
-	-- expected_job varchar(20) not null default '' comment '期望从事职业',
+	expected_job varchar(20) not null default '' comment '期望从事职业',
 	expected_address varchar(30) not null default '' comment '期望工作地点',
 	selfEvaluation text comment '自我介绍',
 	school varchar(30) not null default '' comment '毕业学校',
