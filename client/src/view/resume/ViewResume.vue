@@ -4,7 +4,7 @@
         :visible.sync="show"
         :before-close="closeDialog"
         class="custom-dialog"
-        top="4.5vh"
+        top="4vh"
         width="60%"
     >
 
@@ -488,6 +488,10 @@ export default {
 
 .form-container {
     position: relative;
+
+    input, textarea{
+        color: black !important;
+    }
 
     .right-container {
         position: absolute;
