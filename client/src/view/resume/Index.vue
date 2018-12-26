@@ -241,7 +241,6 @@
 
                 <el-row
                     :gutter="20"
-                    style=""
                 >
                     <div class="other-search-container">
                         <a
