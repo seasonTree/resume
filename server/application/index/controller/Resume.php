@@ -469,6 +469,7 @@ class Resume extends Controller
     public function getResumeList(){
         //简历列表
         $input = input('get.');
+        dump($input);exit;
         $data = '';
         if ($input != '') {
             $data = $this->search($input);
