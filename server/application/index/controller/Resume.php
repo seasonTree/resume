@@ -684,16 +684,16 @@ class Resume extends Controller
         // $result = $sphinx->query('"高并发"|"c++"',"resume");   //星号为所有索引源
         // $res = $sphinx->UpdateAttributes ('users',array('is_del'),array(18 => array(1)));
         $arr = [];
-        $arr['name'] = isset($input['name'])?$input['name']:'';
-        $arr['sex'] = isset($input['sex'])?$input['sex']:'';
-        $arr['educational'] = isset($input['educational'])?$input['educational']:'';
-        $arr['phone'] = isset($input['phone'])?$input['phone']:'';
-        $arr['email'] = isset($input['email'])?$input['email']:'';
-        $arr['expected_job'] = isset($input['expected_job'])?$input['expected_job']:'';
-        $arr['status'] = isset($input['status'])?$input['status']:'';
-        $arr['school'] = isset($input['school'])?$input['school']:'';
-        $arr['speciality'] = isset($input['speciality'])?$input['speciality']:'';
-        $arr['english'] = isset($input['english'])?$input['english']:'';
+        $arr['name'] = isset($where['name'])?$where['name']:'';
+        $arr['sex'] = isset($where['sex'])?$where['sex']:'';
+        $arr['educational'] = isset($where['educational'])?$where['educational']:'';
+        $arr['phone'] = isset($where['phone'])?$where['phone']:'';
+        $arr['email'] = isset($where['email'])?$where['email']:'';
+        $arr['expected_job'] = isset($where['expected_job'])?$where['expected_job']:'';
+        $arr['status'] = isset($where['status'])?$where['status']:'';
+        $arr['school'] = isset($where['school'])?$where['school']:'';
+        $arr['speciality'] = isset($where['speciality'])?$where['speciality']:'';
+        $arr['english'] = isset($where['english'])?$where['english']:'';
         $phinx_where = '';
         $count_arr = count($arr);
         $n = 1;
@@ -709,7 +709,7 @@ class Resume extends Controller
 
         $data1 = $sphinx->query($phinx_where,"resume");   //星号为所有索引源
         $data = array_column($result['matches'],'id');
-        echo $phinx_where;exit;
+        dump($data1);exit;
     }
 
 
