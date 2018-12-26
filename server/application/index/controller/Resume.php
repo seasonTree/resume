@@ -674,7 +674,7 @@ class Resume extends Controller
         dump($res);
     }
 
-    public function search(){
+    public function search($where = ''){
         $sphinx = new \SphinxClient;
         $sphinx->setServer("localhost", 9312);
         $sphinx->setMatchMode(SPH_MATCH_EXTENDED2);   //匹配模式 ANY为关键词自动拆词，ALL为不拆词匹配（完全匹配），EXTENDED2,多词匹配
@@ -683,9 +683,10 @@ class Resume extends Controller
         $res = $sphinx->query("@sex 男","resume");   //星号为所有索引源
         // $result = $sphinx->query('"高并发"|"c++"',"resume");   //星号为所有索引源
         // $res = $sphinx->UpdateAttributes ('users',array('is_del'),array(18 => array(1)));
-
+        $data = array_column($result['matches'],'id');
         dump($result);
         dump($res);
+        dump($data);
     }
 
 
