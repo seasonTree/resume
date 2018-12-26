@@ -80,9 +80,10 @@ class Role
 //        }
 
         $id=model('Role')->add($data);
+    
         if($id){
             $data = model('Role')->getOne($id);
-            return json(['data'=>$data[0],'code'=>0,'msg'=>'新增成功']);
+            return json(['data'=>$data,'code'=>0,'msg'=>'新增成功']);
         }
     }
     public function getUserById(){
