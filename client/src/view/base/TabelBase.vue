@@ -98,7 +98,11 @@ export default {
 
             if (searchData) {
                 for (var key in searchData) {
-                    if (searchData[key]) {
+                    if (
+                        searchData[key] === null &&
+                        searchData[key] !== undefined &&
+                        searchData[key] !== ""
+                    ) {
                         params[key] = searchData[key];
                     }
                 }
