@@ -235,9 +235,7 @@
                     </div>
                 </transition>
 
-                <el-row
-                    :gutter="20"
-                >
+                <el-row :gutter="20">
                     <div class="other-search-container">
                         <a
                             @click="showOtherSearch = !showOtherSearch"
@@ -499,6 +497,7 @@ export default {
         UploadFile,
         ImportExcel
     },
+
     methods: {
         //点击搜索条件缩放
         // searchClick(e) {
@@ -583,7 +582,7 @@ export default {
         //搜索框退出之后
         searchCollapseAfterLeave(el) {
             removeClass(el, "search-collapse");
-        }
+        },
 
         //动画效果-----------------------
     },
@@ -601,12 +600,12 @@ export default {
                 educational: "",
                 phone: "",
                 email: "",
-                expected_money_st: 0,
-                expected_money_ed: 0,
-                age_min: 0,
-                age_max:0,
-                work_year_min: 0,
-                work_year_max: 0,
+                expected_money_st: undefined,
+                expected_money_ed: undefined,
+                age_min: undefined,
+                age_max: undefined,
+                work_year_min: undefined,
+                work_year_max: undefined,
                 expected_job: "",
                 expected_address: "",
                 status: "",
