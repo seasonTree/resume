@@ -172,7 +172,17 @@
 
                         </div>
                         <el-form-item
-                            label="状态"
+                            label="期望岗位"
+                            prop="expected_job"
+                        >
+                            <el-input
+                                size="mini"
+                                v-model.trim="form.expected_job"
+                                autocomplete="off"
+                            ></el-input>
+                        </el-form-item>
+                        <el-form-item
+                            label="当前状态"
                             prop="status"
                         >
                             <el-input
@@ -225,7 +235,7 @@
                                 v-model.trim="form.nearest_job"
                                 autocomplete="off"
                             ></el-input>
-                         
+
                         </el-form-item>
 
                     </div>
@@ -403,6 +413,7 @@ export default {
                 work_year: "",
                 english: "",
                 status: "",
+                expected_job:"",
                 email: "",
 
                 //毕业时间
@@ -455,7 +466,6 @@ export default {
                     that.$message.error("获取简历信息失败，请刷新后重试.");
                 });
         },
-
 
         afterClose() {
             let that = this;

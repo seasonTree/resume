@@ -1,8 +1,7 @@
 <template>
     <div>
         <el-row class="table-container resume">
-            <div class="action-bar"
-            >
+            <div class="action-bar">
                 <el-button
                     type="primary"
                     @click="addDialog = true"
@@ -13,135 +12,251 @@
                 >批量导入</el-button>
             </div>
 
-            <div class="search" ref="search">
-                    <el-row :gutter="20">
-                        <el-col :span="4">
-                            <el-input
-                                size="small"
-                                placeholder="姓名"
-                            >
-                            </el-input>
-                        </el-col>
-                        <el-col :span="4">
-                            <el-select
-                                size="small"
-                                v-model="value"
-                                placeholder="性别"
-                            >
-                                <el-option
-                                    v-for="item in options"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value"
-                                >
-                                </el-option>
-                            </el-select>
-                        </el-col>
-                        <el-col :span="4">
-                            <el-input
-                                size="small"
-                                placeholder="姓名"
-                            >
-                            </el-input>
-                        </el-col>
-                        <el-col :span="4">
-                            <el-input
-                                size="small"
-                                placeholder="姓名"
-                            >
-                            </el-input>
-                        </el-col>
-                        <el-col :span="4">
-                            <el-input
-                                size="small"
-                                placeholder="姓名"
-                            ></el-input>
-                        </el-col>
-                        <el-col :span="4">
-                            <el-button
-                                size="medium"
-                                type="primary"
-                            >搜索</el-button>
-                        </el-col>
-                    </el-row>
-
-                    <transition
-                        @before-enter="searchCollapseBeforeEnter"
-                        @enter="searchCollapseEnter"
-                        @after-enter="searchCollapseAfterEnter"
-                        @before-leave="searchCollapseBeforeLeave"
-                        @leave="searchCollapseLeave"
-                        @after-leave="searchCollapseAfterLeave"
-                    >
-                        <div
-                            v-show="showOtherSearch"
-                            class="other-search-detail"
+            <div
+                class="search"
+                ref="search"
+            >
+                <el-row :gutter="20">
+                    <el-col :span="4">
+                        <el-input
+                            prop="name"
+                            v-model="search.name"
+                            size="small"
+                            placeholder="姓名"
                         >
-                            <el-row :gutter="20">
-                                <el-col :span="4">
-                                    <el-input
-                                        placeholder=""
-                                        size="small"
-                                    >
-                                    </el-input>
-                                </el-col>
-                                <el-col :span="4">
-                                    <el-input
-                                        placeholder=""
-                                        size="small"
-                                    >
-                                    </el-input>
-                                </el-col>
-                                <el-col :span="4">
-                                    <el-input
-                                        placeholder=""
-                                        size="small"
-                                    >
-                                    </el-input>
-                                </el-col>
-                                <el-col :span="4">
-                                    <el-input
-                                        placeholder=""
-                                        size="small"
-                                    >
-                                    </el-input>
-                                </el-col>
-                                <el-col :span="4">
-                                    <el-input
-                                        placeholder=""
-                                        size="small"
-                                    >
-                                    </el-input>
-                                </el-col>
-                                <el-col :span="4">
-                                    <el-input
-                                        placeholder=""
-                                        size="small"
-                                    >
-                                    </el-input>
-                                </el-col>
-                            </el-row>
-                        </div>
-                    </transition>
-
-                    <el-row
-                        :gutter="20"
-                        style=""
-                    >
-                        <div class="other-search-container">
-                            <a
-                                @click="showOtherSearch = !showOtherSearch"
-                                href="javascript:void(0)"
-                                class="other-search"
+                        </el-input>
+                    </el-col>
+                    <el-col :span="4">
+                        <el-select
+                            prop="sex"
+                            v-model="search.sex"
+                            size="small"
+                            placeholder="性别"
+                        >
+                            <el-option
+                                v-for="item in sex"
+                                :key="item"
+                                :label="item"
+                                :value="item"
                             >
-                                <i
-                                    class="fa fa-angle-double-down"
-                                    :class="{ 'up-icon' : showOtherSearch}"
-                                ></i>
-                                搜索条件
-                            </a>
-                        </div>
-                    </el-row>
+                            </el-option>
+                        </el-select>
+                    </el-col>
+                    <el-col :span="4">
+                        <el-select
+                            prop="educational"
+                            v-model="search.educational"
+                            size="small"
+                            placeholder="学历"
+                        >
+                            <el-option
+                                v-for="item in edu"
+                                :key="item"
+                                :label="item"
+                                :value="item"
+                            >
+                            </el-option>
+                        </el-select>
+                    </el-col>
+                    <el-col :span="4">
+                        <el-input
+                            prop="phone"
+                            size="small"
+                            placeholder="移动电话"
+                        >
+                        </el-input>
+                    </el-col>
+                    <el-col :span="4">
+                        <el-input
+                            prop="email"
+                            size="small"
+                            placeholder="电子邮箱"
+                        ></el-input>
+                    </el-col>
+                    <el-col :span="4">
+                        <el-button
+                            size="medium"
+                            type="primary"
+                        >搜索</el-button>
+                    </el-col>
+
+                </el-row>
+
+                <transition
+                    @before-enter="searchCollapseBeforeEnter"
+                    @enter="searchCollapseEnter"
+                    @after-enter="searchCollapseAfterEnter"
+                    @before-leave="searchCollapseBeforeLeave"
+                    @leave="searchCollapseLeave"
+                    @after-leave="searchCollapseAfterLeave"
+                >
+                    <div
+                        v-show="showOtherSearch"
+                        class="other-search-detail"
+                    >
+                        <el-row :gutter="20">
+                            <el-col :span="4">
+                                <!-- <el-input
+                                    prop="expected_money"
+                                    placeholder="最低薪资要求"
+                                    size="small"
+                                >
+                                </el-input> -->
+                                <el-input-number
+                                    placeholder="最低薪资要求"
+                                    size="small"
+                                    style="width: 100%;"
+                                    v-model="num8"
+                                    controls-position="right"
+                                    :min="1"
+                                ></el-input-number>
+                            </el-col>
+                            <el-col :span="4">
+                                <!-- <el-input
+                                    prop="expected_money"
+                                    placeholder="最高薪资要求"
+                                    size="small"
+                                >
+                                </el-input> -->
+                                <el-input-number
+                                    placeholder="最高薪资要求"
+                                    size="small"
+                                    style="width: 100%;"
+                                    v-model="num8"
+                                    controls-position="right"
+                                    :min="1"
+                                ></el-input-number>
+                            </el-col>
+                            <el-col :span="4">
+                                <el-input-number
+                                    placeholder="最小年龄要求"
+                                    size="small"
+                                    style="width: 100%;"
+                                    v-model="num8"
+                                    controls-position="right"
+                                    :min="1"
+                                    :max="99"
+                                ></el-input-number>
+                            </el-col>
+                            <el-col :span="4">
+                                <el-input-number
+                                    placeholder="最大年龄要求"
+                                    size="small"
+                                    style="width: 100%;"
+                                    v-model="num8"
+                                    controls-position="right"
+                                    :min="1"
+                                    :max="99"
+                                ></el-input-number>
+                            </el-col>
+
+                            <el-col :span="4">
+                                <el-input-number
+                                    placeholder="最小工作年限要求"
+                                    size="small"
+                                    style="width: 100%;"
+                                    v-model="num8"
+                                    controls-position="right"
+                                    :min="1"
+                                    :max="99"
+                                ></el-input-number>
+                            </el-col>
+                            <el-col :span="4">
+                                <el-input-number
+                                    placeholder="最大工作年限要求"
+                                    size="small"
+                                    style="width: 100%;"
+                                    v-model="num8"
+                                    controls-position="right"
+                                    :min="1"
+                                    :max="99"
+                                ></el-input-number>
+                            </el-col>
+
+                        </el-row>
+
+                        <el-row :gutter="20">
+                            <el-col :span="4">
+                                <el-input
+                                    prop="status"
+                                    placeholder="期望从事岗位"
+                                    size="small"
+                                >
+                                </el-input>
+                            </el-col>
+                            <el-col :span="4">
+                                <el-input
+                                    prop="status"
+                                    placeholder="期望工作地点"
+                                    size="small"
+                                >
+                                </el-input>
+                            </el-col>
+                            <el-col :span="4">
+                                <el-input
+                                    prop="status"
+                                    placeholder="状态"
+                                    size="small"
+                                >
+                                </el-input>
+                            </el-col>
+                            <el-col :span="4">
+                                <el-input
+                                    prop="school"
+                                    placeholder="毕业院校"
+                                    size="small"
+                                >
+                                </el-input>
+                            </el-col>
+                            <el-col :span="4">
+                                <el-input
+                                    prop="speciality"
+                                    placeholder="专业"
+                                    size="small"
+                                >
+                                </el-input>
+                            </el-col>
+                            <el-col :span="4">
+                                <el-input
+                                    prop="english"
+                                    placeholder="英语水平"
+                                    size="small"
+                                >
+                                </el-input>
+                            </el-col>
+
+                        </el-row>
+                        <el-row :gutter="20">
+                            <el-col :span="24">
+                                <el-input
+                                    prop=""
+                                    placeholder="其他条件..."
+                                    size="small"
+                                >
+                                </el-input>
+                            </el-col>
+                        </el-row>
+                    </div>
+                </transition>
+
+                <el-row
+                    :gutter="20"
+                    style=""
+                >
+                    <div class="other-search-container">
+                        <a
+                            @click="showOtherSearch = !showOtherSearch"
+                            href="javascript:void(0)"
+                            class="other-search"
+                        >
+                            <i
+                                class="fa fa-angle-double-down"
+                                :class="{ 'up-icon' : showOtherSearch}"
+                            ></i>
+                            搜索条件
+                        </a>
+                    </div>
+                </el-row>
             </div>
 
             <el-table
@@ -359,9 +474,10 @@
         >
         </upload-file>
 
-        <importExcel 
+        <importExcel
             :show.sync="ImportExcelDialog"
-            @refresh-data="getData">
+            @refresh-data="getData"
+        >
         </importExcel>
 
     </div>
@@ -481,17 +597,30 @@ export default {
         return {
             //填写API获取的类型，由父类自动调用，不填不调用
             apiType: "resume",
-            options: [
-                {
-                    value: "选项1",
-                    label: "男"
-                },
-                {
-                    value: "选项2",
-                    label: "女"
-                }
-            ],
-            value: "",
+            sex: ["男", "女"],
+            edu: ["初中", "高中", "大专", "本科", "硕士", "博士", "研究生"],
+
+            search: {
+                name: "",
+                sex: "",
+                educational: "",
+                phone: "",
+                email: "",
+                expected_money: "",
+                age: "",
+                speciality: "",
+                birthday: "",
+                native_place: "",
+                work_year: "",
+                status: "",
+                school: "",
+                english: "",
+                expected_address: "",
+                nearest_unit: "",
+                nearest_job: ""
+            },
+
+            // search.name
 
             // tdata: [
             //     {
@@ -584,14 +713,14 @@ export default {
         .other-search-container {
             margin-bottom: 10px;
             font-size: 15px;
-            text-align: center;            
+            text-align: center;
 
             .other-search {
                 text-decoration: none;
                 color: #03b9b9;
                 transition: all 0.2s;
 
-                &:hover{
+                &:hover {
                     color: #06e2e2;
                 }
 

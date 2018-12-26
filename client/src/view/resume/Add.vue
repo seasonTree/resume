@@ -195,8 +195,18 @@
                                         </el-form-item>
 
                                     </div>
+                                     <el-form-item
+                                        label="期望岗位"
+                                        prop="expected_job"
+                                    >
+                                        <el-input
+                                            size="mini"
+                                            v-model.trim="form.expected_job"
+                                            autocomplete="off"
+                                        ></el-input>
+                                    </el-form-item>
                                     <el-form-item
-                                        label="状态"
+                                        label="当前状态"
                                         prop="status"
                                     >
                                         <el-input
@@ -513,6 +523,7 @@ export default {
                 english: "",
                 status: "",
                 email: "",
+                expected_job:"",
 
                 //毕业时间
                 graduation_time: "",
