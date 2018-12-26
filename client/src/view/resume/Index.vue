@@ -324,12 +324,12 @@
                     width="150"
                 >
                 </el-table-column>
-                <el-table-column
+                <!-- <el-table-column
                     prop="inPosition"
                     label="所处职位"
                     width="120"
                 >
-                </el-table-column>
+                </el-table-column> -->
                 <el-table-column
                     prop="nearest_unit"
                     label="最近单位"
