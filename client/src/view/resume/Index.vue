@@ -583,14 +583,19 @@ export default {
         .other-search-container {
             margin-bottom: 10px;
             font-size: 15px;
-            text-align: center;
+            text-align: center;            
 
             .other-search {
                 text-decoration: none;
                 color: #03b9b9;
+                transition: all 0.2s;
+
+                &:hover{
+                    color: #06e2e2;
+                }
 
                 i {
-                    transition: all 0.3s;
+                    transition: transform 0.2s;
 
                     &.up-icon {
                         transform: rotate(180deg);

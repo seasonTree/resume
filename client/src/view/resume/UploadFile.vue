@@ -214,7 +214,7 @@ export default {
 
                 let copyData = JSON.parse(JSON.stringify(res.data));
 
-                that.tdata.unshift(...copyData);
+                that.tdata.unshift(copyData);
             } else {
                 that.$message.error(res.msg || "上传失败，请重试.");
             }
