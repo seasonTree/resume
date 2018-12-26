@@ -707,7 +707,7 @@ class Resume extends Controller
             $n++;
         }
 
-        $data1 = $sphinx->query("$phinx_where","resume");   //星号为所有索引源
+        $data1 = $sphinx->query("@name d","resume");   //星号为所有索引源
         $data = array_column($result['matches'],'id');
         echo $phinx_where;
         dump($data1);exit;
