@@ -688,7 +688,7 @@ class Resume extends Controller
         $arr['sex'] = isset($where['sex'])?$where['sex']:'';
         $arr['educational'] = isset($where['educational'])?$where['educational']:'';
         $arr['phone'] = isset($where['phone'])?$where['phone']:'';
-        // $arr['email'] = isset($where['email'])?$where['email']:'';
+        $arr['email'] = isset($where['email'])?$where['email']:'';
         $arr['expected_job'] = isset($where['expected_job'])?$where['expected_job']:'';
         $arr['status'] = isset($where['status'])?$where['status']:'';
         $arr['school'] = isset($where['school'])?$where['school']:'';
