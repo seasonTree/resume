@@ -75,6 +75,7 @@
                         <el-button
                             size="medium"
                             type="primary"
+                            @click="getData"
                         >搜索</el-button>
                     </el-col>
 
@@ -236,7 +237,6 @@
 
                 <el-row
                     :gutter="20"
-                    style=""
                 >
                     <div class="other-search-container">
                         <a
