@@ -43,7 +43,7 @@ class Privilege extends Model
         $this->data = $data;
         $res = [];
         while($data['parent_id'] != 0){
-            array_push($res,$data['parent_id']);
+            array_unshift($res,$data['parent_id']);
             $data =Privilege::where(['id'=>$data['parent_id']])->find();
         }
       $result = $this->data;
