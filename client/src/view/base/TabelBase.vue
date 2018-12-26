@@ -97,9 +97,9 @@ export default {
                 searchData = JSON.parse(JSON.stringify(that.search));
 
             if (searchData) {
-                for (var key in that.searchData) {
-                    if (that.searchData[i]) {
-                        params[key] = that.searchData[key];
+                for (var key in searchData) {
+                    if (searchData[key]) {
+                        params[key] = searchData[key];
                     }
                 }
 
