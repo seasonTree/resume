@@ -22,7 +22,7 @@ class Resume extends Model
         return Resume::field('id,name,phone,sex,age,work_year,email,expected_money,nearest_unit,nearest_job,english,expected_address,school,educational,speciality,mfy_time')->where($where)->order('mfy_time desc')->select();
     }
     public function addAll($data){
-        //添加全部
+        //添加全部  
         return Resume::insertAll($data);
     }
     public function getOne($where = '1=1'){

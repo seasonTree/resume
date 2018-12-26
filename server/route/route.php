@@ -37,6 +37,7 @@ Route::post('api/resume/batch_add','Resume/importResume');//批量插入
 Route::get('api/resume/check_name','Resume/checkName');//检查重名的简历
 
 Route::post('api/resume/upload_excel','Resume/uploadResume');//上传excel简历
+Route::get('api/resume/download','Resume/downloadResume');//下载简历
 
 
 Route::post('api/user/login','Login/login');//登录

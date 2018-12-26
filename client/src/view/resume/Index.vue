@@ -360,7 +360,7 @@
 
         <importExcel 
             :show.sync="ImportExcelDialog"
-            :refresh-data="getData">
+            @refresh-data="getData">
         </importExcel>
 
     </div>

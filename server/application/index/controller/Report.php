@@ -57,12 +57,12 @@ class Report extends Controller
     			}
     			else{
     				//没有任何沟通情况，沟通为0，直接跳过
-	    			$candidate[$k]['communicate_count'] = 0;
-	    			$personal_name = $user->getOne(['uname' => $v['ct_user']]);
-	    			$candidate[$k]['personal_name'] = $personal_name['personal_name'];
-	    			$candidate[$k]['id'] = $key;
-	    			$data[$key] = $candidate[$k];
-	    			$key++;
+	    			// $candidate[$k]['communicate_count'] = 0;
+	    			// $personal_name = $user->getOne(['uname' => $v['ct_user']]);
+	    			// $candidate[$k]['personal_name'] = $personal_name['personal_name'];
+	    			// $candidate[$k]['id'] = $key;
+	    			// $data[$key] = $candidate[$k];
+	    			// $key++;
     			}
     			
     			continue;
