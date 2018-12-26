@@ -1,7 +1,8 @@
 <template>
     <div>
         <el-row class="table-container resume">
-            <div class="action-bar">
+            <div class="action-bar"
+            >
                 <el-button
                     type="primary"
                     @click="addDialog = true"
