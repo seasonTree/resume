@@ -374,7 +374,7 @@ class Resume extends Controller
         if($info){
             $upload = new ResumeUpload();
             $file_name = preg_replace("/\s/",'_',$_FILES['file']['name']);
-            $find = $upload->getOne(['file_name' => $file_name]);
+            $find = $upload->getOne(['file_name' => $file_name,'resume_id' => input('resume_id')]);
             if ($find) {
                 return json(['msg' => '文件已经存在','code' => 3]);
             }
@@ -387,8 +387,10 @@ class Resume extends Controller
             //入库操作
             $data['id'] = $upload->add($data);
             $data['ct_time'] = date('Y-m-d H:i:s',time());
+            $user = new User();
+            $data['personal_name'] = Session::get('user_info')['personal_name'];
             
-            return json(['msg' => '上传成功','code' => 0,'data' => array_merge($data) ]);
+            return json(['msg' => '上传成功','code' => 0,'data' => $data]);
         }else{
             // 上传失败获取错误信息
             return json(['msg' => $file->getError(),'code' => 1]);

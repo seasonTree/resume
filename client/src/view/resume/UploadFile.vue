@@ -212,7 +212,11 @@ export default {
                     duration: 800
                 });
 
-                let copyData = JSON.parse(JSON.stringify(res.data));
+                let copyData = JSON.parse(JSON.stringify(res.data)),
+                    decodeUrl = decodeURIComponent(copyData.resume_url),
+                    decodeName = decodeURIComponent(copyData.file_name);
+
+                copyData.download_url = `/api/resume/download?url=${decodeUrl}&file_name=${decodeName}`;
 
                 that.tdata.unshift(copyData);
             } else {
