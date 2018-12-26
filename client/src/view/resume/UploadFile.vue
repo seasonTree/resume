@@ -146,9 +146,11 @@ export default {
                 .then(res => {
                     if (res.code == 0) {
                         for(var i = 0; i < res.data.length; i++){
-                            var item = res.data[i];
+                            var item = res.data[i],
+                                decodeUrl = decodeURIComponent(item.resume_url),
+                                decodeName = decodeURIComponent(item.file_name);
 
-                            item.download_url = '/api/resume/download?url=' + decodeURIComponent(item.url);
+                            item.download_url = `/api/resume/download?url=${decodeUrl}&file_name=${decodeName}`;
                         }
 
 
@@ -205,14 +207,18 @@ export default {
 
             if (res.code == 0) {
                 that.$message({
-                    message: "删除成功.",
+                    message: "上传成功.",
                     type: "success",
                     duration: 800
                 });
 
-                let copyData = JSON.parse(JSON.stringify(res.data));
+                let copyData = JSON.parse(JSON.stringify(res.data)),
+                    decodeUrl = decodeURIComponent(copyData.resume_url),
+                    decodeName = decodeURIComponent(copyData.file_name);
 
-                that.tdata.unshift(...copyData);
+                copyData.download_url = `/api/resume/download?url=${decodeUrl}&file_name=${decodeName}`;
+
+                that.tdata.unshift(copyData);
             } else {
                 that.$message.error(res.msg || "上传失败，请重试.");
             }

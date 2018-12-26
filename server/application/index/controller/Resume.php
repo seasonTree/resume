@@ -247,15 +247,41 @@ class Resume extends Controller
 
     public function importResume(){
         //导入简历
-        $data = input('post.');
+        $data = input('post.data');
         $personal_name = array_column($data,'personal_name');
+        $phone = array_column($data,'phone');
+        $check_data = '';
+        $resume = new ResumeModel();
+        foreach ($phone as $a => $b) {
+            $name = $resume->getUname(['phone' => $b]);
+            if ($name) {
+                $check_data.='姓名:'.$name.',电话:'.$b.'已存在';
+            }
+        }
+        if ($check_data != '') {
+            return json(['msg' => $check_data,'code' => 3,'data' => []]);
+        }
         $user = new User();
+        $check = [];
         foreach ($personal_name as $k => $v) {
-            $data[$k]['ct_user'] = $user->getUser(['personal_name' => $v]);
+            $temp = $data[$k]['name'].$data[$k]['phone'];
+            if (in_array($temp,$check)) {
+                return json(['msg' => '检测到重复数据，请检查','code' => 2,'data' => []]);
+            }
+            $ct_user = $user->getUser(['personal_name' => $v]);
+            if ($ct_user == '') {
+                $data[$k]['ct_user'] = Session::get('user_info')['uname'];
+            }
+            else{
+                $data[$k]['ct_user'] = $ct_user;
+            }
             unset($data[$k]['personal_name']);
         }
-        $resume = new ResumeModel();
+        
+        // dump($data);exit;
+
         $res = $resume->addAll($data);
+
         if ($res) {
             return json(['msg' => '添加成功','code' => 0,'data' => []]);
         }
@@ -279,6 +305,7 @@ class Resume extends Controller
             if (empty($data)) {
                 return json(['msg' => '没有数据','code' => 2]);
             }
+            @unlink($file);
             return json(['msg' => '上传成功','code' => 0,'data' => array_merge($data) ]);
         }else{
             // 上传失败获取错误信息
@@ -303,12 +330,22 @@ class Resume extends Controller
         $sheet = $obj_excel -> getSheet(0);
         $total = $sheet -> getHighestRow(); // 取得总行数
         $data = [];
+        $temp_time = '';
         for($i = 2;$i <= $total;$i++){
             if (empty($obj_excel -> getActiveSheet() -> getCell("B".$i)->getValue())) {
                 continue;
             }
             $data[$i]['personal_name'] = $obj_excel -> getActiveSheet() -> getCell("A".$i)->getValue();
-            $data[$i]['ct_time'] = $obj_excel -> getActiveSheet() -> getCell("B".$i)->getValue();
+            $temp_time = $obj_excel -> getActiveSheet() -> getCell("B".$i)->getValue();
+
+            if ($temp_time != '') {
+                $time = ($temp_time-25569)*24*60*60; //获得秒数
+                $data[$i]['ct_time'] = date('Y-m-d', $time);   //转化时间
+            }
+            else{
+                $data[$i]['ct_time'] = '';
+            }
+            
             $data[$i]['nearest_job'] = $obj_excel -> getActiveSheet() -> getCell("C".$i)->getValue();
             $data[$i]['name'] = $obj_excel -> getActiveSheet() -> getCell("D".$i)->getValue();
             $data[$i]['phone'] = $obj_excel -> getActiveSheet() -> getCell("E".$i)->getValue();
@@ -337,7 +374,7 @@ class Resume extends Controller
         if($info){
             $upload = new ResumeUpload();
             $file_name = preg_replace("/\s/",'_',$_FILES['file']['name']);
-            $find = $upload->getOne(['file_name' => $file_name]);
+            $find = $upload->getOne(['file_name' => $file_name,'resume_id' => input('resume_id')]);
             if ($find) {
                 return json(['msg' => '文件已经存在','code' => 3]);
             }
@@ -350,8 +387,10 @@ class Resume extends Controller
             //入库操作
             $data['id'] = $upload->add($data);
             $data['ct_time'] = date('Y-m-d H:i:s',time());
+            $user = new User();
+            $data['personal_name'] = Session::get('user_info')['personal_name'];
             
-            return json(['msg' => '上传成功','code' => 0,'data' => $data ]);
+            return json(['msg' => '上传成功','code' => 0,'data' => $data]);
         }else{
             // 上传失败获取错误信息
             return json(['msg' => $file->getError(),'code' => 1]);
@@ -412,6 +451,7 @@ class Resume extends Controller
             return json(['msg' => '没有数据','code' => 2]);
         }
         $data['ct_user'] = Session::get('user_info')['uname'];
+        $data['work_year'] = (int)$data['work_year'];
         $resume = new ResumeModel();
         $id = $resume->add($data);
         $data['id'] = $id;
@@ -471,7 +511,7 @@ class Resume extends Controller
         }
         $upload = new ResumeUpload();
         $res = $upload->del(['id' => $id]);
-        $path = input('resume_rul');
+        $path = input('resume_url');
         if (empty($path)) {
             return json(['msg' => '文件路径不存在','code' => 3]);
         }
@@ -482,6 +522,30 @@ class Resume extends Controller
         else{
             return json(['msg' => '删除失败','code' => 1]);
         }
+    }
+
+    public function downloadResume(){
+        //下载简历
+        $parm = input('get.');
+        header("Content-type:text/html;charset=utf-8"); 
+        $file_path = $parm['url'];
+        $fp = fopen($file_path,"rb");
+        $file_size=filesize($file_path);
+        //下载文件需要用到的头
+        Header("Content-type: application/octet-stream");
+        Header("Accept-Ranges: bytes"); 
+        Header("Accept-Length:".$file_size); 
+        Header("Content-Disposition: attachment; filename=".$parm['file_name']); 
+        $buffer=1024; 
+        $file_count=0; 
+        //向浏览器返回数据 
+        while(!feof($fp) && $file_count<$file_size){ 
+            $file_con=fread($fp,$buffer); 
+            $file_count+=$buffer; 
+            echo $file_con; 
+        }
+        fclose($fp);
+    
     }
     public function test(){
         $sphinx = new \SphinxClient;
