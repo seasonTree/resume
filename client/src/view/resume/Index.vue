@@ -19,16 +19,15 @@
                 <el-row :gutter="20">
                     <el-col :span="4">
                         <el-input
-                            prop="name"
                             v-model="search.name"
                             size="small"
                             placeholder="姓名"
+                            clearable
                         >
                         </el-input>
                     </el-col>
                     <el-col :span="4">
                         <el-select
-                            prop="sex"
                             v-model="search.sex"
                             size="small"
                             placeholder="性别"
@@ -44,7 +43,6 @@
                     </el-col>
                     <el-col :span="4">
                         <el-select
-                            prop="educational"
                             v-model="search.educational"
                             size="small"
                             placeholder="学历"
@@ -60,7 +58,7 @@
                     </el-col>
                     <el-col :span="4">
                         <el-input
-                            prop="phone"
+                            v-model="search.phone"
                             size="small"
                             placeholder="移动电话"
                         >
@@ -68,7 +66,7 @@
                     </el-col>
                     <el-col :span="4">
                         <el-input
-                            prop="email"
+                            v-model="search.email"
                             size="small"
                             placeholder="电子邮箱"
                         ></el-input>
@@ -96,19 +94,13 @@
                     >
                         <el-row :gutter="20">
                             <el-col :span="4">
-                                <!-- <el-input
-                                    prop="expected_money"
-                                    placeholder="最低薪资要求"
-                                    size="small"
-                                >
-                                </el-input> -->
                                 <el-input-number
                                     placeholder="最低薪资要求"
                                     size="small"
                                     style="width: 100%;"
-                                    v-model="num8"
+                                    v-model="search.expected_money_st"
                                     controls-position="right"
-                                    :min="1"
+                                    :min="0"
                                 ></el-input-number>
                             </el-col>
                             <el-col :span="4">
@@ -122,9 +114,9 @@
                                     placeholder="最高薪资要求"
                                     size="small"
                                     style="width: 100%;"
-                                    v-model="num8"
+                                    v-model="search.expected_money_ed"
                                     controls-position="right"
-                                    :min="1"
+                                    :min="0"
                                 ></el-input-number>
                             </el-col>
                             <el-col :span="4">
@@ -132,9 +124,9 @@
                                     placeholder="最小年龄要求"
                                     size="small"
                                     style="width: 100%;"
-                                    v-model="num8"
+                                    v-model="search.age_min"
                                     controls-position="right"
-                                    :min="1"
+                                    :min="0"
                                     :max="99"
                                 ></el-input-number>
                             </el-col>
@@ -143,21 +135,22 @@
                                     placeholder="最大年龄要求"
                                     size="small"
                                     style="width: 100%;"
-                                    v-model="num8"
+                                    v-model="search.age_max"
                                     controls-position="right"
-                                    :min="1"
+                                    :min="0"
                                     :max="99"
                                 ></el-input-number>
                             </el-col>
 
                             <el-col :span="4">
                                 <el-input-number
+                                    clearable
                                     placeholder="最小工作年限要求"
                                     size="small"
                                     style="width: 100%;"
-                                    v-model="num8"
+                                    v-model="search.work_year_min"
                                     controls-position="right"
-                                    :min="1"
+                                    :min="0"
                                     :max="99"
                                 ></el-input-number>
                             </el-col>
@@ -166,9 +159,9 @@
                                     placeholder="最大工作年限要求"
                                     size="small"
                                     style="width: 100%;"
-                                    v-model="num8"
+                                    v-model="search.work_year_max"
                                     controls-position="right"
-                                    :min="1"
+                                    :min="0"
                                     :max="99"
                                 ></el-input-number>
                             </el-col>
@@ -178,7 +171,7 @@
                         <el-row :gutter="20">
                             <el-col :span="4">
                                 <el-input
-                                    prop="status"
+                                    v-model="search.expected_job"
                                     placeholder="期望从事岗位"
                                     size="small"
                                 >
@@ -186,6 +179,7 @@
                             </el-col>
                             <el-col :span="4">
                                 <el-input
+                                    v-model="search.expected_address"
                                     prop="status"
                                     placeholder="期望工作地点"
                                     size="small"
@@ -194,15 +188,15 @@
                             </el-col>
                             <el-col :span="4">
                                 <el-input
-                                    prop="status"
-                                    placeholder="状态"
+                                    v-model="search.status"
+                                    placeholder="当前状态"
                                     size="small"
                                 >
                                 </el-input>
                             </el-col>
                             <el-col :span="4">
                                 <el-input
-                                    prop="school"
+                                    v-model="search.school"
                                     placeholder="毕业院校"
                                     size="small"
                                 >
@@ -210,7 +204,7 @@
                             </el-col>
                             <el-col :span="4">
                                 <el-input
-                                    prop="speciality"
+                                    v-model="search.speciality"
                                     placeholder="专业"
                                     size="small"
                                 >
@@ -218,7 +212,7 @@
                             </el-col>
                             <el-col :span="4">
                                 <el-input
-                                    prop="english"
+                                    v-model="search.english"
                                     placeholder="英语水平"
                                     size="small"
                                 >
@@ -229,6 +223,7 @@
                         <el-row :gutter="20">
                             <el-col :span="24">
                                 <el-input
+                                    v-model="search.search_other"
                                     prop=""
                                     placeholder="其他条件..."
                                     size="small"
@@ -606,18 +601,19 @@ export default {
                 educational: "",
                 phone: "",
                 email: "",
-                expected_money: "",
-                age: "",
-                speciality: "",
-                birthday: "",
-                native_place: "",
-                work_year: "",
+                expected_money_st: 0,
+                expected_money_ed: 0,
+                age_min: 0,
+                age_max:0,
+                work_year_min: 0,
+                work_year_max: 0,
+                expected_job: "",
+                expected_address: "",
                 status: "",
                 school: "",
+                speciality: "",
                 english: "",
-                expected_address: "",
-                nearest_unit: "",
-                nearest_job: ""
+                search_other: ""
             },
 
             // search.name
