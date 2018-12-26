@@ -468,10 +468,17 @@ class Resume extends Controller
 
     public function getResumeList(){
         //简历列表
-        dump(input());exit;
-        $resume = new ResumeModel();
-        $data = $resume->get();
-        $count = $resume->getCount();
+        $input = input('get.');
+        $data = '';
+        if (count($input) > 3 ) {
+            $data = $this->search($input);
+        }
+        else{
+            $resume = new ResumeModel();
+            $data = $resume->get();
+            $count = $resume->getCount();
+        }
+        
         if ($data) {
             return json(['msg' => '获取成功','code' => 0,'data' => [ 'row' => $data,'total' => $count]]);
         }
@@ -665,6 +672,45 @@ class Resume extends Controller
 
         dump($result);
         dump($res);
+    }
+
+    public function search($where = ''){
+        $sphinx = new \SphinxClient;
+        $sphinx->setServer("localhost", 9312);
+        $sphinx->setMatchMode(SPH_MATCH_EXTENDED2);   //匹配模式 ANY为关键词自动拆词，ALL为不拆词匹配（完全匹配），EXTENDED2,多词匹配
+        $sphinx->SetArrayResult ( true );   //返回的结果集为数组
+        $result = $sphinx->query("@name 貂","resume");   //星号为所有索引源
+        $res = $sphinx->query("@sex 男","resume");   //星号为所有索引源
+        // $result = $sphinx->query('"高并发"|"c++"',"resume");   //星号为所有索引源
+        // $res = $sphinx->UpdateAttributes ('users',array('is_del'),array(18 => array(1)));
+        $arr = [];
+        $arr['name'] = isset($where['name'])?$where['name']:'';
+        $arr['sex'] = isset($where['sex'])?$where['sex']:'';
+        $arr['educational'] = isset($where['educational'])?$where['educational']:'';
+        $arr['phone'] = isset($where['phone'])?$where['phone']:'';
+        $arr['email'] = isset($where['email'])?$where['email']:'';
+        $arr['expected_job'] = isset($where['expected_job'])?$where['expected_job']:'';
+        $arr['status'] = isset($where['status'])?$where['status']:'';
+        $arr['school'] = isset($where['school'])?$where['school']:'';
+        $arr['speciality'] = isset($where['speciality'])?$where['speciality']:'';
+        $arr['english'] = isset($where['english'])?$where['english']:'';
+        $phinx_where = '';
+        $count_arr = count($arr);
+        $n = 1;
+        foreach ($arr as $k => $v) {
+            if ($count_arr == $n) {
+                $phinx_where.= "@$k $v";
+            }
+            else{
+                $phinx_where.= "@$k $v & ";
+            }
+            $n++;
+        }
+
+        $data1 = $sphinx->query('@name d & @sex 男 & @educational 本科 & @phone 123',"resume");   //星号为所有索引源
+        $data = array_column($result['matches'],'id');
+        echo $phinx_where;
+        dump($data1);exit;
     }
 
 
