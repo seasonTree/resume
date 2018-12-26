@@ -688,7 +688,7 @@ class Resume extends Controller
         $arr['sex'] = isset($where['sex'])?$where['sex']:'';
         $arr['educational'] = isset($where['educational'])?$where['educational']:'';
         $arr['phone'] = isset($where['phone'])?$where['phone']:'';
-        $arr['email'] = isset($where['email'])?$where['email']:'';
+        // $arr['email'] = isset($where['email'])?$where['email']:'';
         $arr['expected_job'] = isset($where['expected_job'])?$where['expected_job']:'';
         $arr['status'] = isset($where['status'])?$where['status']:'';
         $arr['school'] = isset($where['school'])?$where['school']:'';
@@ -707,7 +707,7 @@ class Resume extends Controller
             $n++;
         }
 
-        $data1 = $sphinx->query('@name d & @sex 男 & @educational 本科 & @phone 123',"resume");   //星号为所有索引源
+        $data1 = $sphinx->query($phinx_where,"resume");   //星号为所有索引源
         $data = array_column($result['matches'],'id');
         echo $phinx_where;
         dump($data1);exit;
