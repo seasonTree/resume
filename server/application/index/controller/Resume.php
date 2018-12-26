@@ -709,7 +709,7 @@ class Resume extends Controller
 
         $data1 = $sphinx->query($phinx_where,"resume");   //星号为所有索引源
         $data = array_column($result['matches'],'id');
-        dump($phinx_where);exit;
+        echo $phinx_where;exit;
     }
 
 
