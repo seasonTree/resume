@@ -699,10 +699,10 @@ class Resume extends Controller
         $n = 1;
         foreach ($arr as $k => $v) {
             if ($count_arr == $n) {
-                $phinx_where.= "@$k $v";
+                $phinx_where.= "@$k ($v)";
             }
             else{
-                $phinx_where.= "@$k $v & ";
+                $phinx_where.= "@$k ($v) & ";
             }
             $n++;
         }
