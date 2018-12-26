@@ -252,23 +252,48 @@ class Resume extends Controller
         $phone = array_column($data,'phone');
         $check_data = '';
         $resume = new ResumeModel();
-        foreach ($phone as $a => $b) {
-            $name = $resume->getUname(['phone' => $b]);
-            if ($name) {
-                $check_data.='姓名:'.$name.',电话:'.$b.'已存在';
-            }
-        }
-        if ($check_data != '') {
-            return json(['msg' => $check_data,'code' => 3,'data' => []]);
-        }
+        // foreach ($phone as $a => $b) {
+        //     $name = $resume->getUname(['phone' => $b]);
+        //     if ($name) {
+        //         $check_data.='姓名:'.$name.',电话:'.$b.'已存在';
+        //     }
+        // }
+        // if ($check_data != '') {
+        //     return json(['msg' => $check_data,'code' => 3,'data' => []]);
+        // }
+        // $user = new User();
+        // $check = [];
+        // foreach ($personal_name as $k => $v) {
+        //     $temp = $data[$k]['name'].$data[$k]['phone'];
+        //     if (in_array($temp,$check)) {
+        //         return json(['msg' => '检测到重复数据，请检查','code' => 2,'data' => []]);
+        //     }
+        //     $ct_user = $user->getUser(['personal_name' => $v]);
+        //     if ($ct_user == '') {
+        //         $data[$k]['ct_user'] = Session::get('user_info')['uname'];
+        //     }
+        //     else{
+        //         $data[$k]['ct_user'] = $ct_user;
+        //     }
+        //     unset($data[$k]['personal_name']);
+
+
+        // }
+
         $user = new User();
         $check = [];
-        foreach ($personal_name as $k => $v) {
+
+        foreach ($data as $k => $v) {
+            $name = $resume->getUname(['phone' => $v['phone']]);
+            if ($name) {
+                $check_data.='姓名:'.$name.',电话:'.$v['phone'].'已存在';
+            }
+
             $temp = $data[$k]['name'].$data[$k]['phone'];
             if (in_array($temp,$check)) {
                 return json(['msg' => '检测到重复数据，请检查','code' => 2,'data' => []]);
             }
-            $ct_user = $user->getUser(['personal_name' => $v]);
+            $ct_user = $user->getUser(['personal_name' => $v['personal_name']]);
             if ($ct_user == '') {
                 $data[$k]['ct_user'] = Session::get('user_info')['uname'];
             }
@@ -276,6 +301,32 @@ class Resume extends Controller
                 $data[$k]['ct_user'] = $ct_user;
             }
             unset($data[$k]['personal_name']);
+
+            if(isset($v['work_year'])){
+                $data[$k]['work_year'] = (int)$data[$k]['work_year'];
+            }
+            if (isset($v['age'])) {
+                $data[$k]['age'] = (int)$data[$k]['age'];
+            }
+
+            if (isset($v['expected_money'])) {
+                $money = preg_replace("/(到|至)/",'-',$v['expected_money']);
+                $money = explode('-',$v['expected_money']);
+
+                if (count($money) > 1) {
+                    $data[$k]['expected_money_start'] = (int)$money[0];
+                    $data[$k]['expected_money_end'] = (int)$money[1];
+                }
+                else{
+                    $data[$k]['expected_money_start'] = (int)$money[0];
+                    $data[$k]['expected_money_end'] = (int)$money[0];
+                }
+            }
+
+        }
+
+        if ($check_data != '') {
+            return json(['msg' => $check_data,'code' => 3,'data' => []]);
         }
         
         // dump($data);exit;
@@ -305,6 +356,7 @@ class Resume extends Controller
             if (empty($data)) {
                 return json(['msg' => '没有数据','code' => 2]);
             }
+            unset($info);//一定要unset之后才能进行删除操作，否则请求会被拒绝
             @unlink($file);
             return json(['msg' => '上传成功','code' => 0,'data' => array_merge($data) ]);
         }else{
@@ -346,7 +398,7 @@ class Resume extends Controller
                 $data[$i]['ct_time'] = '';
             }
             
-            $data[$i]['nearest_job'] = $obj_excel -> getActiveSheet() -> getCell("C".$i)->getValue();
+            $data[$i]['expected_job'] = $obj_excel -> getActiveSheet() -> getCell("C".$i)->getValue();
             $data[$i]['name'] = $obj_excel -> getActiveSheet() -> getCell("D".$i)->getValue();
             $data[$i]['phone'] = $obj_excel -> getActiveSheet() -> getCell("E".$i)->getValue();
             $data[$i]['email'] = $obj_excel -> getActiveSheet() -> getCell("F".$i)->getValue();
@@ -416,6 +468,7 @@ class Resume extends Controller
 
     public function getResumeList(){
         //简历列表
+        dump(input());exit;
         $resume = new ResumeModel();
         $data = $resume->get();
         $count = $resume->getCount();
@@ -450,8 +503,30 @@ class Resume extends Controller
         if (empty($data)) {
             return json(['msg' => '没有数据','code' => 2]);
         }
+
         $data['ct_user'] = Session::get('user_info')['uname'];
-        $data['work_year'] = (int)$data['work_year'];
+
+        if(isset($data['work_year'])){
+            $data['work_year'] = (int)$data['work_year'];
+        }
+        if (isset($data['age'])) {
+            $data['age'] = (int)$data['age'];
+        }
+
+        if (isset($data['expected_money'])) {
+            $money = preg_replace("/(到|至)/",'-',$data['expected_money']);
+            $money = explode('-',$data['expected_money']);
+
+            if (count($money) > 1) {
+                $data['expected_money_start'] = (int)$money[0];
+                $data['expected_money_end'] = (int)$money[1];
+            }
+            else{
+                $data['expected_money_start'] = (int)$money[0];
+                $data['expected_money_end'] = (int)$money[0];
+            }
+        }
+
         $resume = new ResumeModel();
         $id = $resume->add($data);
         $data['id'] = $id;
@@ -469,6 +544,27 @@ class Resume extends Controller
         $data['mfy_user'] = Session::get('user_info')['uname'];
         if (empty($data)) {
             return json(['msg' => '没有数据','code' => 2]);
+        }
+
+        if(isset($data['work_year'])){
+            $data['work_year'] = (int)$data['work_year'];
+        }
+        if (isset($data['age'])) {
+            $data['age'] = (int)$data['age'];
+        }
+
+        if (isset($data['expected_money'])) {
+            $money = preg_replace("/(到|至)/",'-',$data['expected_money']);
+            $money = explode('-',$data['expected_money']);
+
+            if (count($money) > 1) {
+                $data['expected_money_start'] = (int)$money[0];
+                $data['expected_money_end'] = (int)$money[1];
+            }
+            else{
+                $data['expected_money_start'] = (int)$money[0];
+                $data['expected_money_end'] = (int)$money[0];
+            }
         }
         $resume = new ResumeModel();
         $res = $resume->edit($data);
@@ -529,13 +625,22 @@ class Resume extends Controller
         $parm = input('get.');
         header("Content-type:text/html;charset=utf-8"); 
         $file_path = $parm['url'];
-        $fp = fopen($file_path,"rb");
+        try{
+            $fp = fopen($file_path,"rb");
+        }catch(\Exception $e){
+            $this->error('文件已经不存在');
+        }
+
         $file_size=filesize($file_path);
         //下载文件需要用到的头
         Header("Content-type: application/octet-stream");
         Header("Accept-Ranges: bytes"); 
         Header("Accept-Length:".$file_size); 
         Header("Content-Disposition: attachment; filename=".$parm['file_name']); 
+        //================重点====================
+        ob_clean();
+        flush();
+        //=================重点===================
         $buffer=1024; 
         $file_count=0; 
         //向浏览器返回数据 
@@ -545,6 +650,7 @@ class Resume extends Controller
             echo $file_con; 
         }
         fclose($fp);
+
     
     }
     public function test(){
@@ -552,10 +658,13 @@ class Resume extends Controller
         $sphinx->setServer("localhost", 9312);
         $sphinx->setMatchMode(SPH_MATCH_EXTENDED2);   //匹配模式 ANY为关键词自动拆词，ALL为不拆词匹配（完全匹配），EXTENDED2,多词匹配
         $sphinx->SetArrayResult ( true );   //返回的结果集为数组
-        $result = $sphinx->query('"高并发"|"c++"',"resume");   //星号为所有索引源
+        $result = $sphinx->query("@name 貂","resume");   //星号为所有索引源
+        $res = $sphinx->query("@sex 男","resume");   //星号为所有索引源
+        // $result = $sphinx->query('"高并发"|"c++"',"resume");   //星号为所有索引源
         // $res = $sphinx->UpdateAttributes ('users',array('is_del'),array(18 => array(1)));
 
         dump($result);
+        dump($res);
     }
 
 
