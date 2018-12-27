@@ -760,7 +760,7 @@ class Resume extends Controller
         // }
 
         $data = array_column($result['matches'],'id');
-        echo $other;
+        // echo $other;
         dump($data1);exit;
     }
 
