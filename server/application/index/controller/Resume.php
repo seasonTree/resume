@@ -713,7 +713,7 @@ class Resume extends Controller
         }
 
         $data1 = $sphinx->query($phinx_where,"resume");   //基础资料\
-        if ($data1) {
+        if (isset($data1['matches'])) {
             $arr_ids[] = array_column($data1['matches'], 'id');
         }
 
@@ -742,7 +742,7 @@ class Resume extends Controller
         }else{
             // $arr_ids[] = [];
         }
-        if ($data3) {
+        if (isset($data3['matches'])) {
             $arr_ids[] = array_column($data3['matches'], 'id');
         }
 
@@ -759,7 +759,7 @@ class Resume extends Controller
         }else{
             // $arr_ids[] = [];
         }
-        if ($data4) {
+        if (isset($data4['matches'])) {
             $arr_ids[] = array_column($data4['matches'],'id');
         }
 
@@ -775,7 +775,7 @@ class Resume extends Controller
         }else{
             // $arr_ids[] = [];
         }
-        if ($data5) {
+        if (isset($data5['matches'])) {
             $arr_ids[] = array_column($data5['matches'],'id');
         }
 
@@ -787,7 +787,10 @@ class Resume extends Controller
             $other = implode('"|"',$other);
             $other = "'".'"'.$other.'"'."'";
             $data6 = $sphinx->query($other,"resume");
-            $arr_ids[] = array_column($data6['matches'],'id');
+            if (isset($data6['matches'])) {
+                $arr_ids[] = array_column($data6['matches'],'id');
+            }
+            
         }
         else{
             // $arr_ids[] = [];
@@ -797,9 +800,6 @@ class Resume extends Controller
         foreach ($arr_ids as $a => $b) {
             if ($a == 0) {
                 $ids = $b;
-                continue;
-            }
-            if (empty($b)) {
                 continue;
             }
             $ids = array_intersect($ids, $b);
