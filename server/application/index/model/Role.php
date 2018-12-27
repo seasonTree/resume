@@ -99,7 +99,7 @@ class Role extends Model
         //            ->field('R.id,R.role_name,pri_id')
         //            ->join('role_pri RP','R.id=RP.role_id','left')
         //            ->join('privilege.js P','P.id=RP.pri_id','left')
-                   ->where('R.role_name='.$name)
+                   ->where("R.role_name='$name'")
                     ->find();
     }
 
