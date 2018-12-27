@@ -807,8 +807,7 @@ class Resume extends Controller
         }
         if (!empty($ids)) {
             $str = implode(',', $ids);
-            $sphinx->SetSelect("*,IF( IN(@id, $str))");
-            $data = $sphinx->query('',"resume" );
+            $data = $resume->get("id in($str)");
         }
         
         dump($data);
