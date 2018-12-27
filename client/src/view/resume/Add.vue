@@ -473,13 +473,15 @@
                 <el-button
                     @click="analyze"
                     type="success"
-                    :disabled="!$check_pm('resume_analyze')"
+                    :disabled="!$check_pm('resume_analyze') || commitLoading"
+                    :loading="analyzeLoading"
                 >自动识别</el-button>
-                <el-button @click="closeDialog">取 消</el-button>
+                <el-button @click="closeDialog" :disabled="commitLoading || analyzeLoading">取 消</el-button>
                 <el-button
                     type="primary"
                     @click="addCommit"
-                    :disabled="!$check_pm('resume_add')"
+                    :disabled="!$check_pm('resume_add') || analyzeLoading"
+                    :loading="commitLoading"
                 >确 定</el-button>
             </div>
         </el-dialog>
@@ -488,6 +490,7 @@
             :show.sync="resumeCheckDialog"
             :resumeData="resumeData"
             @continue-commit="commit"
+            @cancel-commit="cancelCommit"
         ></resume-check>
     </div>
 </template>
@@ -556,25 +559,13 @@ export default {
                 custom3: ""
             },
             formRules: {
-                // name: [
-                //     {
-                //         required: true,
-                //         message: "姓名必填",
-                //         trigger: "blur"
-                //     }
-                // ],
-                // phone: [
-                //     {
-                //         required: true,
-                //         message: "电话必填",
-                //         trigger: "blur"
-                //     }
-                // ]
             },
 
             //检查重名的数据
             resumeData: [],
-            resumeCheckDialog: false
+            resumeCheckDialog: false,
+
+            analyzeLoading: false
         };
     },
 
@@ -583,6 +574,8 @@ export default {
         analyze() {
             let that = this;
 
+            that.analyzeLoading = true;
+
             that.$api.resume
                 .analyze({
                     content: that.analyzeContent
@@ -590,10 +583,16 @@ export default {
                 .then(res => {
                     that.form = res.data;
                     that.activeName = "second";
+                    that.analyzeLoading = false;
                 })
                 .catch(res => {
                     that.$message.error("分析失败，请重试.");
+                    that.analyzeLoading = false;
                 });
+        },
+
+        cancelCommit(){
+            this.commitLoading = false;
         },
 
         commit() {
@@ -624,14 +623,19 @@ export default {
                     } else {
                         that.$message.error(res.msg || "新增失败，请重试.");
                     }
+
+                    that.commitLoading = false;
                 })
                 .catch(res => {
+                    that.commitLoading = false;
                     that.$message.error("新增失败，请重试.");
                 });
         },
 
         addCommit() {
             let that = this;
+
+            that.commitLoading = true;
 
             that.$refs["form"].validate(valid => {
                 if (valid) {
@@ -656,9 +660,12 @@ export default {
                                 that.$message.error(
                                     res.msg || "检查重名失败，请刷新重试."
                                 );
-                            }
+
+                                that.commitLoading = false;
+                            }                            
                         })
                         .catch(res => {
+                            that.commitLoading = false;
                             that.$message.error("检查重名失败，请刷新重试.");
                         });
                 }

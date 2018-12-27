@@ -1,6 +1,5 @@
 <template>
     <div>
-
         <el-dialog
             title="沟通管理"
             :visible.sync="show"
@@ -206,7 +205,9 @@ export default {
 
             //修改窗口
             editDialog: false,
-            currentEditItem: {}
+            currentEditItem: {},
+
+            tableLoading: false
         };
     },
     methods: {
@@ -285,6 +286,9 @@ export default {
 
         getCommunication() {
             let that = this;
+
+            that.tableLoading = true;
+
             that.$api.communication
                 .get({
                     resume_id: that.resume_id
@@ -297,8 +301,11 @@ export default {
                             res.msg || "获取沟通信息失败，请刷新后重试."
                         );
                     }
+
+                    that.tableLoading = false;
                 })
                 .catch(res => {
+                    that.tableLoading = false;
                     that.$message.error("获取沟通信息失败，请刷新后重试.");
                 });
         },

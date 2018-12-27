@@ -19,7 +19,9 @@ export default {
                 size: 10
             },
             search: {},
-            tabelHeight: 300
+            tabelHeight: 300,
+
+            tableLoading: false
         };
     },
 
@@ -62,6 +64,8 @@ export default {
                 params = { ...that.search };
             }
 
+            that.tableLoading = true;
+
             that.pager.current = 1;
             // that.pager.total = 1;
 
@@ -84,8 +88,11 @@ export default {
                             res.msg || "获取数据失败，请刷新后重试."
                         );
                     }
+
+                    that.tableLoading = false;
                 })
                 .catch(res => {
+                    that.tableLoading = false;
                     that.$message.error("获取数据失败，请刷新后重试.");
                 });
         },

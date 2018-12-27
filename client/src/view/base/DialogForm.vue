@@ -7,6 +7,12 @@ export default {
         }
     },
 
+    data(){
+        return {            
+            commitLoading: false
+        }
+    },
+
     methods: {
         closeDialog() {
             let that = this;

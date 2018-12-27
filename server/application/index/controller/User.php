@@ -50,7 +50,7 @@ class User
     public function edit(){
         $data =input('post.');
 
-        if(isset($data['id'])){
+        if(!isset($data['id'])){
             return json(['msg' => '参数错误.','code' => 500]);
         }
 

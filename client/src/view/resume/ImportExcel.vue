@@ -142,16 +142,23 @@
                     accept="application/vnd.ms-excel,.csv,
                         application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                 >
-                    <el-button type="success"
-                        :disabled="!$check_pm('resume_excel_upload')"
+                    <el-button
+                        type="success"
+                        :disabled="!$check_pm('resume_excel_upload') || commitLoading"
+                        :loading="uploadLoading"
+                        :before-upload="beforeUpload"
                     >上传Excel</el-button>
                 </el-upload>
                 <el-button
                     type="primary"
                     @click="batchAdd"
-                    :disabled="!$check_pm('resume_batch_add')"
+                    :loading="commitLoading"
+                    :disabled="!$check_pm('resume_batch_add') || uploadLoading"
                 >批量导入</el-button>
-                <el-button @click="closeDialog">关 闭</el-button>
+                <el-button
+                    @click="closeDialog"
+                    :disabled="commitLoading || uploadLoading"
+                >关 闭</el-button>
             </div>
         </el-dialog>
 
@@ -168,12 +175,15 @@ export default {
 
     data() {
         return {
-            tdata: []
+            tdata: [],
+            uploadLoading: false
         };
     },
     methods: {
         batchAdd() {
             let that = this;
+
+            that.commitLoading = true;
 
             that.$api.resume
                 .batchAdd({
@@ -188,7 +198,7 @@ export default {
                         });
 
                         //通知外表格刷新数据
-                        that.$emit('refresh-data');
+                        that.$emit("refresh-data");
 
                         that.closeDialog();
                     } else {
@@ -196,8 +206,11 @@ export default {
                             res.msg || "批量导入失败，请刷新后重试."
                         );
                     }
+
+                    that.commitLoading = false;
                 })
                 .catch(res => {
+                    that.commitLoading = false;
                     that.$message.error("批量导入失败，请刷新后重试.");
                 });
         },
@@ -208,9 +221,15 @@ export default {
             that.tdata.splice(index, 1);
         },
 
+        beforeUpload() {
+            this.uploadLoading = true;
+        },
+
         //上传成功
         uploadSuccess(res, file, fileList) {
             let that = this;
+
+            this.uploadLoading = false;
 
             if (res.code == 0) {
                 that.$message({
@@ -229,6 +248,7 @@ export default {
 
         //上传失败
         uploadError(err, file, fileList) {
+            this.uploadLoading = false;
             this.$message.error("上传失败，请重试.");
         }
     }

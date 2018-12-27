@@ -91,10 +91,17 @@
                         application/vnd.openxmlformats-officedocument.wordprocessingml.document,
                         text/html,message/rfc822"
                 >
-                    <el-button type="primary"
-                    :disabled="!$check_pm('resume_file_upload')">上传附件</el-button>
+                    <el-button
+                        type="primary"
+                        :disabled="!$check_pm('resume_file_upload')"
+                        :loading="commitLoading"
+                        :before-upload="beforeUpload"
+                    >上传附件</el-button>
                 </el-upload>
-                <el-button @click="closeDialog">关 闭</el-button>
+                <el-button
+                    @click="closeDialog"
+                    :disabled="commitLoading"
+                >关 闭</el-button>
             </div>
         </el-dialog>
 
@@ -147,14 +154,13 @@ export default {
                 })
                 .then(res => {
                     if (res.code == 0) {
-                        for(var i = 0; i < res.data.length; i++){
+                        for (var i = 0; i < res.data.length; i++) {
                             var item = res.data[i],
                                 decodeUrl = decodeURIComponent(item.resume_url),
                                 decodeName = decodeURIComponent(item.file_name);
 
                             item.download_url = `/api/resume/download?url=${decodeUrl}&file_name=${decodeName}`;
                         }
-
 
                         that.tdata = res.data;
                     } else {
@@ -203,9 +209,15 @@ export default {
                 .catch(() => {});
         },
 
+        beforeUpload(){
+            this.commitLoading = true;
+        },
+
         //上传成功
         uploadSuccess(res, file, fileList) {
             let that = this;
+
+            that.commitLoading = false;
 
             if (res.code == 0) {
                 that.$message({
@@ -221,6 +233,7 @@ export default {
                 copyData.download_url = `/api/resume/download?url=${decodeUrl}&file_name=${decodeName}`;
 
                 that.tdata.unshift(copyData);
+
             } else {
                 that.$message.error(res.msg || "上传失败，请重试.");
             }
@@ -228,6 +241,7 @@ export default {
 
         //上传失败
         uploadError(err, file, fileList) {
+            that.commitLoading = false;
             this.$message.error("上传失败，请重试.");
         },
 

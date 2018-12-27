@@ -15,7 +15,7 @@ export default {
         return {
             form: {},
             formRules: {},
-            apiType: ""
+            apiType: "",            
         };
     },
 
@@ -41,6 +41,8 @@ export default {
 
         editCommit() {
             let that = this;
+
+            that.commitLoading = true;
 
             that.$refs["form"].validate(valid => {
                 if (valid) {
@@ -69,9 +71,13 @@ export default {
                             } else {
                                 that.$message.error(res.msg);
                             }
+
+                            that.commitLoading = false;
                         })
                         .catch(res => {
                             that.$message.error("修改失败，请重试.");
+
+                            that.commitLoading = false;
                         });
                 }
             });

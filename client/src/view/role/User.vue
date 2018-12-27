@@ -26,10 +26,11 @@
             slot="footer"
             class="dialog-footer"
         >
-            <el-button @click="closeDialog">取 消</el-button>
+            <el-button @click="closeDialog" :disabled="commitLoading">取 消</el-button>
             <el-button
                 type="primary"
                 @click="setRoleUserCommit"
+                :loading="commitLoading"
                 :disabled="!$check_pm('role_user_set')"
             >确 定</el-button>
         </div>
