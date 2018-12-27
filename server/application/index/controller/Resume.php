@@ -744,10 +744,12 @@ class Resume extends Controller
             $data3 = $resume->getId('expected_money_end <='.$money_ed);
         }else{
             // $arr_ids[] = [];
-            return [];
         }
         if ($data3) {
             $arr_ids[] = array_column($data3, 'id');
+        }
+        else{
+            return [];
         }
 
 
@@ -762,10 +764,13 @@ class Resume extends Controller
             $data4 = $resume->getId('age <='.$age_max);
         }else{
             // $arr_ids[] = [];
-            return [];
+            
         }
         if ($data4) {
             $arr_ids[] = array_column($data4,'id');
+        }
+        else{
+            return [];
         }
 
         $work_year_min = isset($where['work_year_min'])?$where['work_year_min']:'';
@@ -779,10 +784,12 @@ class Resume extends Controller
             $data5 = $resume->getId('work_year <='.$work_year_max);
         }else{
             // $arr_ids[] = [];
-            return [];
+            
         }
         if ($data5) {
             $arr_ids[] = array_column($data5,'id');
+        }else{
+            return [];
         }
 
         $other = isset($where['other'])?$where['other']:'';
@@ -796,12 +803,12 @@ class Resume extends Controller
             if (isset($data6['matches'])) {
                 $arr_ids[] = array_column($data6['matches'],'id');
             }
+            else{
+                return [];
+            }
             
         }
-        else{
-            // $arr_ids[] = [];
-            return [];
-        }
+
 
         $ids = [];
         foreach ($arr_ids as $a => $b) {
