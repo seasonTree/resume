@@ -766,7 +766,8 @@ class Resume extends Controller
         // echo $other;
         echo $phinx_where;
         dump($data1);
-        dump($data2);exit;
+        dump($data2);
+        exit;
     }
 
 
