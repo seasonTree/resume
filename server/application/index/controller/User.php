@@ -79,6 +79,15 @@ class User
             return json(['msg' => '存在重复的用户名， 新增用户失败.','code' => 500]);
         }
 
+        if(!checkUser($data['uname'])){
+            return json(['msg' => '用户名长度为6到16字符， 新增用户失败.','code' => 500]);
+        }
+
+        if(!checkPassword($data['passwd'])){
+            return json(['msg' => '密码长度最小6个字符， 新增用户失败.','code' => 500]);
+        }
+
+
         $data['ct_user'] = Session::get('user_info')['uname'];
         $data['passwd'] = hash('sha256',$data['passwd']);
         $id=model('User')->add($data);

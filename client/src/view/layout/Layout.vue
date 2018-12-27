@@ -151,8 +151,8 @@ let passRules = [
     },
     {
         min: 6,
-        max: 20,
-        message: "密码最少6个字符, 最大20个字符",
+        // max: 16,
+        message: "长度在最小在6个字符",
         trigger: "blur"
     }
 ];
@@ -283,7 +283,6 @@ export default {
     },
 
     methods: {
-
         changePassword() {
             let that = this;
 
