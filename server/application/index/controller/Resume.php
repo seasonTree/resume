@@ -472,6 +472,7 @@ class Resume extends Controller
         $data = '';
         if (count($input) > 3 ) {
             $data = $this->search($input);
+            $count = count($data);
         }
         else{
             $resume = new ResumeModel();
@@ -810,9 +811,7 @@ class Resume extends Controller
             $data = $resume->get("id in($str)");
         }
         
-        dump($data);
-        dump($ids);
-        exit;
+        return $data
     }
 
 
