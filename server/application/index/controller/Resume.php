@@ -796,6 +796,12 @@ class Resume extends Controller
 
 
         $list = array_intersect($data1_ids,$data2_ids,$data3_ids,$data4_ids,$data5_ids,$data6_ids);
+        dump($data1_ids);
+        dump($data2_ids);
+        dump($data3_ids);
+        dump($data4_ids);
+        dump($data5_ids);
+        dump($data6_ids);
         dump($list);
         exit;
     }
