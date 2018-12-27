@@ -714,10 +714,11 @@ class Resume extends Controller
 
         $email = isset($where['email'])?$where['email']:'';
         if ($email) {
-            $data2 = $sphinx->SetFilter('email',array($email));
-            // $data2 = $sphinx->query('',"resume");   //邮箱
+            $sphinx->setMatchMode(SPH_MATCH_ALL);   //匹配模式,匹配全部 
+            $data2 = $sphinx->query($email,"resume");   //邮箱
         }
 
+        $sphinx->setMatchMode(SPH_MATCH_EXTENDED2);   //匹配模式 
         $money_st = isset($where['expected_money_st'])?$where['expected_money_st']:'';
         $money_ed = isset($where['expected_money_ed'])?$where['expected_money_ed']:'';
         if ($money_st && $money_ed) {
