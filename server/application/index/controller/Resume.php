@@ -697,6 +697,9 @@ class Resume extends Controller
         $count_arr = count($arr);
         $n = 1;
         foreach ($arr as $k => $v) {
+            if ($v == '') {
+                continue;
+            }
             if ($count_arr == $n) {
 
                 $phinx_where.= "@$k $v";
