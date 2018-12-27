@@ -77,7 +77,7 @@
                         <el-button
                             size="medium"
                             type="primary"
-                            @click="getData"
+                            @click="getData(true)"
                         >搜索</el-button>
                     </el-col>
 

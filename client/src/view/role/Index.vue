@@ -26,6 +26,7 @@
                                     v-model.trim="search.name"
                                     autocomplete="off"
                                     placeholder="请输入角色名称"
+                                    @keyup.enter="getData(true)"
                                 ></el-input>
                                 <el-button
                                     type="primary"
