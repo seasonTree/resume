@@ -720,7 +720,7 @@ class Resume extends Controller
         $email = isset($where['email'])?$where['email']:'';
         if ($email) {
             
-            $data2 = $resume->get(['email' => $email])->toArray();
+            $data2 = $resume->getId(['email' => $email]);
             if (isset($data2[0])) {
                 $arr_ids[] = [ 0 => $data2[0]['id']];
             }   
@@ -734,11 +734,11 @@ class Resume extends Controller
         $money_ed = isset($where['expected_money_ed'])?$where['expected_money_ed']:'';
         $data3 = '';
         if ($money_st && $money_ed) {
-            $data3 = $resume->get('expected_money_start >='.$money_st.' and expected_money_ed =<'.$money_ed)->toArray();
+            $data3 = $resume->getId('expected_money_start >='.$money_st.' and expected_money_ed =<'.$money_ed);
         }else if($money_st && !$money_ed){  //期望薪资
-            $data3 = $resume->get('expected_money_start >='.$money_st)->toArray();
+            $data3 = $resume->getId('expected_money_start >='.$money_st);
         }else if(!$money_st && $money_ed){
-            $data3 = $resume->get('expected_money_ed =<'.$money_ed)->toArray();
+            $data3 = $resume->getId('expected_money_ed =<'.$money_ed);
         }else{
             // $arr_ids[] = [];
         }
@@ -751,11 +751,11 @@ class Resume extends Controller
         $age_max = isset($where['age_max'])?$where['age_max']:'';
         $data4 = '';
         if ($age_min && $age_max) {
-            $data4 = $resume->get('age >='.$age_min.' and age =<'.$age_max);
+            $data4 = $resume->getId('age >='.$age_min.' and age =<'.$age_max);
         }else if($age_min && !$age_max){    //年龄
-            $data4 = $resume->get('age >='.$age_min);
+            $data4 = $resume->getId('age >='.$age_min);
         }else if(!$age_min && $age_max){
-            $data4 = $resume->get('age =<'.$age_max);
+            $data4 = $resume->getId('age =<'.$age_max);
         }else{
             // $arr_ids[] = [];
         }
@@ -767,11 +767,11 @@ class Resume extends Controller
         $work_year_max = isset($where['work_year_max'])?$where['work_year_max']:'';
         $data5 = '';
         if ($work_year_min && $work_year_max) {
-            $data5 = $resume->get('work_year >='.$work_year_min.' and work_year =<'.$work_year_max);
+            $data5 = $resume->getId('work_year >='.$work_year_min.' and work_year =<'.$work_year_max);
         }else if($work_year_min && !$work_year_max){    //年龄
-            $data5 = $resume->get('work_year >='.$work_year_min);
+            $data5 = $resume->getId('work_year >='.$work_year_min);
         }else if(!$work_year_min && $work_year_max){
-            $data5 = $resume->get('work_year =<'.$work_year_max);
+            $data5 = $resume->getId('work_year =<'.$work_year_max);
         }else{
             // $arr_ids[] = [];
         }
