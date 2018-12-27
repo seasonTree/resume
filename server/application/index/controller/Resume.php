@@ -480,12 +480,7 @@ class Resume extends Controller
             $count = $resume->getCount();
         }
         
-        if ($data) {
-            return json(['msg' => '获取成功','code' => 0,'data' => [ 'row' => $data,'total' => $count]]);
-        }
-        else{
-            return json(['msg' => '无数据','code' => 1]);
-        }
+        return json(['msg' => '获取成功','code' => 0,'data' => [ 'row' => $data,'total' => $count]]);
     }
 
     public function getResumeOne(){
