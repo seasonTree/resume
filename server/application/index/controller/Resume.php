@@ -725,7 +725,7 @@ class Resume extends Controller
                 $arr_ids[] = $data2[0]['id'];
             }   
             else{
-                // $arr_ids[] = [];
+                $arr_ids[] = [];
             }
         }
         
@@ -734,16 +734,16 @@ class Resume extends Controller
         $money_ed = isset($where['expected_money_ed'])?$where['expected_money_ed']:'';
         $data3 = '';
         if ($money_st && $money_ed) {
-            $data3 = $resume->get('expected_money_start >='.$money_st.' and expected_money_ed =<'.$money_ed);
+            $data3 = $resume->get('expected_money_start >='.$money_st.' and expected_money_ed =<'.$money_ed)->toArray();
         }else if($money_st && !$money_ed){  //期望薪资
-            $data3 = $resume->get('expected_money_start >='.$money_st);
+            $data3 = $resume->get('expected_money_start >='.$money_st)->toArray();
         }else if(!$money_st && $money_ed){
-            $data3 = $resume->get('expected_money_ed =<'.$money_ed);
+            $data3 = $resume->get('expected_money_ed =<'.$money_ed)->toArray();
         }else{
             // $arr_ids[] = [];
         }
-        if (isset($data3['matches'])) {
-            $arr_ids[] = array_column($data3['matches'], 'id');
+        if ($data3) {
+            $arr_ids[] = array_column($data3, 'id');
         }
 
 
@@ -759,8 +759,8 @@ class Resume extends Controller
         }else{
             // $arr_ids[] = [];
         }
-        if (isset($data4['matches'])) {
-            $arr_ids[] = array_column($data4['matches'],'id');
+        if ($data4) {
+            $arr_ids[] = array_column($data4,'id');
         }
 
         $work_year_min = isset($where['work_year_min'])?$where['work_year_min']:'';
@@ -775,8 +775,8 @@ class Resume extends Controller
         }else{
             // $arr_ids[] = [];
         }
-        if (isset($data5['matches'])) {
-            $arr_ids[] = array_column($data5['matches'],'id');
+        if ($data5) {
+            $arr_ids[] = array_column($data5,'id');
         }
 
         $other = isset($where['other'])?$where['other']:'';
