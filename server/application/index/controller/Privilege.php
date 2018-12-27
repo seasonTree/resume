@@ -79,14 +79,20 @@ class Privilege extends Controller
     
     //权限菜单排序
     public function sort(){
-        $data = input('post.');
+        $data = input('post.data');
 
         //没有数据直接跳过
         if (empty($data)) {
             return json(['msg' => '排序成功.','code' => 0]);
         }
-
-        dump($data); exit;
+        $model =model('Privilege');
+        foreach($data as $k => $v){
+            $re_sort['id'] = $v;
+            $re_sort['idx'] = $k;
+            $model->edit($re_sort);
+        }
+        return json(['msg' =>'成功','code' => 0,'data' => []]);
+        
     }
 
     public function getSelect(){

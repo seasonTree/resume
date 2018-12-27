@@ -128,7 +128,10 @@
             @edit-item="editItem"
         ></edit>
 
-        <sort :show.sync="sortDialog"></sort>
+        <sort 
+            :show.sync="sortDialog"
+            @refresh-data="getData"  
+        ></sort>
     </div>
 </template>
 

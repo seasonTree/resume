@@ -79,7 +79,7 @@ class User extends Model
             ->join('role R','UR.role_id = R.id')
             ->join('user_permission UP','UP.role_id = R.id')
             ->join('permission P','UP.p_id = P.id')
-            ->where(['U.id'=>$id])->select()->toArray();
+            ->where(['U.id'=>$id])->order('P.idx asc, P.id asc')->select()->toArray();
         }
 
         return $data;

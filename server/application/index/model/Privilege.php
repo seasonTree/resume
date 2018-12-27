@@ -21,7 +21,7 @@ class Privilege extends Model
         }
 
         //注入idx 字段
-        $data['idx'] = $this->count() + 1;
+        $data['idx'] = $this->count();
 
         $this->allowField(true)->save($data);
 

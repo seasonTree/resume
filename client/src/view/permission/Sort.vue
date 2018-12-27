@@ -161,6 +161,10 @@ export default {
                             type: "success",
                             duration: 800
                         });
+
+                        that.$emit('refresh-data');
+
+                        that.closeDialog();
                     } else {
                         that.$message.error(
                             res.msg || "排序失败，请刷新后重试."
