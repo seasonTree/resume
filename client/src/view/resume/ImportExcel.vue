@@ -142,11 +142,14 @@
                     accept="application/vnd.ms-excel,.csv,
                         application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                 >
-                    <el-button type="success">上传Excel</el-button>
+                    <el-button type="success"
+                        :disabled="!$check_pm('resume_excel_upload')"
+                    >上传Excel</el-button>
                 </el-upload>
                 <el-button
                     type="primary"
                     @click="batchAdd"
+                    :disabled="!$check_pm('resume_batch_add')"
                 >批量导入</el-button>
                 <el-button @click="closeDialog">关 闭</el-button>
             </div>

@@ -43,6 +43,7 @@
             <el-button
                 type="primary"
                 @click="changePwd"
+                :disabled="!$check_pm('user_change_pass')"
             >确 定</el-button>
         </div>
     </el-dialog>

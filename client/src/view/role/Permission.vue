@@ -28,6 +28,7 @@
             <el-button
                 type="primary"
                 @click="permissionCommit"
+                :disabled="!$check_pm('role_permiss_set')"
             >确 定</el-button>
         </div>
     </el-dialog>

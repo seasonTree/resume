@@ -73,6 +73,7 @@
             <el-button
                 type="primary"
                 @click="addCommit"
+                :disabled="!$check_pm('user_add')"
             >确 定</el-button>
         </div>
     </el-dialog>

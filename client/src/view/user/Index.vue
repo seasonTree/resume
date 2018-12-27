@@ -12,6 +12,7 @@
                         <el-button
                             type="primary"
                             @click="addDialog = true"
+                            :disabled="!$check_pm('user_add')"
                         >新增</el-button>
                     </el-col>
                     <el-col :span="18">
@@ -86,12 +87,14 @@
                         <i
                             v-if="scope.row.status == 0"
                             class="fa fa-check right status-icon"
-                            @click="changeStatus(scope.row.id, 1, scope.row)"
+                            @click="$check_pm('user_change_status') && changeStatus(scope.row.id, 1, scope.row)"
+                            :class="{'permission-forbid': !$check_pm('user_change_status')}"
                         ></i>
                         <i
                             v-if="scope.row.status == 1"
                             class="fa fa-ban ban status-icon"
-                            @click="changeStatus(scope.row.id, 0, scope.row)"
+                            @click="$check_pm('user_change_status') && changeStatus(scope.row.id, 0, scope.row)"
+                            :class="{'permission-forbid': !$check_pm('user_change_status')}"
                         ></i>
                     </template>
                 </el-table-column>
@@ -114,6 +117,7 @@
                                 icon="fa fa-key"
                                 circle
                                 @click="changeUserPwd(scope.row.id)"
+                                :disabled="!$check_pm('user_change_pass')"
                             ></el-button>
                         </el-tooltip>
                         <el-tooltip
@@ -127,6 +131,7 @@
                                 icon="el-icon-edit"
                                 circle
                                 @click="showEditDialog(scope.row.id)"
+                                :disabled="!$check_pm('user_edit')"
                             ></el-button>
                         </el-tooltip>
                         <el-tooltip
@@ -140,6 +145,7 @@
                                 icon="el-icon-delete"
                                 circle
                                 @click="del(scope.row.id, scope.$index)"
+                                :disabled="!$check_pm('user_del')"
                             ></el-button>
                         </el-tooltip>
                     </template>
@@ -172,7 +178,7 @@
 
         <change-pwd
             :show.sync="changePwdDialog"
-            :id=changePwdID
+            :id="changePwdID"
         ></change-pwd>
     </div>
 </template>

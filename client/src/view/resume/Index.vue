@@ -5,10 +5,12 @@
                 <el-button
                     type="primary"
                     @click="addDialog = true"
+                    :disabled="!$check_pm('resume_add')"
                 >新增简历</el-button>
                 <el-button
                     type="primary"
                     @click="ImportExcelDialog = true"
+                    :disabled="!$check_pm('resume_batch_add')"
                 >批量导入</el-button>
             </div>
 
@@ -260,7 +262,7 @@
                 border
                 style="width: 100%"
                 :height="tabelHeight"
-                @row-click="showViewDialog"
+                @row-click="$check_pm('resume_get_row') && showViewDialog"
                 class="table"
             >
 
@@ -380,6 +382,7 @@
                                 icon="fa fa-folder-open"
                                 circle
                                 @click.stop="showUploadFile(scope.row.id)"
+                                :disabled="!$check_pm('resume_file_list')"
                             ></el-button>
                         </el-tooltip>
                         <el-tooltip
@@ -393,6 +396,7 @@
                                 icon="fa fa-user-astronaut"
                                 circle
                                 @click.stop="showCommunicationDialog(scope.row.id)"
+                                :disabled="!$check_pm('resume_commu_list')"
                             ></el-button>
                         </el-tooltip>
                         <el-tooltip
@@ -406,6 +410,7 @@
                                 icon="el-icon-edit"
                                 circle
                                 @click.stop="showEditDialog(scope.row.id)"
+                                :disabled="!$check_pm('resume_edit')"
                             ></el-button>
                         </el-tooltip>
                         <el-tooltip
@@ -419,6 +424,7 @@
                                 icon="el-icon-delete"
                                 circle
                                 @click.stop="del(scope.row.id, scope.$index)"
+                                :disabled="!$check_pm('resume_del')"
                             ></el-button>
                         </el-tooltip>
 

@@ -119,6 +119,7 @@
             <el-button
                 type="primary"
                 @click="addCommit"
+                :disabled="!$check_pm('permiss_add')"
             >确 定</el-button>
         </div>
     </el-dialog>

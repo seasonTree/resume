@@ -6,11 +6,13 @@
                 <el-button
                     type="primary"
                     @click="addDialog = true"
+                    :disabled="!$check_pm('permiss_add')"
                 >新增</el-button>
 
                 <el-button
                     type="primary"
                     @click="sortDialog = true"
+                    :disabled="!$check_pm('permiss_sort')"
                 >排序</el-button>
 
                 <!-- <el-row
@@ -82,6 +84,10 @@
                         prop="api"
                         label="接口"
                     ></el-table-column>
+                    <el-table-column
+                        prop="p_act_name"
+                        label="功能英文名称"
+                    ></el-table-column>
                     <!-- <el-table-column
                         prop="ct_user"
                         label="创建人"
@@ -95,6 +101,7 @@
                         fixed="right"
                         label="操作"
                         align="center"
+                        width="100"
                     >
                         <template slot-scope="scope">
                             <el-button
@@ -103,6 +110,7 @@
                                 icon="el-icon-edit"
                                 circle
                                 @click="showEditDialog(scope.row.id)"
+                                :disabled="!$check_pm('permiss_edit')"
                             ></el-button>
                             <el-button
                                 type="danger"
@@ -110,6 +118,7 @@
                                 icon="el-icon-delete"
                                 circle
                                 @click="del(scope.row.id, scope.$index)"
+                                :disabled="!$check_pm('permiss_del')"
                             ></el-button>
                         </template>
                     </el-table-column>
@@ -128,9 +137,9 @@
             @edit-item="editItem"
         ></edit>
 
-        <sort 
+        <sort
             :show.sync="sortDialog"
-            @refresh-data="getData"  
+            @refresh-data="getData"
         ></sort>
     </div>
 </template>
@@ -167,60 +176,60 @@ export default {
             sortDialog: false,
 
             tdata: [
-                    // {
-                    //     id: 1,
-                    //     p_name: "菜单页面",
-                    //     url: '/user/aaa',
-                    //     api: "/ttttttt/ttttt",
-                    //     ct_user: "6666666",
-                    //     ct_time: "192.666245",
-                    //     children: [
-                    //         {
-                    //             id: 2,
-                    //             p_name: "功能页面",
-                    //             url: '/user/aaa',
-                    //             api: "/44444/444",
-                    //             ct_user: "44444444",
-                    //             ct_time: "444444444444444"
-                    //         },
-                    //         {
-                    //             id: 3,
-                    //             p_name: "功能页面2222",
-                    //             url: '/user/aaa',
-                    //             api: "/nnnnnn/nnn",
-                    //             ct_user: "nnnnnnn",
-                    //             ct_time: "nnnnnnnnnnnn",
-                    //             children: [
-                    //                 {
-                    //                     id: 4,
-                    //                     p_name: "333333333333",
-                    //                     url: '/user/aaa',
-                    //                     api: "/33333",
-                    //                     ct_user: "3333",
-                    //                     ct_time: "3333333"
-                    //                 }
-                    //             ]
-                    //         }
-                    //     ]
-                    // },
-                    // {
-                    //     id: 16,
-                    //     p_name: "菜单33",
-                    //     api: "/vvvv/vvvvv",
-                    //     url: '/user/aaa',
-                    //     ct_user: "6666666",
-                    //     ct_time: "192.666245",
-                    //     children: [
-                    //         {
-                    //             id: 2,
-                    //             p_name: "功能页面",
-                    //             api: "/44444/444",
-                    //             url: '/user/aaa',
-                    //             ct_user: "44444444",
-                    //             ct_time: "444444444444444"
-                    //         }
-                    //     ]
-                    // }
+                // {
+                //     id: 1,
+                //     p_name: "菜单页面",
+                //     url: '/user/aaa',
+                //     api: "/ttttttt/ttttt",
+                //     ct_user: "6666666",
+                //     ct_time: "192.666245",
+                //     children: [
+                //         {
+                //             id: 2,
+                //             p_name: "功能页面",
+                //             url: '/user/aaa',
+                //             api: "/44444/444",
+                //             ct_user: "44444444",
+                //             ct_time: "444444444444444"
+                //         },
+                //         {
+                //             id: 3,
+                //             p_name: "功能页面2222",
+                //             url: '/user/aaa',
+                //             api: "/nnnnnn/nnn",
+                //             ct_user: "nnnnnnn",
+                //             ct_time: "nnnnnnnnnnnn",
+                //             children: [
+                //                 {
+                //                     id: 4,
+                //                     p_name: "333333333333",
+                //                     url: '/user/aaa',
+                //                     api: "/33333",
+                //                     ct_user: "3333",
+                //                     ct_time: "3333333"
+                //                 }
+                //             ]
+                //         }
+                //     ]
+                // },
+                // {
+                //     id: 16,
+                //     p_name: "菜单33",
+                //     api: "/vvvv/vvvvv",
+                //     url: '/user/aaa',
+                //     ct_user: "6666666",
+                //     ct_time: "192.666245",
+                //     children: [
+                //         {
+                //             id: 2,
+                //             p_name: "功能页面",
+                //             api: "/44444/444",
+                //             url: '/user/aaa',
+                //             ct_user: "44444444",
+                //             ct_time: "444444444444444"
+                //         }
+                //     ]
+                // }
             ]
         };
     },
@@ -260,10 +269,10 @@ export default {
         },
 
         //删除之后
-        afterDel(item){
+        afterDel(item) {
             let that = this;
             that.getData();
-        },
+        }
     }
 };
 </script>

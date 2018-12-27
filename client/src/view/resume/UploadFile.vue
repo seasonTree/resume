@@ -64,6 +64,7 @@
                                     size="mini"
                                     circle
                                     @click.stop="delFile(scope.row, scope.$index)"
+                                    :disabled="!$check_pm('resume_file_del')"
                                 ></el-button>
                             </el-tooltip>
                         </template>
@@ -90,7 +91,8 @@
                         application/vnd.openxmlformats-officedocument.wordprocessingml.document,
                         text/html,message/rfc822"
                 >
-                    <el-button type="primary">上传附件</el-button>
+                    <el-button type="primary"
+                    :disabled="!$check_pm('resume_file_upload')">上传附件</el-button>
                 </el-upload>
                 <el-button @click="closeDialog">关 闭</el-button>
             </div>

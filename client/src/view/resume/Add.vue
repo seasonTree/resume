@@ -473,11 +473,13 @@
                 <el-button
                     @click="analyze"
                     type="success"
+                    :disabled="!$check_pm('resume_analyze')"
                 >自动识别</el-button>
                 <el-button @click="closeDialog">取 消</el-button>
                 <el-button
                     type="primary"
                     @click="addCommit"
+                    :disabled="!$check_pm('resume_add')"
                 >确 定</el-button>
             </div>
         </el-dialog>

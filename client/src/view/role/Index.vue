@@ -13,6 +13,7 @@
                             <el-button
                                 type="primary"
                                 @click="addDialog = true"
+                                :disabled="!$check_pm('role_add')"
                             >新增</el-button>
                         </el-col>
                         <el-col :span="18">
@@ -101,6 +102,7 @@
                                     icon="fa fa-user"
                                     circle
                                     @click="setRoleUser(scope.row.id)"
+                                    :disabled="!$check_pm('role_user_set')"
                                 ></el-button>
                             </el-tooltip>
 
@@ -115,6 +117,7 @@
                                     icon="fa fa-cog"
                                     circle
                                     @click="setRolePremission(scope.row.id)"
+                                    :disabled="!$check_pm('role_permiss_set')"
                                 ></el-button>
                             </el-tooltip>
                             <el-tooltip
@@ -128,6 +131,7 @@
                                     icon="el-icon-edit"
                                     circle
                                     @click="showEditDialog(scope.row.id)"
+                                    :disabled="!$check_pm('role_edit')"
                                 ></el-button>
                             </el-tooltip>
                             <el-tooltip
@@ -141,6 +145,7 @@
                                     icon="el-icon-delete"
                                     circle
                                     @click="del(scope.row.id, scope.$index)"
+                                    :disabled="!$check_pm('role_del')"
                                 ></el-button>
                             </el-tooltip>
                         </template>

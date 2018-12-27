@@ -135,6 +135,7 @@
             <el-button
                 type="primary"
                 @click="editCommit"
+                :disabled="!$check_pm('resume_commu_edit')"
             >确 定</el-button>
         </div>
     </el-dialog>

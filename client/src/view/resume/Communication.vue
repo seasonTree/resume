@@ -124,6 +124,7 @@
                                 icon="el-icon-edit"
                                 circle
                                 @click.stop="showEditDialog(scope.row.id)"
+                                :disabled="!$check_pm('resume_commu_edit')"
                             ></el-button>
                         </el-tooltip>
 
@@ -139,6 +140,7 @@
                 <el-button
                     @click="addDialog = true"
                     type="primary"
+                    :disabled="!$check_pm('resume_commu_add')"
                 >新增沟通</el-button>
                 <el-button @click="closeDialog">关 闭</el-button>
             </div>

@@ -26,6 +26,7 @@
             <el-button
                 type="primary"
                 @click="sortCommit"
+                :disabled="!$check_pm('permiss_sort')"
             >确 定</el-button>
         </div>
     </el-dialog>

@@ -42,6 +42,7 @@
             <el-button
                 type="primary"
                 @click="editCommit"
+                :disabled="!$check_pm('role_edit')"
             >确 定</el-button>
         </div>
     </el-dialog>

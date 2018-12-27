@@ -30,6 +30,7 @@
             <el-button
                 type="primary"
                 @click="setRoleUserCommit"
+                :disabled="!$check_pm('role_user_set')"
             >确 定</el-button>
         </div>
     </el-dialog>

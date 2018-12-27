@@ -87,6 +87,7 @@
                     <el-button
                         type="primary"
                         @click="exportExcel"
+                        :disabled="!$check_pm('report_person_recru_export_excel')"
                     >导出</el-button>
                 </div>
             </div>
@@ -284,7 +285,11 @@ export default {
             // that.pager.total = 1;
 
             if (that.search.type == 0) {
-                that.getRecruitmentList(params);
+                if (that.$check_pm("report_person_recru_list")) {
+                    that.getRecruitmentList(params);
+                } else {
+                    that.$message.error("无此权限.");
+                }
             } else if (that.search.type == 1) {
                 let urs = that.selectUser.join(",");
 
@@ -292,7 +297,11 @@ export default {
                     params["ur"] = urs;
                 }
 
-                that.getCandidateList(params);
+                if (that.$check_pm("report_person_recru_candidate")) {
+                    that.getCandidateList(params);
+                } else {
+                    that.$message.error("无此权限.");
+                }
             }
         },
 
