@@ -696,6 +696,7 @@ class Resume extends Controller
         $arr['english'] = isset($where['english'])?$where['english']:'';
         $phinx_where = '';
         $count_arr = count($arr);
+        $arr_ids = [];
         $n = 1;
         foreach ($arr as $k => $v) {
             if ($v == '') {
@@ -713,7 +714,7 @@ class Resume extends Controller
 
         $data1 = $sphinx->query($phinx_where,"resume");   //基础资料\
         if ($data1) {
-            $data1_ids = array_column($data1['matches'], 'id');
+            $arr_ids[] = array_column($data1['matches'], 'id');
         }
 
         $email = isset($where['email'])?$where['email']:'';
@@ -721,14 +722,14 @@ class Resume extends Controller
             
             $data2 = $resume->get(['email' => $email]);
             if ($data2) {
-                $data2_ids[] = $data2[0]['id'];
+                $arr_ids[] = $data2[0]['id'];
             }   
             else{
-                $data2_ids = [];
+                $arr_ids[] = [];
             }
         }
         else{
-            $data2_ids = [];
+            $arr_ids[] = [];
         }
 
         $money_st = isset($where['expected_money_st'])?$where['expected_money_st']:'';
@@ -741,10 +742,10 @@ class Resume extends Controller
         }else if(!$money_st && $money_ed){
             $data3 = $resume->get('expected_money_ed =<'.$money_ed);
         }else{
-            $data3_ids = [];
+            $arr_ids[] = [];
         }
         if ($data3) {
-            $data3_ids = array_column($data3['matches'], 'id');
+            $arr_ids[] = array_column($data3['matches'], 'id');
         }
 
 
@@ -758,10 +759,10 @@ class Resume extends Controller
         }else if(!$age_min && $age_max){
             $data4 = $resume->get('age =<'.$age_max);
         }else{
-            $data4_ids = [];
+            $arr_ids[] = [];
         }
         if ($data4) {
-            $data4_ids = array_column($data4['matches'],'id');
+            $arr_ids[] = array_column($data4['matches'],'id');
         }
 
         $work_year_min = isset($where['work_year_min'])?$where['work_year_min']:'';
@@ -774,10 +775,10 @@ class Resume extends Controller
         }else if(!$work_year_min && $work_year_max){
             $data5 = $resume->get('work_year =<'.$work_year_max);
         }else{
-            $data5_ids = [];
+            $arr_ids[] = [];
         }
         if ($data5) {
-            $data5_ids = array_column($data5['matches'],'id');
+            $arr_ids[] = array_column($data5['matches'],'id');
         }
 
         $other = isset($where['other'])?$where['other']:'';
@@ -788,13 +789,23 @@ class Resume extends Controller
             $other = implode('"|"',$other);
             $other = "'".'"'.$other.'"'."'";
             $data6 = $sphinx->query($other,"resume");
-            $data6_ids = array_column($data6['matches'],'id');
+            $arr_ids[] = array_column($data6['matches'],'id');
         }
         else{
-            $data6_ids = [];
+            $arr_ids[] = [];
         }
 
-
+        $ids = [];
+        foreach ($arr_ids as $a => $b) {
+            if ($a == 0) {
+                $ids[] = $b;
+                continue;
+            }
+            if (empty($b)) {
+                continue;
+            }
+            $ids = array_intersect($ids, $b);
+        }
         $list = array_intersect($data1_ids,$data2_ids,$data3_ids,$data4_ids,$data5_ids,$data6_ids);
         dump($data1_ids);
         dump($data2_ids);
@@ -802,7 +813,7 @@ class Resume extends Controller
         dump($data4_ids);
         dump($data5_ids);
         dump($data6_ids);
-        dump($list);
+        dump($ids);
         exit;
     }
 
