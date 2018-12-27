@@ -339,7 +339,7 @@
                                     <div class="sub2-header"> 自定义01</div>
                                     <el-input
                                         type="textarea"
-                                        v-model="form.custom01"
+                                        v-model="form.custom1"
                                         resize="none"
                                     ></el-input>
                                 </el-col>
@@ -347,7 +347,7 @@
                                     <div class="sub2-header"> 自定义02</div>
                                     <el-input
                                         type="textarea"
-                                        v-model="form.custom02"
+                                        v-model="form.custom2"
                                         resize="none"
                                     ></el-input>
                                 </el-col>
@@ -355,7 +355,7 @@
                                     <div class="sub2-header"> 自定义03</div>
                                     <el-input
                                         type="textarea"
-                                        v-model="form.custom03"
+                                        v-model="form.custom3"
                                         resize="none"
                                     ></el-input>
                                 </el-col>
@@ -439,9 +439,9 @@ export default {
                 personalskills: "",
 
                 //自定义
-                custom01: "",
-                custom02: "",
-                custom03: ""
+                custom1: "",
+                custom2: "",
+                custom3: ""
             }
         };
     },
