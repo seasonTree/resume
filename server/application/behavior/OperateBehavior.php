@@ -22,37 +22,10 @@ class OperateBehavior extends Controller
      */
     protected $exclude = [
         '/',
-        '/api/user/login',
-        '/api/user/get_user_info',
-        '/api/user/get_user_permission',
-
-        'index/index',
-        'login/loginout',
-        'transaction/lst',//获取交易报告的数据
-        'transaction/exportexcel',//打印交易报告的数据
-        'Auser/lst',//获取后台账号数据
-        'user/getmemberlst',//获取销售账号数据
-        'role/lst',//获取角色列表
-        'user/userinfo',//当前用户页面跳转
-        'user/getoneuser',//获取当前用户信息
-        'channel/list',//获取渠道信息
-        'team/lst',//获取团队列表
-        'channel/qrcode',//获取二维码信息
-        'channel/getchannel',//获取单条渠道
-        'channel/addsales',//调整销售员
-        'audit/reglst',//获取审核列表
-        'channel/getsales',//获取销售员
-        'message/getmessagecount',//获取未读条数
-        'config/getprotocol',//获取协议内容
-        'user/insuserinfo',//写入用户信息
-        'user/upload',//上传
-        'user/sendmessage',//发短信,
-        'config/protocollst',//协议列表
-        'config/getprotocol',//获取协议内容
-        'auser/lst',//获取管理员列表
-        'message/lst',//获取信息列表
-        'user/doresetpassword',//修改密码
-        'achievement/lst',//业绩列表
+        
+        'api/user/logout',
+        'api/user/get_user_info',
+        'api/user/get_user_permission',
 
     ];
 
@@ -61,52 +34,10 @@ class OperateBehavior extends Controller
      */
     protected $login = [
         '/',
-        'index/index',
-        'login/searchpass',
-        'login/login',
-        'index/browserchoose',
-        'user/sendmessage',
-        'config/showprotocol',
-        'register/index',//注册页面
-        'register/userregister',//注册提交
-        'api/test'
+        'api/user/login',
+        
     ];
 
-    /**
-     *定义未审核的时候拥有的权限路由
-     */
-    protected $unaudit = [
-        'user/userinfo',//当前用户页面跳转
-        'user/getoneuser',//获取当前用户信息
-        'user/insuserinfo',//写入用户信息
-        'user/upload',//上传
-        'message/index',//信息主页
-        'message/lst',//获取信息列表
-        'message/getmessagecount'//获取未读条数
-    ];
-
-    /**
-     *定义不需要token验证的路由(页面请求非api)
-     */
-    protected $untoken = [
-        'user/userinfo',//当前用户页面跳转
-        'message/index',//信息主页
-        '/',
-        'index/index',
-        'login/searchpass',
-        'index/browserchoose',
-        'config/showprotocol',
-        'register/index',//注册页面\
-        'login/loginout',
-        'channel/qrcode',//获取二维码信息
-        'user/upload',//上传
-        'transaction/exportexcel',//打印交易报告的数据
-
-        'achievement/lst',
-
-        'api/test'
-
-    ];
 
     /**
      * 权限验证

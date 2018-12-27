@@ -5,7 +5,7 @@ use think\facade\Cookie;
 use think\facade\Log;
 use think\facade\Request;
 use think\facade\Session;
-
+use app\index\model\User as UserModel;
 class User
 {
 
@@ -23,7 +23,30 @@ class User
 
     public function changePassword(){
         //修改密码
-        
+        $parm = input('post.');
+        if ($parm['oldPass'] == '') {
+          return json(['msg' => '旧密码不能为空','code' => 2,'data' => []]);
+        }
+        if ($parm['newPass'] == '') {
+          return json(['msg' => '新密码不能为空','code' => 3,'data' => []]);
+        }
+        if ($parm['newPass'] != $parm['newPassRe']) {
+          return json(['msg' => '新密码不一致','code' => 4,'data' => []]);
+        }
+        $user = new UserModel();
+        $find = $user->getOne(['id' => Session::get('user_info')['id']]);
+        if (hash('sha256',$parm['oldPass']) != $find['passwd']) {
+          return json(['msg' => '旧密码错误','code' => 5,'data' => []]);
+        }
+        $data['id'] = Session::get('user_info')['id'];
+        $data['passwd'] = hash('sha256',$parm['newPass']);
+        $res = $user->edit($data);
+        if ($res) {
+          return json(['msg' => '修改成功','code' => 0,'data' => []]);
+        }
+        else{
+          return json(['msg' => '修改失败','code' => 1,'data' => []]);
+        }
     }
     public function lst(){
       $data = model('User')->lst();
