@@ -774,7 +774,7 @@ class Resume extends Controller
         }else if(!$work_year_min && $work_year_max){
             $data5 = $resume->get('work_year =<'.$work_year_max);
         }else{
-            $data5 = [];
+            $data5_ids = [];
         }
         if ($data5) {
             $data5_ids = array_column($data5['matches'],'id');
