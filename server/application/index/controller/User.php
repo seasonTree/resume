@@ -31,7 +31,14 @@ class User
     }
     public function lstPage(){
         $data = input('get.');
-        $data = model('User')->lstPage($data['pageIndex'],$data['pageSize']);
+        $where = [];
+        $name = isset($data['name'])?trim($data['name']):'';
+        
+        if($name != '') {
+            $where['uname'] = $name;
+        }
+
+        $data = model('User')->lstPage($data['pageIndex'],$data['pageSize'], $where);
         return json(['code' => 0,'msg' => '获取数据成功','data' => $data]);
 
     }
@@ -42,7 +49,13 @@ class User
     }
     public function edit(){
         $data =input('post.');
-        $data['mfy_time'] = date('Y-m-d H:i:s');
+
+        if(isset($data['id'])){
+            return json(['msg' => '参数错误.','code' => 500]);
+        }
+
+        $data['mfy_user'] = Session::get('user_info')['uname'];
+        // $data['mfy_time'] = date('Y-m-d H:i:s');
         $id=model('User')->edit($data);
         if($id){
             $data = model('User')->getOne(['id'=>$data['id']]);
@@ -51,8 +64,25 @@ class User
     }
     public function add(){
         $data = input('post.');
+
+        if (empty($data)) {
+            return json(['msg' => '没有数据， 新增用户失败.','code' => 500]);
+        }
+
+        if ($data['passwd'] != $data['repasswd']){
+            return json(['msg' => '两次输入的密码不一致， 新增用户失败.','code' => 500]);
+        }
+        
+        $udata = model('User')->getOne(['uname'=>$data['uname']]);
+
+        if($udata){
+            return json(['msg' => '存在重复的用户名， 新增用户失败.','code' => 500]);
+        }
+
+        $data['ct_user'] = Session::get('user_info')['uname'];
         $data['passwd'] = hash('sha256',$data['passwd']);
         $id=model('User')->add($data);
+        
         if($id){
             $data = model('User')->getOne(['id'=>$id]);
             return json(['data'=>$data,'code'=>0,'msg'=>'新增成功']);

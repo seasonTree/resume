@@ -36,6 +36,8 @@
 </template>
 
 <script>
+//已经废弃--------------------------------------
+
 import DialogForm from "../../base/DialogForm";
 import { deepClone } from "@common/util";
 export default {

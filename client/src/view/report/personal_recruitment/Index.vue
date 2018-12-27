@@ -387,7 +387,7 @@ export default {
 
             let params = pArr.join("&");
 
-            window.open(`/person_recru/export?${params}`, "_blank");
+            window.open(`/api/person_recru/export?${params}`, "_blank");
         }
     }
 };

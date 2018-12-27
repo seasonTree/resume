@@ -3,6 +3,7 @@ namespace app\index\controller;
 
 use app\index\model\RolePri;
 use app\index\model\UserRole;
+use think\facade\Session;
 
 class Role
 {
@@ -53,17 +54,46 @@ class Role
 //            $v['pri_id'] =array_unique(explode(',',$v['pri_id']));$list[$k]['pri_id'] =implode(',',$v['pri_id']);
 //        }
 
-        $priData =model('privilege')->getTree();
+        // $priData =model('privilege')->getTree();
 
-        $data = [
-            'list' => $list,
-            'role' => $priData
-        ];
+        // $data = [
+        //     'list' => $list,
+        //     'role' => $priData
+        // ];
 
         return json(['data'=>$list,'code'=>0,'msg'=>'获取数据成功']);
     }
+
+    //获取分页类型
+    public function lstPage(){
+        $data = input('get.');
+        $where = [];
+        $name = isset($data['name'])? trim($data['name']):'';
+        
+        if($name != '') {
+            $where['role_name'] = $name;
+        }
+
+        $data = model('Role')->lstPage($data['pageIndex'],$data['pageSize'], $where);
+        return json(['code' => 0,'msg' => '获取数据成功','data' => $data]);
+
+    }
+
     public function add(){
-	    $data = input('post.');
+        $data = input('post.');
+        $role_name = isset($data['role_name'])?trim($data['role_name']):'';
+
+        if($role_name == ''){
+            return json(['code' => 500,'msg' => '角色名称不能为空.','data' => []]);
+        }
+
+        $udata = model('Role')->getOneByRoleName($role_name);
+
+        if($udata){
+            return json(['msg' => '该角色名称已经存在， 新增角色失败.','code' => 500]);
+        }
+
+        $data['ct_user'] = Session::get('user_info')['uname'];
 
 //	    if(empty($data['selected'])){
 //            return json(['data'=>'','code'=>1,'msg'=>'请选择权限']);
@@ -111,6 +141,19 @@ class Role
     }
     public function edit(){
         $data =input('post.');
+        $role_name = isset($data['role_name'])?trim($data['role_name']):'';
+
+        $udata = model('Role')->getOneByRoleName($role_name);
+
+        if(!isset($data['id'])){
+            return json(['msg' => '参数错误.','code' => 500]);
+        }
+
+        if($udata && $udata['id'] != $data['id']){
+            return json(['msg' => '该角色名称已经存在， 新增角色失败.','code' => 500]);
+        }
+
+        $data['mfy_user'] = Session::get('user_info')['uname'];
 
 //        if(empty($data['selected'])){
 //            return json(['data'=>'','code'=>1,'msg'=>'请选择权限']);

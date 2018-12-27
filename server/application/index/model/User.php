@@ -42,17 +42,19 @@ class User extends Model
     public function updateToken($data){
         return User::where(['id' => $data['id']])->update(['token' => $data['token']]);
     }
-    public function lstPage($pageIndex,$pageSize){
+    public function lstPage($pageIndex,$pageSize, $where = []){
+
         if($pageIndex < 1){
             $pageIndex = 1;
         }
         $offset = ($pageIndex - 1) * $pageSize;
-        $limitData = $this->limit($offset, $pageSize)->select();
-        $count = User::count();
-        $pageCount = ceil($count / $pageSize);
+
+        $limitData = $this->limit($offset, $pageSize)->where($where)->select();
+        $count = $this->where($where)->count();
+        // $pageCount = ceil($count / $pageSize);
         $data = [
             'row' => $limitData,
-            'total' => $pageCount
+            'total' => $count
         ];
         return $data;
     }
@@ -77,7 +79,7 @@ class User extends Model
             ->join('role R','UR.role_id = R.id')
             ->join('user_permission UP','UP.role_id = R.id')
             ->join('permission P','UP.p_id = P.id')
-            ->where(['U.id'=>$id])->select()->toArray();
+            ->where(['U.id'=>$id])->order('P.idx asc, P.id asc')->select()->toArray();
         }
 
         return $data;

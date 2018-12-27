@@ -23,7 +23,7 @@
                                 <el-input
                                     type="text"
                                     class="search-input"
-                                    v-model="search.name"
+                                    v-model.trim="search.name"
                                     autocomplete="off"
                                     placeholder="请输入角色名称"
                                 ></el-input>
