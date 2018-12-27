@@ -728,13 +728,11 @@ class Resume extends Controller
                 $arr_ids[] = [];
             }
         }
-        else{
-            $arr_ids[] = [];
-        }
+        
 
         $money_st = isset($where['expected_money_st'])?$where['expected_money_st']:'';
         $money_ed = isset($where['expected_money_ed'])?$where['expected_money_ed']:'';
-        $data3 = [];
+        $data3 = '';
         if ($money_st && $money_ed) {
             $data3 = $resume->get('expected_money_start >='.$money_st.' and expected_money_ed =<'.$money_ed);
         }else if($money_st && !$money_ed){  //期望薪资
@@ -751,7 +749,7 @@ class Resume extends Controller
 
         $age_min = isset($where['age_min'])?$where['age_min']:'';
         $age_max = isset($where['age_max'])?$where['age_max']:'';
-        $data4 = [];
+        $data4 = '';
         if ($age_min && $age_max) {
             $data4 = $resume->get('age >='.$age_min.' and age =<'.$age_max);
         }else if($age_min && !$age_max){    //年龄
@@ -767,7 +765,7 @@ class Resume extends Controller
 
         $work_year_min = isset($where['work_year_min'])?$where['work_year_min']:'';
         $work_year_max = isset($where['work_year_max'])?$where['work_year_max']:'';
-        $data5 = [];
+        $data5 = '';
         if ($work_year_min && $work_year_max) {
             $data5 = $resume->get('work_year >='.$work_year_min.' and work_year =<'.$work_year_max);
         }else if($work_year_min && !$work_year_max){    //年龄
@@ -782,7 +780,7 @@ class Resume extends Controller
         }
 
         $other = isset($where['other'])?$where['other']:'';
-        $data6 = [];
+        $data6 = '';
         if ($other) {
             $other = preg_replace("/(,|，)/",',',$other);
             $other = explode(',',$other);
@@ -798,7 +796,7 @@ class Resume extends Controller
         $ids = [];
         foreach ($arr_ids as $a => $b) {
             if ($a == 0) {
-                $ids[] = $b;
+                $ids = $b;
                 continue;
             }
             if (empty($b)) {
