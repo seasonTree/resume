@@ -725,7 +725,7 @@ class Resume extends Controller
                 $arr_ids[] = $data2[0]['id'];
             }   
             else{
-                $arr_ids[] = [];
+                // $arr_ids[] = [];
             }
         }
         
@@ -740,7 +740,7 @@ class Resume extends Controller
         }else if(!$money_st && $money_ed){
             $data3 = $resume->get('expected_money_ed =<'.$money_ed);
         }else{
-            $arr_ids[] = [];
+            // $arr_ids[] = [];
         }
         if ($data3) {
             $arr_ids[] = array_column($data3['matches'], 'id');
@@ -757,7 +757,7 @@ class Resume extends Controller
         }else if(!$age_min && $age_max){
             $data4 = $resume->get('age =<'.$age_max);
         }else{
-            $arr_ids[] = [];
+            // $arr_ids[] = [];
         }
         if ($data4) {
             $arr_ids[] = array_column($data4['matches'],'id');
@@ -773,7 +773,7 @@ class Resume extends Controller
         }else if(!$work_year_min && $work_year_max){
             $data5 = $resume->get('work_year =<'.$work_year_max);
         }else{
-            $arr_ids[] = [];
+            // $arr_ids[] = [];
         }
         if ($data5) {
             $arr_ids[] = array_column($data5['matches'],'id');
