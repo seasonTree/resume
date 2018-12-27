@@ -748,9 +748,7 @@ class Resume extends Controller
         if ($data3) {
             $arr_ids[] = array_column($data3, 'id');
         }
-        else{
-            return [];
-        }
+       
 
 
         $age_min = isset($where['age_min'])?$where['age_min']:'';
@@ -769,10 +767,7 @@ class Resume extends Controller
         if ($data4) {
             $arr_ids[] = array_column($data4,'id');
         }
-        else{
-            return [];
-        }
-
+        
         $work_year_min = isset($where['work_year_min'])?$where['work_year_min']:'';
         $work_year_max = isset($where['work_year_max'])?$where['work_year_max']:'';
         $data5 = '';
@@ -788,8 +783,6 @@ class Resume extends Controller
         }
         if ($data5) {
             $arr_ids[] = array_column($data5,'id');
-        }else{
-            return [];
         }
 
         $other = isset($where['other'])?$where['other']:'';
