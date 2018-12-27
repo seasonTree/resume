@@ -23,6 +23,7 @@ Route::post('api/user/logout','User/logOut');//退出登录
 Route::get('api/dashboard/get','Index/indexList');//获取简历内容
 Route::get('api/user/get_user_info','User/getUserInfo');//获取用户信息
 Route::get('api/user/get_user_permission','User/getUserPermission');//获取用户权限
+Route::post('api/user/change_password','User/changePassword');//修改自己的密码
 //-----------------------------------------------
 
 //测试使用----------------------------------------
