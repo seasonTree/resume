@@ -412,6 +412,7 @@ export default {
         return {
             apiType: "resume",
             form: {
+                id: 0,
                 name: "",
                 age: "",
                 sex: "",
@@ -511,6 +512,7 @@ export default {
                 if (valid) {
                     that.$api[that.apiType]
                         .checkName({
+                            id: that.form.id,
                             name: that.form.name
                         })
                         .then(res => {
