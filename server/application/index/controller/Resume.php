@@ -685,11 +685,11 @@ class Resume extends Controller
         // $res = $sphinx->UpdateAttributes ('users',array('is_del'),array(18 => array(1)));
         $arr = [];
         $arr['name'] = isset($where['name'])?$where['name']:'';
-        $arr['sex'] = isset($where['sex'])?$where['sex']:'';
-        $arr['educational'] = isset($where['educational'])?$where['educational']:'';
-        $arr['phone'] = isset($where['phone'])?$where['phone']:'';
-        $arr['expected_job'] = isset($where['expected_job'])?$where['expected_job']:'';
-        $arr['status'] = isset($where['status'])?$where['status']:'';
+        // $arr['sex'] = isset($where['sex'])?$where['sex']:'';
+        // $arr['educational'] = isset($where['educational'])?$where['educational']:'';
+        // $arr['phone'] = isset($where['phone'])?$where['phone']:'';
+        // $arr['expected_job'] = isset($where['expected_job'])?$where['expected_job']:'';
+        // $arr['status'] = isset($where['status'])?$where['status']:'';
         // $arr['school'] = isset($where['school'])?$where['school']:'';
         // $arr['speciality'] = isset($where['speciality'])?$where['speciality']:'';
         // $arr['english'] = isset($where['english'])?$where['english']:'';
