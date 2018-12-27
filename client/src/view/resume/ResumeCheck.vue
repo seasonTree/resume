@@ -166,6 +166,12 @@ export default {
         //点击行查看简历
         showViewDialog(row) {
             let that = this;
+
+            //检查是否有查看的权限
+            if (!that.$check_pm("resume_get_row")) {
+                return;
+            }
+
             that.viewID = row.id;
             that.viewDialog = true;
         },
