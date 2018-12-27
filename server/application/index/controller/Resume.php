@@ -688,7 +688,6 @@ class Resume extends Controller
         $arr['sex'] = isset($where['sex'])?$where['sex']:'';
         $arr['educational'] = isset($where['educational'])?$where['educational']:'';
         $arr['phone'] = isset($where['phone'])?$where['phone']:'';
-        $arr['email'] = isset($where['email'])?$where['email']:'';
         $arr['expected_job'] = isset($where['expected_job'])?$where['expected_job']:'';
         $arr['status'] = isset($where['status'])?$where['status']:'';
         $arr['school'] = isset($where['school'])?$where['school']:'';
@@ -698,6 +697,9 @@ class Resume extends Controller
         $count_arr = count($arr);
         $n = 1;
         foreach ($arr as $k => $v) {
+            if ($v == '') {
+                continue;
+            }
             if ($count_arr == $n) {
 
                 $phinx_where.= "@$k $v";
@@ -708,8 +710,60 @@ class Resume extends Controller
             $n++;
         }
 
-        $data1 = $sphinx->query('@name d & @sex 男 & @educational 本科 & @phone 123 & @email =21@12 & @expected_job 期望从事岗位 & @status 状态 & @school 学校 & @speciality 专业 & @english 英语水平',"resume");   //星号为所有索引源
+        $data1 = $sphinx->query($phinx_where,"resume");   //基础资料
+
+        // $email = isset($where['email'])?$where['email']:'';
+        // if ($email) {
+        //     $data2 = $sphinx->query($email,"resume");   //邮箱
+        // }
+
+        // $money_st = isset($where['expected_money_st'])?$where['expected_money_st']:'';
+        // $money_ed = isset($where['expected_money_ed'])?$where['expected_money_ed']:'';
+        // if ($money_st && $money_ed) {
+            
+        // }else if($money_st && !$money_ed){  //期望薪资
+
+        // }else if(!$money_st && $money_ed){
+
+        // }else{
+        //     $data3 = [];
+        // }
+
+        // $age_min = isset($where['age_min'])?$where['age_min']:'';
+        // $age_max = isset($where['age_max'])?$where['age_max']:'';
+        // if ($age_min && $age_max) {
+            
+        // }else if($age_min && !$age_max){    //年龄
+
+        // }else if(!$age_min && $age_max){
+
+        // }else{
+        //     $data4 = [];
+        // }
+
+        // $work_year_min = isset($where['work_year_min'])?$where['work_year_min']:'';
+        // $work_year_max = isset($where['work_year_max'])?$where['work_year_max']:'';
+        // if ($work_year_min && $work_year_max) {
+            
+        // }else if($work_year_min && !$work_year_max){    //年龄
+
+        // }else if(!$work_year_min && $work_year_max){
+
+        // }else{
+        //     $data5 = [];
+        // }
+
+        // $other = isset($where['other'])?$where['other']:'';
+        // if ($other) {
+        //     $other = preg_replace("/(,|，)/",',',$other);
+        //     $other = explode(',',$other);
+        //     $other = implode('"|"',$other);
+        //     $other = "'".'"'.$other.'"'."'";
+        //     $data6 = $sphinx->query($other,"resume");
+        // }
+
         $data = array_column($result['matches'],'id');
+        // echo $other;
         echo $phinx_where;
         dump($data1);exit;
     }
