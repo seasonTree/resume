@@ -675,6 +675,7 @@ class Resume extends Controller
     }
 
     public function search($where = ''){
+        $resume = new ResumeModel();
         $sphinx = new \SphinxClient;
         $sphinx->setServer("localhost", 9312);
         $sphinx->setMatchMode(SPH_MATCH_EXTENDED2);   //匹配模式 ANY为关键词自动拆词，ALL为不拆词匹配（完全匹配），EXTENDED2,多词匹配
@@ -695,6 +696,7 @@ class Resume extends Controller
         $arr['english'] = isset($where['english'])?$where['english']:'';
         $phinx_where = '';
         $count_arr = count($arr);
+        $arr_ids = [];
         $n = 1;
         foreach ($arr as $k => $v) {
             if ($v == '') {
@@ -710,73 +712,102 @@ class Resume extends Controller
             $n++;
         }
 
-        $data1 = $sphinx->query($phinx_where,"resume");   //基础资料
+        $data1 = $sphinx->query($phinx_where,"resume");   //基础资料\
+        if ($data1) {
+            $arr_ids[] = array_column($data1['matches'], 'id');
+        }
 
         $email = isset($where['email'])?$where['email']:'';
         if ($email) {
-            $resume = new ResumeModel();
-            $data2 = $resume->getOne(['email' => $email]);
+            
+            $data2 = $resume->get(['email' => $email]);
             if ($data2) {
-                $data2[] = $data2['id'];
+                $arr_ids[] = $data2[0]['id'];
             }   
             else{
-                $data2 = [];
+                $arr_ids[] = [];
             }
+        }
+        else{
+            $arr_ids[] = [];
         }
 
         $money_st = isset($where['expected_money_st'])?$where['expected_money_st']:'';
         $money_ed = isset($where['expected_money_ed'])?$where['expected_money_ed']:'';
+        $data3 = [];
         if ($money_st && $money_ed) {
-            $sphinx->SetFilterRange('expected_money_start', $money_st, 10000000000);
-            $sphinx->SetFilterRange('expected_money_ed', -1, $money_ed);
-            $data3 = $sphinx->query("","resume"); 
+            $data3 = $resume->get('expected_money_start >='.$money_st.' and expected_money_ed =<'.$money_ed);
         }else if($money_st && !$money_ed){  //期望薪资
-
+            $data3 = $resume->get('expected_money_start >='.$money_st);
         }else if(!$money_st && $money_ed){
-
+            $data3 = $resume->get('expected_money_ed =<'.$money_ed);
         }else{
-            $data3 = [];
+            $arr_ids[] = [];
         }
+        if ($data3) {
+            $arr_ids[] = array_column($data3['matches'], 'id');
+        }
+
 
         $age_min = isset($where['age_min'])?$where['age_min']:'';
         $age_max = isset($where['age_max'])?$where['age_max']:'';
+        $data4 = [];
         if ($age_min && $age_max) {
-            
+            $data4 = $resume->get('age >='.$age_min.' and age =<'.$age_max);
         }else if($age_min && !$age_max){    //年龄
-
+            $data4 = $resume->get('age >='.$age_min);
         }else if(!$age_min && $age_max){
-
+            $data4 = $resume->get('age =<'.$age_max);
         }else{
-            $data4 = [];
+            $arr_ids[] = [];
+        }
+        if ($data4) {
+            $arr_ids[] = array_column($data4['matches'],'id');
         }
 
         $work_year_min = isset($where['work_year_min'])?$where['work_year_min']:'';
         $work_year_max = isset($where['work_year_max'])?$where['work_year_max']:'';
+        $data5 = [];
         if ($work_year_min && $work_year_max) {
-            
+            $data5 = $resume->get('work_year >='.$work_year_min.' and work_year =<'.$work_year_max);
         }else if($work_year_min && !$work_year_max){    //年龄
-
+            $data5 = $resume->get('work_year >='.$work_year_min);
         }else if(!$work_year_min && $work_year_max){
-
+            $data5 = $resume->get('work_year =<'.$work_year_max);
         }else{
-            $data5 = [];
+            $arr_ids[] = [];
+        }
+        if ($data5) {
+            $arr_ids[] = array_column($data5['matches'],'id');
         }
 
         $other = isset($where['other'])?$where['other']:'';
+        $data6 = [];
         if ($other) {
             $other = preg_replace("/(,|，)/",',',$other);
             $other = explode(',',$other);
             $other = implode('"|"',$other);
             $other = "'".'"'.$other.'"'."'";
             $data6 = $sphinx->query($other,"resume");
+            $arr_ids[] = array_column($data6['matches'],'id');
+        }
+        else{
+            $arr_ids[] = [];
         }
 
-        $data = array_column($result['matches'],'id');
-        // echo $other;
-        echo $phinx_where;
-        dump($data1);
-        dump($data2);
-        dump($data3);
+        $ids = [];
+        foreach ($arr_ids as $a => $b) {
+            if ($a == 0) {
+                $ids[] = $b;
+                continue;
+            }
+            if (empty($b)) {
+                continue;
+            }
+            $ids = array_intersect($ids, $b);
+        }
+        dump($arr_ids);
+        dump($ids);
         exit;
     }
 
