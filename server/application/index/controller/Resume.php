@@ -806,8 +806,8 @@ class Resume extends Controller
             $ids = array_intersect($ids, $b);
         }
         if (!empty($ids)) {
-            $sphinx->SetFilter('id',array(68));
-            $data = $sphinx->query('',"resume" );
+            $sphinx->SetFilter('id',$ids);
+            $data = $sphinx->query('*',"resume" );
         }
         
         dump($data);
