@@ -710,12 +710,13 @@ class Resume extends Controller
         }
         if($phinx_where != ''){
             $data1 = $sphinx->query($phinx_where,"resume");   //基础资料\
-        }
-        if (isset($data1['matches'])) {
-            $arr_ids[] = array_column($data1['matches'], 'id');
-        }
-        else{
-            return [];
+        
+            if (isset($data1['matches'])) {
+                $arr_ids[] = array_column($data1['matches'], 'id');
+            }
+            else{
+                return [];
+            }
         }
 
         $email = isset($where['email'])?$where['email']:'';
