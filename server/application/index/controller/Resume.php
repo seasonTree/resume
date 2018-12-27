@@ -722,7 +722,7 @@ class Resume extends Controller
             
             $data2 = $resume->get(['email' => $email])->toArray();
             if (isset($data2[0])) {
-                $arr_ids[] = $data2[0]['id'];
+                $arr_ids[] = [ 0 => $data2[0]['id']];
             }   
             else{
                 $arr_ids[] = [];
