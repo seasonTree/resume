@@ -86,11 +86,14 @@ class Privilege extends Controller
             return json(['msg' => '排序成功.','code' => 0]);
         }
         $model =model('Privilege');
+        $mfy_user = Session::get('user_info')['uname'];
+
         foreach($data as $k => $v){
             $re_sort['id'] = $v;
             $re_sort['idx'] = $k;
+            $re_sort['mfy_user'] = $mfy_user;
             $model->edit($re_sort);
-        }
+        }        
         return json(['msg' =>'成功','code' => 0,'data' => []]);
         
     }
