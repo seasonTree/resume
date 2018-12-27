@@ -790,7 +790,7 @@ class Resume extends Controller
             $arr_ids[] = array_column($data6['matches'],'id');
         }
         else{
-            $arr_ids[] = [];
+            // $arr_ids[] = [];
         }
 
         $ids = [];
