@@ -711,8 +711,9 @@ class Resume extends Controller
             }
             $n++;
         }
-
-        $data1 = $sphinx->query($phinx_where,"resume");   //基础资料\
+        if($phinx_where != ''){
+            $data1 = $sphinx->query($phinx_where,"resume");   //基础资料\
+        }
         if (isset($data1['matches'])) {
             $arr_ids[] = array_column($data1['matches'], 'id');
         }
@@ -804,8 +805,11 @@ class Resume extends Controller
             }
             $ids = array_intersect($ids, $b);
         }
-        dump($arr_ids);
-        dump($ids);
+        if (!empty($ids)) {
+            $data = $sphinx->SetFilter('id',$ids);
+        }
+        
+        dump($data);
         exit;
     }
 
