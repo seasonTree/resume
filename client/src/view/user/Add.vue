@@ -105,8 +105,8 @@ export default {
                     },
                     {
                         min: 6,
-                        max: 16,
-                        message: "长度在6到16个字符",
+                        // max: 16,
+                        message: "长度在最小在6个字符",
                         trigger: "blur"
                     },
                     {
