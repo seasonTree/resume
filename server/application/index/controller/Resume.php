@@ -734,11 +734,11 @@ class Resume extends Controller
         $money_ed = isset($where['expected_money_ed'])?$where['expected_money_ed']:'';
         $data3 = '';
         if ($money_st && $money_ed) {
-            $data3 = $resume->getId('expected_money_start >='.$money_st.' and expected_money_ed =<'.$money_ed);
+            $data3 = $resume->getId('expected_money_start >='.$money_st.' and expected_money_end =<'.$money_ed);
         }else if($money_st && !$money_ed){  //期望薪资
             $data3 = $resume->getId('expected_money_start >='.$money_st);
         }else if(!$money_st && $money_ed){
-            $data3 = $resume->getId('expected_money_ed <='.$money_ed);
+            $data3 = $resume->getId('expected_money_end =<'.$money_ed);
         }else{
             // $arr_ids[] = [];
         }
