@@ -811,7 +811,7 @@ class Resume extends Controller
             $data = $resume->get("id in($str)");
         }
         
-        return $data
+        return $data;
     }
 
 
