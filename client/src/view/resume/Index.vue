@@ -31,6 +31,7 @@
                             v-model="search.sex"
                             size="small"
                             placeholder="性别"
+                            clearable
                         >
                             <el-option
                                 v-for="item in sex"
@@ -46,6 +47,7 @@
                             v-model="search.educational"
                             size="small"
                             placeholder="学历"
+                            clearable
                         >
                             <el-option
                                 v-for="item in edu"
@@ -582,7 +584,7 @@ export default {
         //搜索框退出之后
         searchCollapseAfterLeave(el) {
             removeClass(el, "search-collapse");
-        },
+        }
 
         //动画效果-----------------------
     },
