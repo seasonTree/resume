@@ -807,7 +807,7 @@ class Resume extends Controller
         }
         if (!empty($ids)) {
             $sphinx->SetFilter('id',$ids);
-            $data = $sphinx->query('','resume');
+            $data = $sphinx->SetSortMode( SPH_SORT_ATTR_DESC, "resume" );
         }
         
         dump($data);
