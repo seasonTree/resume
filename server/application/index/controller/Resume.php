@@ -810,6 +810,9 @@ class Resume extends Controller
             $str = implode(',', $ids);
             $data = $resume->get("id in($str)");
         }
+        else{
+            $data = [];
+        }
         
         return $data;
     }
