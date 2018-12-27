@@ -472,6 +472,7 @@ class Resume extends Controller
         $data = '';
         if (count($input) > 3 ) {
             $data = $this->search($input);
+            $count = count($data);
         }
         else{
             $resume = new ResumeModel();
@@ -479,12 +480,7 @@ class Resume extends Controller
             $count = $resume->getCount();
         }
         
-        if ($data) {
-            return json(['msg' => '获取成功','code' => 0,'data' => [ 'row' => $data,'total' => $count]]);
-        }
-        else{
-            return json(['msg' => '无数据','code' => 1]);
-        }
+        return json(['msg' => '获取成功','code' => 0,'data' => [ 'row' => $data,'total' => $count]]);
     }
 
     public function getResumeOne(){
@@ -661,27 +657,28 @@ class Resume extends Controller
     
     }
     public function test(){
-        $sphinx = new \SphinxClient;
-        $sphinx->setServer("localhost", 9312);
-        $sphinx->setMatchMode(SPH_MATCH_EXTENDED2);   //匹配模式 ANY为关键词自动拆词，ALL为不拆词匹配（完全匹配），EXTENDED2,多词匹配
-        $sphinx->SetArrayResult ( true );   //返回的结果集为数组
-        $result = $sphinx->query("@name 貂","resume");   //星号为所有索引源
-        $res = $sphinx->query("@sex 男","resume");   //星号为所有索引源
-        // $result = $sphinx->query('"高并发"|"c++"',"resume");   //星号为所有索引源
-        // $res = $sphinx->UpdateAttributes ('users',array('is_del'),array(18 => array(1)));
+        // $sphinx = new \SphinxClient;
+        // $sphinx->setServer("localhost", 9312);
+        // $sphinx->setMatchMode(SPH_MATCH_EXTENDED2);   //匹配模式 ANY为关键词自动拆词，ALL为不拆词匹配（完全匹配），EXTENDED2,多词匹配
+        // $sphinx->SetArrayResult ( true );   //返回的结果集为数组
+        // $result = $sphinx->query("@name 貂","resume");   //星号为所有索引源
+        // $res = $sphinx->query("@sex 男","resume");   //星号为所有索引源
+        // // $result = $sphinx->query('"高并发"|"c++"',"resume");   //星号为所有索引源
+        // // $res = $sphinx->UpdateAttributes ('users',array('is_del'),array(18 => array(1)));
 
-        dump($result);
-        dump($res);
+        // dump($result);
+        // dump($res);
+        phpinfo();
     }
 
     public function search($where = ''){
         $resume = new ResumeModel();
         $sphinx = new \SphinxClient;
-        $sphinx->setServer("localhost", 9312);
+        $sphinx->setServer("192.168.199.134", 9312);
         $sphinx->setMatchMode(SPH_MATCH_EXTENDED2);   //匹配模式 ANY为关键词自动拆词，ALL为不拆词匹配（完全匹配），EXTENDED2,多词匹配
         $sphinx->SetArrayResult ( true );   //返回的结果集为数组
-        $result = $sphinx->query("@name 貂","resume");   //星号为所有索引源
-        $res = $sphinx->query("@sex 男","resume");   //星号为所有索引源
+        // $result = $sphinx->query("@name 貂","resume");   //星号为所有索引源
+        // $res = $sphinx->query("@sex 男","resume");   //星号为所有索引源
         // $result = $sphinx->query('"高并发"|"c++"',"resume");   //星号为所有索引源
         // $res = $sphinx->UpdateAttributes ('users',array('is_del'),array(18 => array(1)));
         $arr = [];
@@ -713,9 +710,13 @@ class Resume extends Controller
         }
         if($phinx_where != ''){
             $data1 = $sphinx->query($phinx_where,"resume");   //基础资料\
-        }
-        if (isset($data1['matches'])) {
-            $arr_ids[] = array_column($data1['matches'], 'id');
+        
+            if (isset($data1['matches'])) {
+                $arr_ids[] = array_column($data1['matches'], 'id');
+            }
+            else{
+                return [];
+            }
         }
 
         $email = isset($where['email'])?$where['email']:'';
@@ -726,7 +727,8 @@ class Resume extends Controller
                 $arr_ids[] = [ 0 => $data2[0]['id']];
             }   
             else{
-                $arr_ids[] = [];
+                // $arr_ids[] = [];
+                return [];
             }
         }
         
@@ -746,6 +748,7 @@ class Resume extends Controller
         if ($data3) {
             $arr_ids[] = array_column($data3, 'id');
         }
+       
 
 
         $age_min = isset($where['age_min'])?$where['age_min']:'';
@@ -759,11 +762,12 @@ class Resume extends Controller
             $data4 = $resume->getId('age <='.$age_max);
         }else{
             // $arr_ids[] = [];
+            
         }
         if ($data4) {
             $arr_ids[] = array_column($data4,'id');
         }
-
+        
         $work_year_min = isset($where['work_year_min'])?$where['work_year_min']:'';
         $work_year_max = isset($where['work_year_max'])?$where['work_year_max']:'';
         $data5 = '';
@@ -775,6 +779,7 @@ class Resume extends Controller
             $data5 = $resume->getId('work_year <='.$work_year_max);
         }else{
             // $arr_ids[] = [];
+            
         }
         if ($data5) {
             $arr_ids[] = array_column($data5,'id');
@@ -791,11 +796,12 @@ class Resume extends Controller
             if (isset($data6['matches'])) {
                 $arr_ids[] = array_column($data6['matches'],'id');
             }
+            else{
+                return [];
+            }
             
         }
-        else{
-            // $arr_ids[] = [];
-        }
+
 
         $ids = [];
         foreach ($arr_ids as $a => $b) {
@@ -806,13 +812,14 @@ class Resume extends Controller
             $ids = array_intersect($ids, $b);
         }
         if (!empty($ids)) {
-            $sphinx->SetFilter('id',$ids);
-            $data = $sphinx->query('*',"resume" );
+            $str = implode(',', $ids);
+            $data = $resume->get("id in($str)");
+        }
+        else{
+            $data = [];
         }
         
-        dump($data);
-        dump($ids);
-        exit;
+        return $data;
     }
 
 
