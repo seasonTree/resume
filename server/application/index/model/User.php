@@ -42,17 +42,19 @@ class User extends Model
     public function updateToken($data){
         return User::where(['id' => $data['id']])->update(['token' => $data['token']]);
     }
-    public function lstPage($pageIndex,$pageSize){
+    public function lstPage($pageIndex,$pageSize, $where = []){
+
         if($pageIndex < 1){
             $pageIndex = 1;
         }
         $offset = ($pageIndex - 1) * $pageSize;
-        $limitData = $this->limit($offset, $pageSize)->select();
-        $count = User::count();
-        $pageCount = ceil($count / $pageSize);
+
+        $limitData = $this->limit($offset, $pageSize)->where($where)->select();
+        $count = $this->where($where)->count();
+        // $pageCount = ceil($count / $pageSize);
         $data = [
             'row' => $limitData,
-            'total' => $pageCount
+            'total' => $count
         ];
         return $data;
     }

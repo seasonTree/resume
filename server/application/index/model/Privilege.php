@@ -15,10 +15,14 @@ class Privilege extends Model
         });
     }
 
-    public function add($data){
+    public function add($data){        
         if (!is_array($data)){
             return exception('传递数据不合法');
         }
+
+        //注入idx 字段
+        $data['idx'] = $this->count() + 1;
+
         $this->allowField(true)->save($data);
 
         return $this->getOne($this->id);
@@ -54,7 +58,7 @@ class Privilege extends Model
      * 获取权限列表数据
     */
     public function getTree(){
-        $data =$this->select()->toArray();
+        $data =$this->order('idx asc, id asc')->select()->toArray();
         $data = $this->_reSort($data);
         $data =$this->getTrees($data);
 //        halt($data);

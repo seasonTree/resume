@@ -2,6 +2,7 @@
 namespace app\index\controller;
 use \think\Controller;
 use think\Request;
+use think\facade\Session;
 
 class Privilege extends Controller
 {
@@ -29,6 +30,8 @@ class Privilege extends Controller
             return json(['data'=>'','code'=>1,'msg'=>$error]);
         }
 
+        $data['mfy_user'] = Session::get('user_info')['uname'];
+
         try{
             $id =$priModel->edit($data);
 
@@ -54,6 +57,8 @@ class Privilege extends Controller
              return json(['data'=>'','code'=>1,'msg'=>$error]);
         }
 
+        $data['ct_user'] = Session::get('user_info')['uname'];
+
         try{
             $resData =model('Privilege')->add($data);
         }catch(\Exception $e){
@@ -70,7 +75,18 @@ class Privilege extends Controller
         }else{
             return json(['data'=>'err','code'=>1,'msg'=>'删除失败']);
         }
+    }
+    
+    //权限菜单排序
+    public function sort(){
+        $data = input('post.');
 
+        //没有数据直接跳过
+        if (empty($data)) {
+            return json(['msg' => '排序成功.','code' => 0]);
+        }
+
+        dump($data); exit;
     }
 
     public function getSelect(){

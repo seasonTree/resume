@@ -49,7 +49,8 @@ Route::post('api/permission/get_by_id','Privilege/getOne');//获取一条权限�
 Route::post('api/permission/edit','Privilege/edit');//修改权限信息
 Route::post('api/permission/del','Privilege/del');//删除某条权限信息
 Route::get('api/permission/list','Privilege/lst');
-Route::get('api/role/list','Role/lst');
+Route::post('api/permission/sort','Privilege/sort'); //排序
+Route::get('api/role/list','Role/lstPage');
 Route::post('api/role/add','Role/add');
 Route::post('api/role/edit','Role/edit');
 Route::post('api/role/del','Role/del');

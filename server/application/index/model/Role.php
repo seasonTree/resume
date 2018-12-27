@@ -65,6 +65,25 @@ class Role extends Model
             ->select()->toArray();
         return $data;
     }
+
+    //分页内容
+    public function lstPage($pageIndex,$pageSize, $where = []){
+
+        if($pageIndex < 1){
+            $pageIndex = 1;
+        }
+        $offset = ($pageIndex - 1) * $pageSize;
+
+        $limitData = $this->limit($offset, $pageSize)->where($where)->select();
+        $count = $this->where($where)->count();
+        // $pageCount = ceil($count / $pageSize);
+        $data = [
+            'row' => $limitData,
+            'total' => $count
+        ];
+        return $data;
+    }
+
     public function getOne($id){
         $data=$this->alias('R')
 //            ->field('R.id,R.role_name,pri_id')
@@ -74,6 +93,16 @@ class Role extends Model
             ->find();
         return $data;
     }
+
+    public function getOneByRoleName($name){
+        return $this->alias('R')
+        //            ->field('R.id,R.role_name,pri_id')
+        //            ->join('role_pri RP','R.id=RP.role_id','left')
+        //            ->join('privilege.js P','P.id=RP.pri_id','left')
+                   ->where('R.role_name='.$name)
+                    ->find();
+    }
+
     public function del($id){
        return $this->destroy($id);
     }
