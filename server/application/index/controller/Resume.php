@@ -716,12 +716,20 @@ class Resume extends Controller
         if ($email) {
             $resume = new ResumeModel();
             $data2 = $resume->getOne(['email' => $email]);
+            if ($data2) {
+                $data2[] = $data2['id'];
+            }   
+            else{
+                $data2 = [];
+            }
         }
 
         $money_st = isset($where['expected_money_st'])?$where['expected_money_st']:'';
         $money_ed = isset($where['expected_money_ed'])?$where['expected_money_ed']:'';
         if ($money_st && $money_ed) {
-            
+            $sphinx->SetFilterRange('expected_money_start', $money_st, 10000000000);
+            $sphinx->SetFilterRange('expected_money_ed', -1, $money_ed);
+            $data3 = $sphinx->query("","resume"); 
         }else if($money_st && !$money_ed){  //期望薪资
 
         }else if(!$money_st && $money_ed){
@@ -768,6 +776,7 @@ class Resume extends Controller
         echo $phinx_where;
         dump($data1);
         dump($data2);
+        dump($data3);
         exit;
     }
 
