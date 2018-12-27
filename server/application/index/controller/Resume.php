@@ -788,10 +788,12 @@ class Resume extends Controller
             $other = implode('"|"',$other);
             $other = "'".'"'.$other.'"'."'";
             $data6 = $sphinx->query($other,"resume");
-        }
-        if ($data6) {
             $data6_ids = array_column($data6['matches'],'id');
         }
+        else{
+            $data6_ids = [];
+        }
+
 
         $list = array_intersect($data1_ids,$data2_ids,$data3_ids,$data4_ids,$data5_ids,$data6_ids);
         dump($list);
