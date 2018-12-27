@@ -711,8 +711,9 @@ class Resume extends Controller
             }
             $n++;
         }
-
-        $data1 = $sphinx->query($phinx_where,"resume");   //基础资料\
+        if($phinx_where != ''){
+            $data1 = $sphinx->query($phinx_where,"resume");   //基础资料\
+        }
         if (isset($data1['matches'])) {
             $arr_ids[] = array_column($data1['matches'], 'id');
         }
@@ -720,12 +721,12 @@ class Resume extends Controller
         $email = isset($where['email'])?$where['email']:'';
         if ($email) {
             
-            $data2 = $resume->get(['email' => $email])->toArray();
+            $data2 = $resume->getId(['email' => $email]);
             if (isset($data2[0])) {
-                $arr_ids[] = $data2[0]['id'];
+                $arr_ids[] = [ 0 => $data2[0]['id']];
             }   
             else{
-                // $arr_ids[] = [];
+                $arr_ids[] = [];
             }
         }
         
@@ -734,16 +735,16 @@ class Resume extends Controller
         $money_ed = isset($where['expected_money_ed'])?$where['expected_money_ed']:'';
         $data3 = '';
         if ($money_st && $money_ed) {
-            $data3 = $resume->get('expected_money_start >='.$money_st.' and expected_money_ed =<'.$money_ed);
+            $data3 = $resume->getId('expected_money_start >='.$money_st.' and expected_money_end <='.$money_ed);
         }else if($money_st && !$money_ed){  //期望薪资
-            $data3 = $resume->get('expected_money_start >='.$money_st);
+            $data3 = $resume->getId('expected_money_start >='.$money_st);
         }else if(!$money_st && $money_ed){
-            $data3 = $resume->get('expected_money_ed =<'.$money_ed);
+            $data3 = $resume->getId('expected_money_end <='.$money_ed);
         }else{
             // $arr_ids[] = [];
         }
-        if (isset($data3['matches'])) {
-            $arr_ids[] = array_column($data3['matches'], 'id');
+        if ($data3) {
+            $arr_ids[] = array_column($data3, 'id');
         }
 
 
@@ -751,32 +752,32 @@ class Resume extends Controller
         $age_max = isset($where['age_max'])?$where['age_max']:'';
         $data4 = '';
         if ($age_min && $age_max) {
-            $data4 = $resume->get('age >='.$age_min.' and age =<'.$age_max);
+            $data4 = $resume->getId('age >='.$age_min.' and age <='.$age_max);
         }else if($age_min && !$age_max){    //年龄
-            $data4 = $resume->get('age >='.$age_min);
+            $data4 = $resume->getId('age >='.$age_min);
         }else if(!$age_min && $age_max){
-            $data4 = $resume->get('age =<'.$age_max);
+            $data4 = $resume->getId('age <='.$age_max);
         }else{
             // $arr_ids[] = [];
         }
-        if (isset($data4['matches'])) {
-            $arr_ids[] = array_column($data4['matches'],'id');
+        if ($data4) {
+            $arr_ids[] = array_column($data4,'id');
         }
 
         $work_year_min = isset($where['work_year_min'])?$where['work_year_min']:'';
         $work_year_max = isset($where['work_year_max'])?$where['work_year_max']:'';
         $data5 = '';
         if ($work_year_min && $work_year_max) {
-            $data5 = $resume->get('work_year >='.$work_year_min.' and work_year =<'.$work_year_max);
+            $data5 = $resume->getId('work_year >='.$work_year_min.' and work_year <='.$work_year_max);
         }else if($work_year_min && !$work_year_max){    //年龄
-            $data5 = $resume->get('work_year >='.$work_year_min);
+            $data5 = $resume->getId('work_year >='.$work_year_min);
         }else if(!$work_year_min && $work_year_max){
-            $data5 = $resume->get('work_year =<'.$work_year_max);
+            $data5 = $resume->getId('work_year <='.$work_year_max);
         }else{
             // $arr_ids[] = [];
         }
-        if (isset($data5['matches'])) {
-            $arr_ids[] = array_column($data5['matches'],'id');
+        if ($data5) {
+            $arr_ids[] = array_column($data5,'id');
         }
 
         $other = isset($where['other'])?$where['other']:'';
@@ -804,7 +805,12 @@ class Resume extends Controller
             }
             $ids = array_intersect($ids, $b);
         }
-        dump($arr_ids);
+        if (!empty($ids)) {
+            $sphinx->SetFilter('id',$ids);
+            $data = $sphinx->SetSortMode( SPH_SORT_ATTR_DESC, "resume" );
+        }
+        
+        dump($data);
         dump($ids);
         exit;
     }
