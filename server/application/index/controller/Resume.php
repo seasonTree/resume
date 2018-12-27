@@ -714,7 +714,8 @@ class Resume extends Controller
 
         $email = isset($where['email'])?$where['email']:'';
         if ($email) {
-            $data2 = $sphinx->query($email,"resume");   //邮箱
+            $sphinx->SetFilter('email',array($email));
+            $data2 = $sphinx->query('',"resume");   //邮箱
         }
 
         $money_st = isset($where['expected_money_st'])?$where['expected_money_st']:'';
