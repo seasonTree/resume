@@ -715,7 +715,7 @@ class Resume extends Controller
         $email = isset($where['email'])?$where['email']:'';
         if ($email) {
             $sphinx->setMatchMode(SPH_MATCH_PHRASE);   //匹配模式,匹配全部 
-            $data2 = $sphinx->query('@email 21@12',"resume");   //邮箱
+            $data2 = $sphinx->query('@email (21@12)',"resume");   //邮箱
         }
 
         $sphinx->setMatchMode(SPH_MATCH_EXTENDED2);   //匹配模式 
