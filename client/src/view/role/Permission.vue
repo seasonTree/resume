@@ -7,7 +7,7 @@
         :close-on-click-modal="false"
         width="400px"
     >
-        <div class="dialog-content mb-20">
+        <div class="role-permission mb-20">
             <el-tree
                 :data="permissionData"
                 :default-checked-keys="defaultCheckKey"
@@ -17,6 +17,29 @@
                 :props="defaultProps"
                 ref="tree"
             >
+                <span
+                    class="custom-tree-node"
+                    slot-scope="{ node, data }"
+                >
+                    <span>{{ node.label }}</span>
+
+                    <span>
+                        <el-button
+                            type="text"                            
+                            v-if="data.children && data.children.length"
+                            @click.stop="() => selectChild(data, true)"
+                        >
+                            全选
+                        </el-button>
+                        <el-button
+                            type="text"                            
+                            v-if="data.children && data.children.length"
+                            @click.stop="() => selectChild(data, false)"
+                        >
+                            取消
+                        </el-button>
+                    </span>
+                </span>
             </el-tree>
         </div>
 
@@ -24,7 +47,10 @@
             slot="footer"
             class="dialog-footer"
         >
-            <el-button @click="closeDialog" :disabled="commitLoading">取 消</el-button>
+            <el-button
+                @click="closeDialog"
+                :disabled="commitLoading"
+            >取 消</el-button>
             <el-button
                 type="primary"
                 @click="permissionCommit"
@@ -123,6 +149,27 @@ export default {
         }
     },
     methods: {
+        //选中子节点
+        selectChild(node, checkAll) {
+            let that = this,
+                treeInstance = that.$refs.tree,
+                keys = [],
+                checkNode = node => {
+                    for (var i = 0; i < node.length; i++) {
+                        var item = node[i];
+                        keys.push(item.id);
+
+                        treeInstance.setChecked(item, checkAll);
+
+                        if (item.children && item.children.length) {
+                            checkNode(item.children);
+                        }
+                    }
+                };
+
+            checkNode([node]);
+        },
+
         //获取所有的权限列表
         getPermissionData() {
             let that = this;
@@ -209,10 +256,19 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.dialog-content {
+.role-permission {
     min-height: 300px;
     // max-height: 600px;
     padding: 10px;
     border: 1px solid #dcdfe6;
+
+    .custom-tree-node {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 14px;
+        padding-right: 8px;
+    }
 }
 </style>
