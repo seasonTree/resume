@@ -15,8 +15,14 @@ class Resume extends Controller
 {	
     public function checkName(){
         $name = input('get.name');
-        $data = model('resume')->get(['name'=>$name]);
-        return json(['code' => 0,'msg' => 'ok','data' => $data]);
+        $id = input('get.id');
+        $data = model('resume')->get(['name'=>$name])->toArray();
+        foreach ($data as $k => $v) {
+            if ($v['id'] == $id) {
+                unset($data[$k]);
+            }
+        }
+        return json(['code' => 0,'msg' => 'ok','data' => array_merge($data)]);
     }
     public function index()
     {
@@ -252,34 +258,6 @@ class Resume extends Controller
         $phone = array_column($data,'phone');
         $check_data = '';
         $resume = new ResumeModel();
-        // foreach ($phone as $a => $b) {
-        //     $name = $resume->getUname(['phone' => $b]);
-        //     if ($name) {
-        //         $check_data.='姓名:'.$name.',电话:'.$b.'已存在';
-        //     }
-        // }
-        // if ($check_data != '') {
-        //     return json(['msg' => $check_data,'code' => 3,'data' => []]);
-        // }
-        // $user = new User();
-        // $check = [];
-        // foreach ($personal_name as $k => $v) {
-        //     $temp = $data[$k]['name'].$data[$k]['phone'];
-        //     if (in_array($temp,$check)) {
-        //         return json(['msg' => '检测到重复数据，请检查','code' => 2,'data' => []]);
-        //     }
-        //     $ct_user = $user->getUser(['personal_name' => $v]);
-        //     if ($ct_user == '') {
-        //         $data[$k]['ct_user'] = Session::get('user_info')['uname'];
-        //     }
-        //     else{
-        //         $data[$k]['ct_user'] = $ct_user;
-        //     }
-        //     unset($data[$k]['personal_name']);
-
-
-        // }
-
         $user = new User();
         $check = [];
 
@@ -758,6 +736,9 @@ class Resume extends Controller
             $data4 = $resume->getId('age >='.$age_min.' and age <='.$age_max);
         }else if($age_min && !$age_max){    //年龄
             $data4 = $resume->getId('age >='.$age_min);
+            $sphinx->SetFilterRange('age', $age_min, 10000000000);
+            $data = $sphinx->query('','resume');
+            dump($data);exit;
         }else if(!$age_min && $age_max){
             $data4 = $resume->getId('age <='.$age_max);
         }else{

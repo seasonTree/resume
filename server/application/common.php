@@ -222,15 +222,23 @@ function checkLogin()
 }
 
 
+// /**
+//  * 获取当前访问路由
+//  */
+// function getActionUrl()
+// {
+//     $controller=\think\facade\Request::controller();
+//     $action=\think\facade\Request::action();
+//     $url=$controller.'/'.$action;
+//     return strtolower($url);
+// }
+
 /**
- * 获取当前访问路由
+ * 获取当前访问URL
  */
-function   getActionUrl()
+function getActionUrl()
 {
-    $controller=\think\facade\Request::controller();
-    $action=\think\facade\Request::action();
-    $url=$controller.'/'.$action;
-    return strtolower($url);
+    return $_SERVER['REQUEST_URI'];
 }
 
 /**

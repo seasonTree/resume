@@ -72,7 +72,7 @@ class User extends Model
     }
     public function getPriById($id){
         if($id == 1){
-            $data =model('Privilege')->select();
+            $data =model('Privilege')->select()->toArray();
         }else{
             $data =$this->alias('U')->field('P.*')
             ->join('user_role UR','UR.user_id = U.id')

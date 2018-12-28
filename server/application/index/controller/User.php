@@ -150,6 +150,16 @@ class User
        $id =  Session::get('user_info.id');
         
        $data = model('User')->getPriById($id);
-        return json(['data'=>$data,'code'=>0,'msg'=>'获取权限成功']);
+       
+       $rule = Session::get('rule');
+       if (!$rule) {
+          $rule = [];
+          foreach ($data as $k => $v){
+             $rule[] = $v['api'];
+          }
+          Session::set('rule',$rule);
+       }
+
+       return json(['data'=>$data,'code'=>0,'msg'=>'获取权限成功']);
     }
 }
