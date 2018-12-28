@@ -892,7 +892,7 @@ class Resume extends Controller
             $n++;
         }
         if($phinx_where != ''){
-            $sphinx->AddQuery($sphinx_where,'resume');
+            $sphinx->AddQuery($phinx_where,'resume');
         }
 
         $other = isset($where['other'])?$where['other']:'';
