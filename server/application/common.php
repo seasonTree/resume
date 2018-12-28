@@ -238,7 +238,7 @@ function checkLogin()
  */
 function getActionUrl()
 {
-    return $_SERVER['REQUEST_URI'];
+    return explode('?',$_SERVER['REQUEST_URI'])[0];
 }
 
 /**

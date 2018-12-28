@@ -25,6 +25,7 @@ class OperateBehavior extends Controller
         '/api/user/logout',
         '/api/user/get_user_info',
         '/api/user/get_user_permission',
+        '/api/user/change_password'
 
     ];
 
@@ -80,6 +81,7 @@ class OperateBehavior extends Controller
         }
         if ($userid != 1) {
             //超级管理员跳权限
+
             if (!in_array($url, $auth)) {
                 // $this->error('无权限访问');
                 echo '您没有权限访问';exit;

@@ -137,6 +137,7 @@ class Resume extends Controller
             }
             
         }
+        $arr['educational_background'] = implode("\n",$arr);
         return $arr;
     }
 
@@ -481,6 +482,11 @@ class Resume extends Controller
     public function addResume(){
         //添加简历
         $data = input('post.');
+        $resume = new ResumeModel();
+        $res = $resume->getOne(['name' => $data['name'],'phone' => $data['phone']]);
+        if ($res) {
+            return json(['msg' => '该候选人已存在，不允许添加','code' => 3]);
+        }
         if (empty($data)) {
             return json(['msg' => '没有数据','code' => 2]);
         }
@@ -508,7 +514,7 @@ class Resume extends Controller
             }
         }
 
-        $resume = new ResumeModel();
+        
         $id = $resume->add($data);
         $data['id'] = $id;
         if ($data) {
@@ -831,11 +837,11 @@ class Resume extends Controller
             $sphinx->SetFilterRange('expected_money_start',$money_st,100000000);
             $sphinx->SetFilterRange('expected_money_end', 0, $money_ed);
         }else if($money_st && !$money_ed){  //期望薪资
-            // $sphinx->SetFilterRange('expected_money_end', $money_st, 100000000);
-            $sphinx->SetFilterRange('expected_money_start', $money_st,100000000);
+            $sphinx->SetFilterRange('expected_money_start', $money_st, 100000000);
+            $sphinx->SetFilterRange('expected_money_start', 0,$money_st);
         }else if(!$money_st && $money_ed){
-            $sphinx->SetFilterRange('expected_money_end', 0,$money_ed);
-            // $sphinx->SetFilterRange('expected_money_end',$money_ed, 100000000);
+            $sphinx->SetFilterRange('expected_money_end', $money_ed,100000000);
+            $sphinx->SetFilterRange('expected_money_end',0,$money_ed);
         }else{
             // $arr_ids[] = [];
         }
