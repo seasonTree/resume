@@ -929,11 +929,11 @@ class Resume extends Controller
             foreach ($data_arr as $k => $v) {
 
                 if ($money_st && $money_ed) {
-                    if ($v['attrs']['expected_money_st'] =< $money_st ) {
+                    if ($v['attrs']['expected_money_st'] <= $money_st ) {
                         # code...
                     }
                 }else if($money_st && !$money_ed){  //期望薪资
-                    if ($v['attrs']['expected_money_st'] =< $money_st || ($v['attrs']['expected_money_st'] =< $money_st && $v['attrs']['expected_money_ed'] >= $money_st)) {
+                    if ($v['attrs']['expected_money_st'] <= $money_st || ($v['attrs']['expected_money_st'] <= $money_st && $v['attrs']['expected_money_ed'] => $money_st)) {
 
                         $data[$k] = $v['attrs'];
                         $data[$k]['id'] = $v['id'];
