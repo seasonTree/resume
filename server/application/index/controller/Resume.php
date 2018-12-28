@@ -831,7 +831,7 @@ class Resume extends Controller
             $sphinx->SetFilterRange('expected_money_start', $money_st,$money_ed);
             $sphinx->SetFilterRange('expected_money_end', $money_st, 100000000);
         }else if($money_st && !$money_ed){  //期望薪资
-            $sphinx->SetFilterRange('expected_money_start', $money_st, 100000000);
+            $sphinx->SetFilterRange('expected_money_end', $money_st, 100000000);
         }else if(!$money_st && $money_ed){
             $sphinx->SetFilterRange('expected_money_end', 0, $money_ed);
         }else{
