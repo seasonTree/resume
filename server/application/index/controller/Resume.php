@@ -863,8 +863,6 @@ class Resume extends Controller
             
         }
 
-        $data = $sphinx->query('','resume');
-        dump($data);exit;
 
         $arr = [];
         $arr['name'] = isset($where['name'])?$where['name']:'';
@@ -894,7 +892,8 @@ class Resume extends Controller
             $n++;
         }
         if($phinx_where != ''){
-            $sphinx->AddQuery($sphinx,'resume');
+            // $sphinx->AddQuery($sphinx,'resume');
+            $data = $sphinx->query($sphinx,'resume');
         }
 
         $other = isset($where['other'])?$where['other']:'';
@@ -903,9 +902,10 @@ class Resume extends Controller
             $other = explode(',',$other);
             $other = implode('"|"',$other);
             $other = "'".'"'.$other.'"'."'";
-            $sphinx->AddQuery($other,'resume');
+            // $sphinx->AddQuery($other,'resume');
+            $data = $sphinx->query($other,'resume');
         }
-        $data = $sphinx->RunQueries();
+        // $data = $sphinx->RunQueries();
         
         dump($data);exit;
         return $data;
