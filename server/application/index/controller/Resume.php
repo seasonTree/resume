@@ -831,15 +831,15 @@ class Resume extends Controller
             // $sphinx->SetFilterRange('expected_money_end', 0,$money_st);
             // $sphinx->SetFilterRange('expected_money_end', $money_ed, 100000000);
 
-            $sphinx->SetSelect("*,(if(expected_money_start<=$money_ed OR expected_money_end>=$money_st,1,0) AS filter_money)");
+            $sphinx->SetSelect("*,(if(@expected_money_start<=$money_ed OR @expected_money_end>=$money_st,1,0) AS filter_money)");
             $sphinx->Setfilter('filter_money',array(1));
-            
+
         }else if($money_st && !$money_ed){  //期望薪资
             $sphinx->SetFilterRange('expected_money_end', $money_st, 100000000);
             $sphinx->SetFilterRange('expected_money_start', 0, $money_st);
         }else if(!$money_st && $money_ed){
             $sphinx->SetFilterRange('expected_money_end', 0,$money_ed);
-            // $sphinx->SetFilterRange('expected_money_start',$money_ed, 100000000);
+            $sphinx->SetFilterRange('expected_money_end',$money_ed, 100000000);
         }else{
             // $arr_ids[] = [];
         }
