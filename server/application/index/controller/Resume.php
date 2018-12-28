@@ -828,12 +828,14 @@ class Resume extends Controller
         $money_st = isset($where['expected_money_st'])?$where['expected_money_st']:'';
         $money_ed = isset($where['expected_money_ed'])?$where['expected_money_ed']:'';
         if ($money_st && $money_ed) {
-            $sphinx->SetFilterRange('expected_money_start', $money_st,$money_ed);
-            $sphinx->SetFilterRange('expected_money_end', $money_st, 100000000);
-        }else if($money_st && !$money_ed){  //期望薪资
-            $sphinx->SetFilterRange('expected_money_start', $money_st, 100000000);
-        }else if(!$money_st && $money_ed){
+            $sphinx->SetFilterRange('expected_money_start',$money_st,100000000);
             $sphinx->SetFilterRange('expected_money_end', 0, $money_ed);
+        }else if($money_st && !$money_ed){  //期望薪资
+            // $sphinx->SetFilterRange('expected_money_end', $money_st, 100000000);
+            $sphinx->SetFilterRange('expected_money_start', $money_st,100000000);
+        }else if(!$money_st && $money_ed){
+            $sphinx->SetFilterRange('expected_money_end', 0,$money_ed);
+            // $sphinx->SetFilterRange('expected_money_end',$money_ed, 100000000);
         }else{
             // $arr_ids[] = [];
         }
@@ -908,9 +910,17 @@ class Resume extends Controller
             // $sphinx->AddQuery($other,'resume');
         }
         // $data = $sphinx->RunQueries();
-        $data = $sphinx->query($phinx_where,'resume');
-        
-        dump($data);exit;
+        $res = $sphinx->query($phinx_where,'resume');
+        $data = [];
+        if (isset($res['matches'])) {
+            $data_arr = $res['matches'];
+
+            foreach ($data_arr as $k => $v) {
+                $data[$k] = $v['attrs'];
+                $data[$k]['id'] = $v['id'];
+            }
+
+        }
         return $data;
     }
 
