@@ -39,10 +39,11 @@
             slot="footer"
             class="dialog-footer"
         >
-            <el-button @click="closeDialog">取 消</el-button>
+            <el-button @click="closeDialog" :disabled="commitLoading">取 消</el-button>
             <el-button
                 type="primary"
                 @click="changePwd"
+                :loading="commitLoading"
                 :disabled="!$check_pm('user_change_pass')"
             >确 定</el-button>
         </div>
@@ -107,13 +108,15 @@ export default {
                         trigger: "blur"
                     }
                 ]
-            }
+            },                    
         };
     },
 
     methods: {
         changePwd() {
             let that = this;
+
+            that.commitLoading = true;
 
             that.$refs["form"].validate(valid => {
                 if (valid) {
@@ -133,8 +136,11 @@ export default {
                             } else {
                                 that.$message.error(res.msg);
                             }
+
+                            that.commitLoading = false;
                         })
                         .catch(res => {
+                            that.commitLoading = false;
                             that.$message.error("修改失败，请重试.");
                         });
                 }

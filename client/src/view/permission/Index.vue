@@ -49,81 +49,80 @@
                 </el-row> -->
             </div>
 
-            <transition>
-                <el-table
-                    border
-                    stripe
-                    :data="treeArrayData"
-                    style="width: 100%"
-                    :height="tabelHeight"
-                    :row-class-name="showRow"
+            <el-table
+                border
+                stripe
+                :data="treeArrayData"
+                style="width: 100%"
+                :height="tabelHeight"
+                :row-class-name="showRow"
+                v-loading="tableLoading"
+            >
+                <el-table-column
+                    prop="p_name"
+                    label="权限名称"
                 >
-                    <el-table-column
-                        prop="p_name"
-                        label="权限名称"
-                    >
-                        <template slot-scope="scope">
-                            <!-- 左边距离 -->
-                            <span :style="{'margin-left': scope.row._level * 24 + 'px'}">
-                                <i
-                                    v-if="scope.row._hasChild"
-                                    class="fa fa-caret-right expend-icon"
-                                    :class="{ 'icon-down' : scope.row._expanded }"
-                                    @click="toggle(scope.row)"
-                                ></i>
+                    <template slot-scope="scope">
+                        <!-- 左边距离 -->
+                        <span :style="{'margin-left': scope.row._level * 24 + 'px'}">
+                            <i
+                                v-if="scope.row._hasChild"
+                                class="fa fa-caret-right expend-icon"
+                                :class="{ 'icon-down' : scope.row._expanded }"
+                                @click="toggle(scope.row)"
+                            ></i>
 
-                                <span>{{scope.row.p_name}}</span>
-                            </span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                        prop="url"
-                        label="菜单地址"
-                    ></el-table-column>
-                    <el-table-column
-                        prop="api"
-                        label="接口"
-                    ></el-table-column>
-                    <el-table-column
-                        prop="p_act_name"
-                        label="功能英文名称"
-                    ></el-table-column>
-                    <!-- <el-table-column
+                            <span>{{scope.row.p_name}}</span>
+                        </span>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                    prop="url"
+                    label="菜单地址"
+                ></el-table-column>
+                <el-table-column
+                    prop="api"
+                    label="接口"
+                ></el-table-column>
+                <el-table-column
+                    prop="p_act_name"
+                    label="功能英文名称"
+                ></el-table-column>
+                <!-- <el-table-column
                         prop="ct_user"
                         label="创建人"
                     ></el-table-column> -->
-                    <el-table-column
-                        prop="ct_time"
-                        label="创建时间"
-                        width="150"
-                    ></el-table-column>
-                    <el-table-column
-                        fixed="right"
-                        label="操作"
-                        align="center"
-                        width="100"
-                    >
-                        <template slot-scope="scope">
-                            <el-button
-                                type="primary"
-                                size="mini"
-                                icon="el-icon-edit"
-                                circle
-                                @click="showEditDialog(scope.row.id)"
-                                :disabled="!$check_pm('permiss_edit')"
-                            ></el-button>
-                            <el-button
-                                type="danger"
-                                size="mini"
-                                icon="el-icon-delete"
-                                circle
-                                @click="del(scope.row.id, scope.$index)"
-                                :disabled="!$check_pm('permiss_del')"
-                            ></el-button>
-                        </template>
-                    </el-table-column>
-                </el-table>
-            </transition>
+                <el-table-column
+                    prop="ct_time"
+                    label="创建时间"
+                    width="150"
+                ></el-table-column>
+                <el-table-column
+                    fixed="right"
+                    label="操作"
+                    align="center"
+                    width="100"
+                >
+                    <template slot-scope="scope">
+                        <el-button
+                            type="primary"
+                            size="mini"
+                            icon="el-icon-edit"
+                            circle
+                            @click="showEditDialog(scope.row.id)"
+                            :disabled="!$check_pm('permiss_edit')"
+                        ></el-button>
+                        <el-button
+                            type="danger"
+                            size="mini"
+                            icon="el-icon-delete"
+                            circle
+                            @click="del(scope.row.id, scope.$index)"
+                            :disabled="!$check_pm('permiss_del')"
+                        ></el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
         </el-row>
 
         <add

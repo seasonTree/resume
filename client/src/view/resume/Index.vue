@@ -77,9 +77,10 @@
                     </el-col>
                     <el-col :span="4">
                         <el-button
-                            size="medium"
+                            size="small"
                             type="primary"
                             @click="getData(true)"
+                            :loading="tableLoading"
                         >搜索</el-button>
                     </el-col>
 
@@ -264,6 +265,7 @@
                 :height="tabelHeight"
                 @row-click="showViewDialog"
                 class="table"
+                v-loading="tableLoading"
             >
 
                 <el-table-column

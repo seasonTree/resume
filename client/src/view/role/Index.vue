@@ -34,6 +34,7 @@
                                     circle
                                     icon="el-icon-search"
                                     @click="getData(true)"
+                                    :loading="tableLoading"
                                 ></el-button>
                             </el-row>
                         </el-col>
@@ -46,6 +47,7 @@
                     :data="tdata"
                     style="width: 100%"
                     :height="tabelHeight"
+                    v-loading="tableLoading"
                 >
                     <el-table-column
                         prop="id"

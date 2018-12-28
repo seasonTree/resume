@@ -23,7 +23,9 @@ export default {
             editDialog: false,
             currentEditItem: {},
             search: {},
-            tabelHeight: 300
+            tabelHeight: 300,
+
+            tableLoading: false
         };
     },
 
@@ -95,7 +97,9 @@ export default {
             let that = this,
                 params = {},
                 searchData = JSON.parse(JSON.stringify(that.search));
-                
+
+            that.tableLoading = true;
+
             if (searchData) {
                 for (var key in searchData) {
                     if (
@@ -142,8 +146,11 @@ export default {
                             res.msg || "获取数据失败，请刷新后重试."
                         );
                     }
+
+                    that.tableLoading = false;
                 })
                 .catch(res => {
+                    that.tableLoading = false;
                     that.$message.error("获取数据失败，请刷新后重试.");
                 });
         },

@@ -98,6 +98,7 @@
                 :data="tdata"
                 style="width: 100%"
                 :height="tabelHeight"
+                v-loading="tableLoading"
             >
                 <el-table-column
                     v-for="(item, index) in thead"

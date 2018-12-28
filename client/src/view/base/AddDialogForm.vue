@@ -8,13 +8,15 @@ export default {
         return {
             form: {},
             formRules: {},
-            apiType: ""
+            apiType: "",
         };
     },
 
     methods: {
         addCommit() {
             let that = this;
+
+            that.commitLoading = true;
           
             that.$refs["form"].validate(valid => {
                 if (valid) {
@@ -43,10 +45,13 @@ export default {
 
                                 that.closeDialog();
                             } else {
-                                that.$message.error(res.msg || '新增失败，请重试.');
+                                that.$message.error(res.msg || '新增失败，请重试.');                            
                             }
+
+                            that.commitLoading = false;
                         })
                         .catch(res => {
+                            that.commitLoading = false;
                             that.$message.error("新增失败，请重试.");
                         });
                 }

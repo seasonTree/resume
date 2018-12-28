@@ -122,7 +122,7 @@
                 slot="footer"
                 class="dialog-footer"
             >
-                <el-button @click="closeDialog">取消录入</el-button>
+                <el-button @click="cancelCommit">取消录入</el-button>
                 <el-button
                     type="primary"
                     @click="continueCommit"
@@ -181,7 +181,13 @@ export default {
             let that = this;
             that.$emit("continue-commit");
             that.closeDialog();
-        }
+        },
+
+        cancelCommit(){
+            let that = this;
+            that.$emit('cancel-commit');
+            that.closeDialog();
+        }        
     }
 };
 </script>

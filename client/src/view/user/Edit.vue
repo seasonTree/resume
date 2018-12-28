@@ -37,10 +37,11 @@
             slot="footer"
             class="dialog-footer"
         >
-            <el-button @click="closeDialog">取 消</el-button>
+            <el-button @click="closeDialog" :disabled="commitLoading">取 消</el-button>
             <el-button
                 type="primary"
                 @click="editCommit"
+                :loading="commitLoading"
                 :disabled="!$check_pm('user_edit')"
             >确 定</el-button>
         </div>

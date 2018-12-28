@@ -10,7 +10,7 @@
                 >
                     <el-col :span="6">
                         <el-button
-                            type="primary"
+                            type="primary"                            
                             @click="addDialog = true"
                             :disabled="!$check_pm('user_add')"
                         >新增</el-button>
@@ -33,6 +33,7 @@
                                 circle
                                 icon="el-icon-search"
                                 @click="getData(true)"
+                                :loading="tableLoading"
                             ></el-button>
                         </el-row>
                     </el-col>
@@ -45,6 +46,7 @@
                 :data="tdata"
                 style="width: 100%"
                 :height="tabelHeight"
+                v-loading="tableLoading"
             >
                 <el-table-column
                     prop="id"

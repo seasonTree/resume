@@ -375,6 +375,7 @@
                     type="primary"
                     @click="editCommit"
                     :disabled="!$check_pm('resume_edit')"
+                    :loading="commitLoading"
                 >确 定</el-button>
             </div>
         </el-dialog>
@@ -423,7 +424,7 @@ export default {
                 work_year: "",
                 english: "",
                 status: "",
-                expected_job:"",
+                expected_job: "",
                 email: "",
 
                 //毕业时间
