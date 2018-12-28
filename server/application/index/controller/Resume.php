@@ -17,11 +17,11 @@ class Resume extends Controller
         $name = input('get.name');
         $id = input('get.id');
         $data = model('resume')->get(['name'=>$name])->toArray();
-        // foreach ($data as $k => $v) {
-        //     if ($v['id'] = $id) {
-        //         unset($data[$k]);
-        //     }
-        // }
+        foreach ($data as $k => $v) {
+            if ($v['id'] == $id) {
+                unset($data[$k]);
+            }
+        }
         return json(['code' => 0,'msg' => 'ok','data' => array_merge($data)]);
     }
     public function index()
