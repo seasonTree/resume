@@ -903,7 +903,7 @@ class Resume extends Controller
             $other = implode('"|"',$other);
             // $other = "'".'"'.$other.'"'."'";
             $other = '("'.$other.'")';
-            $phinx_where = empty($phinx_where)?$phinx_where.' & '.$other:$other;
+            $phinx_where = empty($phinx_where)?$other:$phinx_where.' & '.$other;
             
             // $sphinx->AddQuery($other,'resume');
         }
