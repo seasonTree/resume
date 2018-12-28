@@ -914,7 +914,8 @@ class Resume extends Controller
             $data_arr = $res['matches'];
 
             foreach ($data_arr as $k => $v) {
-                $data[$k] = array_push($v['attrs'],$v['id']);
+                array_unshift($v['attrs'],$v['id'])
+                $data[$k] = $v['attrs'];
             }
 
         }
