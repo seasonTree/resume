@@ -908,9 +908,16 @@ class Resume extends Controller
             // $sphinx->AddQuery($other,'resume');
         }
         // $data = $sphinx->RunQueries();
-        $data = $sphinx->query($phinx_where,'resume');
-        
-        dump($data);exit;
+        $res = $sphinx->query($phinx_where,'resume');
+        $data = [];
+        if (isset($res['matches'])) {
+            $data_arr = $res['matches'];
+
+            foreach ($data_arr as $k => $v) {
+                $data[$k] = array_push($v['attrs'],$v['id']);
+            }
+
+        }
         return $data;
     }
 
