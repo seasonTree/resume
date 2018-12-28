@@ -17,7 +17,7 @@ export default {
             pager: {
                 total: 1,
                 current: 1,
-                size: 2
+                size: 10
             },
             addDialog: false,
             editDialog: false,
