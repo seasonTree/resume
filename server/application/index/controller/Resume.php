@@ -901,7 +901,7 @@ class Resume extends Controller
             
         }
 
-        $data = $sphinx->RunQuries();
+        $data = $sphinx->RunQueries();
         
         dump($data);exit;
         return $data;
