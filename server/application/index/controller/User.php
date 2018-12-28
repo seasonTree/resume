@@ -151,13 +151,13 @@ class User
         
        $data = model('User')->getPriById($id);
        
-       $rule = Session::get('rule');
-       if (!$rule) {
-          $rule = [];
+       $auth = Session::get('auth');
+       if (!$auth) {
+          $auth = [];
           foreach ($data as $k => $v){
-             $rule[] = $v['api'];
+             $auth[] = $v['api'];
           }
-          Session::set('rule',$rule);
+          Session::set('auth',$auth);
        }
 
        return json(['data'=>$data,'code'=>0,'msg'=>'获取权限成功']);

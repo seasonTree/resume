@@ -137,6 +137,7 @@ class Resume extends Controller
             }
             
         }
+        $arr['educational_background'] = implode("\n",$arr);
         return $arr;
     }
 
@@ -481,6 +482,11 @@ class Resume extends Controller
     public function addResume(){
         //添加简历
         $data = input('post.');
+        $resume = new ResumeModel();
+        $res = $resume->getOne(['name' => $data['name'],'phone' => $data['phone']]);
+        if ($res) {
+            return json(['msg' => '该候选人已存在，不允许添加','code' => 3]);
+        }
         if (empty($data)) {
             return json(['msg' => '没有数据','code' => 2]);
         }
@@ -508,7 +514,7 @@ class Resume extends Controller
             }
         }
 
-        $resume = new ResumeModel();
+        
         $id = $resume->add($data);
         $data['id'] = $id;
         if ($data) {
