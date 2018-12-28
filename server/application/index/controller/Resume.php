@@ -649,16 +649,180 @@ class Resume extends Controller
         phpinfo();
     }
 
+    // public function search($where = ''){
+    //     $resume = new ResumeModel();
+    //     $sphinx = new \SphinxClient;
+    //     $sphinx->setServer("192.168.199.134", 9312);
+    //     $sphinx->setMatchMode(SPH_MATCH_EXTENDED2);   //匹配模式 ANY为关键词自动拆词，ALL为不拆词匹配（完全匹配），EXTENDED2,多词匹配
+    //     $sphinx->SetArrayResult ( true );   //返回的结果集为数组
+    //     // $result = $sphinx->query("@name 貂","resume");   //星号为所有索引源
+    //     // $res = $sphinx->query("@sex 男","resume");   //星号为所有索引源
+    //     // $result = $sphinx->query('"高并发"|"c++"',"resume");   //星号为所有索引源
+    //     // $res = $sphinx->UpdateAttributes ('users',array('is_del'),array(18 => array(1)));
+    //     $arr = [];
+    //     $arr['name'] = isset($where['name'])?$where['name']:'';
+    //     $arr['sex'] = isset($where['sex'])?$where['sex']:'';
+    //     $arr['educational'] = isset($where['educational'])?$where['educational']:'';
+    //     $arr['phone'] = isset($where['phone'])?$where['phone']:'';
+    //     $arr['expected_job'] = isset($where['expected_job'])?$where['expected_job']:'';
+    //     $arr['status'] = isset($where['status'])?$where['status']:'';
+    //     $arr['school'] = isset($where['school'])?$where['school']:'';
+    //     $arr['speciality'] = isset($where['speciality'])?$where['speciality']:'';
+    //     $arr['english'] = isset($where['english'])?$where['english']:'';
+    //     $phinx_where = '';
+    //     $count_arr = count($arr);
+    //     $arr_ids = [];
+    //     $n = 1;
+    //     foreach ($arr as $k => $v) {
+    //         if ($v == '') {
+    //             continue;
+    //         }
+    //         if ($count_arr == $n) {
+
+    //             $phinx_where.= "@$k $v";
+    //         }
+    //         else{
+    //             $phinx_where.= "@$k $v & ";
+    //         }
+    //         $n++;
+    //     }
+    //     if($phinx_where != ''){
+    //         $data1 = $sphinx->query($phinx_where,"resume");   //基础资料\
+        
+    //         if (isset($data1['matches'])) {
+    //             $arr_ids[] = array_column($data1['matches'], 'id');
+    //         }
+    //         else{
+    //             return [];
+    //         }
+    //     }
+
+    //     $email = isset($where['email'])?$where['email']:'';
+    //     if ($email) {
+            
+    //         $data2 = $resume->getId(['email' => $email]);
+    //         if (isset($data2[0])) {
+    //             $arr_ids[] = [ 0 => $data2[0]['id']];
+    //         }   
+    //         else{
+    //             // $arr_ids[] = [];
+    //             return [];
+    //         }
+    //     }
+        
+
+    //     $money_st = isset($where['expected_money_st'])?$where['expected_money_st']:'';
+    //     $money_ed = isset($where['expected_money_ed'])?$where['expected_money_ed']:'';
+    //     $data3 = '';
+    //     if ($money_st && $money_ed) {
+    //         $data3 = $resume->getId('expected_money_start >='.$money_st.' and expected_money_start <='.$money_ed.' and expected_money_end >='.$money_st);
+    //     }else if($money_st && !$money_ed){  //期望薪资
+    //         $data3 = $resume->getId('expected_money_start >='.$money_st);
+    //     }else if(!$money_st && $money_ed){
+    //         $data3 = $resume->getId('expected_money_end <='.$money_ed);
+    //     }else{
+    //         // $arr_ids[] = [];
+    //     }
+    //     if ($data3) {
+    //         $arr_ids[] = array_column($data3, 'id');
+    //     }
+       
+
+
+    //     $age_min = isset($where['age_min'])?$where['age_min']:'';
+    //     $age_max = isset($where['age_max'])?$where['age_max']:'';
+    //     $data4 = '';
+    //     if ($age_min && $age_max) {
+    //         $data4 = $resume->getId('age >='.$age_min.' and age <='.$age_max);
+    //     }else if($age_min && !$age_max){    //年龄
+    //         $data4 = $resume->getId('age >='.$age_min);
+    //     }else if(!$age_min && $age_max){
+    //         $data4 = $resume->getId('age <='.$age_max);
+    //     }else{
+    //         // $arr_ids[] = [];
+            
+    //     }
+    //     if ($data4) {
+    //         $arr_ids[] = array_column($data4,'id');
+    //     }
+        
+    //     $work_year_min = isset($where['work_year_min'])?$where['work_year_min']:'';
+    //     $work_year_max = isset($where['work_year_max'])?$where['work_year_max']:'';
+    //     $data5 = '';
+    //     if ($work_year_min && $work_year_max) {
+    //         $data5 = $resume->getId('work_year >='.$work_year_min.' and work_year <='.$work_year_max);
+    //     }else if($work_year_min && !$work_year_max){    
+    //         $data5 = $resume->getId('work_year >='.$work_year_min);
+    //     }else if(!$work_year_min && $work_year_max){
+    //         $data5 = $resume->getId('work_year <='.$work_year_max);
+    //     }else{
+    //         // $arr_ids[] = [];
+            
+    //     }
+    //     if ($data5) {
+    //         $arr_ids[] = array_column($data5,'id');
+    //     }
+
+    //     $other = isset($where['other'])?$where['other']:'';
+    //     $data6 = '';
+    //     if ($other) {
+    //         $other = preg_replace("/(,|，)/",',',$other);
+    //         $other = explode(',',$other);
+    //         $other = implode('"|"',$other);
+    //         $other = "'".'"'.$other.'"'."'";
+    //         $data6 = $sphinx->query($other,"resume");
+    //         if (isset($data6['matches'])) {
+    //             $arr_ids[] = array_column($data6['matches'],'id');
+    //         }
+    //         else{
+    //             return [];
+    //         }
+            
+    //     }
+
+
+    //     $ids = [];
+    //     foreach ($arr_ids as $a => $b) {
+    //         if ($a == 0) {
+    //             $ids = $b;
+    //             continue;
+    //         }
+    //         $ids = array_intersect($ids, $b);
+    //     }
+    //     if (!empty($ids)) {
+    //         $str = implode(',', $ids);
+    //         $data = $resume->get("id in($str)");
+    //     }
+    //     else{
+    //         $data = [];
+    //     }
+        
+    //     return $data;
+    // }
+
     public function search($where = ''){
         $resume = new ResumeModel();
+        $email = isset($where['email'])?$where['email']:'';
+        if ($email) {
+            //先判断邮箱搜索条件
+            $data = $resume->getId(['email' => $email]);
+            if (isset($data2[0])) {
+                $ids = [];
+                foreach ($data as $k => $v) {
+                    $ids[] = $v['id']; 
+                }
+                $arr_ids[] = $ids;
+            }   
+            else{
+                // $arr_ids[] = [];
+                return [];
+            }
+        }
+
         $sphinx = new \SphinxClient;
         $sphinx->setServer("192.168.199.134", 9312);
         $sphinx->setMatchMode(SPH_MATCH_EXTENDED2);   //匹配模式 ANY为关键词自动拆词，ALL为不拆词匹配（完全匹配），EXTENDED2,多词匹配
         $sphinx->SetArrayResult ( true );   //返回的结果集为数组
-        // $result = $sphinx->query("@name 貂","resume");   //星号为所有索引源
-        // $res = $sphinx->query("@sex 男","resume");   //星号为所有索引源
-        // $result = $sphinx->query('"高并发"|"c++"',"resume");   //星号为所有索引源
-        // $res = $sphinx->UpdateAttributes ('users',array('is_del'),array(18 => array(1)));
         $arr = [];
         $arr['name'] = isset($where['name'])?$where['name']:'';
         $arr['sex'] = isset($where['sex'])?$where['sex']:'';
@@ -687,121 +851,60 @@ class Resume extends Controller
             $n++;
         }
         if($phinx_where != ''){
-            $data1 = $sphinx->query($phinx_where,"resume");   //基础资料\
-        
-            if (isset($data1['matches'])) {
-                $arr_ids[] = array_column($data1['matches'], 'id');
-            }
-            else{
-                return [];
-            }
-        }
-
-        $email = isset($where['email'])?$where['email']:'';
-        if ($email) {
-            
-            $data2 = $resume->getId(['email' => $email]);
-            if (isset($data2[0])) {
-                $arr_ids[] = [ 0 => $data2[0]['id']];
-            }   
-            else{
-                // $arr_ids[] = [];
-                return [];
-            }
-        }
-        
-
-        $money_st = isset($where['expected_money_st'])?$where['expected_money_st']:'';
-        $money_ed = isset($where['expected_money_ed'])?$where['expected_money_ed']:'';
-        $data3 = '';
-        if ($money_st && $money_ed) {
-            $data3 = $resume->getId('expected_money_start >='.$money_st.' and expected_money_start <='.$money_ed.' and expected_money_end >='.$money_st);
-        }else if($money_st && !$money_ed){  //期望薪资
-            $data3 = $resume->getId('expected_money_start >='.$money_st);
-        }else if(!$money_st && $money_ed){
-            $data3 = $resume->getId('expected_money_end <='.$money_ed);
-        }else{
-            // $arr_ids[] = [];
-        }
-        if ($data3) {
-            $arr_ids[] = array_column($data3, 'id');
-        }
-       
-
-
-        $age_min = isset($where['age_min'])?$where['age_min']:'';
-        $age_max = isset($where['age_max'])?$where['age_max']:'';
-        $data4 = '';
-        if ($age_min && $age_max) {
-            $data4 = $resume->getId('age >='.$age_min.' and age <='.$age_max);
-        }else if($age_min && !$age_max){    //年龄
-            $data4 = $resume->getId('age >='.$age_min);
-            $sphinx->SetFilterRange('age', $age_min, 10000000000);
-            $data = $sphinx->query('','resume');
-            dump($data);exit;
-        }else if(!$age_min && $age_max){
-            $data4 = $resume->getId('age <='.$age_max);
-        }else{
-            // $arr_ids[] = [];
-            
-        }
-        if ($data4) {
-            $arr_ids[] = array_column($data4,'id');
-        }
-        
-        $work_year_min = isset($where['work_year_min'])?$where['work_year_min']:'';
-        $work_year_max = isset($where['work_year_max'])?$where['work_year_max']:'';
-        $data5 = '';
-        if ($work_year_min && $work_year_max) {
-            $data5 = $resume->getId('work_year >='.$work_year_min.' and work_year <='.$work_year_max);
-        }else if($work_year_min && !$work_year_max){    //年龄
-            $data5 = $resume->getId('work_year >='.$work_year_min);
-        }else if(!$work_year_min && $work_year_max){
-            $data5 = $resume->getId('work_year <='.$work_year_max);
-        }else{
-            // $arr_ids[] = [];
-            
-        }
-        if ($data5) {
-            $arr_ids[] = array_column($data5,'id');
+            $sphinx->AddQuery($sphinx,'resume');
         }
 
         $other = isset($where['other'])?$where['other']:'';
-        $data6 = '';
         if ($other) {
             $other = preg_replace("/(,|，)/",',',$other);
             $other = explode(',',$other);
             $other = implode('"|"',$other);
             $other = "'".'"'.$other.'"'."'";
-            $data6 = $sphinx->query($other,"resume");
-            if (isset($data6['matches'])) {
-                $arr_ids[] = array_column($data6['matches'],'id');
-            }
-            else{
-                return [];
-            }
+            $sphinx->AddQuery($other,'resume');
+        }
+
+        $money_st = isset($where['expected_money_st'])?$where['expected_money_st']:'';
+        $money_ed = isset($where['expected_money_ed'])?$where['expected_money_ed']:'';
+        if ($money_st && $money_ed) {
+            $sphinx->SetFilterRange('expected_money_start', $money_st,$money_ed);
+            $sphinx->SetFilterRange('expected_money_end', $money_st, 100000000);
+        }else if($money_st && !$money_ed){  //期望薪资
+            $sphinx->SetFilterRange('expected_money_start', $money_st, 100000000);
+        }else if(!$money_st && $money_ed){
+            $sphinx->SetFilterRange('expected_money_end', 0, $money_ed);
+        }else{
+            // $arr_ids[] = [];
+        }
+       
+        $age_min = isset($where['age_min'])?$where['age_min']:'';
+        $age_max = isset($where['age_max'])?$where['age_max']:'';
+        if ($age_min && $age_max) {
+            $sphinx->SetFilterRange('age', $age_min, $age_max);//查找年龄最小-最大之间
+        }else if($age_min && !$age_max){    //年龄
+            $sphinx->SetFilterRange('age', $age_min, 100);//查找年龄最小-100之间
+        }else if(!$age_min && $age_max){
+            $sphinx->SetFilterRange('age', 0, $age_max);//查找年龄0-最大之间
+        }else{
+            // $arr_ids[] = [];
+        }
+
+        $work_year_min = isset($where['work_year_min'])?$where['work_year_min']:'';
+        $work_year_max = isset($where['work_year_max'])?$where['work_year_max']:'';
+        if ($work_year_min && $work_year_max) {
+            $sphinx->SetFilterRange('work_year', $work_year_min, $work_year_max);
+        }else if($work_year_min && !$work_year_max){    
+            $sphinx->SetFilterRange('work_year', $work_year_min, 100);
+        }else if(!$work_year_min && $work_year_max){
+            $sphinx->SetFilterRange('work_year', 0, $work_year_max);
+        }else{
+            // $arr_ids[] = [];
             
         }
 
-
-        $ids = [];
-        foreach ($arr_ids as $a => $b) {
-            if ($a == 0) {
-                $ids = $b;
-                continue;
-            }
-            $ids = array_intersect($ids, $b);
-        }
-        if (!empty($ids)) {
-            $str = implode(',', $ids);
-            $data = $resume->get("id in($str)");
-        }
-        else{
-            $data = [];
-        }
+        $data = $sphinx->RunQuries();
         
+        dump($data);exit;
         return $data;
     }
-
 
 }
