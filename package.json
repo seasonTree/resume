@@ -14,6 +14,7 @@
 	"dependencies": {
 		"@babel/polyfill": "^7.2.5",
 		"axios": "^0.18.0",
+		"babel-plugin-syntax-jsx": "^6.18.0",
 		"echarts": "^4.2.0-rc.2",
 		"element-ui": "^2.4.11",
 		"v-charts": "^1.19.0",
@@ -28,9 +29,7 @@
 		"autoprefixer": "^9.4.3",
 		"babel-helper-vue-jsx-merge-props": "^2.0.3",
 		"babel-loader": "^8.0.2",
-		"babel-plugin-syntax-jsx": "^6.18.0",
 		"babel-plugin-transform-vue-jsx": "^3.7.0",
-		"clean-webpack-plugin": "^1.0.0",
 		"concurrently": "^3.6.1",
 		"copy-webpack-plugin": "^4.6.0",
 		"css-loader": "^1.0.0",
