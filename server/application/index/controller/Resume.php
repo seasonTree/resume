@@ -823,6 +823,46 @@ class Resume extends Controller
         $sphinx->setServer("192.168.199.134", 9312);
         $sphinx->setMatchMode(SPH_MATCH_EXTENDED2);   //匹配模式 ANY为关键词自动拆词，ALL为不拆词匹配（完全匹配），EXTENDED2,多词匹配
         $sphinx->SetArrayResult ( true );   //返回的结果集为数组
+        
+
+        $money_st = isset($where['expected_money_st'])?$where['expected_money_st']:'';
+        $money_ed = isset($where['expected_money_ed'])?$where['expected_money_ed']:'';
+        if ($money_st && $money_ed) {
+            $sphinx->SetFilterRange('expected_money_start', $money_st,$money_ed);
+            $sphinx->SetFilterRange('expected_money_end', $money_st, 100000000);
+        }else if($money_st && !$money_ed){  //期望薪资
+            $sphinx->SetFilterRange('expected_money_start', $money_st, 100000000);
+        }else if(!$money_st && $money_ed){
+            $sphinx->SetFilterRange('expected_money_end', 0, $money_ed);
+        }else{
+            // $arr_ids[] = [];
+        }
+
+        $age_min = isset($where['age_min'])?$where['age_min']:'';
+        $age_max = isset($where['age_max'])?$where['age_max']:'';
+        if ($age_min && $age_max) {
+            $sphinx->SetFilterRange('age', $age_min, $age_max);//查找年龄最小-最大之间
+        }else if($age_min && !$age_max){    //年龄
+            $sphinx->SetFilterRange('age', $age_min, 100);//查找年龄最小-100之间
+        }else if(!$age_min && $age_max){
+            $sphinx->SetFilterRange('age', 0, $age_max);//查找年龄0-最大之间
+        }else{
+            // $arr_ids[] = [];
+        }
+
+        $work_year_min = isset($where['work_year_min'])?$where['work_year_min']:'';
+        $work_year_max = isset($where['work_year_max'])?$where['work_year_max']:'';
+        if ($work_year_min && $work_year_max) {
+            $sphinx->SetFilterRange('work_year', $work_year_min, $work_year_max);
+        }else if($work_year_min && !$work_year_max){    
+            $sphinx->SetFilterRange('work_year', $work_year_min, 100);
+        }else if(!$work_year_min && $work_year_max){
+            $sphinx->SetFilterRange('work_year', 0, $work_year_max);
+        }else{
+            // $arr_ids[] = [];
+            
+        }
+
         $arr = [];
         $arr['name'] = isset($where['name'])?$where['name']:'';
         $arr['sex'] = isset($where['sex'])?$where['sex']:'';
@@ -862,45 +902,6 @@ class Resume extends Controller
             $other = "'".'"'.$other.'"'."'";
             $sphinx->AddQuery($other,'resume');
         }
-
-        $money_st = isset($where['expected_money_st'])?$where['expected_money_st']:'';
-        $money_ed = isset($where['expected_money_ed'])?$where['expected_money_ed']:'';
-        if ($money_st && $money_ed) {
-            $sphinx->SetFilterRange('expected_money_start', $money_st,$money_ed);
-            $sphinx->SetFilterRange('expected_money_end', $money_st, 100000000);
-        }else if($money_st && !$money_ed){  //期望薪资
-            $sphinx->SetFilterRange('expected_money_start', $money_st, 100000000);
-        }else if(!$money_st && $money_ed){
-            $sphinx->SetFilterRange('expected_money_end', 0, $money_ed);
-        }else{
-            // $arr_ids[] = [];
-        }
-       
-        $age_min = isset($where['age_min'])?$where['age_min']:'';
-        $age_max = isset($where['age_max'])?$where['age_max']:'';
-        if ($age_min && $age_max) {
-            $sphinx->SetFilterRange('age', $age_min, $age_max);//查找年龄最小-最大之间
-        }else if($age_min && !$age_max){    //年龄
-            $sphinx->SetFilterRange('age', $age_min, 100);//查找年龄最小-100之间
-        }else if(!$age_min && $age_max){
-            $sphinx->SetFilterRange('age', 0, $age_max);//查找年龄0-最大之间
-        }else{
-            // $arr_ids[] = [];
-        }
-
-        $work_year_min = isset($where['work_year_min'])?$where['work_year_min']:'';
-        $work_year_max = isset($where['work_year_max'])?$where['work_year_max']:'';
-        if ($work_year_min && $work_year_max) {
-            $sphinx->SetFilterRange('work_year', $work_year_min, $work_year_max);
-        }else if($work_year_min && !$work_year_max){    
-            $sphinx->SetFilterRange('work_year', $work_year_min, 100);
-        }else if(!$work_year_min && $work_year_max){
-            $sphinx->SetFilterRange('work_year', 0, $work_year_max);
-        }else{
-            // $arr_ids[] = [];
-            
-        }
-
         $data = $sphinx->RunQueries();
         
         dump($data);exit;
