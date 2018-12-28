@@ -17,18 +17,28 @@
                 :props="defaultProps"
                 ref="tree"
             >
-                <span slot-scope="{ node, data }">
+                <span
+                    class="custom-tree-node"
+                    slot-scope="{ node, data }"
+                >
                     <span>{{ node.label }}</span>
-                    <a
-                        class="tree-select-all-btn"
-                        v-if="data.children && data.children.length"
-                        @click.stop="() => selectChild(data, true)"
-                    >&nbsp;&nbsp;&nbsp;&nbsp;(全选)</a>
-                    <a
-                        class="tree-select-all-btn"
-                        v-if="data.children && data.children.length"
-                        @click.stop="() => selectChild(data, false)"
-                    >&nbsp;&nbsp;(取消)</a>
+
+                    <span>
+                        <el-button
+                            type="text"                            
+                            v-if="data.children && data.children.length"
+                            @click.stop="() => selectChild(data, true)"
+                        >
+                            全选
+                        </el-button>
+                        <el-button
+                            type="text"                            
+                            v-if="data.children && data.children.length"
+                            @click.stop="() => selectChild(data, false)"
+                        >
+                            取消
+                        </el-button>
+                    </span>
                 </span>
             </el-tree>
         </div>
@@ -252,10 +262,13 @@ export default {
     padding: 10px;
     border: 1px solid #dcdfe6;
 
-    .tree-select-all-btn {
-        &:hover {
-            color: #409eff;
-        }
+    .custom-tree-node {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 14px;
+        padding-right: 8px;
     }
 }
 </style>
