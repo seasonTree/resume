@@ -934,7 +934,7 @@ class Resume extends Controller
                     // }
                 }else if($money_st && !$money_ed){  //期望薪资
                     $check = false;
-                    if($money_st >= $v['attrs']['expected_money_start'] && $money_st <= $v['attrs']['expected_money_end']){
+                    if($money_st >= $v['attrs']['expected_money_end'] && $money_st <= $v['attrs']['expected_money_end']){
                         $check = true;
                     }
                     if ($money_st >= $v['attrs']['expected_money_start'] || $check) {
