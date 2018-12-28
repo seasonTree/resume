@@ -863,6 +863,9 @@ class Resume extends Controller
             
         }
 
+        $data = $sphinx->query('','resume');
+        dump($data);exit;
+
         $arr = [];
         $arr['name'] = isset($where['name'])?$where['name']:'';
         $arr['sex'] = isset($where['sex'])?$where['sex']:'';
