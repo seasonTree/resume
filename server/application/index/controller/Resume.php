@@ -831,20 +831,20 @@ class Resume extends Controller
         $sphinx->SetArrayResult ( true );   //返回的结果集为数组
         
 
-        $money_st = isset($where['expected_money_st'])?$where['expected_money_st']:'';
-        $money_ed = isset($where['expected_money_ed'])?$where['expected_money_ed']:'';
-        if ($money_st && $money_ed) {
-            $sphinx->SetFilterRange('expected_money_start',$money_st,100000000);
-            $sphinx->SetFilterRange('expected_money_end', 0, $money_ed);
-        }else if($money_st && !$money_ed){  //期望薪资
-            $sphinx->SetFilterRange('expected_money_start', $money_st, 100000000);
-            $sphinx->SetFilterRange('expected_money_start', 0,$money_st);
-        }else if(!$money_st && $money_ed){
-            $sphinx->SetFilterRange('expected_money_end', $money_ed,100000000);
-            $sphinx->SetFilterRange('expected_money_end',0,$money_ed);
-        }else{
-            // $arr_ids[] = [];
-        }
+        // $money_st = isset($where['expected_money_st'])?$where['expected_money_st']:'';
+        // $money_ed = isset($where['expected_money_ed'])?$where['expected_money_ed']:'';
+        // if ($money_st && $money_ed) {
+        //     $sphinx->SetFilterRange('expected_money_start',$money_st,100000000);
+        //     $sphinx->SetFilterRange('expected_money_end', 0, $money_ed);
+        // }else if($money_st && !$money_ed){  //期望薪资
+        //     $sphinx->SetFilterRange('expected_money_start', $money_st, 100000000);
+        //     $sphinx->SetFilterRange('expected_money_start', 0,$money_st);
+        // }else if(!$money_st && $money_ed){
+        //     $sphinx->SetFilterRange('expected_money_end', $money_ed,100000000);
+        //     $sphinx->SetFilterRange('expected_money_end',0,$money_ed);
+        // }else{
+        //     // $arr_ids[] = [];
+        // }
 
         $age_min = isset($where['age_min'])?$where['age_min']:'';
         $age_max = isset($where['age_max'])?$where['age_max']:'';
@@ -918,14 +918,51 @@ class Resume extends Controller
         // $data = $sphinx->RunQueries();
         $res = $sphinx->query($phinx_where,'resume');
         $data = [];
+
+        $money_st = isset($where['expected_money_st'])?$where['expected_money_st']:'';
+        $money_ed = isset($where['expected_money_ed'])?$where['expected_money_ed']:'';
+        //筛选薪资范围
+
         if (isset($res['matches'])) {
             $data_arr = $res['matches'];
 
             foreach ($data_arr as $k => $v) {
-                $data[$k] = $v['attrs'];
-                $data[$k]['id'] = $v['id'];
+
+                if ($money_st && $money_ed) {
+                    if ($v['attrs']['expected_money_st'] =< $money_st ) {
+                        # code...
+                    }
+                }else if($money_st && !$money_ed){  //期望薪资
+                    if ($v['attrs']['expected_money_st'] =< $money_st || ($v['attrs']['expected_money_st'] =< $money_st && $v['attrs']['expected_money_ed'] >= $money_st)) {
+
+                        $data[$k] = $v['attrs'];
+                        $data[$k]['id'] = $v['id'];
+                    }
+                    
+                }else if(!$money_st && $money_ed){
+                    
+                }else{
+                    $data[$k] = $v['attrs'];
+                    $data[$k]['id'] = $v['id'];
+                }
+                
             }
 
+        }
+
+        $money_st = isset($where['expected_money_st'])?$where['expected_money_st']:'';
+        $money_ed = isset($where['expected_money_ed'])?$where['expected_money_ed']:'';
+        if ($money_st && $money_ed) {
+            $sphinx->SetFilterRange('expected_money_start',$money_st,100000000);
+            $sphinx->SetFilterRange('expected_money_end', 0, $money_ed);
+        }else if($money_st && !$money_ed){  //期望薪资
+            $sphinx->SetFilterRange('expected_money_start', $money_st, 100000000);
+            $sphinx->SetFilterRange('expected_money_start', 0,$money_st);
+        }else if(!$money_st && $money_ed){
+            $sphinx->SetFilterRange('expected_money_end', $money_ed,100000000);
+            $sphinx->SetFilterRange('expected_money_end',0,$money_ed);
+        }else{
+            // $arr_ids[] = [];
         }
         return $data;
     }
