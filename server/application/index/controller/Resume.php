@@ -15,7 +15,13 @@ class Resume extends Controller
 {	
     public function checkName(){
         $name = input('get.name');
-        $data = model('resume')->get(['name'=>$name]);
+        $id = input('get.id');
+        $data = model('resume')->get(['name'=>$name])->toArray();
+        foreach ($data as $k => $v) {
+            if ($v['id'] = $id) {
+                unset($data[$k]);
+            }
+        }
         return json(['code' => 0,'msg' => 'ok','data' => $data]);
     }
     public function index()

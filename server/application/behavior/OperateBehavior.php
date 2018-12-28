@@ -82,7 +82,7 @@ class OperateBehavior extends Controller
             //超级管理员跳权限
             if (!in_array($url, $auth)) {
                 // $this->error('无权限访问');
-                echo '您没有权限访问';
+                echo '您没有权限访问';exit;
             }
 
         }
