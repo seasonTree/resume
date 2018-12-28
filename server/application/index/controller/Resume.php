@@ -22,7 +22,7 @@ class Resume extends Controller
                 unset($data[$k]);
             }
         }
-        return json(['code' => 0,'msg' => 'ok','data' => $data]);
+        return json(['code' => 0,'msg' => 'ok','data' => array_merge($data)]);
     }
     public function index()
     {
