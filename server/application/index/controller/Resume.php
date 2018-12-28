@@ -892,7 +892,8 @@ class Resume extends Controller
             $n++;
         }
         if($phinx_where != ''){
-            $sphinx->AddQuery($phinx_where,'resume');
+            // $sphinx->AddQuery($phinx_where,'resume');
+            $phinx_where = '('.$phinx_where.')';
         }
 
         $other = isset($where['other'])?$where['other']:'';
@@ -900,10 +901,14 @@ class Resume extends Controller
             $other = preg_replace("/(,|，)/",',',$other);
             $other = explode(',',$other);
             $other = implode('"|"',$other);
-            $other = "'".'"'.$other.'"'."'";
-            $sphinx->AddQuery($other,'resume');
+            // $other = "'".'"'.$other.'"'."'";
+            $other = '("'.$other.'")';
+            $phinx_where = empty($phinx_where)?$phinx_where.' & '.$other:$other;
+            
+            // $sphinx->AddQuery($other,'resume');
         }
-        $data = $sphinx->RunQueries();
+        // $data = $sphinx->RunQueries();
+        $data = $sphinx->query($phinx_where,'resume');
         
         dump($data);exit;
         return $data;
