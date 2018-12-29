@@ -78,7 +78,7 @@ class User
         }
 
         $data['mfy_user'] = Session::get('user_info')['uname'];
-        // $data['mfy_time'] = date('Y-m-d H:i:s');
+        unset($data['mfy_time']);
         $id=model('User')->edit($data);
         if($id){
             $data = model('User')->getOne(['id'=>$data['id']]);
@@ -129,17 +129,25 @@ class User
     public function changeStatus(){
         $data = input('post.');
 
+        $data['mfy_user'] = Session::get('user_info')['uname'];
+        unset($data['mfy_time']);
+
         if(model('User')->edit($data)){
             $data = model('User')->getOne(['id'=>$data['id']]);
         }
+
         return json(['data'=>$data,'code'=>0,'msg'=>'修改状态成功']);
     }
     public function changeUserPasswd(){
         $data = input('post.');
         $data['passwd'] = hash('sha256',$data['passwd']);
+
+        unset($data['mfy_time']);
+        $data['mfy_user'] = Session::get('user_info')['uname'];
+
         if(model('User')->edit($data)){
             $data = model('User')->getOne(['id'=>$data['id']]);
-        }
+        }            
         return json(['data'=>$data,'code'=>0,'msg'=>'修改状态成功']);
     }
     /**
