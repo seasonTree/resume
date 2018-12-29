@@ -397,7 +397,7 @@ class Resume extends Controller
 
     public function upload(){
         //上传
-        $path = 'uploads/';
+        $path = dirname(Env::get('ROOT_PATH')).'/client/dist/uploads/';
         // 获取表单上传文件
         $file = request()->file('file');
         // 移动到框架应用根目录/uploads/ 目录下
@@ -410,7 +410,7 @@ class Resume extends Controller
                 return json(['msg' => '文件已经存在','code' => 3]);
             }
             $data = array(
-                'resume_url' => $path.$info->getSaveName(),
+                'resume_url' => 'uploads/'.$info->getSaveName(),
                 'ct_user'  => Session::get('user_info')['uname'],
                 'file_name'  => $file_name,
                 'resume_id' => input('resume_id')//预留的简历id
