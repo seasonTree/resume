@@ -37,7 +37,7 @@ class User extends Model
         return User::field('uname,personal_name,ct_user')->where($where)->select()->toArray();
     }
     public function lst(){
-        return $this->field('id,uname,personal_name,phone,ct_user,ct_time,status,mfy_time')->select()->toArray();
+        return $this->select()->toArray();
     }
     public function updateToken($data){
         return User::where(['id' => $data['id']])->update(['token' => $data['token']]);
@@ -49,7 +49,7 @@ class User extends Model
         }
         $offset = ($pageIndex - 1) * $pageSize;
 
-        $limitData = $this->limit($offset, $pageSize)->where($where)->select();
+        $limitData = $this->field('id,uname,personal_name,phone,ct_user,ct_time,status,mfy_time')->limit($offset, $pageSize)->where($where)->select();
         $count = $this->where($where)->count();
         // $pageCount = ceil($count / $pageSize);
         $data = [
