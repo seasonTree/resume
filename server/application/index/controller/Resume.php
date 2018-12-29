@@ -930,7 +930,6 @@ class Resume extends Controller
             $page_start = $page_end - $where['pageSize'];
 
             $list_arr = array_slice($data_arr,$page_start,$where['pageSize']);
-            dump($data_arr);exit;
             foreach ($list_arr as $k => $v) {
                 // if ($k < $page_start) {
                 //     continue;//分页处理，过滤不符合要求的数据
@@ -985,6 +984,7 @@ class Resume extends Controller
                 
             }
 
+            dump(count($data_arr));exit;
             $data[] = count($data_arr);//总数
 
         }
