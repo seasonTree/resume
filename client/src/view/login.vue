@@ -66,7 +66,7 @@ export default {
                         }, 1200);
 
                     } else {
-                        that.$message.error("用户或密码错误,请重试.");
+                        that.$message.error(res.msg || "用户或密码错误,请重试.");
                         that.loading = false;
                     }
                 })
