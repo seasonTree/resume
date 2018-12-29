@@ -932,7 +932,7 @@ class Resume extends Controller
                 if ($k < $page_start) {
                     continue;//分页处理，过滤不符合要求的数据
                 }
-                if ($data_num == $parm['pageSize']) {
+                if ($data_num == $where['pageSize']) {
                     break;//数据取够之后直接跳出循环
                 }
                 if ($money_st && $money_ed) {
