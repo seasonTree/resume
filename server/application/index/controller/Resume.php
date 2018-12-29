@@ -409,8 +409,9 @@ class Resume extends Controller
             if ($find) {
                 return json(['msg' => '文件已经存在','code' => 3]);
             }
+            dump($info->getSaveName());exit;
             $data = array(
-                'resume_url' => 'uploads/'.$info->getSaveName(),
+                'resume_url' => $path.$info->getSaveName(),
                 'ct_user'  => Session::get('user_info')['uname'],
                 'file_name'  => $file_name,
                 'resume_id' => input('resume_id')//预留的简历id
