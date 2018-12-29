@@ -417,7 +417,6 @@ class Resume extends Controller
                 'resume_id' => input('resume_id')//预留的简历id
                 );
             //入库操作
-            dump($data);exit;
             $data['id'] = $upload->add($data);
             $data['ct_time'] = date('Y-m-d H:i:s',time());
             $user = new User();
