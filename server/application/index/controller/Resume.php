@@ -411,7 +411,7 @@ class Resume extends Controller
             }
 
             $data = array(
-                'resume_url' => $path.$info->getSaveName(),
+                'resume_url' => 'uploads/'.$info->getSaveName(),
                 'ct_user'  => Session::get('user_info')['uname'],
                 'file_name'  => $file_name,
                 'resume_id' => input('resume_id')//预留的简历id
