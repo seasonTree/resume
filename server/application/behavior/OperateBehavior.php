@@ -63,7 +63,8 @@ class OperateBehavior extends Controller
             // if (checkLogin()) {
             //     $this->redirect($url);
             // }
-            $this->error('请先登陆', '/', '', '1');
+            // $this->error('请先登陆', '/', '', '1');
+            return $this->redirect('/');
         }
 
         
@@ -84,8 +85,7 @@ class OperateBehavior extends Controller
 
             if (!in_array($url, $auth)) {
                 // $this->error('无权限访问');
-                return ['code' => 403];exit;
-                // echo '您没有权限访问';exit;
+                echo '您没有权限访问';exit;
             }
 
         }

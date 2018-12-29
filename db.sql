@@ -87,7 +87,7 @@ create table rs_user_permission
 drop table if exists rs_resume;
 create table rs_resume
 (
-	id bigint(20) not null comment '简历id',
+	id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT comment '简历id',
 	name varchar(20) not null default '' comment '姓名',
 	phone varchar(20) not null default '' comment '电话',
 	birthday varchar(20) not null default '' comment '生日',
@@ -96,15 +96,18 @@ create table rs_resume
 	work_year varchar(20) not null default '' comment '工作年限',
 	native_place varchar(20) not null default '' comment '户口所在地',
 	email varchar(30) not null default '' comment '电子邮箱',
+	expected_money_start  int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '薪资起始' ,
+	expected_money_end  int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '薪资终止' ,
 	expected_money varchar(30) not null default '' comment '期望薪资',
 	nearest_unit varchar(50) not null default '' comment '最近单位',
 	nearest_job varchar(50) not null default '' comment '最近职位',
 	status varchar(20) not null default '' comment '状态',
 	english varchar(20) not null default '' comment '英语水平',
 	-- expected_industry varchar(20) not null default '' comment '期望从事行业',
-	expected_job varchar(20) not null default '' comment '期望从事职业',
+	expected_job varchar(50) not null default '' comment '期望从事职业',
 	expected_address varchar(30) not null default '' comment '期望工作地点',
 	selfEvaluation text comment '自我介绍',
+	educational_background  varchar(100) NOT NULL DEFAULT '' COMMENT '教育背景' ,
 	school varchar(30) not null default '' comment '毕业学校',
 	educational varchar(10) not null default '' comment '学历',
 	speciality varchar(20) not null default '' comment '专业',
@@ -121,7 +124,9 @@ create table rs_resume
 	mfy_user varchar(64) default '' not null comment '修改人',
 	mfy_time datetime default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP not null comment '修改时间',
 	is_del tinyint(1) default 0 not null comment '伪删除',
-	source varchar(50) default '' not null comment '简历来源'	
+	source varchar(50) default '' not null comment '简历来源',
+	PRIMARY KEY (`id`),
+	INDEX `name` (`name`) USING BTREE 
 );
 -- -----------------------------------------------------
 -- 上传
@@ -134,7 +139,8 @@ create table rs_resume_upload
 	resume_url varchar(255) not null default '' comment '简历文件对应的路径',
 	ct_user varchar(64) default '' null comment '创建人',
 	ct_time datetime default CURRENT_TIMESTAMP not null comment '创建时间',
-	resume_id bigint(20) not null default 0 comment '简历id'
+	resume_id bigint(20) UNSIGNED not null default 0 comment '简历id',
+
 );
 
 -- -----------------------------------------------------
@@ -155,7 +161,8 @@ create table rs_communicate
 	mfy_time datetime default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP not null comment '修改时间',
 	resume_id bigint(20) not null default 0 comment '简历id',
 	content varchar(255) not null default '' comment '具体内容',
-	communicate_time varchar(50) not null default '' comment '沟通时间'
+	communicate_time varchar(50) not null default '' comment '沟通时间',
+	INDEX `ct_user` (`ct_user`) USING BTREE 
 );
 
 -- 插入菜单

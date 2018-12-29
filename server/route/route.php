@@ -90,7 +90,10 @@ Route::get('api/report/person_recru/recruitment_list','Report/recruitmentList');
 Route::get('api/person_recru/export','Report/export');//导出
 //-----------------------------------------------
 
+Route::get(':name','Index/index');
+Route::post(':name','Index/index');
 //###################################################################
+
 
 return [
 	// 'api/user/login' => ['Login/login',['method' => 'post']],//写法2
