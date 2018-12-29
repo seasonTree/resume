@@ -928,13 +928,14 @@ class Resume extends Controller
             $data_num = 0;//定义数据量
             $page_end = $where['pageSize'] * $where['pageIndex'];
             $page_start = $page_end - $where['pageSize'];
+            $data_arr = array_slice($data_arr,$page_start,$where['pageSize']);
             foreach ($data_arr as $k => $v) {
-                if ($k < $page_start) {
-                    continue;//分页处理，过滤不符合要求的数据
-                }
-                if ($data_num == $where['pageSize']) {
-                    break;//数据取够之后直接跳出循环
-                }
+                // if ($k < $page_start) {
+                //     continue;//分页处理，过滤不符合要求的数据
+                // }
+                // if ($data_num == $where['pageSize']) {
+                //     break;//数据取够之后直接跳出循环
+                // }
                 if ($money_st && $money_ed) {
                     $check_start = false;
                     if($money_st >= $v['attrs']['expected_money_start'] && $money_st <= $v['attrs']['expected_money_end']){
@@ -978,7 +979,7 @@ class Resume extends Controller
                     $data[$k]['id'] = $v['id'];
                 }
 
-                $data_num++;
+                // $data_num++;
                 
             }
 
