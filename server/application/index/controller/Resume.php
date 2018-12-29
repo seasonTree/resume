@@ -397,7 +397,7 @@ class Resume extends Controller
 
     public function upload(){
         //上传
-        $path = dirname(Env::get('ROOT_PATH')).'/client/dist/uploads/';
+        $path = 'uploads/';
         // 获取表单上传文件
         $file = request()->file('file');
         // 移动到框架应用根目录/uploads/ 目录下
@@ -610,7 +610,7 @@ class Resume extends Controller
         //下载简历
         $parm = input('get.');
         header("Content-type:text/html;charset=utf-8"); 
-        $file_path = $parm['url'];
+        $file_path = dirname(Env::get('ROOT_PATH')).'/client/dist/'.$parm['url'];
         try{
             $fp = fopen($file_path,"rb");
         }catch(\Exception $e){
