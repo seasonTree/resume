@@ -939,7 +939,7 @@ class Resume extends Controller
                         $check_end = true;
                     }
                     $check_between = false;
-                    if($money_start <= $v['attrs']['expected_money_start'] && $money_ed >= $v['attrs']['expected_money_end']){
+                    if($money_st <= $v['attrs']['expected_money_start'] && $money_ed >= $v['attrs']['expected_money_end']){
                         $check_between = true;
                     }
                     if ($check_start || $check_end || $check_between) {
