@@ -394,6 +394,7 @@
             :show.sync="resumeCheckDialog"
             :resumeData="resumeData"
             @continue-commit="commit"
+            @cancel-commit="cancelCommit"
         ></resume-check>
     </div>
 </template>
@@ -476,6 +477,10 @@ export default {
     },
 
     methods: {
+        cancelCommit(){
+            this.commitLoading = false;
+        },
+
         commit() {
             let that = this;
 
@@ -509,8 +514,11 @@ export default {
                             } else {
                                 that.$message.error(res.msg);
                             }
+
+                            that.commitLoading = false;
                         })
                         .catch(res => {
+                            that.commitLoading = false;
                             that.$message.error("修改失败，请重试.");
                         });
                 }
@@ -519,6 +527,8 @@ export default {
 
         editCommit() {
             let that = this;
+
+            that.commitLoading = true;
 
             that.$refs["form"].validate(valid => {
                 if (valid) {
@@ -541,9 +551,12 @@ export default {
                                 that.$message.error(
                                     res.msg || "检查重名失败，请刷新重试."
                                 );
-                            }
+
+                                that.commitLoading = false;
+                            }                            
                         })
                         .catch(res => {
+                            that.commitLoading = false;
                             that.$message.error("检查重名失败，请刷新重试.");
                         });
                 }
