@@ -928,6 +928,7 @@ class Resume extends Controller
             $data_num = 0;//定义数据量
             $page_end = $where['pageSize'] * $where['pageIndex'];
             $page_start = $page_end - $where['pageSize'];
+            dump($data_arr);exit;
             $list_arr = array_slice($data_arr,$page_start,$where['pageSize']);
             foreach ($list_arr as $k => $v) {
                 // if ($k < $page_start) {
