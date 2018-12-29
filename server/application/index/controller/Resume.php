@@ -926,8 +926,8 @@ class Resume extends Controller
         if (isset($res['matches'])) {
             $data_arr = $res['matches'];
             $data_num = 0;//定义数据量
-            $page_end = $parm['pageSize'] * $parm['pageIndex'];
-            $page_start = $page_end - $parm['pageSize'];
+            $page_end = $where['pageSize'] * $where['pageIndex'];
+            $page_start = $page_end - $where['pageSize'];
             foreach ($data_arr as $k => $v) {
                 if ($k < $page_start) {
                     continue;//分页处理，过滤不符合要求的数据
