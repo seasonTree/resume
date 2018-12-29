@@ -68,6 +68,7 @@ class User
     public function getOne(){
         $id = input('post.id');
         $data = model('User')->getOne(['id'=>$id]);
+        unset($data['passwd']);
         return json(['data'=>$data,'code'=>0,'msg'=>'获取某条数据成功']);
     }
     public function edit(){

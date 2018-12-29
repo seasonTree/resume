@@ -29,7 +29,7 @@ class User extends Model
 
     public function getOne($where){
         //获取一条数据
-        return User::field('id,uname,personal_name,phone,ct_user,ct_time,status,mfy_time')->where($where)->find();
+        return User::where($where)->find();
     }
 
     public function getUserInfo($where = '1=1'){
