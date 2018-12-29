@@ -29,7 +29,7 @@ class User extends Model
 
     public function getOne($where){
         //获取一条数据
-        return User::where($where)->find();
+        return User::field('id,uname,personal_name,phone,ct_user,ct_time,status,mfy_time')->where($where)->find();
     }
 
     public function getUserInfo($where = '1=1'){
@@ -37,7 +37,7 @@ class User extends Model
         return User::field('uname,personal_name,ct_user')->where($where)->select()->toArray();
     }
     public function lst(){
-        return $this->select()->toArray();
+        return $this->field('id,uname,personal_name,phone,ct_user,ct_time,status,mfy_time')->select()->toArray();
     }
     public function updateToken($data){
         return User::where(['id' => $data['id']])->update(['token' => $data['token']]);
