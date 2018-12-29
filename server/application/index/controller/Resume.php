@@ -946,7 +946,7 @@ class Resume extends Controller
                     
                 }else if(!$money_st && $money_ed){
                     $check = false;
-                    if($money_ed >= $v['attrs']['expected_money_start'] && $money_st <= $v['attrs']['expected_money_end']){
+                    if($money_ed >= $v['attrs']['expected_money_start'] && $money_ed <= $v['attrs']['expected_money_end']){
                         $check = true;
                     }
 
