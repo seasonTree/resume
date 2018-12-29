@@ -193,8 +193,19 @@
                                                 autocomplete="off"
                                             ></el-input>
                                         </el-form-item>
+                                        
 
                                     </div>
+                                    <el-form-item
+                                            label="简历来源"
+                                            prop="source"
+                                        >
+                                            <el-input
+                                                size="mini"
+                                                v-model.trim="form.source"
+                                                autocomplete="off"
+                                            ></el-input>
+                                        </el-form-item>
                                      <el-form-item
                                         label="期望岗位"
                                         prop="expected_job"
@@ -529,6 +540,7 @@ export default {
                 status: "",
                 email: "",
                 expected_job:"",
+                source:"",
 
                 //毕业时间
                 graduation_time: "",

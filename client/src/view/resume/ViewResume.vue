@@ -172,6 +172,16 @@
 
                         </div>
                         <el-form-item
+                            label="简历来源"
+                            prop="source"
+                        >
+                            <el-input
+                                size="mini"
+                                v-model.trim="form.source"
+                                autocomplete="off"
+                            ></el-input>
+                        </el-form-item>
+                        <el-form-item
                             label="期望岗位"
                             prop="expected_job"
                         >
@@ -413,8 +423,9 @@ export default {
                 work_year: "",
                 english: "",
                 status: "",
-                expected_job:"",
+                expected_job: "",
                 email: "",
+                source:"",
 
                 //毕业时间
                 graduation_time: "",
@@ -499,7 +510,8 @@ export default {
 .form-container {
     position: relative;
 
-    input, textarea{
+    input,
+    textarea {
         color: black !important;
     }
 
