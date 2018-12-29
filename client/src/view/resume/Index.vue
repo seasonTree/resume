@@ -101,7 +101,7 @@
                         <el-row :gutter="20">
                             <el-col :span="4">
                                 <el-input-number
-                                    placeholder="最低薪资要求"
+                                    placeholder="最低薪资"
                                     size="small"
                                     style="width: 100%;"
                                     v-model="search.expected_money_st"
@@ -117,7 +117,7 @@
                                 >
                                 </el-input> -->
                                 <el-input-number
-                                    placeholder="最高薪资要求"
+                                    placeholder="最高薪资"
                                     size="small"
                                     style="width: 100%;"
                                     v-model="search.expected_money_ed"
