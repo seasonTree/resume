@@ -154,6 +154,7 @@ class Role
         }
 
         $data['mfy_user'] = Session::get('user_info')['uname'];
+        unset($data['mfy_time']);
 
 //        if(empty($data['selected'])){
 //            return json(['data'=>'','code'=>1,'msg'=>'请选择权限']);

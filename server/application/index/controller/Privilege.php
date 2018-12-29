@@ -23,7 +23,8 @@ class Privilege extends Controller
 	    $data = input('post.');
 //	    $data['pri_name']=preg_replace('/-+/','',$data['pri_name']);
 	    unset($data['level']);
-	    unset($data['top_class']);
+        unset($data['top_class']);
+        unset($data['mfy_time']);
         $validate =validate('Privilege');
         if (!$validate->check($data)){
             $error =$validate->getError();
