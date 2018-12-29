@@ -84,7 +84,7 @@ class OperateBehavior extends Controller
 
             if (!in_array($url, $auth)) {
                 // $this->error('无权限访问');
-                return json(['msg' => '您没有权限访问','code' => 403]);exit;
+                return ['code' => 403];exit;
                 // echo '您没有权限访问';exit;
             }
 
