@@ -28,6 +28,9 @@ class Login
            if ($res['passwd'] != hash('sha256',$input['password'])) {
                return json(['code' => 2,'msg' => '密码错误','data' => []]);
            }
+           if ($res['status'] == 1) {
+               return json(['code' => 3,'msg' => '该用户被禁止登录','data' => []]);
+           }
            unset($res['passwd']);
            $res['token'] = hash('sha256',$res['id'].time());
            $user_model->updateToken($res);
