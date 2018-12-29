@@ -177,13 +177,15 @@ export default {
                     id
                 })
                 .then(res => {
+
+                    that.editDialog = true;
+
                     if (res.code == 0) {
                         that.currentEditItem = res.data;
                     } else {
                         that.$message.error(res.msg || "获取数据失败，请重试.");
                     }
-
-                    that.editDialog = true;
+                    
                 })
                 .catch(res => {
                     that.$message.error("获取数据失败，请重试.");
