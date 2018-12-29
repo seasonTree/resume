@@ -409,7 +409,7 @@ class Resume extends Controller
             if ($find) {
                 return json(['msg' => '文件已经存在','code' => 3]);
             }
-            dump($info->getSaveName());exit;
+
             $data = array(
                 'resume_url' => $path.$info->getSaveName(),
                 'ct_user'  => Session::get('user_info')['uname'],
@@ -417,6 +417,7 @@ class Resume extends Controller
                 'resume_id' => input('resume_id')//预留的简历id
                 );
             //入库操作
+            dump($data);exit;
             $data['id'] = $upload->add($data);
             $data['ct_time'] = date('Y-m-d H:i:s',time());
             $user = new User();
