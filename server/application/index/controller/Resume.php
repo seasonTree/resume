@@ -831,21 +831,21 @@ class Resume extends Controller
         $sphinx->SetArrayResult ( true );   //返回的结果集为数组
         
 
-        $money_st = isset($where['expected_money_st'])?$where['expected_money_st']:'';
-        $money_ed = isset($where['expected_money_ed'])?$where['expected_money_ed']:'';
-        if ($money_st && $money_ed) {
-            $sphinx->SetFilterRange('expected_money_start',$money_st,$money_ed);
-            $sphinx->SetFilterRange('expected_money_end',$money_st,$money_ed);
-            // $sphinx->SetFilterRange('expected_money_end', 0, $money_st);
-        }else if($money_st && !$money_ed){  //期望薪资
-            $sphinx->SetFilterRange('expected_money_start', $money_st, 100000000);
-            // $sphinx->SetFilterRange('expected_money_end', 0,$money_st);
-        }else if(!$money_st && $money_ed){
-            // $sphinx->SetFilterRange('expected_money_end', $money_ed,100000000);
-            $sphinx->SetFilterRange('expected_money_end',0,$money_ed);
-        }else{
-            // $arr_ids[] = [];
-        }
+        // $money_st = isset($where['expected_money_st'])?$where['expected_money_st']:'';
+        // $money_ed = isset($where['expected_money_ed'])?$where['expected_money_ed']:'';
+        // if ($money_st && $money_ed) {
+        //     $sphinx->SetFilterRange('expected_money_start',$money_st,$money_ed);
+        //     $sphinx->SetFilterRange('expected_money_end',$money_st,$money_ed);
+        //     // $sphinx->SetFilterRange('expected_money_end', 0, $money_st);
+        // }else if($money_st && !$money_ed){  //期望薪资
+        //     $sphinx->SetFilterRange('expected_money_start', $money_st, 100000000);
+        //     // $sphinx->SetFilterRange('expected_money_end', 0,$money_st);
+        // }else if(!$money_st && $money_ed){
+        //     // $sphinx->SetFilterRange('expected_money_end', $money_ed,100000000);
+        //     $sphinx->SetFilterRange('expected_money_end',0,$money_ed);
+        // }else{
+        //     // $arr_ids[] = [];
+        // }
 
         $age_min = isset($where['age_min'])?$where['age_min']:'';
         $age_max = isset($where['age_max'])?$where['age_max']:'';
@@ -929,27 +929,27 @@ class Resume extends Controller
 
             foreach ($data_arr as $k => $v) {
 
-                // if ($money_st && $money_ed) {
-                //     // if ($v['attrs']['expected_money_st'] =< $money_st ) {
+                if ($money_st && $money_ed) {
+                    // if ($v['attrs']['expected_money_st'] =< $money_st ) {
                         
-                //     // }
-                // }else if($money_st && !$money_ed){  //期望薪资
-                //     $check = false;
-                //     if($money_st >= $v['attrs']['expected_money_start'] && $money_st <= $v['attrs']['expected_money_end']){
-                //         $check = true;
-                //     }
-                //     if ($money_st >= $v['attrs']['expected_money_end'] || $check) {
+                    // }
+                }else if($money_st && !$money_ed){  //期望薪资
+                    $check = false;
+                    if($money_st >= $v['attrs']['expected_money_start'] && $money_st <= $v['attrs']['expected_money_end']){
+                        $check = true;
+                    }
+                    if ($money_st >= $v['attrs']['expected_money_end'] || $check) {
 
-                //         $data[$k] = $v['attrs'];
-                //         $data[$k]['id'] = $v['id'];
-                //     }
+                        $data[$k] = $v['attrs'];
+                        $data[$k]['id'] = $v['id'];
+                    }
                     
-                // }else if(!$money_st && $money_ed){
+                }else if(!$money_st && $money_ed){
                     
-                // }else{
+                }else{
                     $data[$k] = $v['attrs'];
                     $data[$k]['id'] = $v['id'];
-            //     }
+                }
                 
             }
 
