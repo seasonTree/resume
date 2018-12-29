@@ -983,8 +983,6 @@ class Resume extends Controller
                 // $data_num++;
                 
             }
-
-            dump(count($data_arr));exit;
             $data[] = count($data_arr);//总数
 
         }
