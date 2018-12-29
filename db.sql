@@ -8,7 +8,7 @@ use resume;
 drop table if exists rs_user;
 create table rs_user
 (
-	id bigint(20) auto_increment primary key comment '自增id',
+	id bigint(20) unsigned auto_increment primary key comment '自增id',
 	uname varchar(64) not null comment '用户名',
 	passwd varchar(256) not null comment '密码',
     personal_name varchar(32) not null default '' comment '姓名',
@@ -30,7 +30,7 @@ insert into rs_user(uname, passwd) values('admin', '8d969eef6ecad3c29a3a629280e6
 drop table if exists rs_role;
 create table rs_role
 (
-	id bigint(20) auto_increment primary key comment '自增id',
+	id bigint(20) unsigned auto_increment primary key comment '自增id',
 	role_name varchar(64) not null comment '角色名称',
 	-- status tinyint(1) not null default 0 comment '0: 正常， 1: 禁用',
 	ct_user varchar(64) default '' null comment '创建人',
@@ -45,8 +45,8 @@ create table rs_role
 drop table if exists rs_user_role;
 create table rs_user_role
 (
-	user_id bigint(20) not null comment '用户id',
-	role_id bigint(20) not null comment '角色id'
+	user_id bigint(20) unsigned not null comment '用户id',
+	role_id bigint(20) unsigned not null comment '角色id'
 );
 
 -- -----------------------------------------------------
@@ -55,7 +55,7 @@ create table rs_user_role
 drop table if exists rs_permission;
 create table rs_permission
 (
-	id bigint(20) auto_increment primary key comment '自增id',
+	id bigint(20) unsigned auto_increment primary key comment '自增id',
 	parent_id bigint(20) not null default 0 comment '父的id',
 	p_name varchar(64) not null comment '权限名称',
 	p_type tinyint(1) not null default 0 comment '0: 菜单， 1: 功能',
@@ -77,8 +77,8 @@ create table rs_permission
 drop table if exists rs_user_permission;
 create table rs_user_permission
 (
-	role_id bigint(20) not null comment '角色id',
-	p_id  bigint(20) not null comment '权限id'	
+	role_id bigint(20) unsigned not null comment '角色id',
+	p_id  bigint(20) unsigned not null comment '权限id'	
 );
 
 -- -----------------------------------------------------
@@ -87,7 +87,7 @@ create table rs_user_permission
 drop table if exists rs_resume;
 create table rs_resume
 (
-	id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT comment '简历id',
+	id bigint(20) unsigned auto_increment primary key comment '简历id',
 	name varchar(20) not null default '' comment '姓名',
 	phone varchar(20) not null default '' comment '电话',
 	birthday varchar(20) not null default '' comment '生日',
@@ -96,8 +96,8 @@ create table rs_resume
 	work_year varchar(20) not null default '' comment '工作年限',
 	native_place varchar(20) not null default '' comment '户口所在地',
 	email varchar(30) not null default '' comment '电子邮箱',
-	expected_money_start  int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '薪资起始' ,
-	expected_money_end  int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '薪资终止' ,
+	expected_money_start  int(10) unsigned NOT NULL DEFAULT 0 COMMENT '薪资起始' ,
+	expected_money_end  int(10) unsigned NOT NULL DEFAULT 0 COMMENT '薪资终止' ,
 	expected_money varchar(30) not null default '' comment '期望薪资',
 	nearest_unit varchar(50) not null default '' comment '最近单位',
 	nearest_job varchar(50) not null default '' comment '最近职位',
@@ -123,10 +123,10 @@ create table rs_resume
 	ct_time datetime default CURRENT_TIMESTAMP not null comment '创建时间',
 	mfy_user varchar(64) default '' not null comment '修改人',
 	mfy_time datetime default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP not null comment '修改时间',
-	is_del tinyint(1) default 0 not null comment '伪删除',
+	-- is_del tinyint(1) default 0 not null comment '伪删除',
 	source varchar(50) default '' not null comment '简历来源',
-	PRIMARY KEY (`id`),
-	INDEX `name` (`name`) USING BTREE 
+	-- INDEX `name` (`name`) USING BTREE 
+	index `name` (`name`)
 );
 -- -----------------------------------------------------
 -- 上传
@@ -134,13 +134,12 @@ create table rs_resume
 drop table if exists rs_resume_upload;
 create table rs_resume_upload
 (
-	id bigint(20) auto_increment primary key comment 'id',
+	id bigint(20) unsigned auto_increment primary key comment 'id',
 	file_name varchar(100) not null default '' comment '文件名',
 	resume_url varchar(255) not null default '' comment '简历文件对应的路径',
 	ct_user varchar(64) default '' null comment '创建人',
 	ct_time datetime default CURRENT_TIMESTAMP not null comment '创建时间',
-	resume_id bigint(20) UNSIGNED not null default 0 comment '简历id',
-
+	resume_id bigint(20) unsigned not null default 0 comment '简历id'
 );
 
 -- -----------------------------------------------------
@@ -149,7 +148,7 @@ create table rs_resume_upload
 drop table if exists rs_communicate;
 create table rs_communicate
 (
-	id bigint(20) auto_increment primary key comment 'id',
+	id bigint(20) unsigned auto_increment primary key comment 'id',
 	screen tinyint(1) not null default 0 comment '是否通过筛选,1,是，0否',
 	arrange_interview tinyint(1) not null default 0 comment '是否安排面试',
 	arrive tinyint(1) not null default 0 comment '是否到场',
@@ -159,10 +158,11 @@ create table rs_communicate
 	ct_time datetime default CURRENT_TIMESTAMP not null comment '创建时间',
 	mfy_user varchar(64) default '' not null comment '修改人',
 	mfy_time datetime default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP not null comment '修改时间',
-	resume_id bigint(20) not null default 0 comment '简历id',
-	content varchar(255) not null default '' comment '具体内容',
+	resume_id bigint(20) unsigned not null default 0 comment '简历id',
+	content varchar(1024) not null default '' comment '具体内容',
 	communicate_time varchar(50) not null default '' comment '沟通时间',
-	INDEX `ct_user` (`ct_user`) USING BTREE 
+	-- INDEX `ct_user` (`ct_user`) USING BTREE 
+	index `ct_user` (`ct_user`)
 );
 
 -- 插入菜单
