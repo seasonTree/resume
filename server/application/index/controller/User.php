@@ -83,6 +83,7 @@ class User
         $id=model('User')->edit($data);
         if($id){
             $data = model('User')->getOne(['id'=>$data['id']]);
+            unset($data['passwd']);
             return json(['data'=>$data,'code'=>0,'msg'=>'修改成功']);
         }
     }
@@ -118,6 +119,7 @@ class User
         
         if($id){
             $data = model('User')->getOne(['id'=>$id]);
+            unset($data['passwd']);
             return json(['data'=>$data,'code'=>0,'msg'=>'新增成功']);
         }
     }
@@ -134,7 +136,9 @@ class User
         unset($data['mfy_time']);
 
         if(model('User')->edit($data)){
+            
             $data = model('User')->getOne(['id'=>$data['id']]);
+            unset($data['passwd']);
         }
 
         return json(['data'=>$data,'code'=>0,'msg'=>'修改状态成功']);
@@ -147,7 +151,9 @@ class User
         $data['mfy_user'] = Session::get('user_info')['uname'];
 
         if(model('User')->edit($data)){
+
             $data = model('User')->getOne(['id'=>$data['id']]);
+            unset($data['passwd']);
         }            
         return json(['data'=>$data,'code'=>0,'msg'=>'修改状态成功']);
     }
