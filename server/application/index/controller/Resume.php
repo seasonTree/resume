@@ -448,10 +448,9 @@ class Resume extends Controller
     public function getResumeList(){
         //简历列表
         $input = input('get.');
-        $data = '';
         // if (count($input) > 3 ) {
             $data = $this->search($input);
-            $count = count($data);
+            $count = array_pop($data);
         // }
         // else{
         //     $resume = new ResumeModel();
@@ -926,9 +925,18 @@ class Resume extends Controller
 
         if (isset($res['matches'])) {
             $data_arr = $res['matches'];
+            $data_num = 0;//定义数据量
+            $page_end = $where['pageSize'] * $where['pageIndex'];
+            $page_start = $page_end - $where['pageSize'];
 
-            foreach ($data_arr as $k => $v) {
-
+            $list_arr = array_slice($data_arr,$page_start,$where['pageSize']);
+            foreach ($list_arr as $k => $v) {
+                // if ($k < $page_start) {
+                //     continue;//分页处理，过滤不符合要求的数据
+                // }
+                // if ($data_num == $where['pageSize']) {
+                //     break;//数据取够之后直接跳出循环
+                // }
                 if ($money_st && $money_ed) {
                     $check_start = false;
                     if($money_st >= $v['attrs']['expected_money_start'] && $money_st <= $v['attrs']['expected_money_end']){
@@ -971,25 +979,13 @@ class Resume extends Controller
                     $data[$k] = $v['attrs'];
                     $data[$k]['id'] = $v['id'];
                 }
+
+                // $data_num++;
                 
             }
+            $data[] = count($data_arr);//总数
 
         }
-
-        // $money_st = isset($where['expected_money_st'])?$where['expected_money_st']:'';
-        // $money_ed = isset($where['expected_money_ed'])?$where['expected_money_ed']:'';
-        // if ($money_st && $money_ed) {
-        //     $sphinx->SetFilterRange('expected_money_start',$money_st,100000000);
-        //     $sphinx->SetFilterRange('expected_money_end', 0, $money_ed);
-        // }else if($money_st && !$money_ed){  //期望薪资
-        //     $sphinx->SetFilterRange('expected_money_start', $money_st, 100000000);
-        //     $sphinx->SetFilterRange('expected_money_start', 0,$money_st);
-        // }else if(!$money_st && $money_ed){
-        //     $sphinx->SetFilterRange('expected_money_end', $money_ed,100000000);
-        //     $sphinx->SetFilterRange('expected_money_end',0,$money_ed);
-        // }else{
-        //     // $arr_ids[] = [];
-        // }
         return $data;
     }
 

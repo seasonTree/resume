@@ -160,7 +160,7 @@ class User
        $data = model('User')->getPriById($id);
        
        $auth = Session::get('auth');
-       if (!$auth) {
+       if (!$auth || count($data)!= count($auth)) {
           $auth = [];
           foreach ($data as $k => $v){
              $auth[] = $v['api'];
