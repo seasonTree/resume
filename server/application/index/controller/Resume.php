@@ -930,9 +930,18 @@ class Resume extends Controller
             foreach ($data_arr as $k => $v) {
 
                 if ($money_st && $money_ed) {
-                    // if ($v['attrs']['expected_money_st'] =< $money_st ) {
-                        
-                    // }
+                    $check_start = false;
+                    if($money_st >= $v['attrs']['expected_money_start'] && $money_st <= $v['attrs']['expected_money_end']){
+                        $check_start = true;
+                    }
+                    $check_end = false;
+                    if($money_ed >= $v['attrs']['expected_money_start'] && $money_ed <= $v['attrs']['expected_money_end']){
+                        $check_end = true;
+                    }
+                    if ($check_start && $check_end) {
+                        $data[$k] = $v['attrs'];
+                        $data[$k]['id'] = $v['id'];
+                    }
                 }else if($money_st && !$money_ed){  //期望薪资
                     $check = false;
                     if($money_st >= $v['attrs']['expected_money_start'] && $money_st <= $v['attrs']['expected_money_end']){
