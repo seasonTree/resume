@@ -945,7 +945,12 @@ class Resume extends Controller
                     }
                     
                 }else if(!$money_st && $money_ed){
-                    if ($money_ed <= $v['attrs']['expected_money_end']) {
+                    $check = false;
+                    if($money_ed >= $v['attrs']['expected_money_start'] && $money_st <= $v['attrs']['expected_money_end']){
+                        $check = true;
+                    }
+
+                    if ($money_ed <= $v['attrs']['expected_money_end'] || $check) {
                         $data[$k] = $v['attrs'];
                         $data[$k]['id'] = $v['id'];
                     }
