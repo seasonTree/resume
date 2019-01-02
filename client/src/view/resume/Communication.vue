@@ -32,7 +32,7 @@
                 >
                 </el-table-column>
 
-                <el-table-column
+                <!-- <el-table-column
                     align="center"
                     prop="screen"
                     label="通过筛选"
@@ -44,9 +44,9 @@
                             @click="changeStatus(scope.row.id, 1, scope.row)"
                         ></i>
                     </template>
-                </el-table-column>
+                </el-table-column> -->
 
-                <el-table-column
+                <!-- <el-table-column
                     align="center"
                     prop="arrange_interview "
                     label="安排面试"
@@ -58,9 +58,9 @@
                             @click="changeStatus(scope.row.id, 1, scope.row)"
                         ></i>
                     </template>
-                </el-table-column>
+                </el-table-column> -->
 
-                <el-table-column
+                <!-- <el-table-column
                     align="center"
                     prop="arrive "
                     label="到场"
@@ -73,9 +73,9 @@
                         ></i>
 
                     </template>
-                </el-table-column>
+                </el-table-column> -->
 
-                <el-table-column
+                <!-- <el-table-column
                     align="center"
                     prop="approved_interview "
                     label="通过面试"
@@ -88,11 +88,11 @@
                         ></i>
 
                     </template>
-                </el-table-column>
+                </el-table-column> -->
 
-                <el-table-column
+                <!-- <el-table-column
                     align="center"
-                    prop="entry "
+                    prop="entry"
                     label="入职"
                 >
                     <template slot-scope="scope">
@@ -103,6 +103,13 @@
                         ></i>
 
                     </template>
+                </el-table-column> -->
+
+                <el-table-column
+                    align="center"
+                    prop="content"
+                    label="沟通内容"
+                >
                 </el-table-column>
 
                 <el-table-column
