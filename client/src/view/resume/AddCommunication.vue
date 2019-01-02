@@ -127,7 +127,10 @@
             slot="footer"
             class="dialog-footer"
         >
-            <el-button @click="closeDialog" :disabled="commitLoading">取 消</el-button>
+            <el-button
+                @click="closeDialog"
+                :disabled="commitLoading"
+            >取 消</el-button>
             <el-button
                 type="primary"
                 @click="addCommit"
@@ -169,6 +172,11 @@ export default {
         };
     },
     methods: {
+        beforeAdd() {
+            let that = this;
+            that.form.resume_id = that.resume_id;
+        }
+
         // addCommit() {
         //     let that = this;
         //     that.form.resume_id = that.resume_id;
