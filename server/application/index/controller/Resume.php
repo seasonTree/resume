@@ -143,7 +143,8 @@ class Resume extends Controller
             
             
         }
-        $list['educational_background'] = implode("\n",$arr);
+        $list = $list[0];
+        $list['educational_background'] = implode("  ",$arr);
         return $arr;
     }
 
