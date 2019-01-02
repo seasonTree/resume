@@ -18,7 +18,7 @@
             >
                 <el-table-column
                     align="center"
-                    prop="ct_time"
+                    prop="communicate_time"
                     label="时间"
                     width="180"
                 >
