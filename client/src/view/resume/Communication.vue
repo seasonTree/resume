@@ -215,7 +215,7 @@ export default {
         addItem(item) {
             let that = this;
             // console.log(item);
-            that.commData.unshift(item);
+            that.tdata.unshift(item);
         },
 
         editItem(item) {
