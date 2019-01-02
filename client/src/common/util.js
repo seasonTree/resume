@@ -328,24 +328,19 @@ export function removeClass(el, cls) {
 
 /**
  * 
- * @param {Date} date 要格式的时间
+ * @param {Date} org_date 要格式的时间
  * @param {String} fmt 格式的模式
  * 
  * @returns 格式化后的时间
  */
-export const formatDate = (date, fmt) => {
+export const formatDate = (org_date, fmt) => {
 
     //判断是否是日期
-    if (isNaN(date) || isNaN(Date.parse(date))) {
-        console.log('&&&&&&&&&&&&&&&&&&&&&&&&&');
-        console.log(isNaN(date));
-        console.log(isNaN(Date.parse(date)))
-        console.log(date)
-
-        return date;
+    try{
+        date = new Date(org_date);
+    }catch(e){
+        return org_date;
     }
-
-    console.log('***********************');
 
     var o = {
         "M+": date.getMonth() + 1, //月份   
