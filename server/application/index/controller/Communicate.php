@@ -14,6 +14,7 @@ class Communicate
     public function commList(){
       //获取沟通列表
        $id = input('resume_id');
+       dump($id);exit;
        $comm = new CommunicateModel();
        $data = $comm->get(['resume_id' => $id]);
        if ($data) {
