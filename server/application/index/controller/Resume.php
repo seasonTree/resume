@@ -114,6 +114,7 @@ class Resume extends Controller
     public function educationalBackground($parm){
         //教育背景
         $arr = [];
+        $list = '';
         $rule = config('config.educationalBackground');
         foreach ($parm as $k => $v) {
             $v = $this->trimall($v);
@@ -135,9 +136,10 @@ class Resume extends Controller
                 }
                 
             }
+            $list.= $this->trimall($v).' '; 
             
         }
-        $arr['educational_background'] = implode("\n",$parm);
+        $arr['educational_background'] = $list;
         return $arr;
     }
 
