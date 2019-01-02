@@ -325,9 +325,9 @@ export default {
             that.tdata = [];
         },
 
-        //格式化yyyy-MM-dd hh:mm:ss
+        //格式化yyyy-MM-dd
         formatterDate(row, column, cellValue, index) {
-            return formatDate(cellValue, "yyyy-MM-dd hh:mm:ss");
+            return formatDate(cellValue, "yyyy-MM-dd");
         }
     }
 };
