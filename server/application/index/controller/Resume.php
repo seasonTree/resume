@@ -120,10 +120,6 @@ class Resume extends Controller
             $v = $this->trimall($v);
             // $v = phpanalysis($v);
             // dump($v);
-            if (empty($rule)) {
-                $list[] = $arr;
-                $rule = config('config.educationalBackground');
-            }
             foreach ($rule as $n => $pattern) {
 
                 if (preg_match($pattern,$v,$preg)) {
@@ -143,9 +139,14 @@ class Resume extends Controller
             
             
         }
-        $list = $list[0];
-        dump(implode("  ",$arr));exit;
-        $list['educational_background'] = implode("  ",$arr);
+        foreach ($parm as $a => $b) {
+            $b = $this->trimall($b);
+            if ($b == '') {
+                continue;
+            }
+            $list.= $b.' ';
+        }
+        $list['educational_background'] = $list;
         return $arr;
     }
 
