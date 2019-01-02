@@ -144,7 +144,7 @@ class Resume extends Controller
             if ($b == '') {
                 continue;
             }
-            $list.= $b.' ';
+            $list.= $b."\n";
         }
         $arr['educational_background'] = $list;
         return $arr;
