@@ -337,8 +337,12 @@ export const formatDate = (date, fmt) => {
 
     //判断是否是日期
     if (isNaN(date) || isNaN(Date.parse(date))) {
+        console.log('&&&&&&&&&&&&&&&&&&&&&&&&&')
+
         return date;
     }
+
+    console.log('***********************');
 
     var o = {
         "M+": date.getMonth() + 1, //月份   
