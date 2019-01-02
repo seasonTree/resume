@@ -21,6 +21,7 @@
                     prop="communicate_time"
                     label="时间"
                     width="180"
+                    :formatter="formatterDateDetail"
                 >
                 </el-table-column>
 
