@@ -136,10 +136,17 @@ class Resume extends Controller
                 }
                 
             }
-            $list.= $this->trimall($v).' '; 
+            
             
         }
-        $arr['educational_background'] = $list;
+        foreach ($parm as $a => $b) {
+            $b = $this->trimall($b);
+            if ($b == '') {
+                continue;
+            }
+            $list.= $b.' ';
+        }
+        $list['educational_background'] = $list;
         return $arr;
     }
 
