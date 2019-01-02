@@ -14,7 +14,6 @@ class Communicate
     public function commList(){
       //获取沟通列表
        $id = input('resume_id');
-       dump($id);exit;
        $comm = new CommunicateModel();
        $data = $comm->get(['resume_id' => $id]);
        if ($data) {
@@ -28,6 +27,9 @@ class Communicate
     public function addComm(){
       //添加沟通
       $data = input('post.');
+      if (!isset($data['resume_id'])) {
+        return json(['msg' => '简历id不存在','code' => 3,'data' => []]);
+      }
       $data['ct_user'] = Session::get('user_info')['uname'];
       $comm = new CommunicateModel();
       $res = $comm->add($data);
