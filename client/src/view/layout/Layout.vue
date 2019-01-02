@@ -71,9 +71,9 @@
                     </transition>
                 </div>
 
-                <el-footer class="main-footer">
+                <!-- <el-footer class="main-footer">
                     ACHIEVO CO. LIMITED
-                </el-footer>
+                </el-footer> -->
             </el-main>
         </el-container>
 
@@ -393,6 +393,15 @@ export default {
         padding: 0;
         position: relative;
 
+        // .main-header,
+        // .main-body,
+        // .main-footer {
+        //     padding: 20px;
+        //     position: absolute;
+        //     left: 0;
+        //     right: 0;
+        // }
+
         .main-header,
         .main-body,
         .main-footer {
@@ -411,17 +420,17 @@ export default {
             position: absolute;
             overflow: auto;
             top: 55px;
-            bottom: 40px;
+            bottom: 0px;
         }
 
-        .main-footer {
-            padding: 0;
-            bottom: 0;
-            line-height: 40px;
-            height: 40px !important;
-            text-align: center;
-            background-color: #dcdfe6;
-        }
+        // .main-footer {
+        //     padding: 0;
+        //     bottom: 0;
+        //     line-height: 40px;
+        //     height: 40px !important;
+        //     text-align: center;
+        //     background-color: #dcdfe6;
+        // }
     }
 }
 
