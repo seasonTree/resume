@@ -337,7 +337,10 @@ export const formatDate = (date, fmt) => {
 
     //判断是否是日期
     if (isNaN(date) || isNaN(Date.parse(date))) {
-        console.log('&&&&&&&&&&&&&&&&&&&&&&&&&')
+        console.log('&&&&&&&&&&&&&&&&&&&&&&&&&');
+        console.log(isNaN(date));
+        console.log(isNaN(Date.parse(date)))
+        console.log(date)
 
         return date;
     }
