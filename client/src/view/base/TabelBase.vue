@@ -1,5 +1,6 @@
 <script>
 import { mapGetters } from "vuex";
+// import { formatDate } from "@common/util";
 
 export default {
     name: "Tabel",
@@ -177,7 +178,6 @@ export default {
                     id
                 })
                 .then(res => {
-
                     that.editDialog = true;
 
                     if (res.code == 0) {
@@ -185,7 +185,6 @@ export default {
                     } else {
                         that.$message.error(res.msg || "获取数据失败，请重试.");
                     }
-                    
                 })
                 .catch(res => {
                     that.$message.error("获取数据失败，请重试.");
@@ -251,6 +250,16 @@ export default {
                 })
                 .catch(() => {});
         },
+
+        // //格式化yyyy-MM-dd
+        // formatterDate(row, column, cellValue, index) {
+        //     return formatDate(cellValue, "yyyy-MM-dd");
+        // },
+
+        // //格式化yyyy-MM-dd hh:mm:ss
+        // formatterDateDetail(row, column, cellValue, index) {
+        //     return formatDate(cellValue, "yyyy-MM-dd hh:mm:ss");
+        // },
 
         //删除之后
         afterDel(item) {}
