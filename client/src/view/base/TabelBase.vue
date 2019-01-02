@@ -1,6 +1,6 @@
 <script>
 import { mapGetters } from "vuex";
-import { formatDate } from "@common/util";
+// import { formatDate } from "@common/util";
 
 export default {
     name: "Tabel",
@@ -251,15 +251,15 @@ export default {
                 .catch(() => {});
         },
 
-        //格式化yyyy-MM-dd
-        formatterDate(row, column, cellValue, index) {
-            return formatDate(cellValue, "yyyy-MM-dd");
-        },
+        // //格式化yyyy-MM-dd
+        // formatterDate(row, column, cellValue, index) {
+        //     return formatDate(cellValue, "yyyy-MM-dd");
+        // },
 
-        //格式化yyyy-MM-dd hh:mm:ss
-        formatterDateDetail(row, column, cellValue, index) {
-            return formatDate(cellValue, "yyyy-MM-dd hh:mm:ss");
-        },
+        // //格式化yyyy-MM-dd hh:mm:ss
+        // formatterDateDetail(row, column, cellValue, index) {
+        //     return formatDate(cellValue, "yyyy-MM-dd hh:mm:ss");
+        // },
 
         //删除之后
         afterDel(item) {}

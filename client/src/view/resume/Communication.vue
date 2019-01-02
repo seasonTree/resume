@@ -21,7 +21,7 @@
                     prop="communicate_time"
                     label="时间"
                     width="180"
-                    :formatter="formatterDateDetail"
+                    :formatter="formatterDate"
                 >
                 </el-table-column>
 
@@ -174,6 +174,8 @@
 import DialogForm from "../base/DialogForm";
 import AddCommunication from "./AddCommunication";
 import EditCommunication from "./EditCommunication";
+import { formatDate } from "@common/util";
+
 export default {
     name: "Communication",
     components: {
@@ -245,13 +247,12 @@ export default {
 
         showEditDialog(id) {
             let that = this;
-          
+
             that.$api.communication
                 .getByID({
                     id
                 })
                 .then(res => {
-                
                     if (res.code == 0) {
                         that.currentEditItem = res.data;
                     } else {
@@ -264,7 +265,7 @@ export default {
                     that.$message.error("获取数据失败，请重试.");
                 });
         },
-        
+
         //判断
         // changeStatus(id, status, item) {
         //     let that = this;
@@ -322,6 +323,11 @@ export default {
         afterClose() {
             let that = this;
             that.tdata = [];
+        },
+
+        //格式化yyyy-MM-dd hh:mm:ss
+        formatterDate(row, column, cellValue, index) {
+            return formatDate(cellValue, "yyyy-MM-dd hh:mm:ss");
         }
     }
 };
