@@ -336,16 +336,18 @@ export function removeClass(el, cls) {
 export const formatDate = (date, fmt) => {
 
     //判断是否是日期
-    if (isNaN(date) || isNaN(Date.parse(date))) {
-        console.log('&&&&&&&&&&&&&&&&&&&&&&&&&');
-        console.log(isNaN(date));
-        console.log(isNaN(Date.parse(date)))
-        console.log(date)
+    if ( !isNaN(date) && isNaN(Date.parse(date))) {
+        // console.log('&&&&&&&&&&&&&&&&&&&&&&&&&');
+        // console.log(isNaN(date));
+        // console.log(isNaN(Date.parse(date)))
+        // console.log(date)
 
         return date;
     }
 
-    console.log('***********************');
+    date = new Date(date);
+
+    // console.log('***********************');
 
     var o = {
         "M+": date.getMonth() + 1, //月份   
