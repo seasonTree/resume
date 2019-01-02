@@ -137,7 +137,7 @@ class Resume extends Controller
             }
             
         }
-        $arr['educational_background'] = implode("\n",$arr);
+        $arr['educational_background'] = implode("\n",$parm);
         return $arr;
     }
 
