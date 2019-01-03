@@ -5,6 +5,7 @@
         :before-close="closeDialog"
         class="custom-dialog"
         :close-on-click-modal="false"
+        v-dialog-drag
     >
         <el-form
             :model="form"

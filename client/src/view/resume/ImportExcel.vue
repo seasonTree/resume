@@ -8,6 +8,7 @@
             class="custom-dialog"
             :close-on-click-modal="false"
             width="85%"
+            v-dialog-drag
         >
 
             <template>

@@ -7,6 +7,7 @@
         class="custom-dialog"
         :close-on-click-modal="false"
         width="500px"
+        v-dialog-drag
     >
         <el-form
             :model="form"

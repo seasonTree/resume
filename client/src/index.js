@@ -6,6 +6,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 import router from './router';
 import api from './api';
 import permission from './component/permission';
+import dialogDrag from './component/dialogDrag'
 
 //图标
 Vue.config.productionTip = false;
@@ -17,6 +18,10 @@ Vue.use(ElementUI);
 
 //使用按钮权限
 Vue.use(permission);
+
+//添加dialog移动
+Vue.use(dialogDrag);
+
 
 new Vue({
 	el: '#app',
