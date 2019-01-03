@@ -35,6 +35,12 @@ export default {
         // }
     },
 
+    watch: {
+        bodyHeight(newValue, oldValue) {
+            this.resizeTable();
+        }
+    },
+
     mounted() {
         let that = this;
 
