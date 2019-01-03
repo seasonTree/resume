@@ -132,7 +132,7 @@ class Resume extends Controller
                     }
                     
                     // unset($rule[$n]);
-                    if (count($arr) < 4) {
+                    if (!array_key_exists($n, $arr)) {
                         $arr[$n] = $preg[0];
                     }
                     
