@@ -136,6 +136,13 @@ class Report extends Controller
     	$key = 1;//data数组的key
     	$user = new User();
     	$user_data = $user->getUserInfo();
+
+    	foreach ($candidate as $k => $v) {
+    		# code...
+    	}
+
+
+
     	foreach ($user_data as $k => $v) {
     		if ($parm != '') {
     			$where = "communicate_time between '$parm[dtfm]' and '$parm[dtto]' and ct_user = '$v[uname]'";
@@ -175,6 +182,55 @@ class Report extends Controller
     	return array_merge($data);
     }
 
+    // public function getRecruitment($parm = ''){
+    // 	//获取数据主方法
+    // 	$resume = new Resume();
+    // 	$candidate = $resume->getCandidate();
+    // 	$comm = new Communicate();
+    // 	$data = []; //最终数据
+    // 	$user_arr = [];//临时数组,记录是否有重复数据用于叠加
+    // 	$key = 1;//data数组的key
+    // 	$user = new User();
+    // 	$user_data = $user->getUserInfo();
+    // 	foreach ($user_data as $k => $v) {
+    // 		if ($parm != '') {
+    // 			$where = "communicate_time between '$parm[dtfm]' and '$parm[dtto]' and ct_user = '$v[uname]'";
+    // 		}
+    // 		else{
+    // 			$where = "ct_user = '$v[uname]'";
+    // 		}
+
+    // 		$temp_data = $comm->getCommInfo($where);
+
+    // 		if (empty($temp_data)) {
+    // 			continue;
+    // 		}
+    // 		foreach ($temp_data as $a => $b) {
+    // 			if (array_key_exists($b['resume_id'],$user_arr)) {
+    // 				foreach ($b as $n => $m) {
+    // 					if ($m == 0 || $n == 'resume_id') {
+    // 						continue;
+    // 					}
+    					
+    // 					$data[$user_arr[$b['resume_id']]][$n] = 1;  
+    // 				}
+    // 			}
+    // 			else{
+    // 				$b['id'] = $key;
+    // 				$data[$key] = $b;
+    // 				$data[$key]['personal_name'] = $v['personal_name'];
+    // 				$data[$key]['name'] = $resume->getUname(['id' => $b['resume_id']]);
+	   //  			$user_arr[$b['resume_id']] = $key;
+	   //  			$key++;
+    // 			}
+    			
+    // 		}
+    // 		$user_arr = [];
+    // 	}
+
+    // 	return array_merge($data);
+    // }
+
     public function export(){
     	//数据导出
     	$input = input('get.');
@@ -213,7 +269,7 @@ class Report extends Controller
 				$obj->getActiveSheet()->setCellValue("G".$k, $v['entry'] == 1 ?'是':'否');
     		}
     		header('Content-Type: application/vnd.ms-excel');
-	        header('Content-Disposition: attachment;filename="招聘负责人统计.xls"');
+	        header('Content-Disposition: attachment;filename="招聘负责人明细.xls"');
 	        ob_end_clean();//清除缓冲区,避免乱码
 	        $objWriter = \PHPExcel_IOFactory::createWriter($obj, 'Excel2007');
 	        $objWriter->save('php://output');
@@ -221,6 +277,9 @@ class Report extends Controller
     		
     	}
     	if ($input['type'] == 1) {
+    		# code...
+    	}
+    	if ($input['type'] == 2) {
     		//宽度设置
     		$obj->getActiveSheet()->getColumnDimension('A')->setWidth(12);
 			$obj->getActiveSheet()->getColumnDimension('B')->setWidth(12);
