@@ -80,7 +80,6 @@ export default {
         };
     },
     methods: {
-
         getCommunication() {
             let that = this;
 
@@ -112,6 +111,11 @@ export default {
             let that = this;
             that.tdata = [];
         },
+
+        //格式化yyyy-MM-dd
+        formatterDate(row, column, cellValue, index) {
+            return formatDate(cellValue, "yyyy-MM-dd");
+        }
     }
 };
 </script>
