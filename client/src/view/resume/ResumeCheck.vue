@@ -7,6 +7,7 @@
             class="custom-dialog resume-check"
             :close-on-click-modal="false"
             width="80%"
+            v-dialog-drag
         >
 
             <el-table

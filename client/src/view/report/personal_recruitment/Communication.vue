@@ -6,6 +6,7 @@
         class="custom-dialog"
         :close-on-click-modal="false"
         width="60%"
+        v-dialog-drag
     >
 
         <el-table

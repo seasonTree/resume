@@ -6,6 +6,7 @@
         class="custom-dialog"
         top="4vh"
         width="60%"
+        v-dialog-drag
     >
 
         <el-form

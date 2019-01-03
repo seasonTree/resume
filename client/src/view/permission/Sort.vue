@@ -6,6 +6,7 @@
         class="custom-dialog"
         :close-on-click-modal="false"
         width="400px"
+        v-dialog-drag
     >
         <div class="dialog-content mb-20">
             <el-tree

@@ -9,6 +9,7 @@
             top="4.5vh"
             width="60%"
             clearable="true"
+            v-dialog-drag
         >
 
             <el-tabs
