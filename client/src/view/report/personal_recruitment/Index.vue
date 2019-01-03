@@ -260,7 +260,11 @@ export default {
                         }
                     }
                 ]
-            }
+            },
+
+            //沟通情况
+            communicationDialog: false,
+            communicationID: 0
         };
     },
 
