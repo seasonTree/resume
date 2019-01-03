@@ -176,13 +176,19 @@ class Resume extends Controller
     public function skillExpertise($parm){
         //技能专长
         $str = '';
+        $rule = config('config.basicData.english');
+        $arr = [];
         foreach ($parm as $k => $v) {
             if ($v == '') {
                 continue;
             }
+            if (preg_match($rule,$v,$matches)) {
+                $arr['english'] = $matches[0];
+            }
             $str.= $v."\n";
         }
-        return $str;
+        $arr['skillExpertise'] = $str;
+        return $arr;
     }
 
     public function getResumeData(){
