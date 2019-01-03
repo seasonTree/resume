@@ -114,12 +114,13 @@ class Resume extends Controller
     public function educationalBackground($parm){
         //教育背景
         $arr = [];
-        $list = '';
+        $list = [];
         $rule = config('config.educationalBackground');
         foreach ($parm as $k => $v) {
             $v = $this->trimall($v);
             // $v = phpanalysis($v);
             // dump($v);
+
             foreach ($rule as $n => $pattern) {
 
                 if (preg_match($pattern,$v,$preg)) {
@@ -130,8 +131,12 @@ class Resume extends Controller
                         $strpos++;
                     }
                     
-                    unset($rule[$n]);
-                    $arr[$n] = $preg[0];
+                    // unset($rule[$n]);
+                    if (!array_key_exists($n, $arr)) {
+                        $arr[$n] = $preg[0];
+                    }
+                    
+                    $list[] = $preg[0];
                     // dump($rule);
                 }
                 
@@ -139,14 +144,8 @@ class Resume extends Controller
             
             
         }
-        foreach ($parm as $a => $b) {
-            $b = $this->trimall($b);
-            if ($b == '') {
-                continue;
-            }
-            $list.= $b."\n";
-        }
-        $arr['educational_background'] = $list;
+
+        $arr['educational_background'] = implode("\n", $list);
         return $arr;
     }
 
@@ -177,13 +176,19 @@ class Resume extends Controller
     public function skillExpertise($parm){
         //技能专长
         $str = '';
+        $rule = config('config.basicData.english');
+        $arr = [];
         foreach ($parm as $k => $v) {
             if ($v == '') {
                 continue;
             }
+            if (preg_match($rule,$v,$matches)) {
+                $arr['english'] = $matches[0];
+            }
             $str.= $v."\n";
         }
-        return $str;
+        $arr['skillExpertise'] = $str;
+        return $arr;
     }
 
     public function getResumeData(){
