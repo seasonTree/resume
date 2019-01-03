@@ -208,7 +208,6 @@ export default {
     data() {
         return {
             tdata: [],
-            dialogVisible: false,
 
             //新增沟通
             addDialog: false,

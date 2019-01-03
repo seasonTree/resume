@@ -178,7 +178,7 @@
                             <el-col :span="4">
                                 <el-input
                                     v-model="search.expected_job"
-                                    placeholder="期望从事岗位"
+                                    placeholder="岗位"
                                     size="small"
                                 >
                                 </el-input>
@@ -288,6 +288,13 @@
                     prop="age"
                     label="年龄"
                     width="50"
+                >
+                </el-table-column>
+                <el-table-column
+                    fixed
+                    prop="phone"
+                    label="岗位"
+                    width="80"
                 >
                 </el-table-column>
                 <el-table-column
@@ -522,7 +529,7 @@ export default {
         //点击行查看简历
         showViewDialog(row) {
             let that = this;
-            
+
             //检查是否有查看的权限
             if (!that.$check_pm("resume_get_row")) {
                 return;

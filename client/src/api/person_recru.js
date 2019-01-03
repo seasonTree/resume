@@ -11,7 +11,7 @@ export function candidate_list(data) {
     })
 }
 
-//获取 招聘负责人统计的报表
+//获取 招聘负责人明细的报表
 export function recruitment_list(data) {
     return request({
         url: `${prefix}/recruitment_list`,
@@ -19,3 +19,12 @@ export function recruitment_list(data) {
         params: data
     })
 }
+
+//获取 招聘负责人汇总的报表
+export function recruitment_total(data) {
+    return request({
+        url: `${prefix}/recruitment_total`,
+        method: 'get',
+        params: data
+    })
+} 

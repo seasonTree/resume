@@ -182,7 +182,7 @@
                                 ></el-input>
                             </el-form-item>
                             <el-form-item
-                                label="期望岗位"
+                                label="岗位"
                                 prop="expected_job"
                             >
                                 <el-input
@@ -246,6 +246,17 @@
                                     autocomplete="off"
                                 ></el-input>
 
+                            </el-form-item>
+
+                            <el-form-item
+                                label="公司来源"
+                                prop="company_type"
+                            >
+                                <el-input
+                                    size="mini"
+                                    v-model.trim="form.company_type"
+                                    autocomplete="off"
+                                ></el-input>
                             </el-form-item>
 
                         </div>
@@ -477,7 +488,7 @@ export default {
     },
 
     methods: {
-        cancelCommit(){
+        cancelCommit() {
             this.commitLoading = false;
         },
 
@@ -553,7 +564,7 @@ export default {
                                 );
 
                                 that.commitLoading = false;
-                            }                            
+                            }
                         })
                         .catch(res => {
                             that.commitLoading = false;
