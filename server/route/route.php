@@ -86,7 +86,8 @@ Route::post('api/permission/sort','Privilege/sort'); //排序
 
 //个人招聘统计api----------------------------------
 Route::get('api/report/person_recru/candidate_list','Report/candidateList');//获取个人招聘统计候选人跟踪报表
-Route::get('api/report/person_recru/recruitment_list','Report/recruitmentList');//获取 招聘负责人统计的报表
+Route::get('api/report/person_recru/recruitment_list','Report/recruitmentList');//获取 招聘负责人明细的报表
+Route::get('/api/report/person_recru/recruitment_total','Report/recruitmentTotal');//招聘负责人明细
 Route::get('api/person_recru/export','Report/export');//导出
 //-----------------------------------------------
 

@@ -144,7 +144,15 @@ class Resume extends Controller
             
             
         }
+        if (isset($arr['graduation_time'])) {
+            
+            $arr['graduation_time'] = preg_replace("/(至|--|到)/",'-',$arr['graduation_time']);
 
+            if (strpos($arr['graduation_time'], '-今')) {
+                $arr['graduation_time'] = preg_replace("/-今/",'至今',$arr['graduation_time']);
+            }
+           
+        }
         $arr['educational_background'] = implode("\n", $list);
         return $arr;
     }

@@ -382,7 +382,7 @@ export default {
         },
 
         //获取 招聘负责人汇总的报表
-        getRecruitmentTotal() {
+        getRecruitmentTotal(params) {
             let that = this;
             that.$api.person_recru
                 .recruitment_total(params)
