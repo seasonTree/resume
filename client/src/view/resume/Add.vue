@@ -193,21 +193,20 @@
                                                 autocomplete="off"
                                             ></el-input>
                                         </el-form-item>
-                                        
 
                                     </div>
                                     <el-form-item
-                                            label="简历来源"
-                                            prop="source"
-                                        >
-                                            <el-input
-                                                size="mini"
-                                                v-model.trim="form.source"
-                                                autocomplete="off"
-                                            ></el-input>
-                                        </el-form-item>
-                                     <el-form-item
-                                        label="期望岗位"
+                                        label="简历来源"
+                                        prop="source"
+                                    >
+                                        <el-input
+                                            size="mini"
+                                            v-model.trim="form.source"
+                                            autocomplete="off"
+                                        ></el-input>
+                                    </el-form-item>
+                                    <el-form-item
+                                        label="岗位"
                                         prop="expected_job"
                                     >
                                         <el-input
@@ -301,6 +300,16 @@
                                         <el-input
                                             size="mini"
                                             v-model.trim="form.nearest_job"
+                                            autocomplete="off"
+                                        ></el-input>
+                                    </el-form-item>
+                                    <el-form-item
+                                        label="公司来源"
+                                        prop="company_type"
+                                    >
+                                        <el-input
+                                            size="mini"
+                                            v-model.trim="form.company_type"
                                             autocomplete="off"
                                         ></el-input>
                                     </el-form-item>
@@ -487,7 +496,10 @@
                     :disabled="!$check_pm('resume_analyze') || commitLoading"
                     :loading="analyzeLoading"
                 >自动识别</el-button>
-                <el-button @click="closeDialog" :disabled="commitLoading || analyzeLoading">取 消</el-button>
+                <el-button
+                    @click="closeDialog"
+                    :disabled="commitLoading || analyzeLoading"
+                >取 消</el-button>
                 <el-button
                     type="primary"
                     @click="addCommit"
@@ -539,8 +551,8 @@ export default {
                 english: "",
                 status: "",
                 email: "",
-                expected_job:"",
-                source:"",
+                expected_job: "",
+                source: "",
 
                 //毕业时间
                 graduation_time: "",
@@ -570,8 +582,7 @@ export default {
                 custom2: "",
                 custom3: ""
             },
-            formRules: {
-            },
+            formRules: {},
 
             //检查重名的数据
             resumeData: [],
@@ -603,7 +614,7 @@ export default {
                 });
         },
 
-        cancelCommit(){
+        cancelCommit() {
             this.commitLoading = false;
         },
 
@@ -674,7 +685,7 @@ export default {
                                 );
 
                                 that.commitLoading = false;
-                            }                            
+                            }
                         })
                         .catch(res => {
                             that.commitLoading = false;

@@ -25,36 +25,21 @@
                         class="report-person-select-width"
                     >
                         <el-option
-                            label="招聘负责人统计"
+                            label="招聘负责人明细"
                             :value="0"
                         ></el-option>
                         <el-option
-                            label="候选人跟踪表"
+                            label="招聘负责人统计"
                             :value="1"
+                        ></el-option>
+                        <el-option
+                            label="候选人跟踪表"
+                            :value="2"
                         ></el-option>
                     </el-select>
                 </div>
 
-                <div
-                    class="search-item"
-                    v-if="search.type == 1"
-                >
-                    <!-- <el-input
-                        placeholder="选择负责人"
-                        v-model="search.recru"
-                        clearable
-                        :focus="handleRecruFind"
-                        :disabled="true"
-                    >
-
-                        <el-button
-                            slot="append"
-                            icon="el-icon-search"
-                            @click="handleRecruFind"
-                        ></el-button>
-
-                    </el-input> -->
-
+                <div class="search-item">
                     <el-select
                         v-model="selectUser"
                         multiple
@@ -99,6 +84,7 @@
                 style="width: 100%"
                 :height="tabelHeight"
                 v-loading="tableLoading"
+                @row-click="showCommunicationDialog"
             >
                 <el-table-column
                     v-for="(item, index) in thead"
@@ -106,6 +92,7 @@
                     :prop="item.prop"
                     :label="item.label"
                     :fixed="item.fixed"
+                    :formatter="item.formatter"
                 ></el-table-column>
             </el-table>
         </el-row>
@@ -122,24 +109,25 @@
             </el-pagination>
         </el-row>
 
-        <!-- <user
-            :show.sync="showSelectUser"
-            :selectUser="selectUser"
-            @user-list="setSelectUser"
-        ></user> -->
+        <communication
+            :show.sync="communicationDialog"
+            :resume_id="communicationID"
+        >
+        </communication>
 
     </div>
 </template>
 
 <script>
 import ReportBase from "@view/base/ReportBase";
-// import User from "./User";
+import Communication from "./Communication";
 import { getLtWeek, getLtMonth } from "@common/util";
+import { formatDate } from "@common/util";
 export default {
     mixins: [ReportBase],
 
     components: {
-        // User
+        Communication
     },
 
     created() {
@@ -157,7 +145,9 @@ export default {
                 let that = this;
                 if (newValue == 0) {
                     that.thead = that.recruHead;
-                } else {
+                } else if (newValue == 1) {
+                    that.thead = that.recruTotalHead;
+                } else if (newValue == 2) {
                     that.thead = that.personHead;
                 }
 
@@ -165,6 +155,7 @@ export default {
                 that.pager.current = 1;
                 that.pager.total = 1;
             },
+
             immediate: true
         }
     },
@@ -173,6 +164,7 @@ export default {
         return {
             thead: [],
 
+            //招聘负责人明细
             recruHead: [
                 { prop: "personal_name", label: "招聘负责人", fixed: "left" },
                 { prop: "name", label: "候选人", fixed: "left" },
@@ -187,8 +179,32 @@ export default {
                 { prop: "entry", label: "入职", fixed: "left" }
             ],
 
+            //招聘负责人汇总
+            recruTotalHead: [
+                { prop: "personal_name", label: "招聘负责人", fixed: "left" },
+                { prop: "screen", label: "通过筛选", fixed: "left" },
+                { prop: "arrange_interview", label: "安排面试", fixed: "left" },
+                { prop: "arrive", label: "到场", fixed: "left" },
+                {
+                    prop: "approved_interview",
+                    label: "通过面试",
+                    fixed: "left"
+                },
+                { prop: "entry", label: "入职", fixed: "left" }
+            ],
+
+            //候选人跟踪
             personHead: [
                 { prop: "personal_name", label: "招聘负责人", fixed: "left" },
+                {
+                    prop: "ct_time",
+                    label: "日期",
+                    fixed: "left",
+                    formatter: function(row, column, cellValue, index) {
+                        return formatDate(cellValue, "yyyy-MM-dd");
+                    }
+                },
+                { prop: "expected_job", label: "岗位", fixed: "left" },
                 { prop: "name", label: "候选人", fixed: "left" },
                 { prop: "phone", label: "联系电话", fixed: "left" },
                 { prop: "email", label: "邮件", fixed: "left" },
@@ -197,6 +213,7 @@ export default {
                 { prop: "graduation_time", label: "毕业年份", fixed: "left" },
                 { prop: "work_year", label: "工作年限", fixed: "left" },
                 { prop: "source", label: "简历来源", fixed: "left" },
+                { prop: "company_type", label: "公司来源", fixed: "left" },
                 { prop: "communicate_count", label: "沟通次数", fixed: "left" }
             ],
 
@@ -285,20 +302,29 @@ export default {
             that.pager.current = 1;
             // that.pager.total = 1;
 
+            let urs = that.selectUser.join(",");
+
+            if (urs) {
+                params["ur"] = urs;
+            }
+
             if (that.search.type == 0) {
                 if (that.$check_pm("report_person_recru_list")) {
+                    //权限
                     that.getRecruitmentList(params);
                 } else {
                     that.$message.error("无此权限.");
                 }
             } else if (that.search.type == 1) {
-                let urs = that.selectUser.join(",");
-
-                if (urs) {
-                    params["ur"] = urs;
+                if (that.$check_pm("report_person_recru_total")) {
+                    //权限
+                    that.getRecruitmentTotal(params);
+                } else {
+                    that.$message.error("无此权限.");
                 }
-
+            } else if (that.search.type == 2) {
                 if (that.$check_pm("report_person_recru_candidate")) {
+                    //权限
                     that.getCandidateList(params);
                 } else {
                     that.$message.error("无此权限.");
@@ -306,7 +332,7 @@ export default {
             }
         },
 
-        //获取 招聘负责人统计的报表
+        //获取 招聘负责人明细的报表
         getRecruitmentList(params) {
             let that = this;
 
@@ -314,6 +340,58 @@ export default {
                 .recruitment_list(params)
                 .then(res => {
                     if (res.code == 0) {
+                        for (var i = 0; i < res.data.length; i++) {
+                            var item = res.data[i];
+
+                            //处理姓名
+                            item.personal_name =
+                                item.personal_name || item.uname;
+
+                            item.approved_interview =
+                                item.approved_interview == 0 ? "否" : "是";
+                            item.arrange_interview =
+                                item.arrange_interview == 0 ? "否" : "是";
+                            item.arrive = item.arrive == 0 ? "否" : "是";
+                            item.entry = item.entry == 0 ? "否" : "是";
+                            item.screen = item.screen == 0 ? "否" : "是";
+                        }
+
+                        that.reportData = res.data;
+
+                        if (that.pager) {
+                            that.pager.total = that.reportData.length;
+
+                            that.tdata = that.reportData.slice(
+                                0,
+                                that.pager.size
+                            );
+                        }
+                    } else {
+                        that.$message.error(
+                            res.msg || "获取数据失败，请刷新后重试."
+                        );
+                    }
+                })
+                .catch(res => {
+                    that.$message.error("获取数据失败，请刷新后重试.");
+                });
+        },
+
+        //获取 招聘负责人汇总的报表
+        getRecruitmentTotal() {
+            let that = this;
+            that.$api.person_recru
+                .recruitment_total(params)
+                .then(res => {
+                    if (res.code == 0) {
+                        //处理姓名
+                        for (var i = 0; i < res.data.length; i++) {
+                            var item = res.data[i];
+
+                            item.personal_name =
+                                item.personal_name || item.uname;
+                        }
+
                         that.reportData = res.data;
 
                         if (that.pager) {
@@ -343,6 +421,14 @@ export default {
                 .candidate_list(params)
                 .then(res => {
                     if (res.code == 0) {
+                        //处理姓名
+                        for (var i = 0; i < res.data.length; i++) {
+                            var item = res.data[i];
+
+                            item.personal_name =
+                                item.personal_name || item.uname;
+                        }
+
                         that.reportData = res.data;
 
                         if (that.pager) {
@@ -364,16 +450,14 @@ export default {
                 });
         },
 
-        setSelectUser(users) {
+        //沟通管理
+        showCommunicationDialog(id) {
             let that = this;
-            that.search.recru = users.slUserPerson.join(",");
-            that.selectUser = users.slUser;
-        },
 
-        handleRecruFind() {
-            let that = this;
-            // that.selectUser = that.search.recru;
-            that.showSelectUser = true;
+            if (that.search.type == 1) {
+                that.communicationID = id;
+                that.communicationDialog = true;
+            }
         },
 
         //导出excel
