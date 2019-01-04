@@ -319,7 +319,7 @@ class Report extends Controller
     		foreach ($data as $k => $v) {
     			$k = $k+2;
 
-    			$obj->getActiveSheet()->setCellValue("A".$k,$v['personal_name']);
+    			$obj->getActiveSheet()->setCellValue("A".$k,$v['personal_name'] == ''?  $v['ct_user'] : $v['personal_name']);
 				$obj->getActiveSheet()->setCellValue("B".$k, $v['name']);
 				$obj->getActiveSheet()->setCellValue("C".$k, $v['screen'] == 1 ?'是':'否');
 				$obj->getActiveSheet()->setCellValue("D".$k, $v['arrange_interview'] ==1 ?'是':'否');
@@ -328,7 +328,7 @@ class Report extends Controller
 				$obj->getActiveSheet()->setCellValue("G".$k, $v['entry'] == 1 ?'是':'否');
     		}
     		header('Content-Type: application/vnd.ms-excel');
-	        header('Content-Disposition: attachment;filename="招聘负责人明细.xls"');
+	        header('Content-Disposition: attachment;filename="招聘负责人明细.xlsx"');
 	        ob_end_clean();//清除缓冲区,避免乱码
 	        $objWriter = \PHPExcel_IOFactory::createWriter($obj, 'Excel2007');
 	        $objWriter->save('php://output');
@@ -336,7 +336,39 @@ class Report extends Controller
     		
     	}
     	if ($input['type'] == 1) {
-    		# code...
+    		//宽度设置
+    		$obj->getActiveSheet()->getColumnDimension('A')->setWidth(12);
+			$obj->getActiveSheet()->getColumnDimension('B')->setWidth(10);
+			$obj->getActiveSheet()->getColumnDimension('C')->setWidth(10);
+			$obj->getActiveSheet()->getColumnDimension('D')->setWidth(10);
+			$obj->getActiveSheet()->getColumnDimension('E')->setWidth(10);
+			$obj->getActiveSheet()->getColumnDimension('F')->setWidth(10);
+			//表头
+    		$obj->getActiveSheet()->setCellValue("A1", '招聘负责人');
+			$obj->getActiveSheet()->setCellValue("B1", '通过筛选');
+			$obj->getActiveSheet()->setCellValue("C1", '安排面试');
+			$obj->getActiveSheet()->setCellValue("D1", '到场');
+			$obj->getActiveSheet()->setCellValue("E1", '通过面试');
+			$obj->getActiveSheet()->setCellValue("F1", '入职');
+			$data = $this->getRecruitmentTotal($input);
+			foreach ($data as $k => $v) {
+				$k = $k+2;
+
+    			$obj->getActiveSheet()->setCellValue("A".$k,$v['personal_name'] == ''?  $v['uname'] : $v['personal_name']);
+				$obj->getActiveSheet()->setCellValue("B".$k, $v['screen']);
+				$obj->getActiveSheet()->setCellValue("C".$k, $v['arrange_interview']);
+				$obj->getActiveSheet()->setCellValue("D".$k, $v['arrive']);
+				$obj->getActiveSheet()->setCellValue("E".$k, $v['approved_interview']);
+				$obj->getActiveSheet()->setCellValue("F".$k, $v['entry']);
+    		}
+    		header('Content-Type: application/vnd.ms-excel');
+	        header('Content-Disposition: attachment;filename="招聘负责人统计.xlsx"');
+	        ob_end_clean();//清除缓冲区,避免乱码
+	        $objWriter = \PHPExcel_IOFactory::createWriter($obj, 'Excel2007');
+	        $objWriter->save('php://output');
+	        $obj->disconnectWorksheets();
+
+			
     	}
     	if ($input['type'] == 2) {
     		//宽度设置
@@ -374,7 +406,7 @@ class Report extends Controller
 			//数据
     		foreach ($data as $k => $v) {
     			$k = $k+2;
-    			$obj->getActiveSheet()->setCellValue("A".$k, $v['personal_name']);
+    			$obj->getActiveSheet()->setCellValue("A".$k, $v['personal_name'] == ''?  $v['ct_user'] : $v['personal_name']);
 				$obj->getActiveSheet()->setCellValue("B".$k, $v['name']);
 				$obj->getActiveSheet()->setCellValue("C".$k, $v['phone']);
 				$obj->getActiveSheet()->setCellValue("D".$k, $v['email']);
@@ -391,7 +423,7 @@ class Report extends Controller
     		}
 
     		header('Content-Type: application/vnd.ms-excel');
-	        header('Content-Disposition: attachment;filename="候选人跟踪表.xls"');
+	        header('Content-Disposition: attachment;filename="候选人跟踪表.xlsx"');
 	        ob_end_clean();//清除缓冲区,避免乱码
 	        $objWriter = \PHPExcel_IOFactory::createWriter($obj, 'Excel2007');
 	        $objWriter->save('php://output');
