@@ -70,9 +70,13 @@ class Communicate
       }
     }
 
-    public function searchCandidate(){
+    public function getByUname(){
       //查询招聘负责人列表
-
+      $input = input('get.');
+      $comm = new CommunicateModel();
+      $where = "communicate_time between '$input[dtfm]' and '$input[dtto]' and a.ct_user = '$input[uname]'";
+      $data = $comm->getCommByUname($where);
+      return json(['msg' => '获取成功','code' => 0,'data' => $data]);
     }
 
 }

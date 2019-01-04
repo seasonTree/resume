@@ -111,7 +111,7 @@
 
         <communication
             :show.sync="communicationDialog"
-            :resume_id="communicationID"
+            :communication_data="communicationID"
         >
         </communication>
 
@@ -455,11 +455,13 @@ export default {
         },
 
         //沟通管理
-        showCommunicationDialog(id) {
+        showCommunicationDialog(obj) {
             let that = this;
+            obj.dtfm = that.search.dateRange[0];
+            obj.dtto = that.search.dateRange[1];
 
             if (that.search.type == 1) {
-                that.communicationID = id;
+                that.communicationID = obj;
                 that.communicationDialog = true;
             }
         },

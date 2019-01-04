@@ -20,6 +20,15 @@ export function getByID(data){
     })
 }
 
+//根据招聘用户名获取沟通信息
+export function getByUname(data) {
+    return request({
+        url: `${prefix}/get_by_uname`,
+        method: 'get',
+        params: data
+    })
+}
+
 //新增沟通
 export function add(data){
     return request({
