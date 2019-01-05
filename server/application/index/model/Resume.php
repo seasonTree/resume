@@ -56,7 +56,7 @@ class Resume extends Model
     public function getCandidate($where = '1=1'){
         //获取候选人
         return Resume::where($where)
-                     ->field('id,name,phone,email,school,educational,graduation_time,work_year,source,ct_user')
+                     ->field('id,name,phone,email,school,educational,graduation_time,work_year,source,ct_user,ct_time,company_type,expected_job')
                      ->select()
                      ->toArray();
     }

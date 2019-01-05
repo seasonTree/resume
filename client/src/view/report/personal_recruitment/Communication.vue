@@ -27,13 +27,13 @@
 
             <el-table-column
                 align="center"
-                prop="ct_user"
-                label="招聘负责人"
+                prop="name"
+                label="候选人"
                 width="100"
             >
             </el-table-column>
             <el-table-column
-                align="center"
+                align=""
                 prop="content"
                 label="沟通内容"
             >
@@ -59,9 +59,9 @@ export default {
 
     props: {
         //简历的id
-        resume_id: {
+        communication_data: {
             required: true,
-            type: Number
+            // type: object
         }
     },
 
@@ -87,8 +87,10 @@ export default {
             that.tableLoading = true;
 
             that.$api.communication
-                .get({
-                    resume_id: that.resume_id
+                .getByUname({
+                    uname: that.communication_data.uname,
+                    dtfm: that.communication_data.dtfm,
+                    dtto: that.communication_data.dtto
                 })
                 .then(res => {
                     if (res.code == 0) {

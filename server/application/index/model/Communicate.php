@@ -55,6 +55,17 @@ class Communicate extends Model
         return Communicate::update($data);
     }
 
+    public function getCommByUname($where = '1=1'){
+      //根据招聘人的用户名获取沟通信息
+       return Communicate::alias('a')
+                         ->join('rs_resume b','a.resume_id = b.id')
+                         ->field('a.communicate_time,a.content,b.name')
+                         ->where($where)
+                         ->order('communicate_time desc')
+                         ->select()
+                         ->toArray();
+    }
+
     public function getComm($where = '1=1'){
         //获取沟通信息，部分字段
 
@@ -62,7 +73,9 @@ class Communicate extends Model
                           ->join('rs_user b','a.ct_user = b.uname')
                           ->field('a.resume_id,a.id,a.ct_user,b.personal_name,a.communicate_time')
                           ->where($where)
-                          ->select();
+                          ->order('a.mfy_time desc')
+                          ->select()
+                          ->toArray();
     }
     public function getCommInfo($where = '1=1'){
         //获取沟通信息部分字段
@@ -73,6 +86,11 @@ class Communicate extends Model
                           ->toArray();
       
 
+    }
+
+    public function getContent($where = '1=1'){
+      //获取沟通内容
+      return Communicate::field('content')->where($where)->select()->toArray();
     }
 
 

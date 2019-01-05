@@ -108,7 +108,7 @@
                 </el-table-column> -->
 
                 <el-table-column
-                    align="center"
+                    align=""
                     prop="content"
                     label="沟通内容"
                 >

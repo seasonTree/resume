@@ -42,6 +42,7 @@ Route::get('api/communication/list','Communicate/commList');//获取沟通列表
 Route::post('api/communication/add','Communicate/addComm');//添加沟通信息
 Route::post('api/communication/edit','Communicate/editComm');//修改沟通列表
 Route::get('api/communication/get_by_id','Communicate/getComm');//根据id获取一条沟通信息
+Route::get('api/communication/get_by_uname','Communicate/getByUname');//根据用户名获取招聘的数据
 Route::get('api/resume/get_upload_file','Resume/uploadList');//获取附件列表
 Route::post('api/resume/upload_file','Resume/upload');//添加简历附件
 Route::post('api/resume/del_file','Resume/delFile');//删除简历附件
@@ -88,7 +89,8 @@ Route::post('api/permission/sort','Privilege/sort'); //排序
 
 //个人招聘统计api----------------------------------
 Route::get('api/report/person_recru/candidate_list','Report/candidateList');//获取个人招聘统计候选人跟踪报表
-Route::get('api/report/person_recru/recruitment_list','Report/recruitmentList');//获取 招聘负责人统计的报表
+Route::get('api/report/person_recru/recruitment_list','Report/recruitmentList');//获取 招聘负责人明细的报表
+Route::get('/api/report/person_recru/recruitment_total','Report/recruitmentTotal');//招聘负责人明细
 Route::get('api/person_recru/export','Report/export');//导出
 //-----------------------------------------------
 
