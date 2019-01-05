@@ -39,23 +39,46 @@ const addDrag = (Vue) => {
                     styT = +sty.top.replace(/\px/g, '');
                 };
 
-                document.onmousemove = function (e) {
-                    // 通过事件委托，计算移动的距离 
-                    const l = e.clientX - disX;
-                    const t = e.clientY - disY;
+                const mouseMove = function (e) {
+                        // 通过事件委托，计算移动的距离 
+                        const l = e.clientX - disX;
+                        const t = e.clientY - disY;
 
-                    // 移动当前元素  
-                    dragDom.style.left = `${l + styL}px`;
-                    dragDom.style.top = `${t + styT}px`;
+                        // 移动当前元素  
+                        dragDom.style.left = `${l + styL}px`;
+                        dragDom.style.top = `${t + styT}px`;
 
-                    //将此时的位置传出去
-                    //binding.value({x:e.pageX,y:e.pageY})
-                };
+                        //将此时的位置传出去
+                        //binding.value({x:e.pageX,y:e.pageY})
+                    },
+                    mouseUp = function (e) {
+                        document.removeEventListener('mousemove', mouseMove)
+                        document.removeEventListener('mouseup', mouseUp)
 
-                document.onmouseup = function (e) {
-                    document.onmousemove = null;
-                    document.onmouseup = null;
-                };
+                        // document.onmousemove = null;
+                        // document.onmouseup = null;
+                    };
+
+                document.addEventListener('mousemove', mouseMove);
+                document.addEventListener('mouseup', mouseUp);
+
+                // document.onmousemove = function (e) {
+                //     // 通过事件委托，计算移动的距离 
+                //     const l = e.clientX - disX;
+                //     const t = e.clientY - disY;
+
+                //     // 移动当前元素  
+                //     dragDom.style.left = `${l + styL}px`;
+                //     dragDom.style.top = `${t + styT}px`;
+
+                //     //将此时的位置传出去
+                //     //binding.value({x:e.pageX,y:e.pageY})
+                // };
+
+                // document.onmouseup = function (e) {
+                //     document.onmousemove = null;
+                //     document.onmouseup = null;
+                // };
             }
 
         }
