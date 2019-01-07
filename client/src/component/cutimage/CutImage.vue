@@ -32,9 +32,9 @@
                     @mousedown.stop.prevent="maskMouseHandler($event)"
                     @wheel.stop.prevent="stretch($event)"
                 >
-                </div>
-
+                </div>                
             </div>
+            <div class="cut-tip">注：鼠标滚动可修改截取范围</div>
         </div>
 
         <div class="cut-image-viewer">
@@ -470,6 +470,11 @@ export default {
         box-sizing: border-box;
         border: 1px solid #e3e3e3;
 
+        .cut-tip{
+            color: #f56c6c;
+            margin-top: 6px;
+        }
+
         .cut-image-container {
             position: relative;
             height: 100%;
@@ -484,18 +489,6 @@ export default {
                 background-size: 100% 100%;
             }
 
-            // .outer-border {
-            //     position: absolute;
-            //     z-index: 100;
-            //     box-sizing: border-box;
-            //     top: 0;
-            //     left: 0;
-            //     right: 0;
-            //     bottom: 0;
-            //     opacity: 0.5;
-            //     background-color: white;
-            // }
-
             @maskBgColor: white;
             .mask-container {
                 position: relative;
@@ -504,34 +497,6 @@ export default {
                 border-radius: 50%;
                 background-color: rgba(0, 0, 0, 0.5);
                 border: 4px dotted @maskBgColor;
-
-                .mask-point {
-                    width: 10px;
-                    height: 10px;
-                    position: absolute;
-                    background-color: @maskBgColor;
-                    opacity: 1;
-                }
-
-                // .mask-line-horizontal {
-                //     position: absolute;
-                //     top: 50%;
-                //     left: 0;
-                //     right: 0;
-                //     width: 100%;
-                //     border-top: 4px dotted @maskBgColor;
-                //     transform: translate(0, -50%);
-                // }
-
-                // .mask-line-vertical {
-                //     position: absolute;
-                //     top: 0;
-                //     bottom: 0;
-                //     left: 50%;
-                //     height: 100%;
-                //     border-left: 4px dotted @maskBgColor;
-                //     transform: translate(-50%, 0);
-                // }
             }
 
             .cir-mask {
