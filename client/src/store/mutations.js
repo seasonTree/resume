@@ -2,9 +2,9 @@ export default {
     setUserInfo(state, value) {
 
         //如果没有头像的就给个默认的头像
-        value.avatar = value.avatar || './image/user_image.jpg';
+        value.avatar = value.avatar + '?d=' + Date.now() || './image/user_image.jpg';
 
-        state.token = value.token;        
+        state.token = value.token;
         state.user = value;
         // window.sessionStorage.setItem(value.token, JSON.stringify(value));
     },
@@ -23,7 +23,7 @@ export default {
         state.btn_act = value;
     },
 
-    updateAvatar(state, data) {
-        state.user.avatar = data;
+    updateAvatar(state, value) {
+        state.user.avatar = value + '?d=' + Date.now();
     },
 }
