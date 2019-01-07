@@ -121,13 +121,15 @@
 <script>
 import ReportBase from "@view/base/ReportBase";
 import Communication from "./Communication";
+import CutImage from "@component/cutimage/CutImage";
 import { getLtWeek, getLtMonth } from "@common/util";
 import { formatDate } from "@common/util";
 export default {
     mixins: [ReportBase],
 
     components: {
-        Communication
+        Communication,
+        CutImage
     },
 
     created() {

@@ -336,7 +336,7 @@ export function removeClass(el, cls) {
 export const formatDate = (date, fmt) => {
 
     //判断是否是日期
-    if ( !isNaN(date) && isNaN(Date.parse(date))) {
+    if (!isNaN(date) && isNaN(Date.parse(date))) {
         return date;
     }
 
@@ -357,4 +357,24 @@ export const formatDate = (date, fmt) => {
         if (new RegExp("(" + k + ")").test(fmt))
             fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
     return fmt;
+}
+
+/**
+ * base64 转blob
+ * 
+ * @param {String} data base64数据
+ */
+export const base64ToBlob = (data) => {
+    let byteString = atob(data.split(',')[1]),
+        mimeString = data.split(',')[0].split(':')[1].split(';')[0],
+        ab = new ArrayBuffer(byteString.length),
+        ia = new Uint8Array(ab);
+
+    for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+    
+    return new Blob([ab], {
+        type: mimeString
+    });
 }

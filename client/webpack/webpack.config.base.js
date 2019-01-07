@@ -113,6 +113,28 @@ let plugins = [
     //     }
     // ]),
 
+    //默认的用户头像
+    new copyFile([
+        //复制文件
+        //favicon.ico
+        {
+            from: `${srcPath}/image/user_image.jpg`,
+            to: `${outputPath}/image`,
+            force: true,
+        }
+    ]),
+
+    //修改用户头像时使用
+    new copyFile([
+        //复制文件
+        //favicon.ico
+        {
+            from: `${srcPath}/image/empty.png`,
+            to: `${outputPath}/image`,
+            force: true,
+        }
+    ]),
+
     new copyFile([
         //复制文件
         //favicon.ico

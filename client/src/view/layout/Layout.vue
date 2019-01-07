@@ -11,11 +11,17 @@
             <div class="pull-right">
                 <el-dropdown class="dropdown-link">
                     <span>
-                        <span class="inline-block bg-cover user-image"></span>
+                        <span
+                            @click="userImageDialog = true"
+                            class="inline-block bg-cover user-image"
+                            :style="{
+                                backgroundImage: `url(${userInfo.avatar})`
+                            }"
+                        ></span>
                         <span class="inline-block">{{userInfo.uname}}</span>
                     </span>
                     <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item @click.native="changePasswordVisable = true">
+                        <el-dropdown-item @click.native="changePasswordDialog = true">
                             修改密码
                         </el-dropdown-item>
                         <el-dropdown-item @click.native="logout">
@@ -77,90 +83,31 @@
             </el-main>
         </el-container>
 
-        <el-dialog
-            class="custom-dialog"
-            title="修改密码"
-            :visible.sync="changePasswordVisable"
-            :close-on-click-modal="false"
-        >
-            <el-form
-                :model="changePwd"
-                ref="changePwdForm"
-                label-width="100px"
-                :rules="rules"
-            >
-                <el-form-item
-                    label="旧密码"
-                    prop="oldPass"
-                >
-                    <el-input
-                        v-model="changePwd.oldPass"
-                        type="password"
-                        autocomplete="off"
-                        placeholder="请输入密码"
-                    ></el-input>
-                </el-form-item>
-                <el-form-item
-                    label="新密码"
-                    prop="newPass"
-                >
-                    <el-input
-                        v-model="changePwd.newPass"
-                        type="password"
-                        autocomplete="off"
-                        placeholder="请输入新密码"
-                    ></el-input>
-                </el-form-item>
-                <el-form-item
-                    label="确认密码"
-                    prop="newPassRe"
-                >
-                    <el-input
-                        v-model="changePwd.newPassRe"
-                        type="password"
-                        autocomplete="off"
-                        placeholder="请再次输入新密码"
-                    ></el-input>
-                </el-form-item>
-            </el-form>
-            <div
-                slot="footer"
-                class="dialog-footer"
-            >
-                <el-button @click="resetForm">取 消</el-button>
-                <el-button
-                    :loading="changLoading"
-                    type="primary"
-                    @click="changePassword"
-                >确 定</el-button>
-            </div>
-        </el-dialog>
+        <change-password :show.sync="changePasswordDialog">
+        </change-password>
+
+        <user-image 
+            :show.sync="userImageDialog"
+            :avatar="userInfo.avatar"
+        ></user-image>
+        
+
     </el-container>
 </template>
 
 <script>
 import MenuTree from "@component/menutree/MenuTree";
+import ChangePassword from "./ChangePassword";
+import UserImage from "./UserImage";
 
 import { mapGetters } from "vuex";
-
-let passRules = [
-    {
-        required: true,
-        message: "请填写所需要的密码",
-        trigger: "blur"
-    },
-    {
-        min: 6,
-        // max: 16,
-        message: "长度在最小在6个字符",
-        trigger: "blur"
-    }
-];
 
 export default {
     name: "Layout",
     components: {
-        MenuTree
+        MenuTree,
+        ChangePassword,
+        UserImage
     },
 
     data() {
@@ -225,35 +172,13 @@ export default {
             // }
             // ],
 
-            changePasswordVisable: false,
+            mainBodyTimer: null,
 
-            changePwd: {
-                oldPass: "",
-                newPass: "",
-                newPassRe: ""
-            },
+            changePasswordDialog: false,
 
-            rules: {
-                oldPass: passRules,
-                newPass: passRules,
-                newPassRe: passRules.concat({
-                    validator: (rule, value, callback) => {
-                        let that = this;
+            userImageDialog: false,
 
-                        if (that.changePwd.newPass !== value) {
-                            callback(
-                                new Error("两次的密码不一致，请重新输入.")
-                            );
-                        } else {
-                            callback();
-                        }
-                    }
-                })
-            },
-
-            changLoading: false,
-
-            mainBodyTimer: null
+            // userAvatar: 'url(./image/user_image.jpg)',
 
             // showContent: false
         };
@@ -283,38 +208,10 @@ export default {
     },
 
     methods: {
-        changePassword() {
-            let that = this;
-
-            that.$refs["changePwdForm"].validate(valid => {
-                if (valid) {
-                    that.changLoading = true;
-
-                    that.$api.user
-                        .changePassword(that.changePwd)
-                        .then(res => {
-                            if (res.code == 0) {
-                                that.$message({
-                                    message: "修改成功.",
-                                    type: "success",
-                                    duration: 800
-                                });
-
-                                that.resetForm();
-                            } else {
-                                that.$message.error(res.message);
-                            }
-
-                            that.changLoading = false;
-                        })
-                        .catch(res => {
-                            that.$message.error("修改失败，请重试.");
-
-                            that.changLoading = false;
-                        });
-                }
-            });
-        },
+        // updateAvatar(data){
+        //     let that = this;
+        //     that.userAvatar = `url(${data})`;
+        // },
 
         logout() {
             let that = this;
@@ -332,12 +229,6 @@ export default {
                 .catch(res => {
                     that.$message.error("退出失败,请重试.");
                 });
-        },
-
-        resetForm() {
-            this.$refs["changePwdForm"].resetFields();
-
-            this.changePasswordVisable = false;
         }
     }
 };
@@ -374,12 +265,13 @@ export default {
     }
 
     .user-image {
-        background-image: url(../../image/user_image.jpg);
+        // background-image: url(../../image/user_image.jpg);
         height: 40px;
         width: 40px;
         vertical-align: middle;
         margin-right: 4px;
         border-radius: 50%;
+        background-size: 100% 100%;
     }
 }
 

@@ -339,3 +339,21 @@ export function getUserPermission(data){
         params: data
     })
 }
+
+//更新用户自己的头像
+export function updateUserAvatar(data){
+    return request({
+        url: `${prefix}/update_avatar`,
+        method: 'post',
+        data: data
+    });
+}
+
+//更新用户的头像（管理员）
+export function changeUserAvatar(data){
+    return request({
+        url: `${prefix}/change_user_avatar`,
+        method: 'post',
+        data: data
+    });
+}

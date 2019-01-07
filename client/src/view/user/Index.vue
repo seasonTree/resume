@@ -10,7 +10,7 @@
                 >
                     <el-col :span="6">
                         <el-button
-                            type="primary"                            
+                            type="primary"
                             @click="addDialog = true"
                             :disabled="!$check_pm('user_add')"
                         >新增</el-button>
@@ -51,8 +51,9 @@
                 <el-table-column
                     prop="id"
                     label="ID"
+                    width="60"
                 ></el-table-column>
-                
+
                 <el-table-column
                     prop="uname"
                     label="用户名"
@@ -83,7 +84,6 @@
                     label="状态"
                     align="center"
                     width="60"
-
                 >
                     <template slot-scope="scope">
                         <i
@@ -105,9 +105,23 @@
                     fixed="right"
                     label="操作"
                     align="center"
+                    width="180"
                 >
                     <template slot-scope="scope">
-
+                        <el-tooltip
+                            effect="dark"
+                            content="修改用户头像"
+                            placement="top"
+                        >
+                            <el-button
+                                type="info"
+                                size="mini"
+                                icon="fa fa-grimace"
+                                circle
+                                @click.stop="changeUserAvatar(scope.row.id)"
+                                :disabled="!$check_pm('user_change_avatar')"
+                            ></el-button>
+                        </el-tooltip>
                         <el-tooltip
                             effect="dark"
                             content="修改密码"
@@ -180,8 +194,14 @@
 
         <change-pwd
             :show.sync="changePwdDialog"
-            :id="changePwdID"
+            :id="selectUserID"
         ></change-pwd>
+
+        <user-image
+            :show.sync="userImageDialog"
+            :id="selectUserID"
+        ></user-image>
+
     </div>
 </template>
 
@@ -191,13 +211,15 @@ import TabelBase from "@view/base/TabelBase";
 import Add from "./Add";
 import Edit from "./Edit";
 import ChangePwd from "./ChangePwd";
+import UserImage from "./UserImage";
 export default {
     mixins: [TabelBase],
 
     components: {
         Add,
         Edit,
-        ChangePwd
+        ChangePwd,
+        UserImage
     },
 
     data() {
@@ -205,9 +227,15 @@ export default {
             //填写API获取的类型，由父类自动调用，不填不调用
             apiType: "user",
 
+            //选中用户的id
+            selectUserID: 0,
+
             //修改用户的密码 -------
             changePwdDialog: false,
-            changePwdID: 0,
+            // -------------------
+
+            //修改用户的头像 -------
+            userImageDialog: false,
             // -------------------
 
             tdata: [
@@ -269,9 +297,15 @@ export default {
                 });
         },
 
+        changeUserAvatar(id) {
+            let that = this;
+            that.selectUserID = id;
+            that.userImageDialog = true;
+        },
+
         changeUserPwd(id) {
             let that = this;
-            that.changePwdID = id;
+            that.selectUserID = id;
             that.changePwdDialog = true;
         }
     }

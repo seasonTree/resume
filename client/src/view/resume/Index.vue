@@ -292,7 +292,7 @@
                 </el-table-column>
                 <el-table-column
                     fixed
-                    prop="phone"
+                    prop="expected_job"
                     label="岗位"
                     width="80"
                 >
