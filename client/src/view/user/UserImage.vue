@@ -48,6 +48,7 @@
 <script>
 import DialogForm from "../base/DialogForm";
 import CutImage from "@component/cutimage/CutImage";
+import { mapGetters } from "vuex";
 export default {
     name: "UserImage",
     mixins: [DialogForm],
