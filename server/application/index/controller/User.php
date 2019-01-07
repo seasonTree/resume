@@ -5,6 +5,7 @@ use think\facade\Cookie;
 use think\facade\Log;
 use think\facade\Request;
 use think\facade\Session;
+use think\facade\Env;
 use app\index\model\User as UserModel;
 class User
 {
@@ -176,5 +177,45 @@ class User
        }
 
        return json(['data'=>$data,'code'=>0,'msg'=>'获取权限成功']);
+    }
+
+    public function updateAvatar(){
+      //修改用户头像
+      $input = input('post.avatar');
+      $res = $this->runUpdateAvatar($input);
+      if ($res) {
+        return json(['code' => 0,'msg' => '修改成功','data' => $res]);
+      }
+      else{
+        return json(['code' => 1,'msg' => '服务器异常','data' => []]);
+      }
+    }
+
+    public function runUpdateAvatar($img_content,$uid = ''){
+      //修改用户头像
+      $input = $img_content;
+      $path = dirname(Env::get('ROOT_PATH')).'/client/dist/uploads/avatar/';
+      if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $input, $result)){
+        $type = $result[2];
+        $id = $uid == ''?Session::get('user_info')['id']:$uid;
+        $img = $path.$id.'.'.$type;
+        $res = file_put_contents($img, base64_decode(str_replace($result[1], '', $input)));
+        if ($res) {
+          $user = new UserModel();
+          $res = $user->edit(['id' => $id,'head_img' => '/uploads/avatar/'.$id.'.'.$type]);
+          if ($res) {
+            return '/uploads/avatar/'.$id.'.'.$type;
+          }
+          else{
+            return false;
+          }
+        }
+        else{
+          return false;
+        }
+      }else{
+          return false;
+      }
+
     }
 }

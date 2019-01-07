@@ -24,7 +24,7 @@ Route::get('api/dashboard/get','Index/indexList');//获取简历内容
 Route::get('api/user/get_user_info','User/getUserInfo');//获取用户信息
 Route::get('api/user/get_user_permission','User/getUserPermission');//获取用户权限
 Route::post('api/user/change_password','User/changePassword');//修改自己的密码
-Route::post('api/user/update_avatar','User/changePassword');//更新用户自己的头像
+Route::post('api/user/update_avatar','User/updateAvatar');//更新用户自己的头像
 //-----------------------------------------------
 
 //测试使用----------------------------------------
