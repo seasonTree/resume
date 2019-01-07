@@ -18,6 +18,7 @@ const happyThreadPool = happyPack.ThreadPool({
 const srcPath = path.resolve(__dirname, '../src');
 const outputPath = path.resolve(__dirname, '../dist');
 const uploadsPath = path.join(outputPath, 'uploads');
+const avatarPath = path.join(uploadsPath, 'avatar');
 
 const copyFile = require('copy-webpack-plugin');
 
@@ -33,6 +34,13 @@ try {
     fs.statSync(uploadsPath);
 } catch (error) {
     fs.mkdirSync(uploadsPath);
+}
+
+//如果avatar文件不存在就创建
+try {
+    fs.statSync(avatarPath);
+} catch (error) {
+    fs.mkdirSync(avatarPath);
 }
 
 //移除dist生成的path

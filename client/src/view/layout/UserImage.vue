@@ -116,7 +116,7 @@ export default {
                             duration: 800
                         });
 
-                        that.$store.commit("updateAvatar", avatar);
+                        that.$store.commit("updateAvatar", res.data);
 
                         that.closeDialog();
                     } else {

@@ -23,7 +23,7 @@ export default {
         state.btn_act = value;
     },
 
-    updateAvatar(data) {
+    updateAvatar(state, data) {
         state.user.avatar = data;
     },
 }
