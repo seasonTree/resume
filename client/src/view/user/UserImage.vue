@@ -11,8 +11,9 @@
         <div class="mb-20">
             <cut-image
                 mask="cir"
-                maskHeight="150px"
-                maskWidth="150px"
+                :imageWidth="300"
+                :imageHeight="300"
+                :diameter='150'
                 :imageUrl="image"
                 defaultBackImage="./image/empty.png"
                 :defaultCutImage="userImage"
@@ -97,7 +98,8 @@ export default {
                 .then(res => {
                     if (res.code == 0) {
                         that.userImage =
-                            res.data.avatar || "./image/user_image.jpg";
+                            res.data.avatar + "?d=" + Date.now() ||
+                            "./image/user_image.jpg";
                     } else {
                         that.$message.error(
                             res.msg || "获取用户头像失败，请重试."
@@ -136,7 +138,7 @@ export default {
                             duration: 800
                         });
 
-                        if(that.id == that.userInfo.id){
+                        if (that.id == that.userInfo.id) {
                             that.$store.commit("updateAvatar", res.data);
                         }
 

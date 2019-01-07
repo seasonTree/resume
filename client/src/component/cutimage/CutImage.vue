@@ -2,10 +2,9 @@
     <div class="cut-image">
         <div
             class="cut-image-screen"
-            ref="cutImageContainer"
             :style="{
-                width: `${imageWidth}`,
-                height: `${imageHeight}`,                
+                width: `${imageWidth}px`,
+                height: `${imageHeight}px`,                
             }"
         >
             <div class="cut-image-container">
@@ -18,19 +17,23 @@
                 </div>
 
                 <!-- 一定要去除默认的事件，不然卡顿 -->
+                <!-- <div class="outer-border">
+                </div> -->
                 <div
                     class="mask-container"
                     :class="{ 'cir-mask': mask == 'cir' }"
                     :style="{
                         top:`${top}px`,
                         left:`${left}px`,
-                        width:`${maskWidth}`,
-                        height:`${maskHeight}`,
-                        zIndex: `${maskZIndex}`
+                        width:`${maskWidth}px`,
+                        height:`${maskHeight}px`,
+                        zIndex: `${maskZIndex}`,
                     }"
-                    @mousedown.stop.prevent="startMove($event)"
-                    ref="maskContainer"
-                ></div>
+                    @mousedown.stop.prevent="maskMouseHandler($event)"
+                    @wheel.stop.prevent="stretch($event)"
+                >
+                </div>
+
             </div>
         </div>
 
@@ -47,19 +50,22 @@
 
 <script>
 import { base64ToBlob } from "@common/util";
+
+let ifFireFox = navigator.userAgent.indexOf("Firefox") > 0;
+
 export default {
     name: "CutImage",
     components: {},
     props: {
         //图片的长宽
         imageWidth: {
-            default: "300px",
-            type: String
+            default: 300,
+            type: Number
         },
 
         imageHeight: {
-            default: "300px",
-            type: String
+            default: 300,
+            type: Number
         },
 
         //截取框的类型和长宽高
@@ -68,25 +74,27 @@ export default {
             default: "cir",
             type: String
         },
-        maskHeight: {
-            default: "50%",
-            type: String
+
+        //预览框的宽高, 矩形的情况下
+        previewHeight: {
+            default: 150,
+            type: Number
         },
-        maskWidth: {
-            default: "50%",
-            type: String
+        previewWidth: {
+            default: 150,
+            type: Number
+        },
+
+        //预览框的直径，圆形的情况下
+        previewDiameter: {
+            default: 150,
+            type: Number
         },
 
         imageUrl: {
             type: String,
             default: ""
         },
-
-        //注入小图canvas的class或id
-        // canvasClass: {
-        //     type: String,
-        //     default: ""
-        // },
 
         //设置左边默认的图片
         defaultBackImage: {
@@ -104,6 +112,12 @@ export default {
         exportCutType: {
             type: String,
             default: "image/jpg"
+        },
+
+        //放大缩小时的步增
+        stretchSpeed: {
+            type: Number,
+            default: 4
         }
     },
 
@@ -119,10 +133,14 @@ export default {
         imageUrl(newValue, oldValue) {
             let that = this;
 
-            if(newValue){
-                that.maskZIndex = 0;
+            if (newValue) {
+                that.maskZIndex = 101;
+                //遮罩默认是全屏的
+                that.maskWidth = that.outerWidth;
+                that.maskHeight = that.outerHeight;
+
                 that.setBackImage();
-            }else{
+            } else {
                 //如果清空了传入的图片，则还原成默认的
                 that.setDeaultBackImage();
                 that.maskZIndex = -9999;
@@ -131,12 +149,12 @@ export default {
             }
         },
 
-        maskWidth(newValue, oldValue) {
+        previewWidth(newValue, oldValue) {
             //重新计算元素
             this.calcEl();
         },
 
-        maskHeight(newValue, oldValue) {
+        previewHeight(newValue, oldValue) {
             //重新计算元素
             this.calcEl();
         }
@@ -149,8 +167,12 @@ export default {
             outerHeight: 0,
 
             //移动裁剪的
-            moveWidth: 0,
-            moveHeight: 0,
+            maskWidth: 0,
+            maskHeight: 0,
+
+            //预览框的宽高
+            preWidth: 0,
+            preHeight: 0,
 
             //移动坐标
             top: 0,
@@ -196,7 +218,6 @@ export default {
     },
 
     methods: {
-
         setDeaultBackImage() {
             let that = this;
 
@@ -230,14 +251,15 @@ export default {
                 $img.addEventListener("load", () => {
                     let context = that.$refs.canvas.getContext("2d");
 
-                    context.clearRect(0, 0, that.moveWidth, that.moveHeight);
+                    //清空模板
+                    context.clearRect(0, 0, that.preWidth, that.preHeight);
 
                     //圆形
                     if (that.mask == "cir") {
                         context.arc(
-                            that.moveWidth / 2,
-                            that.moveHeight / 2,
-                            that.moveHeight / 2,
+                            that.preWidth / 2,
+                            that.preHeight / 2,
+                            that.previewDiameter / 2,
                             0,
                             2 * Math.PI
                         );
@@ -249,8 +271,8 @@ export default {
                         $img,
                         0,
                         0,
-                        that.moveWidth,
-                        that.moveHeight
+                        that.preWidth,
+                        that.preHeight
                     );
                 });
 
@@ -273,6 +295,25 @@ export default {
                     that.image = $img;
 
                     that.imageData = "url(" + that.imageUrl + ")";
+                    that.calcEl();
+
+                    //这里重新处理，预防移动的时候卡
+                    let context = that.$refs.canvas.getContext("2d");
+
+                    //清空模板
+                    context.clearRect(0, 0, that.preWidth, that.preHeight);
+
+                    //圆形, 这里优先处理，预防移动处理的时候卡死
+                    if (that.mask == "cir") {
+                        context.arc(
+                            that.preWidth / 2,
+                            that.preHeight / 2,
+                            that.previewDiameter / 2,
+                            0,
+                            2 * Math.PI
+                        );
+                        context.clip();
+                    }
 
                     that.preview();
                 });
@@ -284,29 +325,59 @@ export default {
         //计算元素高度
         calcEl() {
             let that = this,
-                $refContainer = that.$refs.cutImageContainer,
-                $maskContainer = that.$refs.maskContainer,
+                // $refContainer = that.$refs.cutImageContainer,
                 canvas = that.$refs.canvas;
 
-            //外层框的宽高
-            that.outerWidth = $refContainer.clientWidth;
-            that.outerHeight = $refContainer.clientHeight;
-
-            //选中框的宽高
-            that.moveWidth = $maskContainer.clientWidth;
-            that.moveHeight = $maskContainer.clientHeight;
+            //外层框的宽高和选中框的宽高
+            that.maskWidth = that.outerWidth = that.imageWidth;
+            that.maskHeight = that.outerHeight = that.imageHeight;
 
             //更新预览的宽高
-            canvas.width = that.moveWidth;
-            canvas.height = that.moveHeight;
+            if (that.mask == "cir") {
+                // that.minOutValue = Math.min(that.outerWidth, that.outerHeight);
+                that.preWidth = canvas.width = that.previewDiameter;
+                that.preHeight = canvas.height = that.previewDiameter;
+            } else {
+                that.preWidth = canvas.width = that.previewWidth;
+                that.preHeight = canvas.height = that.previewHeight;
+            }
         },
 
-        startMove(evt) {
+        //放大，缩小框
+        stretch(evt) {
+            let that = this,
+                count = 0,
+                minStetch = Math.min(that.previewHeight, that.previewWidth),
+                maxStretch = Math.min(that.outerWidth, that.outerHeight);
+
+            if (evt.wheelDelta) {
+                count = Math.floor(evt.wheelDelta / 120);
+            } else if (evt.detail != null) {
+                count = -Math.floor(evt.deltaY / 3);
+            }
+
+            let stretchWidth = that.maskWidth + count * that.stretchSpeed,
+                stretchHeight = that.maskHeight + count * that.stretchSpeed;
+
+            if (
+                stretchWidth >= minStetch &&
+                that.left + stretchWidth <= maxStretch &&
+                stretchHeight >= minStetch &&
+                that.top + stretchHeight <= maxStretch
+            ) {
+                that.maskWidth = stretchWidth;
+                that.maskHeight = stretchHeight;
+            }
+
+            that.preview();
+        },
+
+        maskMouseHandler(evt) {
             let that = this;
 
             //调整移动的区间范围
-            that.maxMoveWidth = that.outerWidth - that.moveWidth;
-            that.maxMoveHeight = that.outerHeight - that.moveHeight;
+            that.maxMoveWidth = that.outerWidth - that.maskWidth;
+            that.maxMoveHeight = that.outerHeight - that.maskHeight;
 
             //点击鼠标点击的位置
             that.disX = evt.clientX;
@@ -316,6 +387,7 @@ export default {
             that.orginTop = that.top - 0;
             that.orginLeft = that.left - 0;
 
+            // 如果存在可移动的范围的时候才绑定
             // 全局监听松开事件，放在在内容选择框外松开
             document.addEventListener("mouseup", that.onMouseUp);
             document.addEventListener("mousemove", that.onMouseMove);
@@ -344,45 +416,23 @@ export default {
         //生成canvas
         preview() {
             let that = this,
-                // canvas = document.createElement("canvas"),
-                // canvas = document.querySelector(that.canvasClass),
                 canvas = that.$refs.canvas,
                 context = canvas.getContext("2d"),
                 //计算比例，然后蒙版放大或缩小
                 widthScaleRate = that.outerWidth / that.image.width,
                 heightScaleRate = that.outerHeight / that.image.height;
 
-            // 初始化以处理，这里不处理
-            // canvas.width = that.moveWidth;
-            // canvas.height = that.moveHeight;
-
-            //清空模板
-            context.clearRect(0, 0, that.moveWidth, that.moveHeight);
-
-            // 因为初始化的时候已经处理了圆形问题，不需要重绘制
-            // //圆形
-            // if (that.mask == "cir") {
-            //     context.arc(
-            //         that.moveWidth / 2,
-            //         that.moveHeight / 2,
-            //         that.moveHeight / 2,
-            //         0,
-            //         2 * Math.PI
-            //     );
-            //     context.clip();
-            // }
-
             context.drawImage(
                 that.image,
                 //计算比例，然后蒙版参数放大或缩小
                 Math.floor(that.left / widthScaleRate),
                 Math.floor(that.top / heightScaleRate),
-                Math.floor(that.moveWidth / widthScaleRate),
-                Math.floor(that.moveHeight / heightScaleRate),
+                Math.floor(that.maskWidth / widthScaleRate),
+                Math.floor(that.maskHeight / heightScaleRate),
                 0,
                 0,
-                that.moveWidth,
-                that.moveHeight
+                that.preWidth,
+                that.preHeight
             );
         },
 
@@ -400,16 +450,8 @@ export default {
                 base64Image = that.getCutImageByBase64();
 
             return base64ToBlob(base64Image);
-        },
-
-        // //清除原来上传的图片，还原成默认
-        // clearImage(){
-        //     let that = this;
-        //     that.setDeaultBackImage();
-        //     that.top = 0;
-        //     that.left = 0;
-        // }
-    }   
+        }
+    }
 };
 </script>
 <style lang="less" scoped>
@@ -442,12 +484,54 @@ export default {
                 background-size: 100% 100%;
             }
 
+            // .outer-border {
+            //     position: absolute;
+            //     z-index: 100;
+            //     box-sizing: border-box;
+            //     top: 0;
+            //     left: 0;
+            //     right: 0;
+            //     bottom: 0;
+            //     opacity: 0.5;
+            //     background-color: white;
+            // }
+
+            @maskBgColor: white;
             .mask-container {
-                position: absolute;
+                position: relative;
                 cursor: pointer;
                 box-sizing: border-box;
-                background-color: #ffffff;
-                opacity: 0.4;
+                border-radius: 50%;
+                background-color: rgba(0, 0, 0, 0.5);
+                border: 4px dotted @maskBgColor;
+
+                .mask-point {
+                    width: 10px;
+                    height: 10px;
+                    position: absolute;
+                    background-color: @maskBgColor;
+                    opacity: 1;
+                }
+
+                // .mask-line-horizontal {
+                //     position: absolute;
+                //     top: 50%;
+                //     left: 0;
+                //     right: 0;
+                //     width: 100%;
+                //     border-top: 4px dotted @maskBgColor;
+                //     transform: translate(0, -50%);
+                // }
+
+                // .mask-line-vertical {
+                //     position: absolute;
+                //     top: 0;
+                //     bottom: 0;
+                //     left: 50%;
+                //     height: 100%;
+                //     border-left: 4px dotted @maskBgColor;
+                //     transform: translate(-50%, 0);
+                // }
             }
 
             .cir-mask {

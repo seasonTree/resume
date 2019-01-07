@@ -8,19 +8,21 @@
         v-dialog-drag
         width="550px"
     >
+        <!-- 
+            如果选择了rec正方形，则填写 previewHeight， previewWidth
+            如果选择了cir圆形，则填写 previewDiameter 直径
+        -->
         <div class="mb-20">
             <cut-image
                 mask="cir"
-                maskHeight="150px"
-                maskWidth="150px"
+                :imageWidth="300"
+                :imageHeight="300"
+                :diameter='150'
                 :imageUrl="image"
                 defaultBackImage="./image/empty.png"
                 :defaultCutImage="userImage"
                 ref="cutImage"
             ></cut-image>
-            <!-- <div>
-                <div style="height: 300px;"></div>
-            </div> -->
         </div>
 
         <div
