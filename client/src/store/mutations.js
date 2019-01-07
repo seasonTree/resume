@@ -24,6 +24,7 @@ export default {
     },
 
     updateAvatar(state, value) {
+        //处理缓存
         state.user.avatar = value + '?d=' + Date.now();
     },
 }
