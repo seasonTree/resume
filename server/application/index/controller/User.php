@@ -191,6 +191,20 @@ class User
       }
     }
 
+    public function updateAvatarByAdmin(){
+      //管理员修改用户头像
+      $uid = input('post.id');
+      $img = input('post.avatar');
+      $res = $this->runUpdateAvatar($img,$uid);
+      if ($res) {
+        return json(['code' => 0,'msg' => '修改成功','data' => $res]);
+      }
+      else{
+        return json(['code' => 1,'msg' => '服务器异常','data' => []]);
+      }
+
+    }
+
     public function runUpdateAvatar($img_content,$uid = ''){
       //修改用户头像
       $input = $img_content;
@@ -202,7 +216,7 @@ class User
         $res = file_put_contents($img, base64_decode(str_replace($result[1], '', $input)));
         if ($res) {
           $user = new UserModel();
-          $res = $user->edit(['id' => $id,'head_img' => '/uploads/avatar/'.$id.'.'.$type]);
+          $res = $user->edit(['id' => $id,'avatar' => '/uploads/avatar/'.$id.'.'.$type]);
           if ($res) {
             return '/uploads/avatar/'.$id.'.'.$type;
           }

@@ -11,7 +11,7 @@ create table rs_user
 	id bigint(20) unsigned auto_increment primary key comment '自增id',
 	uname varchar(64) not null comment '用户名',
 	passwd varchar(256) not null comment '密码',
-	head_img varchar(60) not null default '' comment '头像',
+	avatar varchar(60) not null default '' comment '头像',
     personal_name varchar(32) not null default '' comment '姓名',
 	phone varchar(11) not null default '' comment '联系电话',
     status tinyint(1) not null default 0 comment '0: 正常， 1: 禁用',

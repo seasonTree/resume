@@ -60,7 +60,7 @@ Route::post('api/user/del','User/del');
 Route::post('api/user/change_user_passwd','User/changeUserPasswd');
 Route::post('api/user/change_status','User/changeStatus');
 Route::post('api/user/get_by_id','User/getOne');
-Route::post('api/user/change_user_avatar','User/getOne'); //修改用户的头像
+Route::post('api/user/change_user_avatar','User/updateAvatarByAdmin'); //用管理员修改用户的头像
 Route::get('api/user/all_list','User/lst');
 //-----------------------------------------------
 
