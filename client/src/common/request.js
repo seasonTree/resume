@@ -11,9 +11,8 @@ instance.interceptors.request.use(
         // config.params = config.params || {}
         // config.headers = config.headers || {}
 
-        if(config.params){
-            config.params['_d'] = Date.now();
-        }
+        config.params = config.params || {};
+        config.params['_d'] = Date.now();
 
         //set 默认值
         return config

@@ -2,7 +2,7 @@ export default {
     setUserInfo(state, value) {
 
         //如果没有头像的就给个默认的头像
-        value.avatar = value.avatar + '?d=' + Date.now() || './image/user_image.jpg';
+        value.avatar = value.avatar? value.avatar + '?d=' + Date.now() : './image/user_image.jpg';
 
         state.token = value.token;
         state.user = value;

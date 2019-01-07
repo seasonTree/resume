@@ -97,9 +97,9 @@ export default {
                 })
                 .then(res => {
                     if (res.code == 0) {
-                        that.userImage =
-                            res.data.avatar + "?d=" + Date.now() ||
-                            "./image/user_image.jpg";
+                        that.userImage = res.data.avatar
+                            ? res.data.avatar + "?d=" + Date.now()
+                            : "./image/user_image.jpg";
                     } else {
                         that.$message.error(
                             res.msg || "获取用户头像失败，请重试."
