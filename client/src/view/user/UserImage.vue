@@ -73,6 +73,10 @@ export default {
         }
     },
 
+    computed: {
+        ...mapGetters(["userInfo"])
+    },
+
     data() {
         return {
             image: "",
@@ -130,6 +134,10 @@ export default {
                             type: "success",
                             duration: 800
                         });
+
+                        if(that.id == that.userInfo.id){
+                            that.$store.commit("updateAvatar", res.data);
+                        }
 
                         that.closeDialog();
                     } else {
