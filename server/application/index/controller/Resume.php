@@ -173,10 +173,11 @@ class Resume extends Controller
         //自我评价
         $str = '';
         foreach ($parm as $k => $v) {
+            $v = preg_replace("/^(自我介绍|自我评价|自我描述)(:|：)?/",'',$v);
             if ($v == '') {
                 continue;
             }
-            $str.= $v."\n";
+            $str.= trim($v)."\n";
         }
         return $str;
     }
@@ -193,7 +194,7 @@ class Resume extends Controller
             if (preg_match($rule,$v,$matches)) {
                 $arr['english'] = $matches[0];
             }
-            $str.= $v."\n";
+            $str.= trim($v)."\n";
         }
         $arr['skillExpertise'] = $str;
         return $arr;
