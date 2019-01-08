@@ -576,7 +576,7 @@ export default {
                 workExperience: "",
 
                 //工作技能
-                personalskills: "",
+                // personalskills: "",
 
                 //自定义
                 custom1: "",
