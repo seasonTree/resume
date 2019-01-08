@@ -514,6 +514,14 @@ class Resume extends Controller
             return json(['msg' => '没有数据','code' => 2]);
         }
 
+        if (!isset($data['name']) || $data['name'] == '') {
+            return json(['msg' => '姓名必填','code' => 3]);
+        }
+
+        if (!isset($data['phone']) || $data['phone'] == '') {
+            return json(['msg' => '电话必填','code' => 4]);
+        }
+
         $data['ct_user'] = Session::get('user_info')['uname'];
 
         if(isset($data['work_year'])){
@@ -529,7 +537,7 @@ class Resume extends Controller
             // $data['age'] = (int)$data['age'];
         }
 
-        if (isset($data['expected_money'])) {
+        if (isset($data['expected_money']) && $data['expected_money'] != '') {
             $money = preg_replace("/(到|至)/",'-',$data['expected_money']);
             $money = preg_replace("/(K|k)/",'000',$money);//把k替换成3个0
             $money = explode('-',$money);
