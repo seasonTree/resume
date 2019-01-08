@@ -525,7 +525,7 @@ class Resume extends Controller
 
         if (isset($data['expected_money'])) {
             $money = preg_replace("/(到|至)/",'-',$data['expected_money']);
-            $money = preg_replace("/(K|k)/",'000',$money);//把k替换成3个0
+            $money = preg_replace("/(K|k)/",000,$money);//把k替换成3个0
             $money = explode('-',$data['expected_money']);
 
             if (count($money) > 1) {
