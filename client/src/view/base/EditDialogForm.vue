@@ -69,7 +69,7 @@ export default {
 
                                 that.closeDialog();
                             } else {
-                                that.$message.error(res.msg);
+                                that.$message.error(res.msg || "修改失败，请重试.");
                             }
 
                             that.commitLoading = false;
