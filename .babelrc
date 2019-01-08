@@ -2,7 +2,7 @@
     "presets": [
         ["@babel/preset-env", {
             "modules": false,
-            "useBuiltIns": "usage"
+            "useBuiltIns": false
         }]
     ],
     "plugins": ["@babel/plugin-syntax-dynamic-import", "transform-vue-jsx"]
