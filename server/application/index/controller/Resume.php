@@ -527,7 +527,7 @@ class Resume extends Controller
             $money = preg_replace("/(到|至)/",'-',$data['expected_money']);
             $money = preg_replace("/(K|k)/",'000',$money);//把k替换成3个0
             $money = explode('-',$money);
-
+            dump($money);exit;
             if (count($money) > 1) {
                 $data['expected_money_start'] = (int)$money[0];
                 $data['expected_money_end'] = (int)$money[1];
