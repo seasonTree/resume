@@ -66,7 +66,7 @@ rmGenFile(outputPath);
 
 //生成入文件
 let entry = {
-    'app': ['@babel/polyfill', `${srcPath}/index.js`],
+    'app': `${srcPath}/index.js`,
 }
 
 let plugins = [
