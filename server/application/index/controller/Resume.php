@@ -517,10 +517,16 @@ class Resume extends Controller
         $data['ct_user'] = Session::get('user_info')['uname'];
 
         if(isset($data['work_year'])){
-            $data['work_year'] = (int)$data['work_year'];
+            if (preg_match("/\d+/",$data['work_year'],$matches)) {
+                 $data['work_year'] = $matches[0];
+            }
+            
         }
         if (isset($data['age'])) {
-            $data['age'] = (int)$data['age'];
+             if (preg_match("/\d+/",$data['age'],$matches)) {
+                 $data['age'] = $matches[0];
+            }
+            // $data['age'] = (int)$data['age'];
         }
 
         if (isset($data['expected_money'])) {
@@ -529,12 +535,20 @@ class Resume extends Controller
             $money = explode('-',$money);
             dump($money);exit;
             if (count($money) > 1) {
-                $data['expected_money_start'] = (int)$money[0];
-                $data['expected_money_end'] = (int)$money[1];
+                if (preg_match("/\d+/",$money[0],$matches)) {
+                    $data['expected_money_start'] = $matches[0];
+                }
+                if (preg_match("/\d+/",$money[1],$matches)) {
+                    $data['expected_money_end'] = $matches[0];
+                }
             }
             else{
-                $data['expected_money_start'] = (int)$money[0];
-                $data['expected_money_end'] = (int)$money[0];
+                if (preg_match("/\d+/",$money[0],$matches)) {
+                    $data['expected_money_start'] = $matches[0];
+                    $data['expected_money_end'] = $matches[0];
+                }
+                // $data['expected_money_start'] = (int)$money[0];
+                // $data['expected_money_end'] = (int)$money[0];
             }
         }
 
