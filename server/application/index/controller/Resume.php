@@ -578,26 +578,43 @@ class Resume extends Controller
             return json(['msg' => '没有数据','code' => 2]);
         }
 
+
         if(isset($data['work_year'])){
-            $data['work_year'] = (int)$data['work_year'];
+            if (preg_match("/\d+/",$data['work_year'],$matches)) {
+                 $data['work_year'] = $matches[0];
+            }
+            
         }
         if (isset($data['age'])) {
-            $data['age'] = (int)$data['age'];
+             if (preg_match("/\d+/",$data['age'],$matches)) {
+                 $data['age'] = $matches[0];
+            }
+            // $data['age'] = (int)$data['age'];
         }
 
-        if (isset($data['expected_money'])) {
+        if (isset($data['expected_money']) && $data['expected_money'] != '') {
             $money = preg_replace("/(到|至)/",'-',$data['expected_money']);
-            $money = explode('-',$data['expected_money']);
-
+            $money = preg_replace("/(K|k)/",'000',$money);//把k替换成3个0
+            $money = explode('-',$money);
             if (count($money) > 1) {
-                $data['expected_money_start'] = (int)$money[0];
-                $data['expected_money_end'] = (int)$money[1];
+                if (preg_match("/\d+/",$money[0],$matches)) {
+                    $data['expected_money_start'] = $matches[0];
+                }
+                if (preg_match("/\d+/",$money[1],$matches)) {
+                    $data['expected_money_end'] = $matches[0];
+                }
             }
             else{
-                $data['expected_money_start'] = (int)$money[0];
-                $data['expected_money_end'] = (int)$money[0];
+                if (preg_match("/\d+/",$money[0],$matches)) {
+                    $data['expected_money_start'] = $matches[0];
+                    $data['expected_money_end'] = $matches[0];
+                }
+                // $data['expected_money_start'] = (int)$money[0];
+                // $data['expected_money_end'] = (int)$money[0];
             }
         }
+
+
         $resume = new ResumeModel();
         $res = $resume->edit($data);
         $data = $resume->getOne(['id' => $data['id']]);
