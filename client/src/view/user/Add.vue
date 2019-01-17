@@ -35,7 +35,7 @@
 
             <el-form-item
                 label="电话"
-                prop="联系电话"
+                prop="phone"
             >
                 <el-input
                     v-model.trim="form.phone"
