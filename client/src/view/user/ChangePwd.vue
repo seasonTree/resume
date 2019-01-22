@@ -40,7 +40,10 @@
             slot="footer"
             class="dialog-footer"
         >
-            <el-button @click="closeDialog" :disabled="commitLoading">取 消</el-button>
+            <el-button
+                @click="closeDialog"
+                :disabled="commitLoading"
+            >取 消</el-button>
             <el-button
                 type="primary"
                 @click="changePwd"
@@ -109,7 +112,7 @@ export default {
                         trigger: "blur"
                     }
                 ]
-            },                    
+            }
         };
     },
 
@@ -117,10 +120,10 @@ export default {
         changePwd() {
             let that = this;
 
-            that.commitLoading = true;
-
             that.$refs["form"].validate(valid => {
                 if (valid) {
+                    that.commitLoading = true;
+
                     that.form["id"] = that.id;
 
                     that.$api.user

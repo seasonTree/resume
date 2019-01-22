@@ -15,7 +15,7 @@ export default {
         return {
             form: {},
             formRules: {},
-            apiType: "",            
+            apiType: ""
         };
     },
 
@@ -42,10 +42,9 @@ export default {
         editCommit() {
             let that = this;
 
-            that.commitLoading = true;
-
             that.$refs["form"].validate(valid => {
                 if (valid) {
+                    that.commitLoading = true;
                     //提交之前
                     that.beforeEdit(that.form);
 
@@ -69,7 +68,9 @@ export default {
 
                                 that.closeDialog();
                             } else {
-                                that.$message.error(res.msg || "修改失败，请重试.");
+                                that.$message.error(
+                                    res.msg || "修改失败，请重试."
+                                );
                             }
 
                             that.commitLoading = false;

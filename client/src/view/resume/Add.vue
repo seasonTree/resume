@@ -659,10 +659,10 @@ export default {
         addCommit() {
             let that = this;
 
-            that.commitLoading = true;
-
             that.$refs["form"].validate(valid => {
                 if (valid) {
+                    that.commitLoading = true;
+
                     that.$api[that.apiType]
                         .checkName({
                             name: that.form.name

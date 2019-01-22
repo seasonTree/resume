@@ -8,7 +8,7 @@ export default {
         return {
             form: {},
             formRules: {},
-            apiType: "",
+            apiType: ""
         };
     },
 
@@ -16,15 +16,14 @@ export default {
         addCommit() {
             let that = this;
 
-            that.commitLoading = true;
-          
             that.$refs["form"].validate(valid => {
                 if (valid) {
-                   
+                    that.commitLoading = true;
+
                     //提交之前
                     that.beforeAdd(that.form);
                     //  console.log(that.form);
-               
+
                     that.$api[that.apiType]
                         .add(that.form)
                         .then(res => {
@@ -45,7 +44,9 @@ export default {
 
                                 that.closeDialog();
                             } else {
-                                that.$message.error(res.msg || '新增失败，请重试.');                            
+                                that.$message.error(
+                                    res.msg || "新增失败，请重试."
+                                );
                             }
 
                             that.commitLoading = false;

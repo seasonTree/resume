@@ -540,10 +540,10 @@ export default {
         editCommit() {
             let that = this;
 
-            that.commitLoading = true;
-
             that.$refs["form"].validate(valid => {
                 if (valid) {
+                    that.commitLoading = true;
+
                     that.$api[that.apiType]
                         .checkName({
                             id: that.form.id,
