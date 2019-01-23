@@ -3,7 +3,7 @@ import { mapGetters } from "vuex";
 // import { formatDate } from "@common/util";
 
 export default {
-    name: "Tabel",
+    name: "Table",
 
     props: {
         bodyHeight: {

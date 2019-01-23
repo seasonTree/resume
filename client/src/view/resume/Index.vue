@@ -499,13 +499,13 @@ import Add from "./Add";
 import Edit from "./Edit";
 import ViewResume from "./ViewResume";
 import Communication from "./Communication";
-import TabelBase from "@view/base/TabelBase";
+import TableBase from "@view/base/TableBase";
 import UploadFile from "./UploadFile";
 import ImportExcel from "./ImportExcel";
 import { addClass, removeClass } from "@common/util";
 
 export default {
-    mixins: [TabelBase],
+    mixins: [TableBase],
     components: {
         Add,
         Edit,

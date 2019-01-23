@@ -144,13 +144,13 @@
 </template>
 
 <script>
-import TabelBase from "@view/base/TabelBase";
+import TableBase from "@view/base/TableBase";
 import { treeToArray } from "../../common/util";
 import Add from "./Add";
 import Edit from "./Edit";
 import Sort from "./Sort";
 export default {
-    mixins: [TabelBase],
+    mixins: [TableBase],
 
     components: {
         Add,

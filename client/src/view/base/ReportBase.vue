@@ -1,6 +1,6 @@
 <script>
 export default {
-    name: "Tabel",
+    name: "ReportBase",
 
     props: {
         bodyHeight: {

@@ -192,13 +192,13 @@
 </template>
 
 <script>
-import TabelBase from "@view/base/TabelBase";
+import TableBase from "@view/base/TableBase";
 import Add from "./Add";
 import Edit from "./Edit";
 import Permission from "./Permission";
 import User from "./User";
 export default {
-    mixins: [TabelBase],
+    mixins: [TableBase],
 
     components: {
         Add,

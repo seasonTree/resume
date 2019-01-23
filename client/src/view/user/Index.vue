@@ -206,14 +206,14 @@
 </template>
 
 <script>
-import TabelBase from "@view/base/TabelBase";
+import TableBase from "@view/base/TableBase";
 
 import Add from "./Add";
 import Edit from "./Edit";
 import ChangePwd from "./ChangePwd";
 import UserImage from "./UserImage";
 export default {
-    mixins: [TabelBase],
+    mixins: [TableBase],
 
     components: {
         Add,
