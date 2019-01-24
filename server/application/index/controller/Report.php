@@ -309,11 +309,11 @@ class Report extends Controller
 			//表头
     		$obj->getActiveSheet()->setCellValue("A1", '招聘负责人');
 			$obj->getActiveSheet()->setCellValue("B1", '候选人');
-			$obj->getActiveSheet()->setCellValue("C1", '通过筛选');
-			$obj->getActiveSheet()->setCellValue("D1", '安排面试');
-			$obj->getActiveSheet()->setCellValue("E1", '到场');
-			$obj->getActiveSheet()->setCellValue("F1", '通过面试');
-			$obj->getActiveSheet()->setCellValue("G1", '入职');
+			$obj->getActiveSheet()->setCellValue("C1", '是否推荐');
+			$obj->getActiveSheet()->setCellValue("D1", '是否安排');
+			$obj->getActiveSheet()->setCellValue("E1", '是否到场');
+			$obj->getActiveSheet()->setCellValue("F1", '是否通过');
+			$obj->getActiveSheet()->setCellValue("G1", '是否入职');
 			$data = $this->getRecruitment($input);
 			//数据
     		foreach ($data as $k => $v) {
@@ -345,11 +345,11 @@ class Report extends Controller
 			$obj->getActiveSheet()->getColumnDimension('F')->setWidth(10);
 			//表头
     		$obj->getActiveSheet()->setCellValue("A1", '招聘负责人');
-			$obj->getActiveSheet()->setCellValue("B1", '通过筛选');
-			$obj->getActiveSheet()->setCellValue("C1", '安排面试');
-			$obj->getActiveSheet()->setCellValue("D1", '到场');
-			$obj->getActiveSheet()->setCellValue("E1", '通过面试');
-			$obj->getActiveSheet()->setCellValue("F1", '入职');
+			$obj->getActiveSheet()->setCellValue("B1", '推荐人数');
+			$obj->getActiveSheet()->setCellValue("C1", '安排面试人数');
+			$obj->getActiveSheet()->setCellValue("D1", '到场人数');
+			$obj->getActiveSheet()->setCellValue("E1", '通过面试人数');
+			$obj->getActiveSheet()->setCellValue("F1", '入职人数');
 			$data = $this->getRecruitmentTotal($input);
 			foreach ($data as $k => $v) {
 				$k = $k+2;
