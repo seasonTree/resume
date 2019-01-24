@@ -33,13 +33,12 @@
                     <div class="addcom_div-row">
                         <el-form-item
                             style="display: flex"
-                            label="通过筛选："
+                            label="是否推荐："
                             prop="screen"
                         >
                             <el-switch
                                 v-model="form.screen"
                                 active-color="#13ce66"
-                                inactive-color="#ff4949"
                                 :inactive-value="0"
                                 :active-value="1"
                             >
@@ -47,14 +46,13 @@
                         </el-form-item>
 
                         <el-form-item
-                            label="安排面试："
+                            label="是否安排："
                             prop="arrange_interview"
                             style="display: flex"
                         >
                             <el-switch
                                 v-model="form.arrange_interview"
                                 active-color="#13ce66"
-                                inactive-color="#ff4949"
                                 :inactive-value="0"
                                 :active-value="1"
                             >
@@ -69,7 +67,6 @@
                             <el-switch
                                 v-model="form.arrive"
                                 active-color="#13ce66"
-                                inactive-color="#ff4949"
                                 :inactive-value="0"
                                 :active-value="1"
                             >
@@ -80,14 +77,13 @@
                     </div>
                     <div class="addcom_div-row2">
                         <el-form-item
-                            label="通过面试："
+                            label="是否通过："
                             prop="approved_interview"
                             style="display: flex"
                         >
                             <el-switch
                                 v-model="form.approved_interview"
                                 active-color="#13ce66"
-                                inactive-color="#ff4949"
                                 :inactive-value="0"
                                 :active-value="1"
                             >
@@ -102,7 +98,6 @@
                             <el-switch
                                 v-model="form.entry"
                                 active-color="#13ce66"
-                                inactive-color="#ff4949"
                                 :inactive-value="0"
                                 :active-value="1"
                             >
