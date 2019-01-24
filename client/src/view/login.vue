@@ -86,7 +86,7 @@ export default {
     left: 0;
     right: 0;
     background-color: #12afe3;
-    background-image: url(../image/login_bg.jpg);
+    // background-image: url(../image/login_bg.jpg);
     background-size: 100% 100%;
     
     .login-form {
