@@ -339,9 +339,9 @@ class Report extends Controller
     		//宽度设置
     		$obj->getActiveSheet()->getColumnDimension('A')->setWidth(12);
 			$obj->getActiveSheet()->getColumnDimension('B')->setWidth(10);
-			$obj->getActiveSheet()->getColumnDimension('C')->setWidth(10);
+			$obj->getActiveSheet()->getColumnDimension('C')->setWidth(15);
 			$obj->getActiveSheet()->getColumnDimension('D')->setWidth(10);
-			$obj->getActiveSheet()->getColumnDimension('E')->setWidth(10);
+			$obj->getActiveSheet()->getColumnDimension('E')->setWidth(15);
 			$obj->getActiveSheet()->getColumnDimension('F')->setWidth(10);
 			//表头
     		$obj->getActiveSheet()->setCellValue("A1", '招聘负责人');
