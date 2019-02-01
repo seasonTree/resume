@@ -474,12 +474,12 @@ class Resume extends Controller
         $input = input('get.');
         // if (count($input) > 3 ) {
             $data = $this->search($input);
-            $count = array_pop($data);
+            // $count = array_pop($data);
         // }
         // else{
         //     $resume = new ResumeModel();
         //     $data = $resume->get();
-        //     $count = $resume->getCount();
+            $count = $resume->getCount();
         // }
         
         return json(['msg' => '获取成功','code' => 0,'data' => [ 'row' => $data,'total' => $count]]);
