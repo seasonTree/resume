@@ -736,7 +736,6 @@ class Resume extends Controller
     
     }
     public function test(){
-        public function search($where = ''){
         $resume = new ResumeModel();
         $email = isset($where['email'])?$where['email']:'';
         if ($email) {
@@ -918,7 +917,6 @@ class Resume extends Controller
 
         }
         return $data;
-    }
     }
 
     // public function search($where = ''){
