@@ -547,16 +547,25 @@ class Resume extends Controller
                 }
                 if (preg_match("/\d+/",$money[1],$matches)) {
                     $data['expected_money_end'] = $matches[0];
+                    
                 }
             }
             else{
                 if (preg_match("/\d+/",$money[0],$matches)) {
                     $data['expected_money_start'] = $matches[0];
                     $data['expected_money_end'] = $matches[0];
+
                 }
                 // $data['expected_money_start'] = (int)$money[0];
                 // $data['expected_money_end'] = (int)$money[0];
             }
+        }
+
+        if ($data['expected_money_start'] <= 100) {//智能优化，后面乘1000
+            $data['expected_money_start'] = $data['expected_money_start'].'000';
+        }
+        if ($data['expected_money_end'] <= 100) {
+            $data['expected_money_end'] = $data['expected_money_end'].'000';
         }
 
         
@@ -612,6 +621,13 @@ class Resume extends Controller
                 // $data['expected_money_start'] = (int)$money[0];
                 // $data['expected_money_end'] = (int)$money[0];
             }
+        }
+
+        if ($data['expected_money_start'] <= 100) {//智能优化，后面乘1000
+            $data['expected_money_start'] = $data['expected_money_start'].'000';
+        }
+        if ($data['expected_money_end'] <= 100) {
+            $data['expected_money_end'] = $data['expected_money_end'].'000';
         }
 
 
