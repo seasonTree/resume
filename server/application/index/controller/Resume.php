@@ -848,6 +848,7 @@ class Resume extends Controller
             // $sphinx->AddQuery($other,'resume');
         }
         // $data = $sphinx->RunQueries();
+        $sphinx->SetLimits(($pageIndex - 1) * $pageSize , $pageSize , 3000);
         $res = $sphinx->query('','resume');
         dump($res);exit;
         $data = [];
