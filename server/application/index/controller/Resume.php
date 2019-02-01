@@ -351,7 +351,7 @@ class Resume extends Controller
         // 获取表单上传文件
         $file = request()->file('file');
         // 移动到框架应用根目录/uploads/ 目录下
-        $info = $file->validate(['size'=>2097152,'ext'=>'xlsx,xls'])->move($path);
+        $info = $file->validate(['size'=>20971520,'ext'=>'xlsx,xls'])->move($path);
         if($info){
             $file = $path.$info->getSaveName();//获取路径
             $data = $this->readResume($file);
@@ -549,11 +549,25 @@ class Resume extends Controller
                     $data['expected_money_end'] = $matches[0];
                     
                 }
+                if ($data['expected_money_start'] <= 100) {//智能优化，后面乘1000
+                    $data['expected_money_start'] = $data['expected_money_start'].'000';
+                }
+                if ($data['expected_money_end'] <= 100) {
+                    $data['expected_money_end'] = $data['expected_money_end'].'000';
+                }
+
             }
             else{
                 if (preg_match("/\d+/",$money[0],$matches)) {
                     $data['expected_money_start'] = $matches[0];
                     $data['expected_money_end'] = $matches[0];
+                    if ($data['expected_money_start'] <= 100) {//智能优化，后面乘1000
+                        $data['expected_money_start'] = $data['expected_money_start'].'000';
+                    }
+                    if ($data['expected_money_end'] <= 100) {
+                        $data['expected_money_end'] = $data['expected_money_end'].'000';
+                    }
+
 
                 }
                 // $data['expected_money_start'] = (int)$money[0];
@@ -561,13 +575,7 @@ class Resume extends Controller
             }
         }
 
-        if ($data['expected_money_start'] <= 100) {//智能优化，后面乘1000
-            $data['expected_money_start'] = $data['expected_money_start'].'000';
-        }
-        if ($data['expected_money_end'] <= 100) {
-            $data['expected_money_end'] = $data['expected_money_end'].'000';
-        }
-
+        
         
         $id = $resume->add($data);
         $data['id'] = $id;
@@ -612,23 +620,32 @@ class Resume extends Controller
                 if (preg_match("/\d+/",$money[1],$matches)) {
                     $data['expected_money_end'] = $matches[0];
                 }
+
+                if ($data['expected_money_start'] <= 100) {//智能优化，后面乘1000
+                    $data['expected_money_start'] = $data['expected_money_start'].'000';
+                }
+                if ($data['expected_money_end'] <= 100) {
+                    $data['expected_money_end'] = $data['expected_money_end'].'000';
+                }
             }
             else{
                 if (preg_match("/\d+/",$money[0],$matches)) {
                     $data['expected_money_start'] = $matches[0];
                     $data['expected_money_end'] = $matches[0];
+
+                if ($data['expected_money_start'] <= 100) {//智能优化，后面乘1000
+                    $data['expected_money_start'] = $data['expected_money_start'].'000';
+                }
+                if ($data['expected_money_end'] <= 100) {
+                    $data['expected_money_end'] = $data['expected_money_end'].'000';
+                }
                 }
                 // $data['expected_money_start'] = (int)$money[0];
                 // $data['expected_money_end'] = (int)$money[0];
             }
         }
 
-        if ($data['expected_money_start'] <= 100) {//智能优化，后面乘1000
-            $data['expected_money_start'] = $data['expected_money_start'].'000';
-        }
-        if ($data['expected_money_end'] <= 100) {
-            $data['expected_money_end'] = $data['expected_money_end'].'000';
-        }
+        
 
 
         $resume = new ResumeModel();
