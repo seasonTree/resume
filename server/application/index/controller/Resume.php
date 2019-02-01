@@ -477,7 +477,7 @@ class Resume extends Controller
             // $count = array_pop($data);
         // }
         // else{
-        //     $resume = new ResumeModel();
+            $resume = new ResumeModel();
         //     $data = $resume->get();
             $count = $resume->getCount();
         // }
