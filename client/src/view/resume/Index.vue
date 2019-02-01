@@ -17,7 +17,7 @@
       <div class="search" ref="search">
         <el-row :gutter="20">
           <el-col :span="4">
-            <el-input v-model="search.name" size="small" placeholder="姓名" clearable></el-input>
+            <el-input v-model="search.name" size="small" placeholder="姓名" clearable @keyup.native.enter="getData(true)"></el-input>
           </el-col>
           <el-col :span="4">
             <el-select v-model="search.sex" size="small" placeholder="性别" clearable>
@@ -30,10 +30,10 @@
             </el-select>
           </el-col>
           <el-col :span="4">
-            <el-input v-model="search.phone" size="small" placeholder="移动电话"></el-input>
+            <el-input v-model="search.phone" size="small" placeholder="移动电话" @keyup.native.enter="getData(true)"></el-input>
           </el-col>
           <el-col :span="4">
-            <el-input v-model="search.email" size="small" placeholder="电子邮箱"></el-input>
+            <el-input v-model="search.email" size="small" placeholder="电子邮箱" @keyup.native.enter="getData(true)"></el-input>
           </el-col>
           <el-col :span="4">
             <el-button size="small" type="primary" @click="getData(true)" :loading="tableLoading">搜索</el-button>
@@ -58,6 +58,7 @@
                   v-model="search.expected_money_st"
                   controls-position="right"
                   :min="0"
+                  @keyup.native.enter="getData(true)"
                 ></el-input-number>
               </el-col>
               <el-col :span="4">
@@ -74,6 +75,7 @@
                   v-model="search.expected_money_ed"
                   controls-position="right"
                   :min="0"
+                  @keyup.native.enter="getData(true)"
                 ></el-input-number>
               </el-col>
               <el-col :span="4">
@@ -85,6 +87,7 @@
                   controls-position="right"
                   :min="0"
                   :max="99"
+                  @keyup.native.enter="getData(true)"
                 ></el-input-number>
               </el-col>
               <el-col :span="4">
@@ -96,6 +99,7 @@
                   controls-position="right"
                   :min="0"
                   :max="99"
+                  @keyup.native.enter="getData(true)"
                 ></el-input-number>
               </el-col>
 
@@ -109,6 +113,7 @@
                   controls-position="right"
                   :min="0"
                   :max="99"
+                  @keyup.native.enter="getData(true)"
                 ></el-input-number>
               </el-col>
               <el-col :span="4">
@@ -120,13 +125,14 @@
                   controls-position="right"
                   :min="0"
                   :max="99"
+                  @keyup.native.enter="getData(true)"
                 ></el-input-number>
               </el-col>
             </el-row>
 
             <el-row :gutter="20">
               <el-col :span="4">
-                <el-input v-model="search.expected_job" placeholder="岗位" size="small"></el-input>
+                <el-input v-model="search.expected_job" placeholder="岗位" size="small" @keyup.native.enter="getData(true)"></el-input>
               </el-col>
               <el-col :span="4">
                 <el-input
@@ -134,24 +140,25 @@
                   prop="status"
                   placeholder="期望工作地点"
                   size="small"
+                  @keyup.native.enter="getData(true)"
                 ></el-input>
               </el-col>
               <el-col :span="4">
-                <el-input v-model="search.status" placeholder="当前状态" size="small"></el-input>
+                <el-input v-model="search.status" placeholder="当前状态" size="small" @keyup.native.enter="getData(true)"></el-input>
               </el-col>
               <el-col :span="4">
-                <el-input v-model="search.school" placeholder="毕业院校" size="small"></el-input>
+                <el-input v-model="search.school" placeholder="毕业院校" size="small" @keyup.native.enter="getData(true)"></el-input>
               </el-col>
               <el-col :span="4">
-                <el-input v-model="search.speciality" placeholder="专业" size="small"></el-input>
+                <el-input v-model="search.speciality" placeholder="专业" size="small" @keyup.native.enter="getData(true)"></el-input>
               </el-col>
               <el-col :span="4">
-                <el-input v-model="search.english" placeholder="英语水平" size="small"></el-input>
+                <el-input v-model="search.english" placeholder="英语水平" size="small" @keyup.native.enter="getData(true)"></el-input>
               </el-col>
             </el-row>
             <el-row :gutter="20">
               <el-col :span="24">
-                <el-input v-model="search.other" prop placeholder="其他条件..." size="small"></el-input>
+                <el-input v-model="search.other" prop placeholder="其他条件..." size="small" @keyup.native.enter="getData(true)"></el-input>
               </el-col>
             </el-row>
           </div>
