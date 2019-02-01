@@ -737,7 +737,7 @@ class Resume extends Controller
     }
     public function test($where = []){
         $where['pageSize'] = 10;
-        $where['pageIndex'] = 1;
+        $where['pageIndex'] = 3;
         $resume = new ResumeModel();
         $email = isset($where['email'])?$where['email']:'';
         if ($email) {
