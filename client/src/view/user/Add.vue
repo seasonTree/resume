@@ -127,7 +127,7 @@ export default {
                         trigger: "blur"
                     }
                 ],
-                phone: [{ type: "number", message: "电话必须为数字" }],
+                // phone: [{ type: "number", message: "电话必须为数字" }],
                 passwd: [
                     { required: true, message: "请输入密码", trigger: "blur" },
                     {
