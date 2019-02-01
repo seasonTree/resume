@@ -849,6 +849,7 @@ class Resume extends Controller
         }
         // $data = $sphinx->RunQueries();
         $res = $sphinx->query($phinx_where,'resume');
+        dump($res);exit;
         $data = [];
 
         $money_st = isset($where['expected_money_st'])?$where['expected_money_st']:'';
