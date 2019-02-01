@@ -918,7 +918,7 @@ class Resume extends Controller
             $data[] = count($data_arr);//总数
 
         }
-        return $data;
+        dump($data);
     }
 
     // public function search($where = ''){
