@@ -735,20 +735,191 @@ class Resume extends Controller
 
     
     }
-    // public function test(){
-    //     // $sphinx = new \SphinxClient;
-    //     // $sphinx->setServer("localhost", 9312);
-    //     // $sphinx->setMatchMode(SPH_MATCH_EXTENDED2);   //匹配模式 ANY为关键词自动拆词，ALL为不拆词匹配（完全匹配），EXTENDED2,多词匹配
-    //     // $sphinx->SetArrayResult ( true );   //返回的结果集为数组
-    //     // $result = $sphinx->query("@name 貂","resume");   //星号为所有索引源
-    //     // $res = $sphinx->query("@sex 男","resume");   //星号为所有索引源
-    //     // // $result = $sphinx->query('"高并发"|"c++"',"resume");   //星号为所有索引源
-    //     // // $res = $sphinx->UpdateAttributes ('users',array('is_del'),array(18 => array(1)));
+    public function test(){
+        public function search($where = ''){
+        $resume = new ResumeModel();
+        $email = isset($where['email'])?$where['email']:'';
+        if ($email) {
+            //先判断邮箱搜索条件
+            $data = $resume->getId(['email' => $email]);
+            if (isset($data2[0])) {
+                $ids = [];
+                foreach ($data as $k => $v) {
+                    $ids[] = $v['id']; 
+                }
+                $arr_ids[] = $ids;
+            }   
+            else{
+                // $arr_ids[] = [];
+                return [];
+            }
+        }
 
-    //     // dump($result);
-    //     // dump($res);
-    //     phpinfo();
-    // }
+        $sphinx = new \SphinxClient;
+        $sphinx->setServer("192.168.199.134", 9312);
+        $sphinx->setMatchMode(SPH_MATCH_EXTENDED2);   //匹配模式 ANY为关键词自动拆词，ALL为不拆词匹配（完全匹配），EXTENDED2,多词匹配
+        $sphinx->SetArrayResult ( true );   //返回的结果集为数组
+        
+
+        // $money_st = isset($where['expected_money_st'])?$where['expected_money_st']:'';
+        // $money_ed = isset($where['expected_money_ed'])?$where['expected_money_ed']:'';
+        // if ($money_st && $money_ed) {
+        //     $sphinx->SetFilterRange('expected_money_start',$money_st,$money_ed);
+        //     $sphinx->SetFilterRange('expected_money_end',$money_st,$money_ed);
+        //     // $sphinx->SetFilterRange('expected_money_end', 0, $money_st);
+        // }else if($money_st && !$money_ed){  //期望薪资
+        //     $sphinx->SetFilterRange('expected_money_start', $money_st, 100000000);
+        //     // $sphinx->SetFilterRange('expected_money_end', 0,$money_st);
+        // }else if(!$money_st && $money_ed){
+        //     // $sphinx->SetFilterRange('expected_money_end', $money_ed,100000000);
+        //     $sphinx->SetFilterRange('expected_money_end',0,$money_ed);
+        // }else{
+        //     // $arr_ids[] = [];
+        // }
+
+        $age_min = isset($where['age_min'])?$where['age_min']:'';
+        $age_max = isset($where['age_max'])?$where['age_max']:'';
+        if ($age_min && $age_max) {
+            $sphinx->SetFilterRange('age', $age_min, $age_max);//查找年龄最小-最大之间
+        }else if($age_min && !$age_max){    //年龄
+            $sphinx->SetFilterRange('age', $age_min, 100);//查找年龄最小-100之间
+        }else if(!$age_min && $age_max){
+            $sphinx->SetFilterRange('age', 0, $age_max);//查找年龄0-最大之间
+        }else{
+            // $arr_ids[] = [];
+        }
+
+        $work_year_min = isset($where['work_year_min'])?$where['work_year_min']:'';
+        $work_year_max = isset($where['work_year_max'])?$where['work_year_max']:'';
+        if ($work_year_min && $work_year_max) {
+            $sphinx->SetFilterRange('work_year', $work_year_min, $work_year_max);
+        }else if($work_year_min && !$work_year_max){    
+            $sphinx->SetFilterRange('work_year', $work_year_min, 100);
+        }else if(!$work_year_min && $work_year_max){
+            $sphinx->SetFilterRange('work_year', 0, $work_year_max);
+        }else{
+            // $arr_ids[] = [];
+            
+        }
+
+
+        $arr = [];
+        $arr['name'] = isset($where['name'])?$where['name']:'';
+        $arr['sex'] = isset($where['sex'])?$where['sex']:'';
+        $arr['educational'] = isset($where['educational'])?$where['educational']:'';
+        $arr['phone'] = isset($where['phone'])?$where['phone']:'';
+        $arr['expected_job'] = isset($where['expected_job'])?$where['expected_job']:'';
+        $arr['status'] = isset($where['status'])?$where['status']:'';
+        $arr['school'] = isset($where['school'])?$where['school']:'';
+        $arr['speciality'] = isset($where['speciality'])?$where['speciality']:'';
+        $arr['english'] = isset($where['english'])?$where['english']:'';
+        $phinx_where = '';
+        $count_arr = count($arr);
+        $arr_ids = [];
+        $n = 1;
+        foreach ($arr as $k => $v) {
+            if ($v == '') {
+                continue;
+            }
+            if ($count_arr == $n) {
+
+                $phinx_where.= "@$k $v";
+            }
+            else{
+                $phinx_where.= "@$k $v & ";
+            }
+            $n++;
+        }
+        if($phinx_where != ''){
+            // $sphinx->AddQuery($phinx_where,'resume');
+            $phinx_where = '('.$phinx_where.')';
+        }
+
+        $other = isset($where['other'])?$where['other']:'';
+        if ($other) {
+            $other = preg_replace("/(,|，)/",',',$other);
+            $other = explode(',',$other);
+            $other = implode('"|"',$other);
+            // $other = "'".'"'.$other.'"'."'";
+            $other = '("'.$other.'")';
+            $phinx_where = empty($phinx_where)?$other:$phinx_where.' & '.$other;
+            
+            // $sphinx->AddQuery($other,'resume');
+        }
+        // $data = $sphinx->RunQueries();
+        $res = $sphinx->query($phinx_where,'resume');
+        $data = [];
+
+        $money_st = isset($where['expected_money_st'])?$where['expected_money_st']:'';
+        $money_ed = isset($where['expected_money_ed'])?$where['expected_money_ed']:'';
+        //筛选薪资范围
+
+        if (isset($res['matches'])) {
+            $data_arr = $res['matches'];
+            $data_num = 0;//定义数据量
+            $page_end = $where['pageSize'] * $where['pageIndex'];
+            $page_start = $page_end - $where['pageSize'];
+
+            $list_arr = array_slice($data_arr,$page_start,$where['pageSize']);
+            foreach ($list_arr as $k => $v) {
+                // if ($k < $page_start) {
+                //     continue;//分页处理，过滤不符合要求的数据
+                // }
+                // if ($data_num == $where['pageSize']) {
+                //     break;//数据取够之后直接跳出循环
+                // }
+                if ($money_st && $money_ed) {
+                    $check_start = false;
+                    if($money_st >= $v['attrs']['expected_money_start'] && $money_st <= $v['attrs']['expected_money_end']){
+                        $check_start = true;
+                    }
+                    $check_end = false;
+                    if($money_ed >= $v['attrs']['expected_money_start'] && $money_ed <= $v['attrs']['expected_money_end']){
+                        $check_end = true;
+                    }
+                    $check_between = false;
+                    if($money_st <= $v['attrs']['expected_money_start'] && $money_ed >= $v['attrs']['expected_money_end']){
+                        $check_between = true;
+                    }
+                    if ($check_start || $check_end || $check_between) {
+                        $data[$k] = $v['attrs'];
+                        $data[$k]['id'] = $v['id'];
+                    }
+                }else if($money_st && !$money_ed){  //期望薪资
+                    $check = false;
+                    if($money_st >= $v['attrs']['expected_money_start'] && $money_st <= $v['attrs']['expected_money_end']){
+                        $check = true;
+                    }
+                    if ($money_st <= $v['attrs']['expected_money_end'] || $check) {
+
+                        $data[$k] = $v['attrs'];
+                        $data[$k]['id'] = $v['id'];
+                    }
+                    
+                }else if(!$money_st && $money_ed){
+                    $check = false;
+                    if($money_ed >= $v['attrs']['expected_money_start'] && $money_ed <= $v['attrs']['expected_money_end']){
+                        $check = true;
+                    }
+
+                    if ($money_ed >= $v['attrs']['expected_money_end'] || $check) {
+                        $data[$k] = $v['attrs'];
+                        $data[$k]['id'] = $v['id'];
+                    }
+                }else{
+                    $data[$k] = $v['attrs'];
+                    $data[$k]['id'] = $v['id'];
+                }
+
+                // $data_num++;
+                
+            }
+            $data[] = count($data_arr);//总数
+
+        }
+        return $data;
+    }
+    }
 
     // public function search($where = ''){
     //     $resume = new ResumeModel();
