@@ -242,8 +242,9 @@ export default {
 
         //上传失败
         uploadError(err, file, fileList) {
+            let that = this;
             that.commitLoading = false;
-            this.$message.error("上传失败，请重试.");
+            that.$message.error("上传失败，请重试.");
         },
 
         //关闭后调用
