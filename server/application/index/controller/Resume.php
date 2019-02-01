@@ -778,75 +778,75 @@ class Resume extends Controller
         //     // $arr_ids[] = [];
         // }
 
-        $age_min = isset($where['age_min'])?$where['age_min']:'';
-        $age_max = isset($where['age_max'])?$where['age_max']:'';
-        if ($age_min && $age_max) {
-            $sphinx->SetFilterRange('age', $age_min, $age_max);//查找年龄最小-最大之间
-        }else if($age_min && !$age_max){    //年龄
-            $sphinx->SetFilterRange('age', $age_min, 100);//查找年龄最小-100之间
-        }else if(!$age_min && $age_max){
-            $sphinx->SetFilterRange('age', 0, $age_max);//查找年龄0-最大之间
-        }else{
-            // $arr_ids[] = [];
-        }
+        // $age_min = isset($where['age_min'])?$where['age_min']:'';
+        // $age_max = isset($where['age_max'])?$where['age_max']:'';
+        // if ($age_min && $age_max) {
+        //     $sphinx->SetFilterRange('age', $age_min, $age_max);//查找年龄最小-最大之间
+        // }else if($age_min && !$age_max){    //年龄
+        //     $sphinx->SetFilterRange('age', $age_min, 100);//查找年龄最小-100之间
+        // }else if(!$age_min && $age_max){
+        //     $sphinx->SetFilterRange('age', 0, $age_max);//查找年龄0-最大之间
+        // }else{
+        //     // $arr_ids[] = [];
+        // }
 
-        $work_year_min = isset($where['work_year_min'])?$where['work_year_min']:'';
-        $work_year_max = isset($where['work_year_max'])?$where['work_year_max']:'';
-        if ($work_year_min && $work_year_max) {
-            $sphinx->SetFilterRange('work_year', $work_year_min, $work_year_max);
-        }else if($work_year_min && !$work_year_max){    
-            $sphinx->SetFilterRange('work_year', $work_year_min, 100);
-        }else if(!$work_year_min && $work_year_max){
-            $sphinx->SetFilterRange('work_year', 0, $work_year_max);
-        }else{
-            // $arr_ids[] = [];
+        // $work_year_min = isset($where['work_year_min'])?$where['work_year_min']:'';
+        // $work_year_max = isset($where['work_year_max'])?$where['work_year_max']:'';
+        // if ($work_year_min && $work_year_max) {
+        //     $sphinx->SetFilterRange('work_year', $work_year_min, $work_year_max);
+        // }else if($work_year_min && !$work_year_max){    
+        //     $sphinx->SetFilterRange('work_year', $work_year_min, 100);
+        // }else if(!$work_year_min && $work_year_max){
+        //     $sphinx->SetFilterRange('work_year', 0, $work_year_max);
+        // }else{
+        //     // $arr_ids[] = [];
             
-        }
+        // }
 
 
-        $arr = [];
-        $arr['name'] = isset($where['name'])?$where['name']:'';
-        $arr['sex'] = isset($where['sex'])?$where['sex']:'';
-        $arr['educational'] = isset($where['educational'])?$where['educational']:'';
-        $arr['phone'] = isset($where['phone'])?$where['phone']:'';
-        $arr['expected_job'] = isset($where['expected_job'])?$where['expected_job']:'';
-        $arr['status'] = isset($where['status'])?$where['status']:'';
-        $arr['school'] = isset($where['school'])?$where['school']:'';
-        $arr['speciality'] = isset($where['speciality'])?$where['speciality']:'';
-        $arr['english'] = isset($where['english'])?$where['english']:'';
-        $phinx_where = '';
-        $count_arr = count($arr);
-        $arr_ids = [];
-        $n = 1;
-        foreach ($arr as $k => $v) {
-            if ($v == '') {
-                continue;
-            }
-            if ($count_arr == $n) {
+        // $arr = [];
+        // $arr['name'] = isset($where['name'])?$where['name']:'';
+        // $arr['sex'] = isset($where['sex'])?$where['sex']:'';
+        // $arr['educational'] = isset($where['educational'])?$where['educational']:'';
+        // $arr['phone'] = isset($where['phone'])?$where['phone']:'';
+        // $arr['expected_job'] = isset($where['expected_job'])?$where['expected_job']:'';
+        // $arr['status'] = isset($where['status'])?$where['status']:'';
+        // $arr['school'] = isset($where['school'])?$where['school']:'';
+        // $arr['speciality'] = isset($where['speciality'])?$where['speciality']:'';
+        // $arr['english'] = isset($where['english'])?$where['english']:'';
+        // $phinx_where = '';
+        // $count_arr = count($arr);
+        // $arr_ids = [];
+        // $n = 1;
+        // foreach ($arr as $k => $v) {
+        //     if ($v == '') {
+        //         continue;
+        //     }
+        //     if ($count_arr == $n) {
 
-                $phinx_where.= "@$k $v";
-            }
-            else{
-                $phinx_where.= "@$k $v & ";
-            }
-            $n++;
-        }
-        if($phinx_where != ''){
-            // $sphinx->AddQuery($phinx_where,'resume');
-            $phinx_where = '('.$phinx_where.')';
-        }
+        //         $phinx_where.= "@$k $v";
+        //     }
+        //     else{
+        //         $phinx_where.= "@$k $v & ";
+        //     }
+        //     $n++;
+        // }
+        // if($phinx_where != ''){
+        //     // $sphinx->AddQuery($phinx_where,'resume');
+        //     $phinx_where = '('.$phinx_where.')';
+        // }
 
-        $other = isset($where['other'])?$where['other']:'';
-        if ($other) {
-            $other = preg_replace("/(,|，)/",',',$other);
-            $other = explode(',',$other);
-            $other = implode('"|"',$other);
-            // $other = "'".'"'.$other.'"'."'";
-            $other = '("'.$other.'")';
-            $phinx_where = empty($phinx_where)?$other:$phinx_where.' & '.$other;
+        // $other = isset($where['other'])?$where['other']:'';
+        // if ($other) {
+        //     $other = preg_replace("/(,|，)/",',',$other);
+        //     $other = explode(',',$other);
+        //     $other = implode('"|"',$other);
+        //     // $other = "'".'"'.$other.'"'."'";
+        //     $other = '("'.$other.'")';
+        //     $phinx_where = empty($phinx_where)?$other:$phinx_where.' & '.$other;
             
-            // $sphinx->AddQuery($other,'resume');
-        }
+        //     // $sphinx->AddQuery($other,'resume');
+        // }
         // $data = $sphinx->RunQueries();
         $res = $sphinx->query($phinx_where,'resume');
         dump($res);exit;
