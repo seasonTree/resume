@@ -735,7 +735,7 @@ class Resume extends Controller
 
     
     }
-    public function test(){
+    public function test($where = ''){
         $resume = new ResumeModel();
         $email = isset($where['email'])?$where['email']:'';
         if ($email) {
