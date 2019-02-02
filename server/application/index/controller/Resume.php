@@ -215,6 +215,11 @@ class Resume extends Controller
         return implode("\n",$parm);
     }
 
+    public function other($parm){
+        //其他信息
+        return implode("\n",$parm);
+    }
+
     public function getResumeData(){
         //获取简历内容
         $content = input('content');
@@ -284,6 +289,9 @@ class Resume extends Controller
         $list['certificate'] = isset($list['certificate'])?$list['certificate']:' ';
         $list['certificate'] = isset($list['language'])?$list['certificate']."\n".$list['language']:$list['certificate'];
         $list['certificate'] = isset($list['train'])?$list['certificate']."\n".$list['train']:$list['certificate'];
+        $list['skillExpertise'] = isset($list['skillExpertise'])?$list['skillExpertise']:' ';
+        $list['skillExpertise'] = isset($list['other'])?$list['skillExpertise']."\n".$list['other']:$list['skillExpertise'];
+
         return json(['code' => 0,'msg' => '解析成功','data' => $list]);
 
     }
