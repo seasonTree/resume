@@ -207,11 +207,12 @@ class Resume extends Controller
 
     public function language($parm){
         //语言能力
-
+        return implode("\n",$parm);
     }
 
     public function train($parm){
         //培训经历
+        return implode("\n",$parm);
     }
 
     public function getResumeData(){
@@ -279,7 +280,10 @@ class Resume extends Controller
             }
             
         }
-
+        //再次处理获奖证书，语言能力，
+        $list['certificate'] = isset($list['certificate'])?$list['certificate']:' ';
+        $list['certificate'] = isset($list['language'])?$list['certificate']."\n".$list['language']:$list['certificate'];
+        $list['certificate'] = isset($list['train'])?$list['certificate']."\n".$list['train']:$list['certificate'];
         return json(['code' => 0,'msg' => '解析成功','data' => $list]);
 
     }
