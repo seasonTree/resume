@@ -1115,23 +1115,24 @@ class Resume extends Controller
         $sphinx->setServer("192.168.199.134", 9312);
         $sphinx->setMatchMode(SPH_MATCH_EXTENDED2);   //匹配模式 ANY为关键词自动拆词，ALL为不拆词匹配（完全匹配），EXTENDED2,多词匹配
         $sphinx->SetArrayResult ( true );   //返回的结果集为数组
-        $sphinx->SetLimits(0 , 100000000 , 6000);
+        // $sphinx->SetLimits(0 , 100000000 , 6000);
+        $sphinx->SetLimits(($where['pageIndex'] - 1) * $where['pageSize'] , $where['pageSize'] , 3000);//分页
 
-        // $money_st = isset($where['expected_money_st'])?$where['expected_money_st']:'';
-        // $money_ed = isset($where['expected_money_ed'])?$where['expected_money_ed']:'';
-        // if ($money_st && $money_ed) {
-        //     $sphinx->SetFilterRange('expected_money_start',$money_st,$money_ed);
-        //     $sphinx->SetFilterRange('expected_money_end',$money_st,$money_ed);
-        //     // $sphinx->SetFilterRange('expected_money_end', 0, $money_st);
-        // }else if($money_st && !$money_ed){  //期望薪资
-        //     $sphinx->SetFilterRange('expected_money_start', $money_st, 100000000);
-        //     // $sphinx->SetFilterRange('expected_money_end', 0,$money_st);
-        // }else if(!$money_st && $money_ed){
-        //     // $sphinx->SetFilterRange('expected_money_end', $money_ed,100000000);
-        //     $sphinx->SetFilterRange('expected_money_end',0,$money_ed);
-        // }else{
-        //     // $arr_ids[] = [];
-        // }
+        $money_st = isset($where['expected_money_st'])?$where['expected_money_st']:'';
+        $money_ed = isset($where['expected_money_ed'])?$where['expected_money_ed']:'';
+        if ($money_st && $money_ed) {
+            $sphinx->SetFilterRange('expected_money_start',$money_st,$money_ed);
+            $sphinx->SetFilterRange('expected_money_end',$money_st,$money_ed);
+            // $sphinx->SetFilterRange('expected_money_end', 0, $money_st);
+        }else if($money_st && !$money_ed){  //期望薪资
+            $sphinx->SetFilterRange('expected_money_start', $money_st, 100000000);
+            // $sphinx->SetFilterRange('expected_money_end', 0,$money_st);
+        }else if(!$money_st && $money_ed){
+            // $sphinx->SetFilterRange('expected_money_end', $money_ed,100000000);
+            $sphinx->SetFilterRange('expected_money_end',0,$money_ed);
+        }else{
+            // $arr_ids[] = [];
+        }
 
         $age_min = isset($where['age_min'])?$where['age_min']:'';
         $age_max = isset($where['age_max'])?$where['age_max']:'';
@@ -1204,6 +1205,8 @@ class Resume extends Controller
         }
         // $data = $sphinx->RunQueries();
         $res = $sphinx->query($phinx_where,'resume');
+
+        var_dump($res);exit;
         $data = [];
 
         $money_st = isset($where['expected_money_st'])?$where['expected_money_st']:'';
