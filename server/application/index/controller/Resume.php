@@ -1111,7 +1111,7 @@ class Resume extends Controller
         $sphinx->setServer("192.168.199.134", 9312);
         $sphinx->setMatchMode(SPH_MATCH_EXTENDED2);   //匹配模式 ANY为关键词自动拆词，ALL为不拆词匹配（完全匹配），EXTENDED2,多词匹配
         $sphinx->SetArrayResult ( true );   //返回的结果集为数组
-        $sphinx->SetLimits(1 , 100000000 , 6000);
+        $sphinx->SetLimits(0 , 100000000 , 6000);
 
         // $money_st = isset($where['expected_money_st'])?$where['expected_money_st']:'';
         // $money_ed = isset($where['expected_money_ed'])?$where['expected_money_ed']:'';
