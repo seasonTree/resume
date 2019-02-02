@@ -1210,7 +1210,10 @@ class Resume extends Controller
         $data = [];
 
         if (isset($res['matches'])) {
-            $data = array_merge($data,$res['matches']);
+            foreach ($res['matches'] as $k => $v) {
+                $data[$k] = $v['attrs'];
+                $data[$k]['id'] = $v['id'];
+            }
         }
 
         $data[] = $res['total'];
