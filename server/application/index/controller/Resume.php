@@ -200,6 +200,20 @@ class Resume extends Controller
         return $arr;
     }
 
+    public function certificate($parm){
+        //获奖证书
+        return implode("\n",$parm);
+    }
+
+    public function language($parm){
+        //语言能力
+
+    }
+
+    public function train($parm){
+        //培训经历
+    }
+
     public function getResumeData(){
         //获取简历内容
         $content = input('content');
