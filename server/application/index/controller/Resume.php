@@ -1206,76 +1206,82 @@ class Resume extends Controller
         // $data = $sphinx->RunQueries();
         $res = $sphinx->query($phinx_where,'resume');
 
-        dump($res);exit;
+        // dump($res);exit;
         $data = [];
 
-        $money_st = isset($where['expected_money_st'])?$where['expected_money_st']:'';
-        $money_ed = isset($where['expected_money_ed'])?$where['expected_money_ed']:'';
-        //筛选薪资范围
-
         if (isset($res['matches'])) {
-            $data_arr = $res['matches'];
-            $data_num = 0;//定义数据量
-            $page_end = $where['pageSize'] * $where['pageIndex'];
-            $page_start = $page_end - $where['pageSize'];
-
-            $list_arr = array_slice($data_arr,$page_start,$where['pageSize']);
-            foreach ($list_arr as $k => $v) {
-                // if ($k < $page_start) {
-                //     continue;//分页处理，过滤不符合要求的数据
-                // }
-                // if ($data_num == $where['pageSize']) {
-                //     break;//数据取够之后直接跳出循环
-                // }
-                if ($money_st && $money_ed) {
-                    $check_start = false;
-                    if($money_st >= $v['attrs']['expected_money_start'] && $money_st <= $v['attrs']['expected_money_end']){
-                        $check_start = true;
-                    }
-                    $check_end = false;
-                    if($money_ed >= $v['attrs']['expected_money_start'] && $money_ed <= $v['attrs']['expected_money_end']){
-                        $check_end = true;
-                    }
-                    $check_between = false;
-                    if($money_st <= $v['attrs']['expected_money_start'] && $money_ed >= $v['attrs']['expected_money_end']){
-                        $check_between = true;
-                    }
-                    if ($check_start || $check_end || $check_between) {
-                        $data[$k] = $v['attrs'];
-                        $data[$k]['id'] = $v['id'];
-                    }
-                }else if($money_st && !$money_ed){  //期望薪资
-                    $check = false;
-                    if($money_st >= $v['attrs']['expected_money_start'] && $money_st <= $v['attrs']['expected_money_end']){
-                        $check = true;
-                    }
-                    if ($money_st <= $v['attrs']['expected_money_end'] || $check) {
-
-                        $data[$k] = $v['attrs'];
-                        $data[$k]['id'] = $v['id'];
-                    }
-                    
-                }else if(!$money_st && $money_ed){
-                    $check = false;
-                    if($money_ed >= $v['attrs']['expected_money_start'] && $money_ed <= $v['attrs']['expected_money_end']){
-                        $check = true;
-                    }
-
-                    if ($money_ed >= $v['attrs']['expected_money_end'] || $check) {
-                        $data[$k] = $v['attrs'];
-                        $data[$k]['id'] = $v['id'];
-                    }
-                }else{
-                    $data[$k] = $v['attrs'];
-                    $data[$k]['id'] = $v['id'];
-                }
-
-                // $data_num++;
-                
-            }
-            $data[] = count($data_arr);//总数
-
+            $data = array_merge($data,$res['matches']);
         }
+
+        $data[] = $res['total'];
+
+        // $money_st = isset($where['expected_money_st'])?$where['expected_money_st']:'';
+        // $money_ed = isset($where['expected_money_ed'])?$where['expected_money_ed']:'';
+        // //筛选薪资范围
+
+        // if (isset($res['matches'])) {
+        //     $data_arr = $res['matches'];
+        //     $data_num = 0;//定义数据量
+        //     $page_end = $where['pageSize'] * $where['pageIndex'];
+        //     $page_start = $page_end - $where['pageSize'];
+
+        //     $list_arr = array_slice($data_arr,$page_start,$where['pageSize']);
+        //     foreach ($list_arr as $k => $v) {
+        //         // if ($k < $page_start) {
+        //         //     continue;//分页处理，过滤不符合要求的数据
+        //         // }
+        //         // if ($data_num == $where['pageSize']) {
+        //         //     break;//数据取够之后直接跳出循环
+        //         // }
+        //         if ($money_st && $money_ed) {
+        //             $check_start = false;
+        //             if($money_st >= $v['attrs']['expected_money_start'] && $money_st <= $v['attrs']['expected_money_end']){
+        //                 $check_start = true;
+        //             }
+        //             $check_end = false;
+        //             if($money_ed >= $v['attrs']['expected_money_start'] && $money_ed <= $v['attrs']['expected_money_end']){
+        //                 $check_end = true;
+        //             }
+        //             $check_between = false;
+        //             if($money_st <= $v['attrs']['expected_money_start'] && $money_ed >= $v['attrs']['expected_money_end']){
+        //                 $check_between = true;
+        //             }
+        //             if ($check_start || $check_end || $check_between) {
+        //                 $data[$k] = $v['attrs'];
+        //                 $data[$k]['id'] = $v['id'];
+        //             }
+        //         }else if($money_st && !$money_ed){  //期望薪资
+        //             $check = false;
+        //             if($money_st >= $v['attrs']['expected_money_start'] && $money_st <= $v['attrs']['expected_money_end']){
+        //                 $check = true;
+        //             }
+        //             if ($money_st <= $v['attrs']['expected_money_end'] || $check) {
+
+        //                 $data[$k] = $v['attrs'];
+        //                 $data[$k]['id'] = $v['id'];
+        //             }
+                    
+        //         }else if(!$money_st && $money_ed){
+        //             $check = false;
+        //             if($money_ed >= $v['attrs']['expected_money_start'] && $money_ed <= $v['attrs']['expected_money_end']){
+        //                 $check = true;
+        //             }
+
+        //             if ($money_ed >= $v['attrs']['expected_money_end'] || $check) {
+        //                 $data[$k] = $v['attrs'];
+        //                 $data[$k]['id'] = $v['id'];
+        //             }
+        //         }else{
+        //             $data[$k] = $v['attrs'];
+        //             $data[$k]['id'] = $v['id'];
+        //         }
+
+        //         // $data_num++;
+                
+        //     }
+        //     $data[] = count($data_arr);//总数
+
+        // }
         return $data;
     }
 
