@@ -5,6 +5,7 @@ import * as permission from './permission'
 import * as resume from './resume';
 import * as communication from './communication';
 import * as person_recru from './person_recru';
+import * as position_cate from './position_cate';
 
 const apis = {
     dashboard,
@@ -13,7 +14,8 @@ const apis = {
     permission,
     resume,
     person_recru,
-    communication
+    communication,
+    position_cate
 }
 
 const install = function (Vue) {
