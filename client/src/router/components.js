@@ -21,6 +21,8 @@ const components = {
 
     "/resume/Index": resolve =>
         require.ensure([], () => resolve(require("@view/resume/Index"))),
+    "/position_cate/Index": resolve =>
+        require.ensure([], () => resolve(require("@view/position_cate/Index"))),
     "/user/Index": resolve =>
         require.ensure([], () => resolve(require("@view/user/Index"))),
     "/role/Index": resolve =>
@@ -30,7 +32,7 @@ const components = {
     "/report/personal_recruitment/Index": resolve =>
         require.ensure([], () =>
             resolve(require("@view/report/personal_recruitment/Index"))
-        )
+        ),
 };
 
 export default components;

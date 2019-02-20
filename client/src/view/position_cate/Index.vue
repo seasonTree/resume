@@ -42,7 +42,7 @@
           v-loading="tableLoading"
         >
           <el-table-column prop="id" label="ID"></el-table-column>
-          <el-table-column prop="job_name" label="角色名"></el-table-column>
+          <el-table-column prop="job_name" label="职位名称"></el-table-column>
           <el-table-column prop="ct_user" label="创建人"></el-table-column>
           <el-table-column prop="ct_time" label="创建时间"></el-table-column>
 
@@ -101,13 +101,11 @@ export default {
   components: {
     Add,
     Edit,
-    Permission,
-    User
   },
   data() {
     return {
       //填写API获取的类型，由父类自动调用，不填不调用
-      apiType: "role",
+      apiType: "position_cate",
       search: {
         name: ""
       },
