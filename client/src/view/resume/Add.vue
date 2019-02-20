@@ -378,6 +378,9 @@ export default {
         custom3: ""
       },
 
+      //是否已经弹出了errorMessage,用于直接失去焦点，然后点击确定的时候使用
+      hasShowErrorMessage: false,
+
       formRules: {
         name: [
           {
@@ -386,6 +389,8 @@ export default {
               let that = this;
 
               if (value === "") {
+                that.setHasErrorMessage();
+
                 that.$message.error(that.checkField["name"]);
               }
               callback();
@@ -400,6 +405,8 @@ export default {
               let that = this;
 
               if (value === "") {
+                that.setHasErrorMessage();
+
                 that.$message.error(that.checkField["expected_job"]);
               }
               callback();
@@ -414,6 +421,8 @@ export default {
               let that = this;
 
               if (value === "") {
+                that.setHasErrorMessage();
+
                 that.$message.error(that.checkField["phone"]);
               }
               callback();
@@ -429,6 +438,8 @@ export default {
               let that = this;
 
               if (value === "") {
+                that.setHasErrorMessage();
+
                 that.$message.error(that.checkField["email"]);
               }
               callback();
@@ -443,6 +454,8 @@ export default {
               let that = this;
 
               if (value === "") {
+                that.setHasErrorMessage();
+
                 that.$message.error(that.checkField["school"]);
               }
               callback();
@@ -458,6 +471,8 @@ export default {
               let that = this;
 
               if (value === "") {
+                that.setHasErrorMessage();
+
                 that.$message.error(that.checkField["educational"]);
               }
               callback();
@@ -473,6 +488,8 @@ export default {
               let that = this;
 
               if (value === "") {
+                that.setHasErrorMessage();
+
                 that.$message.error(that.checkField["source"]);
               }
               callback();
@@ -488,6 +505,8 @@ export default {
               let that = this;
 
               if (value === "") {
+                that.setHasErrorMessage();
+
                 that.$message.error(that.checkField["work_year"]);
               }
               callback();
@@ -502,6 +521,8 @@ export default {
               let that = this;
 
               if (value === "") {
+                that.setHasErrorMessage();
+
                 that.$message.error(that.checkField["graduation_time"]);
               }
               callback();
@@ -545,6 +566,15 @@ export default {
   },
 
   methods: {
+    setHasErrorMessage() {
+      let that = this;
+      that.hasShowErrorMessage = true;
+
+      setTimeout(() => {
+        that.hasShowErrorMessage = false;
+      }, 3e3);
+    },
+
     getPosition() {
       let that = this;
 
@@ -630,7 +660,7 @@ export default {
         let value = that.form[key];
 
         if (that.checkField[key] && value == "") {
-          that.$message.error(that.checkField[key]);
+          that.hasShowErrorMessage || that.$message.error(that.checkField[key]);
 
           notPass = true;
           break;

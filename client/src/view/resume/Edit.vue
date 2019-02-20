@@ -9,7 +9,13 @@
       width="60%"
       v-dialog-drag
     >
-      <el-form :model="form" label-width="90px" class="form-container mb-20" ref="form">
+      <el-form
+        :model="form"
+        label-width="90px"
+        class="form-container mb-20"
+        ref="form"
+        :rules="formRules"
+      >
         <el-row :gutter="20">
           <!-- *****************基础信息******************* -->
           <el-col :span="12">
@@ -280,6 +286,9 @@ export default {
         custom3: ""
       },
 
+      //是否已经弹出了errorMessage,用于直接失去焦点，然后点击确定的时候使用
+      hasShowErrorMessage: false,
+
       formRules: {
         name: [
           {
@@ -288,6 +297,8 @@ export default {
               let that = this;
 
               if (value === "") {
+                that.setHasErrorMessage();
+
                 that.$message.error(that.checkField["name"]);
               }
               callback();
@@ -302,6 +313,8 @@ export default {
               let that = this;
 
               if (value === "") {
+                that.setHasErrorMessage();
+
                 that.$message.error(that.checkField["expected_job"]);
               }
               callback();
@@ -316,6 +329,8 @@ export default {
               let that = this;
 
               if (value === "") {
+                that.setHasErrorMessage();
+
                 that.$message.error(that.checkField["phone"]);
               }
               callback();
@@ -331,6 +346,8 @@ export default {
               let that = this;
 
               if (value === "") {
+                that.setHasErrorMessage();
+
                 that.$message.error(that.checkField["email"]);
               }
               callback();
@@ -345,6 +362,8 @@ export default {
               let that = this;
 
               if (value === "") {
+                that.setHasErrorMessage();
+
                 that.$message.error(that.checkField["school"]);
               }
               callback();
@@ -360,6 +379,8 @@ export default {
               let that = this;
 
               if (value === "") {
+                that.setHasErrorMessage();
+
                 that.$message.error(that.checkField["educational"]);
               }
               callback();
@@ -375,6 +396,8 @@ export default {
               let that = this;
 
               if (value === "") {
+                that.setHasErrorMessage();
+
                 that.$message.error(that.checkField["source"]);
               }
               callback();
@@ -390,6 +413,8 @@ export default {
               let that = this;
 
               if (value === "") {
+                that.setHasErrorMessage();
+
                 that.$message.error(that.checkField["work_year"]);
               }
               callback();
@@ -404,6 +429,8 @@ export default {
               let that = this;
 
               if (value === "") {
+                that.setHasErrorMessage();
+
                 that.$message.error(that.checkField["graduation_time"]);
               }
               callback();
@@ -447,6 +474,15 @@ export default {
   },
 
   methods: {
+    setHasErrorMessage() {
+      let that = this;
+      that.hasShowErrorMessage = true;
+
+      setTimeout(() => {
+        that.hasShowErrorMessage = false;
+      }, 3e3);
+    },
+
     getPosition() {
       let that = this;
 
@@ -510,14 +546,15 @@ export default {
     },
 
     editCommit() {
-      let that = this;
+      let that = this,
+        notPass = false;
 
       //校验必填的数据
       for (var key in that.form) {
         let value = that.form[key];
 
         if (that.checkField[key] && value == "") {
-          that.$message.error(that.checkField[key]);
+          that.hasShowErrorMessage || that.$message.error(that.checkField[key]);
 
           notPass = true;
           break;
