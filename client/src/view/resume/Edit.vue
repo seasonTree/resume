@@ -86,7 +86,12 @@
                   placeholder="请选择岗位"
                   style="width: 100%;"
                 >
-                  <el-option v-for="item in positionOptions" :key="item"></el-option>
+                  <el-option
+                    v-for="item in positionOptions"
+                    :key="item"
+                    :label="item"
+                    :value="item"
+                  ></el-option>
                 </el-select>
               </el-form-item>
               <el-form-item label="当前状态" prop="status">

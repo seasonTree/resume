@@ -109,7 +109,12 @@
                       filterable
                       placeholder="请选择岗位"
                     >
-                      <el-option v-for="item in positionOptions" :key="item"></el-option>
+                      <el-option
+                        v-for="item in positionOptions"
+                        :key="item"
+                        :label="item"
+                        :value="item"
+                      ></el-option>
                     </el-select>
                   </el-form-item>
                   <el-form-item label="当前状态" prop="status">
@@ -365,7 +370,16 @@ export default {
         custom2: "",
         custom3: ""
       },
-      formRules: {},
+
+      formRules: {
+        // name: [
+        //   {
+        //     required: true,
+        //     message: "请输入角色名称",
+        //     trigger: "blur"
+        //   }
+        // ]
+      },
 
       //检查重名的数据
       resumeData: [],
