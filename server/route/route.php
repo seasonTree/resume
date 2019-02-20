@@ -94,6 +94,9 @@ Route::get('api/report/person_recru/recruitment_total','Report/recruitmentTotal'
 Route::get('api/person_recru/export','Report/export');//导出
 //-----------------------------------------------
 
+//获取职业分类
+Route::get('api/position_cate/get_all','Resume/getJob');
+
 Route::get(':name','Index/index');
 Route::post(':name','Index/index');
 //###################################################################

@@ -168,6 +168,62 @@ create table rs_communicate
 	index `ct_user` (`ct_user`)
 );
 
+-- ---------------------------------------------------
+-- 下拉岗位
+-- ---------------------------------------------------
+drop table if exists rs_job_sel;
+create table rs_job_sel
+(
+	id tinyint(3) unsigned auto_increment primary key comment '自增id',
+	job_name VARCHAR(30) not null default '' comment '岗位名',
+	ct_user varchar(64) default '' null comment '创建人',
+	ct_time datetime default CURRENT_TIMESTAMP not null comment '创建时间',
+	mfy_user varchar(64) default '' null comment '修改人',
+	mfy_time datetime default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP not null comment '修改时间'
+) engine=InnoDB;
+
+-- 插入岗位
+insert into rs_job_sel(job_name) VALUES('Java');
+insert into rs_job_sel(job_name) VALUES('前端开发');
+insert into rs_job_sel(job_name) VALUES('HTML5');
+insert into rs_job_sel(job_name) VALUES('Hybrid');
+insert into rs_job_sel(job_name) VALUES('测试');
+insert into rs_job_sel(job_name) VALUES('IOS');
+insert into rs_job_sel(job_name) VALUES('Android');
+insert into rs_job_sel(job_name) VALUES('.net');
+insert into rs_job_sel(job_name) VALUES('C++');
+insert into rs_job_sel(job_name) VALUES('UI');
+insert into rs_job_sel(job_name) VALUES('UE');
+insert into rs_job_sel(job_name) VALUES('BI');
+insert into rs_job_sel(job_name) VALUES('ETL');
+insert into rs_job_sel(job_name) VALUES('数据库开发');
+insert into rs_job_sel(job_name) VALUES('DBA');
+insert into rs_job_sel(job_name) VALUES('需求分析');
+insert into rs_job_sel(job_name) VALUES('产品经理');
+insert into rs_job_sel(job_name) VALUES('运维');
+insert into rs_job_sel(job_name) VALUES('运营');
+insert into rs_job_sel(job_name) VALUES('交付');
+insert into rs_job_sel(job_name) VALUES('助理');
+insert into rs_job_sel(job_name) VALUES('PHP');
+insert into rs_job_sel(job_name) VALUES('项目经理');
+insert into rs_job_sel(job_name) VALUES('项目助理');
+insert into rs_job_sel(job_name) VALUES('架构师');
+insert into rs_job_sel(job_name) VALUES('系统管理员');
+insert into rs_job_sel(job_name) VALUES('机房管理员');
+insert into rs_job_sel(job_name) VALUES('招聘');
+insert into rs_job_sel(job_name) VALUES('SEO');
+insert into rs_job_sel(job_name) VALUES('监控');
+insert into rs_job_sel(job_name) VALUES('Python');
+insert into rs_job_sel(job_name) VALUES('文档管理员');
+insert into rs_job_sel(job_name) VALUES('配置管理员');
+insert into rs_job_sel(job_name) VALUES('VBA');
+insert into rs_job_sel(job_name) VALUES('出纳');
+insert into rs_job_sel(job_name) VALUES('会计');
+insert into rs_job_sel(job_name) VALUES('财务');
+
+--
+
+
 -- 插入菜单
 INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, url, p_act_name, p_component, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (1, 0, '简历管理', 0, 'fa fa-address-book', '', '', '/resume', '', 0, '', '2018-12-14 13:55:50', 'admin', '2018-12-27 12:35:10');
 INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, url, p_act_name, p_component, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (2, 1, '简历信息', 0, 'fa fa-address-card', '/resume/index', '', '/resume/Index', '', 1, '', '2018-12-14 13:56:57', 'admin', '2018-12-27 12:35:10');

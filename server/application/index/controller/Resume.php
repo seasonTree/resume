@@ -6,6 +6,7 @@ use think\facade\Env;
 use app\index\model\ResumeUpload;
 use app\index\model\Resume as ResumeModel;
 use app\index\model\User;
+use app\index\model\JobSel;
 use PHPExcel_IOFactory;
 use PHPExcel;
 require_once dirname(Env::get('ROOT_PATH')).'/server/extend/Analysis.php';
@@ -1295,5 +1296,16 @@ class Resume extends Controller
         // }
         return $data;
     }
+
+    public function getJob(){
+        //获取岗位全部下拉
+        $job_model = new JobSel();
+        $where = '1=1';
+        $data = $job_model->field('id,job_name')->where($where)->select();
+        return json(['msg' => '获取成功','code' => 0,'data' => $data]);
+    }
+
+
+
 
 }
