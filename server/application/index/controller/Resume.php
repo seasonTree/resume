@@ -1308,9 +1308,75 @@ class Resume extends Controller
         //根据id获取职位
         $id = input('id');
         $job_model = new JobSel();
-        $data = $job_model->where('id='.$id)->find();
+        $data = $job_model->field('id,job_name,mfy_time')->where('id='.$id)->find();
+        return json(['msg' => '获取成功','code' => 0,'data' => $data]);
     }
 
+    public function JobList(){
+        //职位列表
+        $pageSize = input('get.pageSize');
+        $pageIndex = input('get.pageIndex');
+        $begin = ($pageIndex-1)*$pageSize;
+        $job_model = new JobSel();
+        $data = $job_model->limit($begin,$pageSize)->order('mfy_time desc')->select();
+        $total = $job_model->count('id');
+        return json(['msg' => '获取成功','code' => 0,'data' => ['row' => $data,'total' => $total]]);
+
+    }
+
+    public function addJob(){
+        //添加职位
+        $job_model = new JobSel();
+        $data['job_name'] = input('post.job_name');
+        $find = $job_model->where('job_name','=',$data['job_name'])->find();
+        if ($find) {
+            return json(['msg' => '该职位已存在','code' => 2,'data' => []]);
+        }
+        $data['ct_user'] = Session::get('user_info')['uname'];
+        $res = $job_model->insertGetId($data);
+        if ($res) {
+           $data['id'] = $res;
+           return json(['msg' => '新增成功','code' => 0,'data' => $data]);
+        }
+        return json(['msg' => '新增失败','code' => 1,'data' => []]);
+    }
+
+    public function editJob(){
+        //修改职位
+        $job_model = new JobSel();
+        $edit['id'] = input('post.id');
+        $find = $job_model->where('id='.$edit['id'])->find();
+        $edit['job_name'] = input('post.job_name');
+        $edit['mfy_user'] = Session::get('user_info')['uname'];
+        if ($find['mfy_time'] != input('post.mfy_time')) {
+            return json(['msg' => '数据已发生改变，请刷新','code' => 1,'data' => []]);
+        } 
+        $find = $job_model->where('job_name','=',$edit['job_name'])->find();
+
+        if ($find) {
+            return json(['msg' => '该职位已存在','code' => 3,'data' => []]);
+        }
+        $res = $job_model->update($edit);
+        if ($res) {
+            $data = $job_model->where('id='.$edit['id'])->find();
+            return json(['msg' => '修改成功','code' => 0,'data' => $data]);
+        }
+        else{
+            return json(['msg' => '修改失败','code' => 2,'data' =>[]]);
+        }
+
+    }
+
+    public function delJob(){
+        //删除职位
+        $id = input('post.id');
+        $job_model = new JobSel();
+        $res = $job_model->where('id','=',$id)->delete();
+        if ($res) {
+            return json(['msg' => '删除成功','code' => 0,'data' => []]);
+        }
+        return json(['msg' => '修改成功','code' => 0,'data' => []]);
+    }
 
 
 
