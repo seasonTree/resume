@@ -1,5 +1,7 @@
 import axios from 'axios';
-// import router from '../router';
+import {
+    Notification
+} from 'element-ui';
 
 const instance = axios.create({
     baseURL: '/api', // api的base_url
@@ -25,22 +27,26 @@ instance.interceptors.request.use(
 // respone拦截器
 instance.interceptors.response.use(
     response => {
-        const resp = response.data
-        // if (response.status === 200) {
+        const resData = response.data
 
-        //     // if (resp.error == '403') {
-        //     //     that.$message.error("未登录.");
+        //登录断开了
+        if (resData.code == 403) {
+            //系统已登出，6秒后自动刷新页面重连
+            Notification.error({
+                title: 'Error',
+                message: "系统已登出，6秒后自动刷新页面.",
+                duration: 0 //设置不会自动关闭
+            });
 
-        //     //     router.replace({
-        //     //         path: '/login',
-        //     //         query: {
-        //     //             redirect: router.currentRoute.fullPath
-        //     //         } //登录成功后跳入浏览的当前页面
-        //     //     })
-        //     // }
-        // }
+            setTimeout(() => {
+                //重新刷新页面
+                window.location && window.location.reload();
+            }, 6e3);
 
-        return resp;
+            return;
+        }
+
+        return resData;
     },
     error => {
         return Promise.reject(error);
