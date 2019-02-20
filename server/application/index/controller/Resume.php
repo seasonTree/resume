@@ -1300,9 +1300,15 @@ class Resume extends Controller
     public function getJob(){
         //获取岗位全部下拉
         $job_model = new JobSel();
-        $where = '1=1';
-        $data = $job_model->field('id,job_name')->where($where)->select();
-        return json(['msg' => '获取成功','code' => 0,'data' => $data]);
+        $data = $job_model->field('job_name')->select()->toArray();
+        return json(['msg' => '获取成功','code' => 0,'data' => array_column($data,'job_name')]);
+    }
+
+    public function getJobById(){
+        //根据id获取职位
+        $id = input('id');
+        $job_model = new JobSel();
+        $data = $job_model->where('id='.$id)->find();
     }
 
 
