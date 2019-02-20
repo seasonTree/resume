@@ -140,7 +140,7 @@ export default {
                         // that.afterGetDate(res.data.rows);
 
                         if (that.pager) {
-                            that.pager.total = res.data.total || 1;
+                            that.pager.total = res.data.total || 0;
                         }
                     } else if (res.code) {
                         that.$message.error(
