@@ -24,7 +24,7 @@ return [
     // 服务器地址
     'hostname'        => '192.168.199.134',
     // 数据库名
-    'database'        => 'resume',
+    'database'        => 'test_resume',
     // 用户名
     'username'        => 'root',
     // 密码
