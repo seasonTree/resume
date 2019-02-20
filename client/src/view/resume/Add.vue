@@ -88,14 +88,20 @@
                     <el-form-item label="英语水平" prop="english">
                       <el-input size="mini" v-model.trim="form.english" autocomplete="off"></el-input>
                     </el-form-item>
-
                     <el-form-item label="期望工作地" prop="expected_address">
                       <el-input size="mini" v-model.trim="form.expected_address" autocomplete="off"></el-input>
                     </el-form-item>
                   </div>
-                  <el-form-item label="简历来源" prop="source">
-                    <el-input size="mini" v-model.trim="form.source" autocomplete="off"></el-input>
-                  </el-form-item>
+                  <div class="div-row">
+                    <el-form-item label="毕业时间" prop="graduation_time">
+                      <el-input size="mini" v-model.trim="form.graduation_time" autocomplete="off"></el-input>
+                    </el-form-item>
+
+                    <el-form-item label="简历来源" prop="source">
+                      <el-input size="mini" v-model.trim="form.source" autocomplete="off"></el-input>
+                    </el-form-item>
+                  </div>
+
                   <el-form-item label="岗位" prop="expected_job">
                     <!-- <el-input
                                             size="mini"
@@ -108,6 +114,7 @@
                       v-model.trim="form.expected_job"
                       filterable
                       placeholder="请选择岗位"
+                      size="small"
                     >
                       <el-option
                         v-for="item in positionOptions"
@@ -372,13 +379,136 @@ export default {
       },
 
       formRules: {
-        // name: [
-        //   {
-        //     required: true,
-        //     message: "请输入角色名称",
-        //     trigger: "blur"
-        //   }
-        // ]
+        name: [
+          {
+            required: true,
+            validator: (rule, value, callback) => {
+              let that = this;
+
+              if (value === "") {
+                that.$message.error(that.checkField["name"]);
+              }
+              callback();
+            },
+            trigger: "blur"
+          }
+        ],
+        expected_job: [
+          {
+            required: true,
+            validator: (rule, value, callback) => {
+              let that = this;
+
+              if (value === "") {
+                that.$message.error(that.checkField["expected_job"]);
+              }
+              callback();
+            },
+            trigger: "blur"
+          }
+        ],
+        phone: [
+          {
+            required: true,
+            validator: (rule, value, callback) => {
+              let that = this;
+
+              if (value === "") {
+                that.$message.error(that.checkField["phone"]);
+              }
+              callback();
+            },
+            trigger: "blur"
+          }
+        ],
+
+        email: [
+          {
+            required: true,
+            validator: (rule, value, callback) => {
+              let that = this;
+
+              if (value === "") {
+                that.$message.error(that.checkField["email"]);
+              }
+              callback();
+            },
+            trigger: "blur"
+          }
+        ],
+        school: [
+          {
+            required: true,
+            validator: (rule, value, callback) => {
+              let that = this;
+
+              if (value === "") {
+                that.$message.error(that.checkField["school"]);
+              }
+              callback();
+            },
+            trigger: "blur"
+          }
+        ],
+
+        educational: [
+          {
+            required: true,
+            validator: (rule, value, callback) => {
+              let that = this;
+
+              if (value === "") {
+                that.$message.error(that.checkField["educational"]);
+              }
+              callback();
+            },
+            trigger: "blur"
+          }
+        ],
+
+        source: [
+          {
+            required: true,
+            validator: (rule, value, callback) => {
+              let that = this;
+
+              if (value === "") {
+                that.$message.error(that.checkField["source"]);
+              }
+              callback();
+            },
+            trigger: "blur"
+          }
+        ],
+
+        work_year: [
+          {
+            required: true,
+            validator: (rule, value, callback) => {
+              let that = this;
+
+              if (value === "") {
+                that.$message.error(that.checkField["work_year"]);
+              }
+              callback();
+            },
+            trigger: "blur"
+          }
+        ],
+        graduation_time: [
+          {
+            required: true,
+            validator: (rule, value, callback) => {
+              let that = this;
+
+              if (value === "") {
+                that.$message.error(that.checkField["graduation_time"]);
+              }
+              callback();
+            },
+            trigger: "blur"
+          }
+        ]
       },
 
       //检查重名的数据
@@ -388,7 +518,20 @@ export default {
       analyzeLoading: false,
 
       //岗位的列表
-      positionOptions: []
+      positionOptions: [],
+
+      //要检查的字段
+      checkField: {
+        name: "请输入姓名.",
+        expected_job: "请选择岗位.",
+        phone: "请填写移动电话.",
+        email: "请填写电子邮箱.",
+        school: "请填写毕业院校.",
+        educational: "请填写学历.",
+        source: "请填写简历来源.",
+        work_year: "请填写工作年限.",
+        graduation_time: "请填写毕业时间."
+      }
     };
   },
 
@@ -479,7 +622,25 @@ export default {
     },
 
     addCommit() {
-      let that = this;
+      let that = this,
+        notPass = false;
+
+      //校验必填的数据
+      for (var key in that.form) {
+        let value = that.form[key];
+
+        if (that.checkField[key] && value == "") {
+          that.$message.error(that.checkField[key]);
+
+          notPass = true;
+          break;
+        }
+      }
+
+      //如果校验不通过的就返回
+      if (notPass) {
+        return;
+      }
 
       that.$refs["form"].validate(valid => {
         if (valid) {

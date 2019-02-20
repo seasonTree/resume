@@ -20,12 +20,12 @@
             <el-input v-model="search.name" size="small" placeholder="姓名" clearable @keyup.native.enter="getData(true)"></el-input>
           </el-col>
           <el-col :span="4">
-            <el-select v-model="search.sex" size="small" placeholder="性别" clearable>
+            <el-select style="width: 100%;" v-model="search.sex" size="small" placeholder="性别" clearable>
               <el-option v-for="item in sex" :key="item" :label="item" :value="item"></el-option>
             </el-select>
           </el-col>
           <el-col :span="4">
-            <el-select v-model="search.educational" size="small" placeholder="学历" clearable>
+            <el-select style="width: 100%;" v-model="search.educational" size="small" placeholder="学历" clearable>
               <el-option v-for="item in edu" :key="item" :label="item" :value="item"></el-option>
             </el-select>
           </el-col>
