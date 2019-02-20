@@ -66,6 +66,7 @@ class OperateBehavior extends Controller
             // }
             // $this->error('请先登陆', '/', '', '1');
             return $this->redirect('/');
+
         }
 
         
@@ -78,7 +79,8 @@ class OperateBehavior extends Controller
         else{
             $auth = $this->login;
             if (!in_array($url, $auth)) {
-                $this->error('请先登陆', 'index/index');
+                // $this->error('请先登陆', 'index/index');
+                echo json_encode(['code' => 403,'msg' => '请先登录']);exit;
             }
         }
         if ($userid != 1) {
@@ -86,7 +88,7 @@ class OperateBehavior extends Controller
 
             if (!in_array($url, $auth)) {
                 // $this->error('无权限访问');
-                // echo '您没有权限访问';exit;
+                echo '您没有权限访问';exit;
             }
 
         }

@@ -96,6 +96,11 @@ Route::get('api/person_recru/export','Report/export');//导出
 
 //获取职业分类
 Route::get('api/position_cate/get_all','Resume/getJob');
+Route::post('api/position_cate/get_by_id','Resume/getJobById');
+Route::get('api/position_cate/list','Resume/JobList');
+Route::post('api/position_cate/add','Resume/addJob');
+Route::post('api/position_cate/edit','Resume/editJob');
+Route::post('api/position_cate/del','Resume/delJob');
 
 Route::get(':name','Index/index');
 Route::post(':name','Index/index');
