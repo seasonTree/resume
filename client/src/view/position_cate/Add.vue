@@ -20,7 +20,7 @@
         type="primary"
         @click="addCommit"
         :loading="commitLoading"
-        :disabled="!$check_pm('role_add')"
+        :disabled="!$check_pm('position_cate_add')"
       >确 定</el-button>
     </div>
   </el-dialog>

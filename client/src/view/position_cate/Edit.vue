@@ -34,7 +34,7 @@
                 type="primary"
                 @click="editCommit"
                 :loading="commitLoading"
-                :disabled="!$check_pm('role_edit')"
+                :disabled="!$check_pm('position_cate_edit')"
             >确 定</el-button>
         </div>
     </el-dialog>

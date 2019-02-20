@@ -8,7 +8,7 @@
               <el-button
                 type="primary"
                 @click="addDialog = true"
-                :disabled="!$check_pm('role_add')"
+                :disabled="!$check_pm('position_cate_add')"
               >新增</el-button>
             </el-col>
             <el-col :span="18">
@@ -18,7 +18,7 @@
                   class="search-input"
                   v-model.trim="search.name"
                   autocomplete="off"
-                  placeholder="请输入角色名称"
+                  placeholder="请输入职位名称"
                   @keyup.enter="getData(true)"
                 ></el-input>
                 <el-button
@@ -55,7 +55,7 @@
                   icon="el-icon-edit"
                   circle
                   @click="showEditDialog(scope.row.id)"
-                  :disabled="!$check_pm('role_edit')"
+                  :disabled="!$check_pm('position_cate_edit')"
                 ></el-button>
               </el-tooltip>
               <el-tooltip effect="dark" content="删除" placement="bottom">
@@ -65,7 +65,7 @@
                   icon="el-icon-delete"
                   circle
                   @click="del(scope.row.id, scope.$index)"
-                  :disabled="!$check_pm('role_del')"
+                  :disabled="!$check_pm('position_cate_del')"
                 ></el-button>
               </el-tooltip>
             </template>
