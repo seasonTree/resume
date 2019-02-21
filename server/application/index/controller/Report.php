@@ -42,15 +42,15 @@ class Report extends Controller
     		}
 
     		$communicate = $comm->getComm($where);
-    		if ($v['graduation_time'] != '') {
-    			$graduation_time = explode('-',$v['graduation_time']);
-	    		if (count($graduation_time) > 1) {
-	    			$candidate[$k]['graduation_time'] = $graduation_time[1];
-	    		}
-	    		else{
-	    			$candidate[$k]['graduation_time'] = $graduation_time[1];
-	    		}
-    		}
+    		// if ($v['graduation_time'] != '') {
+    		// 	$graduation_time = explode('-',$v['graduation_time']);
+	    	// 	if (count($graduation_time) > 1) {
+	    	// 		$candidate[$k]['graduation_time'] = $graduation_time[1];
+	    	// 	}
+	    	// 	else{
+	    	// 		$candidate[$k]['graduation_time'] = $graduation_time[1];
+	    	// 	}
+    		// }
 
     		if (empty($communicate)) {
     			if (isset($in_user)) {
