@@ -47,7 +47,7 @@ export default {
     methods: {
         exportWord(type) {
             let that = this;
-            window.open(`/api/person_recru/export?resume_id=${that.resume_id}&type=${type}`, "_blank");
+            window.open(`/api/resume/export?resume_id=${that.resume_id}&type=${type}`, "_blank");
         }
     }
 };
