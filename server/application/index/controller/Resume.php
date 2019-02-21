@@ -292,6 +292,19 @@ class Resume extends Controller
         $list['certificate'] = isset($list['train'])?$list['certificate']."\n".$list['train']:$list['certificate'];
         $list['skillExpertise'] = isset($list['skillExpertise'])?$list['skillExpertise']:' ';
         $list['skillExpertise'] = isset($list['other'])?$list['skillExpertise']."\n".$list['other']:$list['skillExpertise'];
+        unset($list['other']);
+        //处理毕业时间
+        if ($list['graduation_time'] != '') {
+            $graduation_time = explode('-',$list['graduation_time']);
+            if (count($graduation_time) > 1) {
+                preg_match("/\d{4}/", $graduation_time[1],$res);
+                $list['graduation_time'] = $res[0] == ''?'暂无':$res[0];
+            }
+            else{
+                preg_match("/\d{4}/", $graduation_time[0],$res);
+                $list['graduation_time'] = $res[0];
+            }
+        }
 
         return json(['code' => 0,'msg' => '解析成功','data' => $list]);
 
@@ -305,12 +318,14 @@ class Resume extends Controller
     public function importResume(){
         //导入简历
         $data = input('post.data');
+        dump($data);exit;
         $personal_name = array_column($data,'personal_name');
         $phone = array_column($data,'phone');
         $check_data = '';
         $resume = new ResumeModel();
         $user = new User();
         $check = [];
+
 
         foreach ($data as $k => $v) {
             $name = $resume->getUname(['phone' => $v['phone']]);
@@ -547,6 +562,34 @@ class Resume extends Controller
 
         if (!isset($data['phone']) || $data['phone'] == '') {
             return json(['msg' => '电话必填','code' => 4]);
+        }
+
+        if (!isset($data['educational']) || $data['educational'] == '') {
+            return json(['msg' => '学历必填','code' => 5]);
+        }
+
+        if (!isset($data['work_year']) || $data['work_year'] == '') {
+            return json(['msg' => '工作年限必填','code' => 6]);
+        }
+
+        if (!isset($data['graduation_time']) || $data['graduation_time'] == '') {
+            return json(['msg' => '毕业时间必填','code' => 7]);
+        }
+
+        if (!isset($data['source']) || $data['source'] == '') {
+            return json(['msg' => '简历来源必填','code' => 8]);
+        }
+
+        if (!isset($data['expected_job']) || $data['expected_job'] == '') {
+            return json(['msg' => '岗位必填','code' => 9]);
+        }
+
+        if (!isset($data['email']) || $data['email'] == '') {
+            return json(['msg' => '电子邮箱','code' => 10]);
+        }
+
+        if (!isset($data['school']) || $data['school'] == '') {
+            return json(['msg' => '毕业院校必填','code' => 11]);
         }
 
         $data['ct_user'] = Session::get('user_info')['uname'];
@@ -1317,9 +1360,11 @@ class Resume extends Controller
         $pageSize = input('get.pageSize');
         $pageIndex = input('get.pageIndex');
         $begin = ($pageIndex-1)*$pageSize;
+        $name = input('get.name');
+        isset($name)?$where['job_name'] = $name:$where = '1=1';
         $job_model = new JobSel();
-        $data = $job_model->limit($begin,$pageSize)->order('mfy_time desc')->select();
-        $total = $job_model->count('id');
+        $data = $job_model->where($where)->limit($begin,$pageSize)->order('id esc')->select();
+        $total = $job_model->where($where)->count('id');
         return json(['msg' => '获取成功','code' => 0,'data' => ['row' => $data,'total' => $total]]);
 
     }
