@@ -1,6 +1,5 @@
 <template>
     <div>
-
         <el-dialog
             title="添加附件"
             :visible.sync="show"
@@ -9,76 +8,68 @@
             :close-on-click-modal="false"
             v-dialog-drag
         >
-
-            <template>
-                <el-table
-                    class="mb-20"
-                    height="400"
-                    border
-                    style="width: 100%"
-                    :data="tdata"
-                    stripe
+            <el-table
+                class="mb-20"
+                height="400"
+                border
+                style="width: 100%"
+                :data="tdata"
+                stripe
+            >
+                <el-table-column
+                    align="center"
+                    prop="file_name"
+                    label="文件名"
                 >
-                    <el-table-column
-                        align="center"
-                        prop="file_name"
-                        label="文件名"
-                    >
+                    <template slot-scope="scope">
+                        <a
+                            :href="scope.row.download_url"
+                            :title="scope.row.file_name"
+                        >{{scope.row.file_name}}</a>
+                    </template>
+                </el-table-column>
 
-                        <template slot-scope="scope">
-                            <a
-                                :href="scope.row.download_url"
-                                :title="scope.row.file_name"
-                            >{{scope.row.file_name}}</a>
-                        </template>
-                    </el-table-column>
+                <el-table-column
+                    align="center"
+                    prop="ct_time"
+                    label="上传时间"
+                ></el-table-column>
 
-                    <el-table-column
-                        align="center"
-                        prop="ct_time"
-                        label="上传时间"
-                    >
-                    </el-table-column>
+                <el-table-column
+                    align="center"
+                    prop="personal_name"
+                    label="上传人"
+                ></el-table-column>
 
-                    <el-table-column
-                        align="center"
-                        prop="personal_name"
-                        label="上传人"
-                    >
-                    </el-table-column>
-
-                    <el-table-column
-                        fixed="right"
-                        label="操作"
-                        width="60"
-                        align="center"
-                    >
-                        <template slot-scope="scope">
-                            <el-tooltip
-                                effect="dark"
-                                content="删除"
-                                placement="bottom"
-                            >
-                                <el-button
-                                    type="danger"
-                                    icon="el-icon-delete"
-                                    size="mini"
-                                    circle
-                                    @click.stop="delFile(scope.row, scope.$index)"
-                                    :disabled="!$check_pm('resume_file_del')"
-                                ></el-button>
-                            </el-tooltip>
-                        </template>
-                    </el-table-column>
-
-                </el-table>
-            </template>
+                <el-table-column
+                    fixed="right"
+                    label="操作"
+                    width="60"
+                    align="center"
+                >
+                    <template slot-scope="scope">
+                        <el-tooltip
+                            effect="dark"
+                            content="删除"
+                            placement="bottom"
+                        >
+                            <el-button
+                                type="danger"
+                                icon="el-icon-delete"
+                                size="mini"
+                                circle
+                                @click.stop="delFile(scope.row, scope.$index)"
+                                :disabled="!$check_pm('resume_file_del')"
+                            ></el-button>
+                        </el-tooltip>
+                    </template>
+                </el-table-column>
+            </el-table>
 
             <div
                 slot="footer"
                 class="dialog-footer"
             >
-
                 <el-upload
                     action="/api/resume/upload_file"
                     multiple
@@ -86,11 +77,7 @@
                     :on-error="uploadError"
                     :show-file-list="false"
                     :data="otherParams"
-                    accept="application/vnd.ms-excel,.csv,
-                        application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
-                        application/msword,
-                        application/vnd.openxmlformats-officedocument.wordprocessingml.document,
-                        text/html,message/rfc822"
+                    accept="application/vnd.ms-excel, .csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, text/html, message/rfc822"
                 >
                     <el-button
                         type="primary"
@@ -105,9 +92,7 @@
                 >关 闭</el-button>
             </div>
         </el-dialog>
-
     </div>
-
 </template>
 
 <script>
@@ -210,7 +195,7 @@ export default {
                 .catch(() => {});
         },
 
-        beforeUpload(){
+        beforeUpload() {
             this.commitLoading = true;
         },
 
@@ -234,7 +219,6 @@ export default {
                 copyData.download_url = `/api/resume/download?url=${decodeUrl}&file_name=${decodeName}`;
 
                 that.tdata.unshift(copyData);
-
             } else {
                 that.$message.error(res.msg || "上传失败，请重试.");
             }
