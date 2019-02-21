@@ -86,7 +86,7 @@ function checkPhone($phone){
 
 function checkUser($username){
   //检查用户名
-  $rule = "/^[a-zA-Z]([_a-zA-Z0-9]{5,15})+$/";
+  $rule = "/^[a-zA-Z]([_a-zA-Z0-9]{1,15})+$/";
 
   if (!preg_match($rule, $username)) {
     return false;

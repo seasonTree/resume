@@ -106,7 +106,7 @@ class User
         }
 
         if(!checkUser($data['uname'])){
-            return json(['msg' => '用户名长度为6到16字符， 新增用户失败.','code' => 500]);
+            return json(['msg' => '用户名长度为2到16字符， 新增用户失败.','code' => 500]);
         }
 
         if(!checkPassword($data['passwd'])){
