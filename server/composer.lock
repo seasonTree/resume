@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e8aee979f8ee3a9b3ba016860da780e6",
+    "content-hash": "19e78fe165d9dab9a55a6537499cf6b1",
     "packages": [
         {
             "name": "markbaker/complex",
@@ -349,16 +349,16 @@
         },
         {
             "name": "phpoffice/phpword",
-            "version": "0.15.0",
+            "version": "0.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPOffice/PHPWord.git",
-                "reference": "dfa2f36cad2b632b7ab1c56473e4f5db9a7caf7f"
+                "reference": "7b7d4e4936014544aa706f4c03d3ac925d74beb9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPOffice/PHPWord/zipball/dfa2f36cad2b632b7ab1c56473e4f5db9a7caf7f",
-                "reference": "dfa2f36cad2b632b7ab1c56473e4f5db9a7caf7f",
+                "url": "https://api.github.com/repos/PHPOffice/PHPWord/zipball/7b7d4e4936014544aa706f4c03d3ac925d74beb9",
+                "reference": "7b7d4e4936014544aa706f4c03d3ac925d74beb9",
                 "shasum": ""
             },
             "require": {
@@ -390,7 +390,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-develop": "0.16-dev"
+                    "dev-develop": "0.17-dev"
                 }
             },
             "autoload": {
@@ -454,7 +454,7 @@
                 "word",
                 "writer"
             ],
-            "time": "2018-07-14T16:59:43+00:00"
+            "time": "2018-12-30T00:35:03+00:00"
         },
         {
             "name": "psr/simple-cache",

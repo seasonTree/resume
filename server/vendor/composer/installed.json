@@ -352,17 +352,17 @@
     },
     {
         "name": "phpoffice/phpword",
-        "version": "0.15.0",
-        "version_normalized": "0.15.0.0",
+        "version": "0.16.0",
+        "version_normalized": "0.16.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/PHPOffice/PHPWord.git",
-            "reference": "dfa2f36cad2b632b7ab1c56473e4f5db9a7caf7f"
+            "reference": "7b7d4e4936014544aa706f4c03d3ac925d74beb9"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/PHPOffice/PHPWord/zipball/dfa2f36cad2b632b7ab1c56473e4f5db9a7caf7f",
-            "reference": "dfa2f36cad2b632b7ab1c56473e4f5db9a7caf7f",
+            "url": "https://api.github.com/repos/PHPOffice/PHPWord/zipball/7b7d4e4936014544aa706f4c03d3ac925d74beb9",
+            "reference": "7b7d4e4936014544aa706f4c03d3ac925d74beb9",
             "shasum": ""
         },
         "require": {
@@ -391,11 +391,11 @@
             "ext-xsl": "Allows applying XSL style sheet to headers, to main document part, and to footers of an OOXML template",
             "ext-zip": "Allows writing OOXML and ODF"
         },
-        "time": "2018-07-14T16:59:43+00:00",
+        "time": "2018-12-30T00:35:03+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-develop": "0.16-dev"
+                "dev-develop": "0.17-dev"
             }
         },
         "installation-source": "dist",
