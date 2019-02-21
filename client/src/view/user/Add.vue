@@ -107,9 +107,9 @@ export default {
                         trigger: "blur"
                     },
                     {
-                        min: 6,
+                        min: 2,
                         // max: 16,
-                        message: "长度在最小在6个字符",
+                        message: "长度在最小在2个字符",
                         trigger: "blur"
                     },
                     {

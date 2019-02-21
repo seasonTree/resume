@@ -35,7 +35,7 @@ export default {
 
     props: {
         //简历的id
-        resume_id: {
+        resume_id: { 
             required: true,
             type: Number
         }
