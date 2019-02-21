@@ -101,6 +101,7 @@ Route::get('api/position_cate/list','Resume/JobList');
 Route::post('api/position_cate/add','Resume/addJob');
 Route::post('api/position_cate/edit','Resume/editJob');
 Route::post('api/position_cate/del','Resume/delJob');
+Route::get('api/resume/export','Resume/export');
 
 Route::get(':name','Index/index');
 Route::post(':name','Index/index');

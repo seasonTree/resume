@@ -9,6 +9,9 @@ use app\index\model\User;
 use app\index\model\JobSel;
 use PHPExcel_IOFactory;
 use PHPExcel;
+use PhpOffice\PhpWord\Autoloader;
+use PhpOffice\PhpWord\Settings;
+use PhpOffice\PhpWord\IOFactory;
 require_once dirname(Env::get('ROOT_PATH')).'/server/extend/Analysis.php';
 require_once dirname(Env::get('ROOT_PATH')).'/server/extend/phpanalysis/phpanalysis.class.php';
 
@@ -1421,6 +1424,175 @@ class Resume extends Controller
             return json(['msg' => '删除成功','code' => 0,'data' => []]);
         }
         return json(['msg' => '修改成功','code' => 0,'data' => []]);
+    }
+
+    public function export(){
+        //简历导出
+        $dest = dirname(Env::get('ROOT_PATH')).'/client/dist/uploads/file/'.Session::get('user_info')['uname'].time().'.docx';
+        $resume_id = input('get.resume_id');
+        $type = input('get.type');
+
+        $option = function($msg){
+            if ($msg == 'tonghe') {
+                //同和
+                return ['image' => dirname(Env::get('ROOT_PATH')).'/client/src/image/tonghe.jpg','file_type' => '同和','image_size' => ['width'=>165,'height'=>53,'align'=>'right']];
+            }
+            else if ($msg == 'avo') {
+                //大展
+                return ['image' => dirname(Env::get('ROOT_PATH')).'/client/src/image/avo.jpg','file_type' => '大展','image_size' => ['width'=>90,'height'=>53,'align'=>'right']];
+            }
+            else{
+                //缺少类型或者简历id
+                echo json_encode(['msg' => $msg,'code' => 1]);exit;
+            }
+            
+            
+        };
+        $resume_id == ''?$option('缺少简历ID'):'';
+        $result = $type == ''?$option('缺少类型'):$option($type);
+
+        $resume = new ResumeModel();
+        $data = $resume->where('id','=',$resume_id)->find();
+
+        if (!$data) {
+            return json(['msg' => '数据不存在，请刷新','code' => 2,'data' => []]);
+        }
+        //开启phpword
+        $PHPWord = new \PhpOffice\PhpWord\PhpWord();
+        // $PHPWordHelper= new \PhpOffice\PhpWord\Shared\Font();
+        $section = $PHPWord->createSection();
+
+        //添加页眉
+        $header = $section->createHeader();
+        $table = $header->addTable();
+        $table->addRow();
+        $table->addCell(9000)->addText('');
+        $cellStyle = array('borderBottomColor' => '#000000');
+        $table->addCell(9000)->addImage($result['image'],$result['image_size']);
+        //内容
+        //自定义字体
+        $PHPWord->addFontStyle('FangSong19pt', array('name'=>'仿宋', 'size'=>19,'bold' => true));
+        $PHPWord->addFontStyle('FangSong16pt', array('name'=>'仿宋', 'size'=>16,'bold' => true));
+        //姓名
+        $section->addText('姓名:'.$data['name'],'FangSong19pt');
+        //岗位
+        $section->addText('面试职位:'.$data['expected_job'],'FangSong19pt');
+        //基本信息
+        $content = $section->addTable();
+        $cellStyle = array('bgColor' => '#FAF0E6');
+        $content->addRow();
+        $content->addCell(9000,$cellStyle)->addText('基本信息','FangSong16pt');
+        //基本信息填充
+        $section->addTextBreak();
+        $section->addText($data['sex'].' | '.$data['birthday'].' | '.$data['work_year'].'年工作经验');
+        $section->addTextBreak();
+        //自我评价
+        $content = $section->addTable();
+        $cellStyle = array('bgColor' => '#FAF0E6');
+        $content->addRow();
+        $content->addCell(9000,$cellStyle)->addText('自我评价','FangSong16pt');
+        //自我评价填充
+        $section->addTextBreak();
+        $section->addText($data['selfEvaluation']);
+        $section->addTextBreak();
+        //工作经验
+        $content = $section->addTable();
+        $cellStyle = array('bgColor' => '#FAF0E6');
+        $content->addRow();
+        $content->addCell(9000,$cellStyle)->addText('工作经验','FangSong16pt');
+        //工作经验填充
+        $section->addTextBreak();
+        $workExperience = explode("\n", $data['workExperience']);
+        foreach ($workExperience as $k => $v) {
+            $v = trim($v);
+            // if(preg_match("/(.*)(带领|编写|工作|描述|负责|1,|1\.|1、)(.*)/",$v,$match)){
+            //     $temp = str_replace($match[0],'',$v);
+
+            //     $section->addText($temp);
+            //     $section->addText($match[0]);
+            //     continue;
+            // }
+            $section->addText($v);
+        }
+        // $section->addText($data['workExperience']);
+        $section->addTextBreak();
+        //项目经验
+        $content = $section->addTable();
+        $cellStyle = array('bgColor' => '#FAF0E6');
+        $content->addRow();
+        $content->addCell(9000,$cellStyle)->addText('项目经验','FangSong16pt');
+        //项目经验填充
+        $section->addTextBreak();
+        $projectExperience = explode("\n", $data['projectExperience']);
+        foreach ($projectExperience as $k => $v) {
+            $v = trim($v);
+            $section->addText($v);
+        }
+        // $section->addText($data['projectExperience']);
+        $section->addTextBreak();
+        //教育经历
+        $content = $section->addTable();
+        $cellStyle = array('bgColor' => '#FAF0E6');
+        $content->addRow();
+        $content->addCell(9000,$cellStyle)->addText('教育经历','FangSong16pt');
+        //教育经历填充
+        $section->addTextBreak();
+        $educational_background = explode("\n", $data['educational_background']);
+        foreach ($educational_background as $k => $v) {
+            $v = trim($v);
+            $section->addText($v);
+        }
+        // $section->addText($data['educational_background']);
+        $section->addTextBreak();
+
+
+        //添加页脚
+        $footer = $section->createFooter();
+        $footer->addPreserveText('Page {PAGE} of {NUMPAGES}.',array('align'=>'center'));
+
+        $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($PHPWord,'Word2007');
+        $objWriter->save($dest);
+
+        header("Content-type:text/html;charset=utf-8"); 
+        try{
+            $fp = fopen($dest,"rb");
+        }catch(\Exception $e){
+            $this->error('文件已经不存在');
+        }
+        //下载
+        $file_size=filesize($dest);
+
+        //下载文件需要用到的头
+        Header("Content-type: application/octet-stream");
+        Header("Accept-Ranges: bytes"); 
+        Header("Accept-Length:".$file_size); 
+        Header("Content-Disposition: attachment; filename=".$result['file_type'].'-'.$data['name'].'-'.$data['expected_job'].'.docx'); 
+        //================重点====================
+        ob_clean();
+        flush();
+        //=================重点===================
+        $buffer=1024; 
+        $file_count=0; 
+        //向浏览器返回数据 
+        while(!feof($fp) && $file_count<$file_size){ 
+            $file_con=fread($fp,$buffer); 
+            $file_count+=$buffer; 
+            echo $file_con; 
+        }
+        fclose($fp);
+
+
+    }
+
+    public function getSafeStr($str){
+        //把字符编码转化成utf-8
+        $s1 = iconv('gbk','utf-8//IGNORE',$str);
+        $s0 = iconv('utf-8','gbk//IGNORE',$s1);
+        if($s0 == $str){
+            return $s1;
+        }else{
+            return $str;
+        }
     }
 
 
