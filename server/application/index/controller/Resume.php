@@ -1351,7 +1351,7 @@ class Resume extends Controller
             // $sphinx->AddQuery($other,'resume');
         }
         // $data = $sphinx->RunQueries();
-        // $sphinx->SetSortMode(SPH_SORT_EXTENDED,'@mfy_time desc');
+        $sphinx->SetSortMode(SPH_SORT_ATTR_DESC,'mfy_time');
         $res = $sphinx->query($phinx_where,'resume');
 
         // dump($res);exit;
