@@ -78,12 +78,12 @@
                     :show-file-list="false"
                     :data="otherParams"
                     accept="application/vnd.ms-excel, .csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, text/html, message/rfc822"
+                    :before-upload="beforeUpload"
                 >
                     <el-button
                         type="primary"
                         :disabled="!$check_pm('resume_file_upload')"
                         :loading="commitLoading"
-                        :before-upload="beforeUpload"
                     >上传附件</el-button>
                 </el-upload>
                 <el-button

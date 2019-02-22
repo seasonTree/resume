@@ -155,12 +155,12 @@
                     :on-error="uploadError"
                     :show-file-list="false"
                     accept="application/vnd.ms-excel, .csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                    :before-upload="beforeUpload"
                 >
                     <el-button
                         type="success"
                         :disabled="!$check_pm('resume_excel_upload') || commitLoading"
                         :loading="uploadLoading"
-                        :before-upload="beforeUpload"
                     >上传Excel</el-button>
                 </el-upload>
                 <el-button
@@ -251,7 +251,7 @@ export default {
 
         beforeUpload() {
             this.uploadLoading = true;
-            that.resetField();
+            this.resetField();
         },
 
         //上传成功
