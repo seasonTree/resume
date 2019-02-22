@@ -326,16 +326,18 @@ class Resume extends Controller
         $path = dirname(Env::get('ROOT_PATH')).'/client/dist/uploads/';
         $info = $file->validate(['size'=>20971520,'ext'=>'xlsx,xls'])->move($path);
         if($info){
+            $delete_id = explode(",",$delete_id);
             $file = $path.$info->getSaveName();//获取路径
-            $data = $this->readResume($file,false);
+            $data = $this->readResume($file,$delete_id);
             if (empty($data)) {
                 return json(['msg' => '没有数据','code' => 2]);
             }
             unset($info);//一定要unset之后才能进行删除操作，否则请求会被拒绝
             @unlink($file);
-            $delete_id = explode(",",$delete_id);
+            
             foreach ($delete_id as $k => $v) {
                 unset($data['resume'][$v]);
+
             }
             $resume = new ResumeModel();
             $communicate = new Communicate();
@@ -440,7 +442,7 @@ class Resume extends Controller
         $info = $file->validate(['size'=>20971520,'ext'=>'xlsx,xls'])->move($path);
         if($info){
             $file = $path.$info->getSaveName();//获取路径
-            $data = $this->readResume($file,true);
+            $data = $this->readResume($file,false);
             if (empty($data)) {
                 return json(['msg' => '没有数据','code' => 2]);
             }
@@ -453,7 +455,7 @@ class Resume extends Controller
         }
     }
 
-    public function readResume($file,$deleteID = false){
+    public function readResume($file,$deleteID = true){
         //解析简历
         // $file = dirname(Env::get('ROOT_PATH')).'/client/dist/uploads/test.xlsx';
         if( pathinfo($file)['extension'] =='xlsx' )
@@ -480,10 +482,16 @@ class Resume extends Controller
         $ct_user = '';//创建人
         $personal_name = '';//真名
         for($i = 2;$i <= $total;$i++){
+            if ($deleteID != false) {
+                if (in_array($i,$deleteID)) {
+                    continue;
+                }
+            }
+            
             if (empty($obj_excel -> getActiveSheet() -> getCell("B".$i)->getValue())) {
                 continue;
             }
-            if ($deleteID == true) {
+            if ($deleteID == false) {
                 $data[$i]['personal_name'] = $obj_excel -> getActiveSheet() -> getCell("A".$i)->getValue();
             }
             else{
@@ -508,7 +516,7 @@ class Resume extends Controller
             else{
                 $data[$i]['ct_time'] = '';
             }
-            $deleteID == true?$data[$i]['row_id'] = $i:'';
+            $deleteID == false?$data[$i]['row_id'] = $i:'';
             $data[$i]['expected_job'] = $obj_excel -> getActiveSheet() -> getCell("C".$i)->getValue();
             $data[$i]['name'] = $obj_excel -> getActiveSheet() -> getCell("D".$i)->getValue();
             $data[$i]['phone'] = $obj_excel -> getActiveSheet() -> getCell("E".$i)->getValue();
@@ -518,7 +526,7 @@ class Resume extends Controller
             $data[$i]['graduation_time'] = $obj_excel -> getActiveSheet() -> getCell("I".$i)->getValue();
             $data[$i]['work_year'] = $obj_excel -> getActiveSheet() -> getCell("J".$i)->getValue();
             $data[$i]['source'] = $obj_excel -> getActiveSheet() -> getCell("K".$i)->getValue();
-            if ($deleteID == true) {
+            if ($deleteID == false) {
                 $data[$i]['custom1'] = $obj_excel -> getActiveSheet() -> getCell("M".$i)->getValue();
                 $data[$i]['custom2'] = $obj_excel -> getActiveSheet() -> getCell("N".$i)->getValue();
             }
@@ -544,7 +552,7 @@ class Resume extends Controller
             $data[$i]['company_type'] = $obj_excel -> getActiveSheet() -> getCell("L".$i)->getValue();
 
         }
-        if ($deleteID == true) {
+        if ($deleteID == false) {
             return $data;
         }
         else{
