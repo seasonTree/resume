@@ -127,7 +127,7 @@
                                     size="mini"
                                     icon="el-icon-delete"
                                     circle
-                                    @click.stop="delRow(scope.row.id, scope.$index)"
+                                    @click.stop="delRow(scope.row.row_id, scope.$index)"
                                 ></el-button>
                             </el-tooltip>
                         </template>
@@ -240,10 +240,10 @@ export default {
         },
 
         //删除当前行
-        delRow(id, index) {
+        delRow(row_id, index) {
             let that = this;
 
-            that.deleteID.push(id);
+            that.deleteID.push(row_id);
 
             that.tdata.splice(index, 1);
         },
