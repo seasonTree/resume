@@ -4,6 +4,7 @@ use think\Controller;
 use think\facade\Session;
 use think\facade\Env;
 use app\index\model\ResumeUpload;
+use app\index\model\Communicate;
 use app\index\model\Resume as ResumeModel;
 use app\index\model\User;
 use app\index\model\JobSel;
@@ -320,11 +321,46 @@ class Resume extends Controller
 
     public function importResume(){
         //导入简历
+        $delete_id = input('post.deleteID');
         $file = request()->file('excelFile');
         $path = dirname(Env::get('ROOT_PATH')).'/client/dist/uploads/';
         $info = $file->validate(['size'=>20971520,'ext'=>'xlsx,xls'])->move($path);
-        $file_name = $path.$info->getSaveName();//获取路径
-        dump($file_name);
+        if($info){
+            $file = $path.$info->getSaveName();//获取路径
+            $data = $this->readResume($file,false);
+            if (empty($data)) {
+                return json(['msg' => '没有数据','code' => 2]);
+            }
+            unset($info);//一定要unset之后才能进行删除操作，否则请求会被拒绝
+            @unlink($file);
+            $delete_id = explode(",",$delete_id);
+            foreach ($delete_id as $k => $v) {
+                unset($data['resume'][$v]);
+            }
+            $resume = new ResumeModel();
+            $communicate = new Communicate();
+            $count_resume = count($data['resume']);
+            $num = intval($count_resume/100);
+            for ($i=0; $i <= $num; $i++) { 
+                $insert_data = array_slice($data['resume'],$i*100,100);
+                $insert_comm = array_slice($data['communicate'],$i*200,200);
+                $resume->insertAll($insert_data);
+                $communicate->insertAll($insert_comm);
+            }
+
+            // $last_num = $count_resume-$num*500;
+            // $insert_data = array_slice($data['resume'],500*$num,$last_num);
+            // $res_resume = $resume->insertAll($data['resume']);
+            // $res_comm = $communicate->insertAll($data['communicate']);
+            // if ($res_resume && $res_comm) {
+                return json(['msg' => '批量导入完成','code' => 0]);
+            // }
+            return json(['msg' => '批量导入失败','code' => 3]);
+        }else{
+            // 上传失败获取错误信息
+            return json(['msg' => $file->getError(),'code' => 1]);
+        }
+        
         // $data = input('post.data');
         // dump($data);exit;
         // $personal_name = array_column($data,'personal_name');
@@ -404,7 +440,7 @@ class Resume extends Controller
         $info = $file->validate(['size'=>20971520,'ext'=>'xlsx,xls'])->move($path);
         if($info){
             $file = $path.$info->getSaveName();//获取路径
-            $data = $this->readResume($file);
+            $data = $this->readResume($file,true);
             if (empty($data)) {
                 return json(['msg' => '没有数据','code' => 2]);
             }
@@ -417,7 +453,7 @@ class Resume extends Controller
         }
     }
 
-    public function readResume($file){
+    public function readResume($file,$deleteID = false){
         //解析简历
         // $file = dirname(Env::get('ROOT_PATH')).'/client/dist/uploads/test.xlsx';
         if( pathinfo($file)['extension'] =='xlsx' )
@@ -434,22 +470,45 @@ class Resume extends Controller
         $sheet = $obj_excel -> getSheet(0);
         $total = $sheet -> getHighestRow(); // 取得总行数
         $data = [];
+        $communicate = [];//沟通
         $temp_time = '';
+        $user = new User();
+        $keys = 0;//沟通数据下标
+        $resume = new ResumeModel();
+        $resume_max_id = $resume->max('id');//获取最大id
+        $resume_max_id = $resume_max_id + 1;//最大+1为简历起始id
+        $ct_user = '';//创建人
+        $personal_name = '';//真名
         for($i = 2;$i <= $total;$i++){
             if (empty($obj_excel -> getActiveSheet() -> getCell("B".$i)->getValue())) {
                 continue;
             }
-            $data[$i]['personal_name'] = $obj_excel -> getActiveSheet() -> getCell("A".$i)->getValue();
+            if ($deleteID == true) {
+                $data[$i]['personal_name'] = $obj_excel -> getActiveSheet() -> getCell("A".$i)->getValue();
+            }
+            else{
+                if ($obj_excel -> getActiveSheet() -> getCell("A".$i)->getValue() != $personal_name) {
+                    $ct_user = $user->where('personal_name','=',$obj_excel -> getActiveSheet() -> getCell("A".$i)->getValue())->value('uname');
+                    $personal_name = $obj_excel -> getActiveSheet() -> getCell("A".$i)->getValue();
+                }
+                
+                $data[$i]['ct_user'] = $ct_user;
+            }
+            
             $temp_time = $obj_excel -> getActiveSheet() -> getCell("B".$i)->getValue();
 
-            if ($temp_time != '') {
+            
+            if ($temp_time != '' && is_numeric($temp_time)) {
                 $time = ($temp_time-25569)*24*60*60; //获得秒数
                 $data[$i]['ct_time'] = date('Y-m-d', $time);   //转化时间
+            }
+            else if ($temp_time != '') {
+                $data[$i]['ct_time'] = $temp_time;
             }
             else{
                 $data[$i]['ct_time'] = '';
             }
-            $data[$i]['row_id'] = $i;
+            $deleteID == true?$data[$i]['row_id'] = $i:'';
             $data[$i]['expected_job'] = $obj_excel -> getActiveSheet() -> getCell("C".$i)->getValue();
             $data[$i]['name'] = $obj_excel -> getActiveSheet() -> getCell("D".$i)->getValue();
             $data[$i]['phone'] = $obj_excel -> getActiveSheet() -> getCell("E".$i)->getValue();
@@ -459,12 +518,38 @@ class Resume extends Controller
             $data[$i]['graduation_time'] = $obj_excel -> getActiveSheet() -> getCell("I".$i)->getValue();
             $data[$i]['work_year'] = $obj_excel -> getActiveSheet() -> getCell("J".$i)->getValue();
             $data[$i]['source'] = $obj_excel -> getActiveSheet() -> getCell("K".$i)->getValue();
-            $data[$i]['custom1'] = $obj_excel -> getActiveSheet() -> getCell("M".$i)->getValue();
-            $data[$i]['custom2'] = $obj_excel -> getActiveSheet() -> getCell("N".$i)->getValue();
-            $data[$i]['custom3'] = $obj_excel -> getActiveSheet() -> getCell("L".$i)->getValue();
+            if ($deleteID == true) {
+                $data[$i]['custom1'] = $obj_excel -> getActiveSheet() -> getCell("M".$i)->getValue();
+                $data[$i]['custom2'] = $obj_excel -> getActiveSheet() -> getCell("N".$i)->getValue();
+            }
+            else{
+                if ($obj_excel -> getActiveSheet() -> getCell("M".$i)->getValue() != '') {
+                    $communicate[$keys]['ct_user'] = $data[$i]['ct_user'];
+                    $communicate[$keys]['communicate_time'] = $data[$i]['ct_time'];
+                    $communicate[$keys]['resume_id'] = $resume_max_id;
+                    $communicate[$keys]['content'] =  $obj_excel -> getActiveSheet() -> getCell("M".$i)->getValue();
+                    $keys++;
+                }
+                if ($obj_excel -> getActiveSheet() -> getCell("N".$i)->getValue() != '') {
+                    $communicate[$keys]['ct_user'] = $data[$i]['ct_user'];
+                    $communicate[$keys]['communicate_time'] = $data[$i]['ct_time'];
+                    $communicate[$keys]['resume_id'] = $resume_max_id;
+                    $communicate[$keys]['content'] =  $obj_excel -> getActiveSheet() -> getCell("M".$i)->getValue();
+                    $keys++;
+                }
+                $data[$i]['id'] = $resume_max_id;
+                $resume_max_id++;
+
+            }
+            $data[$i]['company_type'] = $obj_excel -> getActiveSheet() -> getCell("L".$i)->getValue();
 
         }
-        return $data;
+        if ($deleteID == true) {
+            return $data;
+        }
+        else{
+            return ['resume' => $data,'communicate' => $communicate];
+        }
 
     }
 
@@ -1264,6 +1349,7 @@ class Resume extends Controller
             // $sphinx->AddQuery($other,'resume');
         }
         // $data = $sphinx->RunQueries();
+        $sphinx->SetSortMode( "SPH_SORT_ATTR_DESC", 'mfy_time');
         $res = $sphinx->query($phinx_where,'resume');
 
         // dump($res);exit;
