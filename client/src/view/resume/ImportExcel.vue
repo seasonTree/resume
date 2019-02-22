@@ -204,15 +204,16 @@ export default {
     },
     methods: {
         batchAdd() {
-            let that = this;
+            let that = this,
+                params = new FormData();
 
             that.commitLoading = true;
 
+            params.append('excelFile', that.excelFile);
+            params.append('deleteID', that.deleteID);
+
             that.$api.resume
-                .batchAdd({
-                    excelFile: that.excelFile,
-                    deleteID: that.deleteID
-                })
+                .batchAdd(params)
                 .then(res => {
                     if (res.code == 0) {
                         that.$message({
@@ -266,7 +267,7 @@ export default {
                     duration: 800
                 });
 
-                that.excelFile = file;
+                that.excelFile = file.raw;
 
                 let copyData = JSON.parse(JSON.stringify(res.data));
 

@@ -128,6 +128,7 @@ export function batchAdd(data){
     return request({
         url: `${prefix}/batch_add`,
         method: 'post',
-        data: data
+        data: data,
+        headers:{'Content-Type':'multipart/form-data'}
     });    
 }
