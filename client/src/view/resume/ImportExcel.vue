@@ -116,19 +116,21 @@
                         width="60"
                         align="center"
                     >
-                        <el-tooltip
-                            effect="dark"
-                            content="删除"
-                            placement="bottom"
-                        >
-                            <el-button
-                                type="danger"
-                                size="mini"
-                                icon="el-icon-delete"
-                                circle
-                                @click.stop="delRow(scope.row.id, scope.$index)"
-                            ></el-button>
-                        </el-tooltip>
+                        <template slot-scope="scope">
+                            <el-tooltip
+                                effect="dark"
+                                content="删除"
+                                placement="bottom"
+                            >
+                                <el-button
+                                    type="danger"
+                                    size="mini"
+                                    icon="el-icon-delete"
+                                    circle
+                                    @click.stop="delRow(scope.row.id, scope.$index)"
+                                ></el-button>
+                            </el-tooltip>
+                        </template>
                     </el-table-column>
                 </el-table>
 
@@ -193,8 +195,11 @@ export default {
             pager: {
                 total: 1,
                 current: 1,
-                size: 20
-            }
+                size: 10
+            },
+
+            deleteID: [],
+            excelFile: null
         };
     },
     methods: {
@@ -205,7 +210,8 @@ export default {
 
             that.$api.resume
                 .batchAdd({
-                    data: that.excelData
+                    excelFile: that.excelFile,
+                    deleteID: that.deleteID
                 })
                 .then(res => {
                     if (res.code == 0) {
@@ -236,18 +242,22 @@ export default {
         //删除当前行
         delRow(id, index) {
             let that = this;
+
+            that.deleteID.push(id);
+
             that.tdata.splice(index, 1);
         },
 
         beforeUpload() {
             this.uploadLoading = true;
+            that.resetField();
         },
 
         //上传成功
         uploadSuccess(res, file, fileList) {
             let that = this;
 
-            this.uploadLoading = false;
+            that.uploadLoading = false;
 
             if (res.code == 0) {
                 that.$message({
@@ -255,6 +265,8 @@ export default {
                     type: "success",
                     duration: 800
                 });
+
+                that.excelFile = file;
 
                 let copyData = JSON.parse(JSON.stringify(res.data));
 
@@ -283,6 +295,27 @@ export default {
         uploadError(err, file, fileList) {
             this.uploadLoading = false;
             this.$message.error("上传失败，请重试.");
+        },
+
+        resetField() {
+            let that = this;
+
+            that.tdata = [];
+            that.uploadLoading = false;
+            that.excelData = [];
+            that.pager = {
+                total: 1,
+                current: 1,
+                size: 10
+            };
+            that.deleteID = [];
+            that.excelFile = null;
+        },
+
+        //关闭窗口后调用
+        afterClose() {
+            let that = this;
+            that.resetField();
         }
     }
 };
