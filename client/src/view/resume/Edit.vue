@@ -81,8 +81,8 @@
                 </el-form-item>
               </div>
               <div class="div-row">
-                <el-form-item label="毕业时间" prop="birthday">
-                  <el-input size="mini" v-model.trim="form.birthday" autocomplete="off"></el-input>
+                <el-form-item label="毕业时间" prop="graduation_time">
+                  <el-input size="mini" v-model.trim="form.graduation_time" autocomplete="off"></el-input>
                 </el-form-item>
 
                 <el-form-item label="简历来源" prop="source">
