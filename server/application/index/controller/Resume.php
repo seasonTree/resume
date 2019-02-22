@@ -320,72 +320,77 @@ class Resume extends Controller
 
     public function importResume(){
         //导入简历
-        $data = input('post.data');
-        dump($data);exit;
-        $personal_name = array_column($data,'personal_name');
-        $phone = array_column($data,'phone');
-        $check_data = '';
-        $resume = new ResumeModel();
-        $user = new User();
-        $check = [];
-
-
-        foreach ($data as $k => $v) {
-            $name = $resume->getUname(['phone' => $v['phone']]);
-            if ($name) {
-                $check_data.='姓名:'.$name.',电话:'.$v['phone'].'已存在';
-            }
-
-            $temp = $data[$k]['name'].$data[$k]['phone'];
-            if (in_array($temp,$check)) {
-                return json(['msg' => '检测到重复数据，请检查','code' => 2,'data' => []]);
-            }
-            $ct_user = $user->getUser(['personal_name' => $v['personal_name']]);
-            if ($ct_user == '') {
-                $data[$k]['ct_user'] = Session::get('user_info')['uname'];
-            }
-            else{
-                $data[$k]['ct_user'] = $ct_user;
-            }
-            unset($data[$k]['personal_name']);
-
-            if(isset($v['work_year'])){
-                $data[$k]['work_year'] = (int)$data[$k]['work_year'];
-            }
-            if (isset($v['age'])) {
-                $data[$k]['age'] = (int)$data[$k]['age'];
-            }
-
-            if (isset($v['expected_money'])) {
-                $money = preg_replace("/(到|至)/",'-',$v['expected_money']);
-                $money = explode('-',$v['expected_money']);
-
-                if (count($money) > 1) {
-                    $data[$k]['expected_money_start'] = (int)$money[0];
-                    $data[$k]['expected_money_end'] = (int)$money[1];
-                }
-                else{
-                    $data[$k]['expected_money_start'] = (int)$money[0];
-                    $data[$k]['expected_money_end'] = (int)$money[0];
-                }
-            }
-
-        }
-
-        if ($check_data != '') {
-            return json(['msg' => $check_data,'code' => 3,'data' => []]);
-        }
-        
+        $file = request()->file('excelFile');
+        $path = dirname(Env::get('ROOT_PATH')).'/client/dist/uploads/';
+        $info = $file->validate(['size'=>20971520,'ext'=>'xlsx,xls'])->move($path);
+        $file_name = $path.$info->getSaveName();//获取路径
+        dump($file_name);
+        // $data = input('post.data');
         // dump($data);exit;
+        // $personal_name = array_column($data,'personal_name');
+        // $phone = array_column($data,'phone');
+        // $check_data = '';
+        // $resume = new ResumeModel();
+        // $user = new User();
+        // $check = [];
 
-        $res = $resume->addAll($data);
 
-        if ($res) {
-            return json(['msg' => '添加成功','code' => 0,'data' => []]);
-        }
-        else{
-            return json(['msg' => '添加失败','code' => 1,'data' => []]);
-        }
+        // foreach ($data as $k => $v) {
+        //     $name = $resume->getUname(['phone' => $v['phone']]);
+        //     if ($name) {
+        //         $check_data.='姓名:'.$name.',电话:'.$v['phone'].'已存在';
+        //     }
+
+        //     $temp = $data[$k]['name'].$data[$k]['phone'];
+        //     if (in_array($temp,$check)) {
+        //         return json(['msg' => '检测到重复数据，请检查','code' => 2,'data' => []]);
+        //     }
+        //     $ct_user = $user->getUser(['personal_name' => $v['personal_name']]);
+        //     if ($ct_user == '') {
+        //         $data[$k]['ct_user'] = Session::get('user_info')['uname'];
+        //     }
+        //     else{
+        //         $data[$k]['ct_user'] = $ct_user;
+        //     }
+        //     unset($data[$k]['personal_name']);
+
+        //     if(isset($v['work_year'])){
+        //         $data[$k]['work_year'] = (int)$data[$k]['work_year'];
+        //     }
+        //     if (isset($v['age'])) {
+        //         $data[$k]['age'] = (int)$data[$k]['age'];
+        //     }
+
+        //     if (isset($v['expected_money'])) {
+        //         $money = preg_replace("/(到|至)/",'-',$v['expected_money']);
+        //         $money = explode('-',$v['expected_money']);
+
+        //         if (count($money) > 1) {
+        //             $data[$k]['expected_money_start'] = (int)$money[0];
+        //             $data[$k]['expected_money_end'] = (int)$money[1];
+        //         }
+        //         else{
+        //             $data[$k]['expected_money_start'] = (int)$money[0];
+        //             $data[$k]['expected_money_end'] = (int)$money[0];
+        //         }
+        //     }
+
+        // }
+
+        // if ($check_data != '') {
+        //     return json(['msg' => $check_data,'code' => 3,'data' => []]);
+        // }
+        
+        // // dump($data);exit;
+
+        // $res = $resume->addAll($data);
+
+        // if ($res) {
+        //     return json(['msg' => '添加成功','code' => 0,'data' => []]);
+        // }
+        // else{
+        //     return json(['msg' => '添加失败','code' => 1,'data' => []]);
+        // }
 
     }
 
@@ -444,7 +449,7 @@ class Resume extends Controller
             else{
                 $data[$i]['ct_time'] = '';
             }
-            
+            $data[$i]['row_id'] = $i;
             $data[$i]['expected_job'] = $obj_excel -> getActiveSheet() -> getCell("C".$i)->getValue();
             $data[$i]['name'] = $obj_excel -> getActiveSheet() -> getCell("D".$i)->getValue();
             $data[$i]['phone'] = $obj_excel -> getActiveSheet() -> getCell("E".$i)->getValue();
