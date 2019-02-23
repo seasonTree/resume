@@ -584,7 +584,7 @@ class Resume extends Controller
         // 获取表单上传文件
         $file = request()->file('file');
         // 移动到框架应用根目录/uploads/ 目录下
-        $info = $file->validate(['size'=>20971520,'ext'=>'xls,xlsx,doc,docx,html,htm,mht'])->move($path);
+        $info = $file->validate(['size'=>20971520,'ext'=>'xls,xlsx,doc,docx,html,htm,mht,pdf,jpg,jpeg,png'])->move($path);
         if($info){
             $upload = new ResumeUpload();
             $file_name = preg_replace("/\s/",'_',$_FILES['file']['name']);
