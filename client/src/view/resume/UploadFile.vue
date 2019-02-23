@@ -77,7 +77,7 @@
                     :on-error="uploadError"
                     :show-file-list="false"
                     :data="otherParams"
-                    accept="application/vnd.ms-excel, .csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, text/html, message/rfc822"
+                    accept="application/pdf,image/*,application/vnd.ms-excel, .csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, text/html, message/rfc822"
                     :before-upload="beforeUpload"
                 >
                     <el-button

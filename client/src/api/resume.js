@@ -54,7 +54,8 @@ export function uploadFile(data) {
     return request({
         url: `${prefix}/upload_file`,
         method: 'post',
-        data: data
+        data: data,
+        timeout: 60e3
     })
 }
 
