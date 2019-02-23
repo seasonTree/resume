@@ -297,18 +297,23 @@ class Resume extends Controller
         $list['skillExpertise'] = isset($list['skillExpertise'])?$list['skillExpertise']:' ';
         $list['skillExpertise'] = isset($list['other'])?$list['skillExpertise']."\n".$list['other']:$list['skillExpertise'];
         unset($list['other']);
+        unset($list['train']);
+        unset($list['language']);
         //处理毕业时间
-        if ($list['graduation_time'] != '') {
-            $graduation_time = explode('-',$list['graduation_time']);
-            if (count($graduation_time) > 1) {
-                preg_match("/\d{4}/", $graduation_time[1],$res);
-                $list['graduation_time'] = $res[0] == ''?'暂无':$res[0];
-            }
-            else{
-                preg_match("/\d{4}/", $graduation_time[0],$res);
-                $list['graduation_time'] = $res[0];
+        if (isset($list['graduation_time'])) {
+            if ($list['graduation_time'] != '') {
+                $graduation_time = explode('-',$list['graduation_time']);
+                if (count($graduation_time) > 1) {
+                    preg_match("/\d{4}/", $graduation_time[1],$res);
+                    $list['graduation_time'] = $res[0] == ''?'暂无':$res[0];
+                }
+                else{
+                    preg_match("/\d{4}/", $graduation_time[0],$res);
+                    $list['graduation_time'] = $res[0];
+                }
             }
         }
+        
 
         return json(['code' => 0,'msg' => '解析成功','data' => $list]);
 

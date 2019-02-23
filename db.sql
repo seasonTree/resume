@@ -112,7 +112,7 @@ create table rs_resume
 	educational_background  text COMMENT '教育背景' ,
 	school varchar(30) default '' comment '毕业学校',
 	educational varchar(10) default '' comment '学历',
-	speciality varchar(20) default '' comment '专业',
+	speciality varchar(255) default '' comment '专业',
 	graduation_time varchar(20) default '' comment '在校时间',
 	skillExpertise text comment '专业技能',
 	workExperience text comment '工作经验',
