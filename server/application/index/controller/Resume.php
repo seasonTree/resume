@@ -305,11 +305,23 @@ class Resume extends Controller
                 $graduation_time = explode('-',$list['graduation_time']);
                 if (count($graduation_time) > 1) {
                     preg_match("/\d{4}/", $graduation_time[1],$res);
-                    $list['graduation_time'] = $res[0] == ''?'暂无':$res[0];
+                    if(isset($res[0])){
+                        $list['graduation_time'] = $res[0];
+                    }
+                    else{
+                        $list['graduation_time'] = '未知';
+                    }
+                    
                 }
                 else{
                     preg_match("/\d{4}/", $graduation_time[0],$res);
-                    $list['graduation_time'] = $res[0];
+                    if (isset($res[0])) {
+                        $list['graduation_time'] = $res[0];
+                    }
+                    else{
+                        $list['graduation_time'] = '未知';
+                    }
+                    
                 }
             }
         }
