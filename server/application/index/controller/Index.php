@@ -34,11 +34,13 @@ class Index extends Controller
 
         $resume = new Resume();
         $communicate = new Communicate();
-        $yesterday_resume = $resume->getCount("ct_time > '$begin_day' and ct_time < '$end_day'");
-        $last_week_resume = $resume->getCount("ct_time > '$begin_week' and ct_time < '$end_week'");
-        $yesterday_communicate = $communicate->getCount("ct_time > '$begin_day' and ct_time < '$end_day'");
+        $yesterday_resume = $resume->getCount("ct_time >= '$begin_day' and ct_time <= '$end_day'");
+        $last_week_resume = $resume->getCount("ct_time >= '$begin_week' and ct_time <= '$end_week'");
+        dump($resume->getlastsql());exit;
 
-        $last_week_communicate = $communicate->getCount("ct_time > '$begin_week' and ct_time < '$end_week'");
+        $yesterday_communicate = $communicate->getCount("ct_time >= '$begin_day' and ct_time <= '$end_day'");
+
+        $last_week_communicate = $communicate->getCount("ct_time >= '$begin_week' and ct_time <= '$end_week'");
 
         return json(['msg' => '获取成功','code' => 0,'data' => ['yesterday_resume' => $yesterday_resume,'last_week_resume' => $last_week_resume,'yesterday_communicate' => $yesterday_communicate,'last_week_communicate' => $last_week_communicate]]);
 
