@@ -350,8 +350,8 @@ export default {
                             var item = res.data[i];
 
                             //处理姓名
-                            item.personal_name =
-                                item.personal_name || item.uname;
+                            // item.personal_name =
+                            //     item.personal_name || item.uname;
 
                             item.approved_interview =
                                 item.approved_interview == 0 ? "否" : "是";
@@ -391,12 +391,12 @@ export default {
                 .then(res => {
                     if (res.code == 0) {
                         //处理姓名
-                        for (var i = 0; i < res.data.length; i++) {
-                            var item = res.data[i];
+                        // for (var i = 0; i < res.data.length; i++) {
+                        //     var item = res.data[i];
 
-                            item.personal_name =
-                                item.personal_name || item.uname;
-                        }
+                        //     item.personal_name =
+                        //         item.personal_name || item.uname;
+                        // }
 
                         that.reportData = res.data;
 
@@ -428,12 +428,12 @@ export default {
                 .then(res => {
                     if (res.code == 0) {
                         //处理姓名
-                        for (var i = 0; i < res.data.length; i++) {
-                            var item = res.data[i];
+                        // for (var i = 0; i < res.data.length; i++) {
+                        //     var item = res.data[i];
 
-                            item.personal_name =
-                                item.personal_name || item.uname;
-                        }
+                        //     item.personal_name =
+                        //         item.personal_name || item.uname;
+                        // }
 
                         that.reportData = res.data;
 
