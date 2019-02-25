@@ -36,7 +36,6 @@ class Index extends Controller
         $communicate = new Communicate();
         $yesterday_resume = $resume->getCount("ct_time >= '$begin_day' and ct_time <= '$end_day'");
         $last_week_resume = $resume->getCount("ct_time >= '$begin_week' and ct_time <= '$end_week'");
-        dump($resume->getlastsql());exit;
 
         $yesterday_communicate = $communicate->getCount("ct_time >= '$begin_day' and ct_time <= '$end_day'");
 
