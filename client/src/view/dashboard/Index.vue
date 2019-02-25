@@ -40,7 +40,7 @@
                     :span="12"
                 >
                     <div class="block-content">
-                        <div>上周简历沟通了{{last_week_communicate}}份</div>
+                        <div>上周简历总沟通了{{last_week_communicate}}次</div>
                     </div>
                 </el-col>
             </el-col>
