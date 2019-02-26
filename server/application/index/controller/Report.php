@@ -96,7 +96,6 @@ class Report extends Controller
     	}
 
     	$candidate = $resume->getCandidate();
-      dump($candidate);exit;
     	foreach ($candidate as $k => $v) {
 
     		$where = "communicate_time between '$parm[dtfm]' and '$parm[dtto]' and resume_id = $v[id]";
