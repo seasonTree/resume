@@ -120,7 +120,7 @@ class Report extends Controller
     				continue;
     			}
     			if (strtotime($parm['dtfm']) < strtotime($v['ct_time']) && strtotime($parm['dtto']) > strtotime($v['ct_time'])) {
-    				$candidate[$k]['personal_name']	= $user->getUserName(['uname' => 'ct_user']);
+    				// $candidate[$k]['personal_name']	= $user->getUserName(['uname' => 'ct_user']);
     				$candidate[$k]['communicate_count'] = 0;
     			}
     			else{
