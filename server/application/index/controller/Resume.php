@@ -960,7 +960,7 @@ class Resume extends Controller
             return json(['msg' => 'id字段不存在','code' => 2]);
         }
         $upload = new ResumeUpload();
-        
+
         if (Session::get('user_info')['id'] == 1) {
             $res = $upload->del(['id' => $id]);
         }
@@ -1466,7 +1466,7 @@ class Resume extends Controller
             $phinx_where = '('.$phinx_where.')';
         }
 
-        $ct_user = isset($where['ct_user'])?$where['ct_user'];
+        $ct_user = isset($where['ct_user'])?$where['ct_user']:'';
         if ($ct_user) {
             $ct_user = preg_replace("/(,|，)/",',',$ct_user);
             $ct_user = explode(",",$ct_user);
