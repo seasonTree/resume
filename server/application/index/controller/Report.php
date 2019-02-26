@@ -96,7 +96,6 @@ class Report extends Controller
     	}
 
     	$candidate = $resume->getCandidate();
-      dump($candidate);exit;
     	foreach ($candidate as $k => $v) {
 
     		$where = "communicate_time between '$parm[dtfm]' and '$parm[dtto]' and resume_id = $v[id]";
@@ -121,7 +120,7 @@ class Report extends Controller
     				continue;
     			}
     			if (strtotime($parm['dtfm']) < strtotime($v['ct_time']) && strtotime($parm['dtto']) > strtotime($v['ct_time'])) {
-    				$candidate[$k]['personal_name']	= $user->getUserName(['uname' => 'ct_user']);
+    				// $candidate[$k]['personal_name']	= $user->getUserName(['uname' => 'ct_user']);
     				$candidate[$k]['communicate_count'] = 0;
     			}
     			else{
@@ -131,7 +130,7 @@ class Report extends Controller
     		}
     		else{
 
-    			$candidate[$k]['personal_name'] = $communicate[0]['personal_name'];
+    			// $candidate[$k]['personal_name'] = $communicate[0]['personal_name'];
     			$candidate[$k]['ct_time'] = $communicate[0]['communicate_time'];
     			$candidate[$k]['communicate_count'] = count($communicate);
 
