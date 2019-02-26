@@ -350,6 +350,10 @@ class Resume extends Controller
             if (empty($data)) {
                 return json(['msg' => '没有数据','code' => 2]);
             }
+            
+            if (is_string($data)) {
+                return json(['msg' => $data,'code' => 3]);
+            }
             unset($info);//一定要unset之后才能进行删除操作，否则请求会被拒绝
             @unlink($file);
             
@@ -564,6 +568,9 @@ class Resume extends Controller
         if ($deleteID == true) {
             $resume = new ResumeModel();
             $row_id = time().Session::get('user_info')['uname'];
+            $user_model = new User();
+            $ct_user = $user_model->field('uname')->select()->toArray();//创建人
+            $ct_user = array_column($ct_user,'uname');
             // $insert_res = $resume->insert(['row_id' => $row_id]);//唯一标识占位用，
             // if (!$insert_res) {
             //     return json(['msg' => '导入失败，请重试','code' => 1]);
@@ -572,12 +579,17 @@ class Resume extends Controller
         
         // $resume_max_id = $resume->max('id');//获取最大id
         // $resume_max_id = $resume_max_id + 1;//最大+1为简历起始id
-        $ct_user = '';//创建人
-        $personal_name = '';//真名
+        
+        // $personal_name = '';//真名
         for($i = 2;$i <= $total;$i++){
+            $ct_user_name = $obj_excel -> getActiveSheet() -> getCell("A".$i)->getValue();
             if ($deleteID != false) {
                 if (in_array($i,$deleteID)) {
                     continue;
+                }
+
+                if (!in_array($ct_user_name,$ct_user) && $total < $i) {
+                    return '检测到不存在用户，请检查';
                 }
             }
             
@@ -588,12 +600,12 @@ class Resume extends Controller
                 $data[$i]['personal_name'] = $obj_excel -> getActiveSheet() -> getCell("A".$i)->getValue();
             }
             else{
-                if ($obj_excel -> getActiveSheet() -> getCell("A".$i)->getValue() != $personal_name) {
-                    $ct_user = $user->where('personal_name','=',$obj_excel -> getActiveSheet() -> getCell("A".$i)->getValue())->value('uname');
-                    $personal_name = $obj_excel -> getActiveSheet() -> getCell("A".$i)->getValue();
-                }
+                // if ($obj_excel -> getActiveSheet() -> getCell("A".$i)->getValue() != $personal_name) {
+                //     $ct_user = $user->where('personal_name','=',$obj_excel -> getActiveSheet() -> getCell("A".$i)->getValue())->value('uname');
+                //     $personal_name = $obj_excel -> getActiveSheet() -> getCell("A".$i)->getValue();
+                // }
                 
-                $data[$i]['ct_user'] = $ct_user;
+                $data[$i]['ct_user'] = $obj_excel -> getActiveSheet() -> getCell("A".$i)->getValue();
             }
             
             $temp_time = $obj_excel -> getActiveSheet() -> getCell("B".$i)->getValue();
