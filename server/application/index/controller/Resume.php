@@ -851,6 +851,7 @@ class Resume extends Controller
         
         $id = $resume->add($data);
         $data['id'] = $id;
+        $data['ct_time'] = date('Y-m-d H:i:s',time());
         if ($data) {
             return json(['msg' => '添加成功','code' => 0,'data' => $data]);
         }
