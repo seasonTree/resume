@@ -51,6 +51,7 @@
                             size="small"
                             placeholder="学历"
                             clearable
+                            filterable
                         >
                             <el-option
                                 v-for="item in edu"
@@ -99,7 +100,7 @@
                         class="other-search-detail"
                     >
                         <el-row :gutter="20">
-                            <el-col :span="4">
+                            <!-- <el-col :span="4">
                                 <el-input-number
                                     placeholder="最低薪资"
                                     size="small"
@@ -111,12 +112,6 @@
                                 ></el-input-number>
                             </el-col>
                             <el-col :span="4">
-                                <!-- <el-input
-                                    prop="expected_money"
-                                    placeholder="最高薪资要求"
-                                    size="small"
-                                >
-                </el-input>-->
                                 <el-input-number
                                     placeholder="最高薪资"
                                     size="small"
@@ -150,8 +145,15 @@
                                     :max="99"
                                     @keyup.native.enter="getData(true)"
                                 ></el-input-number>
+                            </el-col> -->
+                            <el-col :span="8">
+                                <el-input
+                                    v-model="search.ct_user"
+                                    placeholder="招聘负责人"
+                                    size="small"
+                                    @keyup.native.enter="getData(true)"
+                                ></el-input>
                             </el-col>
-
                             <el-col :span="4">
                                 <el-input-number
                                     clearable
@@ -177,9 +179,18 @@
                                     @keyup.native.enter="getData(true)"
                                 ></el-input-number>
                             </el-col>
+
+                            <el-col :span="4">
+                                <el-input
+                                    v-model="search.expected_job"
+                                    placeholder="岗位"
+                                    size="small"
+                                    @keyup.native.enter="getData(true)"
+                                ></el-input>
+                            </el-col>
                         </el-row>
 
-                        <el-row :gutter="20">
+                        <!-- <el-row :gutter="20">
                             <el-col :span="4">
                                 <el-input
                                     v-model="search.expected_job"
@@ -229,7 +240,7 @@
                                     @keyup.native.enter="getData(true)"
                                 ></el-input>
                             </el-col>
-                        </el-row>
+                        </el-row> -->
                         <el-row :gutter="20">
                             <el-col :span="24">
                                 <el-input
@@ -273,21 +284,16 @@
             >
                 <el-table-column
                     fixed
-                    prop="name"
-                    label="姓名"
+                    prop="ct_user"
+                    label="招聘负责人"
                     width="100"
                 ></el-table-column>
                 <el-table-column
                     fixed
-                    prop="sex"
-                    label="性别"
-                    width="50"
-                ></el-table-column>
-                <el-table-column
-                    fixed
-                    prop="age"
-                    label="年龄"
-                    width="50"
+                    prop="ct_time"
+                    label="日期"
+                    width="100"
+                    :formatter="formatterDate"
                 ></el-table-column>
                 <el-table-column
                     fixed
@@ -307,26 +313,42 @@
                 </el-table-column>
                 <el-table-column
                     fixed
+                    prop="name"
+                    label="姓名"
+                    width="80"
+                ></el-table-column>
+                <el-table-column
+                    fixed
                     prop="phone"
                     label="手机"
-                    width="150"
+                    width="120"
                 ></el-table-column>
                 <el-table-column
                     fixed
                     prop="educational"
                     label="学历"
-                    width="100"
+                    width="80"
                 ></el-table-column>
                 <el-table-column
                     fixed
-                    prop="work_year"
-                    label="工作年限"
-                    width="120"
-                ></el-table-column>
-                <el-table-column
                     prop="email"
                     label="电子邮箱"
-                    width="200"
+                    width="160"
+                ></el-table-column>
+                <el-table-column
+                    prop="sex"
+                    label="性别"
+                    width="50"
+                ></el-table-column>
+                <el-table-column
+                    prop="age"
+                    label="年龄"
+                    width="50"
+                ></el-table-column>
+                <el-table-column
+                    prop="work_year"
+                    label="工作年限"
+                    width="80"
                 ></el-table-column>
                 <el-table-column
                     prop="expected_money"
@@ -347,28 +369,28 @@
                 <el-table-column
                     prop="nearest_job"
                     label="最近职位"
-                    width="120"
+                    width="140"
                 ></el-table-column>
                 <el-table-column
                     prop="school"
                     label="毕业院校"
-                    width="300"
+                    width="200"
                 ></el-table-column>
                 <el-table-column
                     prop="speciality"
                     label="专业"
-                    width="150"
+                    width="140"
                 ></el-table-column>
 
                 <el-table-column
                     prop="english"
                     label="英语等级"
-                    width="120"
+                    width="100"
                 ></el-table-column>
                 <el-table-column
                     prop="expected_address"
                     label="期望工作地"
-                    width="200"
+                    width="100"
                 ></el-table-column>
                 <el-table-column
                     fixed="right"
@@ -511,6 +533,7 @@ import UploadFile from "./UploadFile";
 import ImportExcel from "./ImportExcel";
 import ExportResume from "./ExportResume";
 import { addClass, removeClass } from "@common/util";
+import { formatDate } from "@common/util";
 
 export default {
     mixins: [TableBase],
@@ -534,6 +557,11 @@ export default {
         //        e.target.className = 'fa status-icon el-icon-caret-bottom'
         //    }
         // },
+
+        //格式化yyyy-MM-dd
+        formatterDate(row, column, cellValue, index) {
+            return formatDate(cellValue, "yyyy-MM-dd");
+        },
 
         //点击行查看简历
         showViewDialog(row) {
@@ -580,7 +608,7 @@ export default {
 
             that.resumeID = id;
             that.exportResumeDialog = true;
-        },
+        },        
 
         //动画效果-----------------------
 
@@ -632,7 +660,7 @@ export default {
             //填写API获取的类型，由父类自动调用，不填不调用
             apiType: "resume",
             sex: ["男", "女"],
-            edu: ["初中", "高中", "大专", "本科", "硕士", "博士", "研究生"],
+            edu: ["初中", "高中", "大专", '统招大专', '自考大专', '民办大专', "本科", '统招本科', '自考本科', '民办本科', "硕士", "博士", "研究生", '无学历'],
 
             search: {
                 name: "",
@@ -657,47 +685,53 @@ export default {
 
             // search.name
 
-            //   tdata: [
+            // tdata: [
             //     {
-            //       id: 1,
-            //       name: "王小虎",
-            //       inPosition: "程序员",
-            //       sex: "男",
-            //       age: "11",
-            //       edu: "本科",
-            //       expected_job: "12312312312312312312312312312",
-            //       workAge: "三年",
-            //       objective: "Java工程师",
-            //       expectPay: "18k",
-            //       recentlyUnit: "中软",
-            //       recentPosition: "java工程师",
-            //       graduateSchool: "北京大学",
-            //       professional: "计算机",
-            //       phone: "13912349974",
-            //       email: "723403639@qq.com",
-            //       englishLevel: "四级",
-            //       workingPlace: "深圳"
+            //         name: "丁锋",
+            //         phone: "13560727727",
+            //         sex: "男",
+            //         age: 28,
+            //         work_year: 6,
+            //         email: "sheissosex@163.com",
+            //         expected_money_start: 15000,
+            //         expected_money_end: 19999,
+            //         expected_money: "15000-19999元/月",
+            //         nearest_unit:
+            //             "深圳飞钛科技和东莞小黄狗环保企业(团贷网旗下公司",
+            //         nearest_job: "Java开发工程师",
+            //         english: "",
+            //         expected_job: "Java",
+            //         expected_address: "深圳",
+            //         school: "广东石油化工学院",
+            //         educational: "本科",
+            //         speciality: "计算机科学与技术",
+            //         mfy_time: "2019-02-26 09:54:34",
+            //         id: 464,
+            //         ct_time: '2019-02-10'
             //     },
             //     {
-            //       id: 2,
-            //       name: "王小虎",
-            //       inPosition: "程序员",
-            //       sex: "男",
-            //       age: "11",
-            //       edu: "本科",
-            //       workAge: "三年",
-            //       objective: "Java工程师",
-            //       expectPay: "18k",
-            //       recentlyUnit: "中软",
-            //       recentPosition: "java工程师",
-            //       graduateSchool: "北京大学",
-            //       professional: "计算机",
-            //       phone: "13912349974",
-            //       email: "723403639@qq.com",
-            //       englishLevel: "四级",
-            //       workingPlace: "深圳"
+            //         name: "阳鹏",
+            //         phone: "18824278483",
+            //         sex: "男",
+            //         age: 26,
+            //         work_year: 5,
+            //         email: "958576496@qq.com",
+            //         expected_money_start: 17000,
+            //         expected_money_end: 17000,
+            //         expected_money: "17000",
+            //         nearest_unit: "",
+            //         nearest_job: "",
+            //         english: "",
+            //         expected_job: "Java",
+            //         expected_address: "深圳",
+            //         school: "湖南机电学院",
+            //         educational: "大专",
+            //         speciality: "计算机应用专科",
+            //         mfy_time: "2019-02-26 09:52:44",
+            //         id: 463,
+            //         ct_time: '2019-02-10'
             //     }
-            //   ],
+            // ],
 
             //沟通情况
             communicationDialog: false,

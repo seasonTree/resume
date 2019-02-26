@@ -6,7 +6,7 @@
             :before-close="closeDialog"
             class="custom-dialog"
             :close-on-click-modal="false"
-            width="60%"
+            width="80%"
             v-dialog-drag
         >
 
@@ -21,7 +21,7 @@
                     align="center"
                     prop="communicate_time"
                     label="时间"
-                    width="180"
+                    width="100"
                     :formatter="formatterDate"
                 >
                 </el-table-column>
@@ -34,10 +34,11 @@
                 >
                 </el-table-column>
 
-                <!-- <el-table-column
+                <el-table-column
                     align="center"
                     prop="screen"
-                    label="通过筛选"
+                    label="推荐"
+                    width="60"
                 >
                     <template slot-scope="scope">
                         <i
@@ -46,12 +47,13 @@
                             @click="changeStatus(scope.row.id, 1, scope.row)"
                         ></i>
                     </template>
-                </el-table-column> -->
+                </el-table-column>
 
-                <!-- <el-table-column
+                <el-table-column
                     align="center"
                     prop="arrange_interview "
-                    label="安排面试"
+                    label="安排"
+                    width="60"
                 >
                     <template slot-scope="scope">
                         <i
@@ -60,12 +62,13 @@
                             @click="changeStatus(scope.row.id, 1, scope.row)"
                         ></i>
                     </template>
-                </el-table-column> -->
+                </el-table-column>
 
-                <!-- <el-table-column
+                <el-table-column
                     align="center"
                     prop="arrive "
                     label="到场"
+                    width="60"
                 >
                     <template slot-scope="scope">
                         <i
@@ -75,12 +78,13 @@
                         ></i>
 
                     </template>
-                </el-table-column> -->
+                </el-table-column>
 
-                <!-- <el-table-column
+                <el-table-column
                     align="center"
                     prop="approved_interview "
-                    label="通过面试"
+                    label="通过"
+                    width="60"
                 >
                     <template slot-scope="scope">
                         <i
@@ -90,12 +94,13 @@
                         ></i>
 
                     </template>
-                </el-table-column> -->
+                </el-table-column>
 
-                <!-- <el-table-column
+                <el-table-column
                     align="center"
                     prop="entry"
                     label="入职"
+                    width="60"
                 >
                     <template slot-scope="scope">
                         <i
@@ -105,7 +110,7 @@
                         ></i>
 
                     </template>
-                </el-table-column> -->
+                </el-table-column>
 
                 <el-table-column
                     align=""

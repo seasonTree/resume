@@ -37,7 +37,7 @@
 
                 <el-table-column
                     align="center"
-                    prop="personal_name"
+                    prop="ct_user"
                     label="上传人"
                 ></el-table-column>
 
