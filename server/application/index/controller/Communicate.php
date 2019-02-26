@@ -53,7 +53,7 @@ class Communicate
             $data = $comm->getOne(['a.id' => $data['id']]);
       }
       else{
-          $ct_user = $comm->where('id' => $data['id'])->value('ct_user');
+          $ct_user = $comm->where(['id' => $data['id']])->value('ct_user');
           if ($ct_user != Session::get('user_info')['uname']) {
              return json(['msg' => '没有权限修改别人的沟通记录.','code' => 500,'data' => []]);
           }
