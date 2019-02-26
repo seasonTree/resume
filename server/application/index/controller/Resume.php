@@ -563,7 +563,7 @@ class Resume extends Controller
         
         if ($deleteID == true) {
             $resume = new ResumeModel();
-            $row_id = date('Y-m-d',time()).Session::get('user_info')['uname'];
+            $row_id = time().Session::get('user_info')['uname'];
             // $insert_res = $resume->insert(['row_id' => $row_id]);//唯一标识占位用，
             // if (!$insert_res) {
             //     return json(['msg' => '导入失败，请重试','code' => 1]);
