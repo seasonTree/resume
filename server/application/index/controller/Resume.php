@@ -938,19 +938,45 @@ class Resume extends Controller
             return json(['msg' => 'id字段不存在','code' => 2]);
         }
         $resume = new ResumeModel();
-        $res = $resume->del(['id' => $id]);
-        $upload = new ResumeUpload();
-        $data = $upload->get(['resume_id' => $id]);
-        foreach ($data as $k => $v) {
-            $upload->del(['id' => $v['id']]);
-            @unlink($v['resume_url']);
-        }
-        if ($res) {
-            return json(['msg' => '删除成功','code' => 0]);
+
+        if (Session::get('user_info')['id'] == 1) {
+            $res = $resume->del(['id' => $id]);
+            $upload = new ResumeUpload();
+            $data = $upload->get(['resume_id' => $id]);
+            foreach ($data as $k => $v) {
+                $upload->del(['id' => $v['id']]);
+                @unlink($v['resume_url']);
+            }
+            if ($res) {
+                return json(['msg' => '删除成功','code' => 0]);
+            }
+            else{
+                return json(['msg' => '删除失败','code' => 1]);
+            }
         }
         else{
-            return json(['msg' => '删除失败','code' => 1]);
+            $ct_user = $resume->where('id','=',$id)->value('ct_user');
+            if ($ct_user != Session::get('user_info')['uname']) {
+                return json(['msg' => '没有权限删除别人的上传文件','code' => 500]);
+            }
+            else{
+                $res = $resume->del(['id' => $id]);
+                $upload = new ResumeUpload();
+                $data = $upload->get(['resume_id' => $id]);
+                foreach ($data as $k => $v) {
+                    $upload->del(['id' => $v['id']]);
+                    @unlink($v['resume_url']);
+                }
+                if ($res) {
+                    return json(['msg' => '删除成功','code' => 0]);
+                }
+                else{
+                    return json(['msg' => '删除失败','code' => 1]);
+                }
+            }
         }
+
+        
     }
 
     public function delFile(){
