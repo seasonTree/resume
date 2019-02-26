@@ -130,7 +130,7 @@ class Report extends Controller
     		}
     		else{
 
-    			$candidate[$k]['personal_name'] = $communicate[0]['personal_name'];
+    			// $candidate[$k]['personal_name'] = $communicate[0]['personal_name'];
     			$candidate[$k]['ct_time'] = $communicate[0]['communicate_time'];
     			$candidate[$k]['communicate_count'] = count($communicate);
 
