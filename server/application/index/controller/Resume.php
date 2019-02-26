@@ -377,8 +377,8 @@ class Resume extends Controller
                 }
                 // $communicate->insertAll($insert_comm);
             }
-
-            $resume_ids = $resume->where('batch_id','=',$data['resume'][2]['batch_id'])->field('id')->order('id asc')->select()->toArray();
+            $resume_length = count($data['resume'])-1;
+            $resume_ids = $resume->where('batch_id','=',$data['resume'][$resume_length]['batch_id'])->field('id')->order('id asc')->select()->toArray();
             $resume_ids = array_column($resume_ids,'id');
             $insert_comm = [];
             $keys = 0;
@@ -624,6 +624,7 @@ class Resume extends Controller
                 $data[$i]['custom2'] = $obj_excel -> getActiveSheet() -> getCell("N".$i)->getValue();
             }
             else{
+
                 if ($obj_excel -> getActiveSheet() -> getCell("M".$i)->getValue() != '') {
                     $communicate[$keys]['ct_user1'] = $data[$i]['ct_user'];
                     $communicate[$keys]['communicate_time1'] = $data[$i]['ct_time'];
@@ -647,8 +648,8 @@ class Resume extends Controller
                 $data[$i]['batch_id'] = $row_id;
 
             }
-            // $data[$i]['custom1'] = $obj_excel -> getActiveSheet() -> getCell("M".$i)->getValue();
-            // $data[$i]['custom2'] = $obj_excel -> getActiveSheet() -> getCell("N".$i)->getValue();
+            $data[$i]['custom1'] = $obj_excel -> getActiveSheet() -> getCell("M".$i)->getValue();
+            $data[$i]['custom2'] = $obj_excel -> getActiveSheet() -> getCell("N".$i)->getValue();
 
             $data[$i]['company_type'] = $obj_excel -> getActiveSheet() -> getCell("L".$i)->getValue();
 
