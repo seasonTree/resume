@@ -323,28 +323,28 @@
                     label="手机"
                     width="120"
                 ></el-table-column>
-                <el-table-column
+                <!-- <el-table-column
                     fixed
                     prop="educational"
                     label="学历"
                     width="80"
-                ></el-table-column>
+                ></el-table-column> -->
                 <el-table-column
                     fixed
                     prop="email"
                     label="电子邮箱"
-                    width="160"
+                    width="180"
                 ></el-table-column>
-                <el-table-column
+                <!-- <el-table-column
                     prop="sex"
                     label="性别"
                     width="50"
-                ></el-table-column>
-                <el-table-column
+                ></el-table-column> -->
+                <!-- <el-table-column
                     prop="age"
                     label="年龄"
                     width="50"
-                ></el-table-column>
+                ></el-table-column> -->
                 <el-table-column
                     prop="work_year"
                     label="工作年限"

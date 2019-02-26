@@ -52,7 +52,7 @@
                         <el-option
                             v-for="item in users"
                             :key="item.uname"
-                            :label="item.personal_name"
+                            :label="item.uname"
                             :value="item.uname"
                         >
                         </el-option>
@@ -168,7 +168,7 @@ export default {
 
             //招聘负责人明细
             recruHead: [
-                { prop: "personal_name", label: "招聘负责人", fixed: "left" },
+                { prop: "ct_user", label: "招聘负责人", fixed: "left" },
                 { prop: "name", label: "候选人", fixed: "left" },
                 { prop: "screen", label: "是否推荐", fixed: "left" },
                 { prop: "arrange_interview", label: "是否安排", fixed: "left" },
@@ -183,7 +183,7 @@ export default {
 
             //招聘负责人汇总
             recruTotalHead: [
-                { prop: "personal_name", label: "招聘负责人", fixed: "left" },
+                { prop: "ct_user", label: "招聘负责人", fixed: "left" },
                 { prop: "screen", label: "推荐人数", fixed: "left" },
                 { prop: "arrange_interview", label: "安排面试人数", fixed: "left" },
                 { prop: "arrive", label: "到场人数", fixed: "left" },
@@ -197,7 +197,7 @@ export default {
 
             //候选人跟踪
             personHead: [
-                { prop: "personal_name", label: "招聘负责人", fixed: "left" },
+                { prop: "ct_user", label: "招聘负责人", fixed: "left" },
                 {
                     prop: "ct_time",
                     label: "日期",
@@ -279,12 +279,12 @@ export default {
                 .getAll()
                 .then(res => {
                     if (res.code == 0) {
-                        for (var i = 0; i < res.data.length; i++) {
-                            var item = res.data[i];
+                        // for (var i = 0; i < res.data.length; i++) {
+                        //     var item = res.data[i];
 
-                            item.personal_name =
-                                item.personal_name || item.uname;
-                        }
+                        //     item.personal_name =
+                        //         item.personal_name || item.uname;
+                        // }
 
                         that.users = res.data;
                     } else {
