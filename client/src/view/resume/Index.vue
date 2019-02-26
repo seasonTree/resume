@@ -321,20 +321,24 @@
                     fixed
                     prop="phone"
                     label="手机"
-                    width="120"
+                    width="100"
                 ></el-table-column>
-                <!-- <el-table-column
-                    fixed
-                    prop="educational"
-                    label="学历"
-                    width="80"
-                ></el-table-column> -->
                 <el-table-column
                     fixed
                     prop="email"
                     label="电子邮箱"
-                    width="180"
-                ></el-table-column>
+                    width="160"
+                >
+                    <template slot-scope="scope">
+                        <el-tooltip
+                            effect="dark"
+                            :content="scope.row.email"
+                            placement="top"
+                        >
+                            <div class="cell">{{scope.row.email}}</div>
+                        </el-tooltip>
+                    </template>
+                </el-table-column>
                 <!-- <el-table-column
                     prop="sex"
                     label="性别"
@@ -345,23 +349,19 @@
                     label="年龄"
                     width="50"
                 ></el-table-column> -->
-                <el-table-column
-                    prop="work_year"
-                    label="工作年限"
-                    width="80"
-                ></el-table-column>
+                <!-- 
                 <el-table-column
                     prop="expected_money"
                     label="期望薪资"
                     width="150"
-                ></el-table-column>
+                ></el-table-column> -->
                 <!-- <el-table-column
                     prop="inPosition"
                     label="所处职位"
                     width="120"
                 >
-        </el-table-column>-->
-                <el-table-column
+                </el-table-column>-->
+                <!-- <el-table-column
                     prop="nearest_unit"
                     label="最近单位"
                     width="220"
@@ -370,28 +370,54 @@
                     prop="nearest_job"
                     label="最近职位"
                     width="140"
-                ></el-table-column>
+                ></el-table-column> -->
                 <el-table-column
                     prop="school"
                     label="毕业院校"
                     width="200"
                 ></el-table-column>
                 <el-table-column
+                    prop="educational"
+                    label="学历"
+                    width="80"
+                ></el-table-column>
+                <el-table-column
+                    prop="graduation_time"
+                    label="毕业年份"
+                    width="100"
+                ></el-table-column>
+                <el-table-column
+                    prop="work_year"
+                    label="工作年限"
+                    width="80"
+                ></el-table-column>
+                <el-table-column
+                    prop="source"
+                    label="简历来源"
+                    width="80"
+                ></el-table-column>                
+                <el-table-column
+                    prop="company_type"
+                    label="同和/大展"
+                    width="100"
+                ></el-table-column>
+
+                <!-- <el-table-column
                     prop="speciality"
                     label="专业"
                     width="140"
-                ></el-table-column>
+                ></el-table-column> -->
 
-                <el-table-column
+                <!-- <el-table-column
                     prop="english"
                     label="英语等级"
                     width="100"
-                ></el-table-column>
-                <el-table-column
+                ></el-table-column> -->
+                <!-- <el-table-column
                     prop="expected_address"
                     label="期望工作地"
                     width="100"
-                ></el-table-column>
+                ></el-table-column> -->
                 <el-table-column
                     fixed="right"
                     label="操作"
@@ -608,7 +634,7 @@ export default {
 
             that.resumeID = id;
             that.exportResumeDialog = true;
-        },        
+        },
 
         //动画效果-----------------------
 
@@ -660,7 +686,22 @@ export default {
             //填写API获取的类型，由父类自动调用，不填不调用
             apiType: "resume",
             sex: ["男", "女"],
-            edu: ["初中", "高中", "大专", '统招大专', '自考大专', '民办大专', "本科", '统招本科', '自考本科', '民办本科', "硕士", "博士", "研究生", '无学历'],
+            edu: [
+                "初中",
+                "高中",
+                "大专",
+                "统招大专",
+                "自考大专",
+                "民办大专",
+                "本科",
+                "统招本科",
+                "自考本科",
+                "民办本科",
+                "硕士",
+                "博士",
+                "研究生",
+                "无学历"
+            ],
 
             search: {
                 name: "",
