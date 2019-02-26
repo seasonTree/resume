@@ -1470,11 +1470,11 @@ class Resume extends Controller
         if ($ct_user) {
             $ct_user = preg_replace("/(,|，)/",',',$ct_user);
             $ct_user = explode(",",$ct_user);
-            $ct_user_where = '(';
+            $ct_user_where = '';
             $ct_user_length = count($ct_user)-1;
             foreach ($ct_user as $k => $v) {
                 if ($k == $ct_user_length) {
-                    $ct_user_where.=$ct_user_where."@ct_user $v )";
+                    $ct_user_where.=$ct_user_where."@ct_user $v";
                 }
                 else{
                     $ct_user_where.=$ct_user_where."@ct_user $v |";
