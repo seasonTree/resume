@@ -378,7 +378,7 @@ class Resume extends Controller
                 // $communicate->insertAll($insert_comm);
             }
 
-            $resume_ids = $resume->where('row_id','=',$data['resume'][2]['row_id'])->field('id')->order('id asc')->select()->toArray();
+            $resume_ids = $resume->where('batch_id','=',$data['resume'][2]['batch_id'])->field('id')->order('id asc')->select()->toArray();
             $resume_ids = array_column($resume_ids,'id');
             $insert_comm = [];
             $keys = 0;
@@ -411,8 +411,8 @@ class Resume extends Controller
                 }
                 if ($key == $length) {
 
-                    $communicate->insertAll($insert_comm);
-                    $res = $resume->where(['row_id' => $data['resume'][2]['row_id']])->limit(1)->delete();
+                    $res = $communicate->insertAll($insert_comm);
+                    // $res = $resume->where(['row_id' => $data['resume'][2]['row_id']])->limit(1)->delete();
                     if ($res) {
                         Db::commit();//提交
                         return json(['msg' => '批量导入完成','code' => 0]);
@@ -563,11 +563,11 @@ class Resume extends Controller
         
         if ($deleteID == true) {
             $resume = new ResumeModel();
-            $row_id = time().Session::get('user_info')['uname'];
-            $insert_res = $resume->insert(['row_id' => $row_id]);//唯一标识占位用，
-            if (!$insert_res) {
-                return json(['msg' => '导入失败，请重试','code' => 1]);
-            }
+            $row_id = date('Y-m-d',time()).Session::get('user_info')['uname'];
+            // $insert_res = $resume->insert(['row_id' => $row_id]);//唯一标识占位用，
+            // if (!$insert_res) {
+            //     return json(['msg' => '导入失败，请重试','code' => 1]);
+            // }
         }
         
         // $resume_max_id = $resume->max('id');//获取最大id
@@ -644,7 +644,7 @@ class Resume extends Controller
                 // $data[$i]['id'] = $resume_max_id;
                 // $resume_max_id++;
                 // $data[$i]['row_id'] = $i;
-                $data[$i]['row_id'] = $row_id;
+                $data[$i]['batch_id'] = $row_id;
 
             }
             $data[$i]['custom1'] = $obj_excel -> getActiveSheet() -> getCell("M".$i)->getValue();

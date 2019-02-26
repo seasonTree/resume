@@ -128,7 +128,7 @@ create table rs_resume
 	mfy_time datetime default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP not null comment '修改时间',
 	-- is_del tinyint(1) default 0 not null comment '伪删除',
 	source varchar(50) default '' comment '简历来源',
-	row_id varchar(30) default '' comment '批量导入标识符',
+	batch_id varchar(30) default '' comment '批量导入标识符',
 	-- INDEX `name` (`name`) USING BTREE 
 	index `name` (`name`)
 );
