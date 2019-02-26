@@ -650,7 +650,7 @@ class Resume extends Controller
                     $communicate[$keys]['communicate_time2'] = $data[$i]['ct_time'];
                     // $communicate[$keys]['resume_id'] = $resume_max_id;
                     $communicate[$keys]['row_id'] = $i;
-                    $communicate[$keys]['content2'] =  $obj_excel -> getActiveSheet() -> getCell("M".$i)->getValue();
+                    $communicate[$keys]['content2'] =  $obj_excel -> getActiveSheet() -> getCell("N".$i)->getValue();
                     // $keys++;
                 }
                 $keys++;
