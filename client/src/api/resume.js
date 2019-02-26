@@ -131,6 +131,6 @@ export function batchAdd(data){
         method: 'post',
         data: data,
         headers:{'Content-Type':'multipart/form-data'},
-        timeout: 60e3
+        timeout: 120e3
     });    
 }

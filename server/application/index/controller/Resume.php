@@ -3,6 +3,7 @@ namespace app\index\controller;
 use think\Controller;
 use think\facade\Session;
 use think\facade\Env;
+use think\Db;
 use app\index\model\ResumeUpload;
 use app\index\model\Communicate;
 use app\index\model\Resume as ResumeModel;
@@ -358,21 +359,87 @@ class Resume extends Controller
             }
             $resume = new ResumeModel();
             $communicate = new Communicate();
+            // $row_id = $resume->max('row_id');
+            // $row_id++;//取最大rowid标识
             $count_resume = count($data['resume']);
             $num = intval($count_resume/100);
+            set_time_limit(0);
+
+            Db::startTrans();//开始事务
+
             for ($i=0; $i <= $num; $i++) { 
                 $insert_data = array_slice($data['resume'],$i*100,100);
-                $insert_comm = array_slice($data['communicate'],$i*200,200);
-                $resume->insertAll($insert_data);
-                $communicate->insertAll($insert_comm);
+                // $insert_comm = array_slice($data['communicate'],$i*200,200);
+                $resume_res = $resume->insertAll($insert_data);
+                if (!$resume_res) {
+                    Db::rollback();//出错回滚
+                    return json(['msg' => '导入失败，请重试','code' => 500]);
+                }
+                // $communicate->insertAll($insert_comm);
             }
+
+            $resume_ids = $resume->where('row_id','=',$data['resume'][2]['row_id'])->field('id')->order('id asc')->select()->toArray();
+            $resume_ids = array_column($resume_ids,'id');
+            $insert_comm = [];
+            $keys = 0;
+            $insert_c = 0;//写入频率
+            $length = count($resume_ids)-1;
+            foreach ($resume_ids as $key => $value) {
+                if(isset($data['communicate'][$key]['content1'])){
+                    $insert_comm[$keys]['ct_user'] = $data['communicate'][$key]['ct_user1'];
+                    $insert_comm[$keys]['communicate_time'] = $data['communicate'][$key]['communicate_time1'];
+                    $insert_comm[$keys]['content'] = $data['communicate'][$key]['content1'];
+                    $insert_comm[$keys]['resume_id'] = $value;
+                    $keys++;
+                }
+                if(isset($data['communicate'][$key]['content2'])){
+                    $insert_comm[$keys]['ct_user'] = $data['communicate'][$key]['ct_user2'];
+                    $insert_comm[$keys]['communicate_time'] = $data['communicate'][$key]['communicate_time2'];
+                    $insert_comm[$keys]['content'] = $data['communicate'][$key]['content2'];
+                    $insert_comm[$keys]['resume_id'] = $value;
+                    $keys++;
+                }
+
+                if ($insert_c == 200 && $key != $length) {
+                    $communicate_res = $communicate->insertAll($insert_comm);
+                    if (!$communicate_res) {
+                        Db::rollback();//回滚
+                        return json(['msg' => '导入失败，请重试','code' => 500]);
+                    }
+                    $insert_comm = [];
+                    $insert_c = 0;
+                }
+                if ($key == $length) {
+
+                    $communicate->insertAll($insert_comm);
+                    $res = $resume->where(['row_id' => $data['resume'][2]['row_id']])->limit(1)->delete();
+                    if ($res) {
+                        Db::commit();//提交
+                        return json(['msg' => '批量导入完成','code' => 0]);
+                    }
+                    else{
+                        Db::rollback();//回滚
+                        return json(['msg' => '导入失败，请重试','code' => 500]);
+                    }
+                }
+
+                $insert_c++;
+            }
+
+            // $res = $resume->where(['row_id' => $data['resume'][2]['row_id']])->limit(1)->delete();
+
+            // $communicate->insertAll($insert_comm);
+
+            // Db::execute('update rs_communicate set resume_id = (select id from rs_resume where rs_communicate.row_id = rs_resume.row_id and rs_communicate.resume_id = 0 )');
+            
+
 
             // $last_num = $count_resume-$num*500;
             // $insert_data = array_slice($data['resume'],500*$num,$last_num);
             // $res_resume = $resume->insertAll($data['resume']);
             // $res_comm = $communicate->insertAll($data['communicate']);
             // if ($res_resume && $res_comm) {
-                return json(['msg' => '批量导入完成','code' => 0]);
+                
             // }
             return json(['msg' => '批量导入失败','code' => 3]);
         }else{
@@ -493,9 +560,18 @@ class Resume extends Controller
         $temp_time = '';
         $user = new User();
         $keys = 0;//沟通数据下标
-        $resume = new ResumeModel();
-        $resume_max_id = $resume->max('id');//获取最大id
-        $resume_max_id = $resume_max_id + 1;//最大+1为简历起始id
+        
+        if ($deleteID == true) {
+            $resume = new ResumeModel();
+            $row_id = time().Session::get('user_info')['uname'];
+            $insert_res = $resume->insert(['row_id' => $row_id]);//唯一标识占位用，
+            if (!$insert_res) {
+                return json(['msg' => '导入失败，请重试','code' => 1]);
+            }
+        }
+        
+        // $resume_max_id = $resume->max('id');//获取最大id
+        // $resume_max_id = $resume_max_id + 1;//最大+1为简历起始id
         $ct_user = '';//创建人
         $personal_name = '';//真名
         for($i = 2;$i <= $total;$i++){
@@ -549,23 +625,31 @@ class Resume extends Controller
             }
             else{
                 if ($obj_excel -> getActiveSheet() -> getCell("M".$i)->getValue() != '') {
-                    $communicate[$keys]['ct_user'] = $data[$i]['ct_user'];
-                    $communicate[$keys]['communicate_time'] = $data[$i]['ct_time'];
-                    $communicate[$keys]['resume_id'] = $resume_max_id;
-                    $communicate[$keys]['content'] =  $obj_excel -> getActiveSheet() -> getCell("M".$i)->getValue();
-                    $keys++;
+                    $communicate[$keys]['ct_user1'] = $data[$i]['ct_user'];
+                    $communicate[$keys]['communicate_time1'] = $data[$i]['ct_time'];
+                    // $communicate[$keys]['resume_id'] = $resume_max_id;
+                    $communicate[$keys]['row_id'] = $i;
+                    $communicate[$keys]['content1'] =  $obj_excel -> getActiveSheet() -> getCell("M".$i)->getValue();
+                    // $keys++;
                 }
                 if ($obj_excel -> getActiveSheet() -> getCell("N".$i)->getValue() != '') {
-                    $communicate[$keys]['ct_user'] = $data[$i]['ct_user'];
-                    $communicate[$keys]['communicate_time'] = $data[$i]['ct_time'];
-                    $communicate[$keys]['resume_id'] = $resume_max_id;
-                    $communicate[$keys]['content'] =  $obj_excel -> getActiveSheet() -> getCell("M".$i)->getValue();
-                    $keys++;
+                    $communicate[$keys]['ct_user2'] = $data[$i]['ct_user'];
+                    $communicate[$keys]['communicate_time2'] = $data[$i]['ct_time'];
+                    // $communicate[$keys]['resume_id'] = $resume_max_id;
+                    $communicate[$keys]['row_id'] = $i;
+                    $communicate[$keys]['content2'] =  $obj_excel -> getActiveSheet() -> getCell("M".$i)->getValue();
+                    // $keys++;
                 }
-                $data[$i]['id'] = $resume_max_id;
-                $resume_max_id++;
+                $keys++;
+                // $data[$i]['id'] = $resume_max_id;
+                // $resume_max_id++;
+                // $data[$i]['row_id'] = $i;
+                $data[$i]['row_id'] = $row_id;
 
             }
+            $data[$i]['custom1'] = $obj_excel -> getActiveSheet() -> getCell("M".$i)->getValue();
+            $data[$i]['custom2'] = $obj_excel -> getActiveSheet() -> getCell("N".$i)->getValue();
+
             $data[$i]['company_type'] = $obj_excel -> getActiveSheet() -> getCell("L".$i)->getValue();
 
         }
@@ -666,7 +750,7 @@ class Resume extends Controller
         //添加简历
         $data = input('post.');
         $resume = new ResumeModel();
-        $res = $resume->getOne(['name' => $data['name'],'phone' => $data['phone']]);
+        $res = $resume->getOne(['name' => $data['name'],'phone' => $data['phone'],'email' => $data['email']]);
         if ($res) {
             return json(['msg' => '该候选人已存在，不允许添加','code' => 3]);
         }
@@ -713,7 +797,7 @@ class Resume extends Controller
         $data['ct_user'] = Session::get('user_info')['uname'];
 
         if(isset($data['work_year'])){
-            if (preg_match("/\d+/",$data['work_year'],$matches)) {
+            if (preg_match("/\d+(\.\d+)?/",$data['work_year'],$matches)) {
                  $data['work_year'] = $matches[0];
             }
             
@@ -785,7 +869,7 @@ class Resume extends Controller
 
 
         if(isset($data['work_year'])){
-            if (preg_match("/\d+/",$data['work_year'],$matches)) {
+            if (preg_match("/\d+(\.\d+)?/",$data['work_year'],$matches)) {
                  $data['work_year'] = $matches[0];
             }
             
@@ -876,7 +960,21 @@ class Resume extends Controller
             return json(['msg' => 'id字段不存在','code' => 2]);
         }
         $upload = new ResumeUpload();
-        $res = $upload->del(['id' => $id]);
+        
+        if (Session::get('user_info')['id'] == 1) {
+            $res = $upload->del(['id' => $id]);
+        }
+        else{
+            $ct_user = $upload->where('id','=',$id)->value('ct_user');
+            if ($ct_user != Session::get('user_info')['uname']) {
+                return json(['msg' => '没有权限删除别人的上传文件','code' => 500]);
+            }
+            else{
+                $res = $upload->del(['id' => $id]);
+            }
+        }
+        
+        
         $path = input('resume_url');
         if (empty($path)) {
             return json(['msg' => '文件路径不存在','code' => 3]);
@@ -1290,33 +1388,37 @@ class Resume extends Controller
         // $sphinx->SetLimits(0 , 100000000 , 6000);
         $sphinx->SetLimits(($where['pageIndex'] - 1) * $where['pageSize'] , $where['pageSize'] , 3000);//分页
 
-        $money_st = isset($where['expected_money_st'])?$where['expected_money_st']:'';
-        $money_ed = isset($where['expected_money_ed'])?$where['expected_money_ed']:'';
-        if ($money_st && $money_ed) {
-            $sphinx->SetFilterRange('expected_money_start',$money_st,$money_ed);
-            $sphinx->SetFilterRange('expected_money_end',$money_st,$money_ed);
-            // $sphinx->SetFilterRange('expected_money_end', 0, $money_st);
-        }else if($money_st && !$money_ed){  //期望薪资
-            $sphinx->SetFilterRange('expected_money_start', $money_st, 100000000);
-            // $sphinx->SetFilterRange('expected_money_end', 0,$money_st);
-        }else if(!$money_st && $money_ed){
-            // $sphinx->SetFilterRange('expected_money_end', $money_ed,100000000);
-            $sphinx->SetFilterRange('expected_money_end',0,$money_ed);
-        }else{
-            // $arr_ids[] = [];
-        }
+        //**********************************先不要的条件去掉**********************************************/
 
-        $age_min = isset($where['age_min'])?$where['age_min']:'';
-        $age_max = isset($where['age_max'])?$where['age_max']:'';
-        if ($age_min && $age_max) {
-            $sphinx->SetFilterRange('age', $age_min, $age_max);//查找年龄最小-最大之间
-        }else if($age_min && !$age_max){    //年龄
-            $sphinx->SetFilterRange('age', $age_min, 100);//查找年龄最小-100之间
-        }else if(!$age_min && $age_max){
-            $sphinx->SetFilterRange('age', 0, $age_max);//查找年龄0-最大之间
-        }else{
-            // $arr_ids[] = [];
-        }
+        // $money_st = isset($where['expected_money_st'])?$where['expected_money_st']:'';
+        // $money_ed = isset($where['expected_money_ed'])?$where['expected_money_ed']:'';
+        // if ($money_st && $money_ed) {
+        //     $sphinx->SetFilterRange('expected_money_start',$money_st,$money_ed);
+        //     $sphinx->SetFilterRange('expected_money_end',$money_st,$money_ed);
+        //     // $sphinx->SetFilterRange('expected_money_end', 0, $money_st);
+        // }else if($money_st && !$money_ed){  //期望薪资
+        //     $sphinx->SetFilterRange('expected_money_start', $money_st, 100000000);
+        //     // $sphinx->SetFilterRange('expected_money_end', 0,$money_st);
+        // }else if(!$money_st && $money_ed){
+        //     // $sphinx->SetFilterRange('expected_money_end', $money_ed,100000000);
+        //     $sphinx->SetFilterRange('expected_money_end',0,$money_ed);
+        // }else{
+        //     // $arr_ids[] = [];
+        // }
+
+        // $age_min = isset($where['age_min'])?$where['age_min']:'';
+        // $age_max = isset($where['age_max'])?$where['age_max']:'';
+        // if ($age_min && $age_max) {
+        //     $sphinx->SetFilterRange('age', $age_min, $age_max);//查找年龄最小-最大之间
+        // }else if($age_min && !$age_max){    //年龄
+        //     $sphinx->SetFilterRange('age', $age_min, 100);//查找年龄最小-100之间
+        // }else if(!$age_min && $age_max){
+        //     $sphinx->SetFilterRange('age', 0, $age_max);//查找年龄0-最大之间
+        // }else{
+        //     // $arr_ids[] = [];
+        // }
+
+        /*************************************************************************************************/
 
         $work_year_min = isset($where['work_year_min'])?$where['work_year_min']:'';
         $work_year_max = isset($where['work_year_max'])?$where['work_year_max']:'';
@@ -1338,10 +1440,10 @@ class Resume extends Controller
         $arr['educational'] = isset($where['educational'])?$where['educational']:'';
         $arr['phone'] = isset($where['phone'])?$where['phone']:'';
         $arr['expected_job'] = isset($where['expected_job'])?$where['expected_job']:'';
-        $arr['status'] = isset($where['status'])?$where['status']:'';
-        $arr['school'] = isset($where['school'])?$where['school']:'';
-        $arr['speciality'] = isset($where['speciality'])?$where['speciality']:'';
-        $arr['english'] = isset($where['english'])?$where['english']:'';
+        // $arr['status'] = isset($where['status'])?$where['status']:'';
+        // $arr['school'] = isset($where['school'])?$where['school']:'';
+        // $arr['speciality'] = isset($where['speciality'])?$where['speciality']:'';
+        // $arr['english'] = isset($where['english'])?$where['english']:'';
         $phinx_where = '';
         $count_arr = count($arr);
         $arr_ids = [];
@@ -1362,6 +1464,26 @@ class Resume extends Controller
         if($phinx_where != ''){
             // $sphinx->AddQuery($phinx_where,'resume');
             $phinx_where = '('.$phinx_where.')';
+        }
+
+        $ct_user = isset($where['ct_user'])?$where['ct_user'];
+        if ($ct_user) {
+            $ct_user = preg_replace("/(,|，)/",',',$ct_user);
+            $ct_user = explode(",",$ct_user);
+            $ct_user_where = '(';
+            $ct_user_length = count($ct_user)-1;
+            foreach ($ct_user as $k => $v) {
+                if ($k == $ct_user_length) {
+                    $ct_user_where.=$ct_user_where."@ct_user ($v) )";
+                }
+                else{
+                    $ct_user_where.=$ct_user_where."@ct_user ($v) |";
+                }
+                
+            }
+            $phinx_where = empty($phinx_where)?$ct_user_where:$phinx_where.' & '.$ct_user_where;
+            
+            // $sphinx->AddQuery($other,'resume');
         }
 
         $other = isset($where['other'])?$where['other']:'';
@@ -1537,11 +1659,24 @@ class Resume extends Controller
         //删除职位
         $id = input('post.id');
         $job_model = new JobSel();
-        $res = $job_model->where('id','=',$id)->delete();
+        if (Session::get('user_info')['id'] == 1) {
+            //超级管理员不做任何验证删除
+            $res = $job_model->where('id','=',$id)->delete();
+        }
+        else{
+            $ct_user = $job_model->where('id','=',$id)->value('ct_user');
+            if ($ct_user != Session::get('user_info')['uname']) {
+                return json(['msg' => '没有权限删除别人的数据','code' => 500,'data' => []]);
+            }
+            else{
+                $res = $job_model->where('id','=',$id)->delete();
+            }
+        }
+        
         if ($res) {
             return json(['msg' => '删除成功','code' => 0,'data' => []]);
         }
-        return json(['msg' => '修改成功','code' => 0,'data' => []]);
+
     }
 
     public function export(){

@@ -20,20 +20,83 @@ class Report extends Controller
     	return json([ 'msg' => '获取成功','code' => 0,'data' => $data ]);
     }
 
+    // public function getCandidate($parm = ''){
+    //   //获取数据
+    //   $resume = new Resume();
+    //   $comm = new Communicate();
+    //   $user = new User();
+
+    //   if (isset($parm['ur'])) {
+    //   $in_user = explode(',',$parm['ur']);
+    //   $where_in = implode("','",$in_user);
+    //   }
+
+    //   $where = "communicate_time between '$parm[dtfm]' and '$parm[dtto]'";
+    //   $communicate = $comm->getComm($where);//获取该时间段所有沟通信息
+    //   $resume_ids = array_unique(array_column($communicate,'resume_id'));//需要获取简历的id集合
+    //   $where_resume_in = implode("','",$resume_ids);
+    //   $resumes = $resume->where("id in('$where_resume_in')")->getCandidate();
+    //   foreach ($resumes as $k => $v) {
+          
+    //   }
+      
+
+
+
+
+
+
+    //   $candidate = $resume->getCandidate();
+      
+    //   foreach ($candidate as $k => $v) {
+
+    //     $where = "communicate_time between '$parm[dtfm]' and '$parm[dtto]' and resume_id = $v[id]";
+    //     if (isset($in_user)) {
+    //       $where.= " and a.ct_user in('$where_in')";
+    //     }
+
+    //     $communicate = $comm->getComm($where);
+
+    //     if (empty($communicate)) {
+    //       if (isset($in_user)) {
+    //         unset($candidate[$k]);
+    //         continue;
+    //       }
+    //       if (strtotime($parm['dtfm']) < strtotime($v['ct_time']) && strtotime($parm['dtto']) > strtotime($v['ct_time'])) {
+    //         $candidate[$k]['personal_name'] = $user->getUserName(['uname' => 'ct_user']);
+    //         $candidate[$k]['communicate_count'] = 0;
+    //       }
+    //       else{
+    //         unset($candidate[$k]);
+    //         continue;
+    //       }
+    //     }
+    //     else{
+
+    //       $candidate[$k]['personal_name'] = $communicate[0]['personal_name'];
+    //       $candidate[$k]['ct_time'] = $communicate[0]['communicate_time'];
+    //       $candidate[$k]['communicate_count'] = count($communicate);
+
+    //     }
+        
+
+    //   }
+    //   return array_merge($candidate);
+    // }
+
     public function getCandidate($parm = ''){
     	//获取数据
     	$resume = new Resume();
     	$comm = new Communicate();
     	$user = new User();
 
-
     	if (isset($parm['ur'])) {
 			$in_user = explode(',',$parm['ur']);
 			$where_in = implode("','",$in_user);
-			
     	}
 
     	$candidate = $resume->getCandidate();
+      dump($candidate);exit;
     	foreach ($candidate as $k => $v) {
 
     		$where = "communicate_time between '$parm[dtfm]' and '$parm[dtto]' and resume_id = $v[id]";
