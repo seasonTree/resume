@@ -7,6 +7,10 @@ import router from './router';
 import api from './api';
 import permission from './component/permission';
 import dialogDrag from './component/dialogDrag'
+import VCharts from 'v-charts'
+
+//图表
+Vue.use(VCharts)
 
 //图标
 Vue.config.productionTip = false;

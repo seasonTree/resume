@@ -287,12 +287,14 @@
                     prop="ct_user"
                     label="招聘负责人"
                     width="100"
+                    align="center"
                 ></el-table-column>
                 <el-table-column
                     fixed
                     prop="ct_time"
                     label="日期"
                     width="100"
+                    align="center"
                     :formatter="formatterDate"
                 ></el-table-column>
                 <el-table-column
@@ -300,6 +302,7 @@
                     prop="expected_job"
                     label="岗位"
                     width="80"
+                    align="center"
                 >
                     <template slot-scope="scope">
                         <el-tooltip
@@ -316,18 +319,21 @@
                     prop="name"
                     label="姓名"
                     width="80"
+                    align="center"
                 ></el-table-column>
                 <el-table-column
                     fixed
                     prop="phone"
                     label="手机"
                     width="100"
+                    align="center"
                 ></el-table-column>
                 <el-table-column
                     fixed
                     prop="email"
                     label="电子邮箱"
                     width="160"
+                    align="center"
                 >
                     <template slot-scope="scope">
                         <el-tooltip
@@ -375,31 +381,37 @@
                     prop="school"
                     label="毕业院校"
                     width="200"
+                    align="center"
                 ></el-table-column>
                 <el-table-column
                     prop="educational"
                     label="学历"
                     width="80"
+                    align="center"
                 ></el-table-column>
                 <el-table-column
                     prop="graduation_time"
                     label="毕业年份"
                     width="100"
+                    align="center"
                 ></el-table-column>
                 <el-table-column
                     prop="work_year"
                     label="工作年限"
                     width="80"
+                    align="center"
                 ></el-table-column>
                 <el-table-column
                     prop="source"
                     label="简历来源"
                     width="80"
+                    align="center"
                 ></el-table-column>                
                 <el-table-column
                     prop="company_type"
                     label="同和/大展"
                     width="100"
+                    align="center"
                 ></el-table-column>
 
                 <!-- <el-table-column

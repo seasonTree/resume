@@ -86,11 +86,10 @@
         <change-password :show.sync="changePasswordDialog">
         </change-password>
 
-        <user-image 
+        <user-image
             :show.sync="userImageDialog"
             :avatar="userInfo.avatar"
         ></user-image>
-        
 
     </el-container>
 </template>
@@ -176,7 +175,7 @@ export default {
 
             changePasswordDialog: false,
 
-            userImageDialog: false,
+            userImageDialog: false
 
             // userAvatar: 'url(./image/user_image.jpg)',
 
@@ -199,6 +198,14 @@ export default {
 
                 that.mainBodyTimer = setTimeout(() => {
                     that.bodyHeight = that.$refs.mainBody.offsetHeight;
+
+                    //抛出事件
+                    if (window.fireEvent) {
+                        window.fireEvent("bodyChange");
+                    } else {
+                        let rzEvent = new Event("bodyChange");
+                        window.dispatchEvent(rzEvent);
+                    }
                 }, 100);
             };
 

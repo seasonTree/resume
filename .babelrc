@@ -5,5 +5,5 @@
             "useBuiltIns": false
         }]
     ],
-    "plugins": ["@babel/plugin-syntax-dynamic-import", "transform-vue-jsx"]
+    "plugins": ["@babel/plugin-syntax-dynamic-import"]
 }
