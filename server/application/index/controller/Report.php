@@ -40,7 +40,7 @@ class Report extends Controller
       $resume_ids = implode("','",$resume_ids);
       $resumes = $resume->getCandidate($where_resume." or id in('$resume_ids')");
       $communicate_count = [];//沟通次数集合
-      dump($resumes);exit;
+      dump($resume->getlastsql());exit;
       foreach ($communicate as $k => $v) {
         if (array_key_exists($v['resume_id'], $communicate_count)) {
           $communicate_count[$v['resume_id']]++;
