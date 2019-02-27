@@ -32,6 +32,7 @@ class Report extends Controller
       }
 
       $where_communicate = "date(communicate_time) between '$parm[dtfm]' and '$parm[dtto]'";
+      $where_communicate = isset($where_in)?$where_communicate." and ct_user in('$where_in')":$where_communicate;
       $where_resume = "ct_time between '$parm[dtfm]' and '$parm[dtto]'";
       $where_resume = isset($where_in)?$where_resume." and ct_user in('$where_in')":$where_resume;
       $communicate = $comm->getComm($where_communicate);//获取该时间段所有沟通信息
