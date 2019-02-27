@@ -39,9 +39,8 @@ class Report extends Controller
       $resume_ids = array_unique(array_column($communicate,'resume_id'));//需要获取简历的id集合
       $resume_ids = implode("','",$resume_ids);
       $resumes = $resume->getCandidate($where_resume." or id in('$resume_ids')");
-
       $communicate_count = [];//沟通次数集合
-
+      dump($resumes);exit;
       foreach ($communicate as $k => $v) {
         if (array_key_exists($v['resume_id'], $communicate_count)) {
           $communicate_count[$v['resume_id']]++;
