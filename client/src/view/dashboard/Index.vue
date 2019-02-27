@@ -13,12 +13,13 @@
                         class="block-content"
                         ref="blockContent"
                     >
-                        <div class="chart-title">个人最近7天简历情况</div>
+                        <div class="chart-title">个人最近7天简历和沟通的情况</div>
 
                         <ve-histogram
                             :data="personChartData"
                             :height="chartHeight"
                             :settings="barChartSetting"
+                            :extend="extend"
                         ></ve-histogram>
 
                         <!-- <div>昨天简历更新了{{yesterday_resume}}份</div> -->
@@ -32,10 +33,16 @@
                         <!-- <div>昨天简历沟通了{{yesterday_communicate}}份</div> -->
 
                         <div class="chart-title">个人最近7天沟通情况</div>
-                        <ve-pie
+
+                        <!-- <div class="text-row">推荐总数： <span class="text-tip">13</span>， 占团队比率：<span class="text-tip">13%</span></div>
+                        <div class="text-row">安排总数： <span class="text-tip">13</span>， 占团队比率：<span class="text-tip">13%</span></div>
+                        <div class="text-row">到场总数： <span class="text-tip">13</span>， 占团队比率：<span class="text-tip">13%</span></div>
+                        <div class="text-row">通过总数： <span class="text-tip">13</span>， 占团队比率：<span class="text-tip">13%</span></div>
+                        <div class="text-row">入职总数： <span class="text-tip">13</span>， 占团队比率：<span class="text-tip">13%</span></div> -->
+                        <!-- <ve-pie
                             :data="personPieData"
                             :height="chartHeight"
-                        ></ve-pie>
+                        ></ve-pie> -->
                     </div>
                 </el-col>
             </el-col>
@@ -49,12 +56,13 @@
                     :span="12"
                 >
                     <div class="block-content">
-                        <div class="chart-title">最近7天简历汇总情况</div>
+                        <div class="chart-title">团队最近7天简历和沟通的情况</div>
 
                         <ve-histogram
                             :data="totalChartData"
                             :height="chartHeight"
                             :settings="barChartSetting"
+                            :extend="extend"
                         ></ve-histogram>
                         <!-- <div>上周简历更新了{{last_week_resume}}份</div> -->
                     </div>
@@ -67,10 +75,11 @@
                         <!-- <div>上周简历总沟通了{{last_week_communicate}}次</div> -->
 
                         <div class="chart-title">最近7天沟通汇总情况</div>
-                        <ve-pie
+
+                        <!-- <ve-pie
                             :data="totalPieData"
                             :height="chartHeight"
-                        ></ve-pie>
+                        ></ve-pie> -->
                     </div>
                 </el-col>
             </el-col>
@@ -96,6 +105,12 @@ export default {
                 labelMap: {
                     resume: "简历",
                     commun: "沟通"
+                }
+            },
+
+            extend: {
+                series: {
+                    label: { show: true, position: "top" }
                 }
             },
 
@@ -136,31 +151,31 @@ export default {
                 ]
             },
 
-            personPieData: {
-                columns: ["type", "total"],
-                rows: [
-                    // {
-                    //     type: "推荐",
-                    //     total: 1393
-                    // },
-                    // {
-                    //     type: "安排",
-                    //     total: 3530
-                    // },
-                    // {
-                    //     type: "到场",
-                    //     total: 2923
-                    // },
-                    // {
-                    //     type: "通过",
-                    //     total: 1723
-                    // },
-                    // {
-                    //     type: "入职",
-                    //     total: 3792
-                    // }
-                ]
-            },
+            // personPieData: {
+            //     columns: ["type", "total"],
+            //     rows: [
+            //         // {
+            //         //     type: "推荐",
+            //         //     total: 1393
+            //         // },
+            //         // {
+            //         //     type: "安排",
+            //         //     total: 3530
+            //         // },
+            //         // {
+            //         //     type: "到场",
+            //         //     total: 2923
+            //         // },
+            //         // {
+            //         //     type: "通过",
+            //         //     total: 1723
+            //         // },
+            //         // {
+            //         //     type: "入职",
+            //         //     total: 3792
+            //         // }
+            //     ]
+            // },
             //------------------------
 
             //汇总-----------------------
@@ -199,33 +214,33 @@ export default {
                     //     commun: 4293
                     // }
                 ]
-            },
-
-            totalPieData: {
-                columns: ["type", "total"],
-                rows: [
-                    // {
-                    //     type: "推荐",
-                    //     total: 1393
-                    // },
-                    // {
-                    //     type: "安排",
-                    //     total: 3530
-                    // },
-                    // {
-                    //     type: "到场",
-                    //     total: 2923
-                    // },
-                    // {
-                    //     type: "通过",
-                    //     total: 1723
-                    // },
-                    // {
-                    //     type: "入职",
-                    //     total: 3792
-                    // }
-                ]
             }
+
+            // totalPieData: {
+            //     columns: ["type", "total"],
+            //     rows: [
+            //         // {
+            //         //     type: "推荐",
+            //         //     total: 1393
+            //         // },
+            //         // {
+            //         //     type: "安排",
+            //         //     total: 3530
+            //         // },
+            //         // {
+            //         //     type: "到场",
+            //         //     total: 2923
+            //         // },
+            //         // {
+            //         //     type: "通过",
+            //         //     total: 1723
+            //         // },
+            //         // {
+            //         //     type: "入职",
+            //         //     total: 3792
+            //         // }
+            //     ]
+            // }
 
             //------------------------
         };
@@ -278,8 +293,8 @@ export default {
                     if (res.code == 0) {
                         that.personChartData.rows = res.data.per_bar_data;
                         that.totalChartData.rows = res.data.total_bar_data;
-                        that.personPieData.rows = res.data.per_pie_data;
-                        that.totalPieData.rows = res.data.total_pei_data;                        
+                        // that.personPieData.rows = res.data.per_pie_data;
+                        // that.totalPieData.rows = res.data.total_pei_data;
 
                         // that.yesterday_resume = res.data.yesterday_resume;
                         // that.yesterday_communicate =
@@ -341,6 +356,14 @@ export default {
             .chart-title {
                 font-size: 18px;
                 margin: 10px 0;
+            }
+
+            .text-row {
+                margin: 10px 0;
+
+                .text-tip {
+                    color: #f92301;
+                }
             }
 
             // .chart-content{
