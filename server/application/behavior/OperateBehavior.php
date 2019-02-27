@@ -26,7 +26,8 @@ class OperateBehavior extends Controller
         '/api/user/get_user_info',
         '/api/user/get_user_permission',
         '/api/user/change_password',
-        '/api/user/update_avatar'
+        '/api/user/update_avatar',
+        '/api/dashboard/get'
 
     ];
 
