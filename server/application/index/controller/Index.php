@@ -107,17 +107,22 @@ class Index extends Controller
 
            }
            //总统计
-           $total_comm['total_comm']['screen'] = $screen_total;
-           $total_comm['total_comm']['arrange_interview'] = $arrange_interview_total;
-           $total_comm['total_comm']['arrive'] = $arrive_total;
-           $total_comm['total_comm']['approved_interview'] = $approved_interview_total;
-           $total_comm['total_comm']['entry'] = $entry_total;
+           $total_comm['screen'] = $screen_total;
+           $total_comm['arrange_interview'] = $arrange_interview_total;
+           $total_comm['arrive'] = $arrive_total;
+           $total_comm['approved_interview'] = $approved_interview_total;
+           $total_comm['entry'] = $entry_total;
            //个人统计
-           $person_comm['person_comm']['screen'] = $screen_person;
-           $person_comm['person_comm']['arrange_interview'] = $arrange_interview_person;
-           $person_comm['person_comm']['arrive'] = $arrive_person;
-           $person_comm['person_comm']['approved_interview'] = $approved_interview_person;
-           $person_comm['person_comm']['entry'] = $entry_person;
+           $person_comm['screen'] = $screen_person;
+           $person_comm['arrange_interview'] = $arrange_interview_person;
+           $person_comm['arrive'] = $arrive_person;
+           $person_comm['approved_interview'] = $approved_interview_person;
+           $person_comm['entry'] = $entry_person;
+           $person_comm['screen_percentage'] = (($screen_person/$screen_total)*100).'%';
+           $person_comm['arrange_interview_percentage'] = (($arrange_interview_person/$arrange_interview_total)*100).'%';
+           $person_comm['arrive_percentage'] = (($arrive_person/$arrive_total)*100).'%';
+           $person_comm['approved_interview_percentage'] = (($approved_interview_person/$approved_interview_total)*100).'%';
+           $person_comm['entry_percentage'] = (($entry_person/$entry_total)*100).'%';
 
              
 
