@@ -32,13 +32,33 @@
                     <div class="block-content">
                         <!-- <div>昨天简历沟通了{{yesterday_communicate}}份</div> -->
 
-                        <div class="chart-title">个人最近7天沟通情况</div>
+                        <!-- <div class="chart-title">个人最近7天沟通情况</div> -->
 
-                        <!-- <div class="text-row">推荐总数： <span class="text-tip">13</span>， 占团队比率：<span class="text-tip">13%</span></div>
-                        <div class="text-row">安排总数： <span class="text-tip">13</span>， 占团队比率：<span class="text-tip">13%</span></div>
-                        <div class="text-row">到场总数： <span class="text-tip">13</span>， 占团队比率：<span class="text-tip">13%</span></div>
-                        <div class="text-row">通过总数： <span class="text-tip">13</span>， 占团队比率：<span class="text-tip">13%</span></div>
-                        <div class="text-row">入职总数： <span class="text-tip">13</span>， 占团队比率：<span class="text-tip">13%</span></div> -->
+                        <div class="text-content">
+                            <div class="chart-title">个人最近7天沟通情况</div>
+
+                            <div class="text-row">推荐总数：
+                                <span class="text-tip">{{person_comm.screen}}</span>
+                                ， 占团队比率：<span class="text-tip">{{person_comm.screen_percentage}}</span>
+                            </div>
+                            <div class="text-row">安排总数：
+                                <span class="text-tip">{{person_comm.arrange_interview}}</span>
+                                ， 占团队比率：<span class="text-tip">{{person_comm.arrange_interview_percentage}}</span>
+                            </div>
+                            <div class="text-row">到场总数：
+                                <span class="text-tip">{{person_comm.arrive}}</span>
+                                ， 占团队比率：<span class="text-tip">{{person_comm.arrive_percentage}}</span>
+                            </div>
+                            <div class="text-row">通过总数：
+                                <span class="text-tip">{{person_comm.approved_interview}}</span>
+                                ， 占团队比率：<span class="text-tip">{{person_comm.approved_interview_percentage}}</span>
+                            </div>
+                            <div class="text-row">入职总数：
+                                <span class="text-tip">{{person_comm.entry}}</span>
+                                ， 占团队比率：<span class="text-tip">{{person_comm.entry_percentage}}</span>
+                            </div>
+                        </div>
+
                         <!-- <ve-pie
                             :data="personPieData"
                             :height="chartHeight"
@@ -74,8 +94,17 @@
                     <div class="block-content">
                         <!-- <div>上周简历总沟通了{{last_week_communicate}}次</div> -->
 
-                        <div class="chart-title">最近7天沟通汇总情况</div>
+                        <!-- <div class="chart-title">团队最近7天沟通汇总情况</div> -->
+                        <div class="text-content">
+                            <div class="chart-title">团队最近7天沟通汇总情况</div>
 
+                            <div class="text-row">推荐总数： <span class="text-tip">{{total_comm.screen}}</span></div>
+                            <div class="text-row">安排总数： <span class="text-tip">{{total_comm.arrange_interview}}</span></div>
+                            <div class="text-row">到场总数： <span class="text-tip">{{total_comm.arrive}}</span></div>
+                            <div class="text-row">通过总数： <span class="text-tip">{{total_comm.approved_interview}}</span></div>
+                            <div class="text-row">入职总数： <span class="text-tip">{{total_comm.entry}}</span></div>
+
+                        </div>
                         <!-- <ve-pie
                             :data="totalPieData"
                             :height="chartHeight"
@@ -111,6 +140,15 @@ export default {
             extend: {
                 series: {
                     label: { show: true, position: "top" }
+                },
+
+                yAxis: {
+                    type: "value",
+                    minInterval: 1,
+                    axisLabel: {
+                        formatter: "{value}"
+                    },
+                    boundaryGap: [0, 0.1]
                 }
             },
 
@@ -214,7 +252,10 @@ export default {
                     //     commun: 4293
                     // }
                 ]
-            }
+            },
+
+            total_comm: {},
+            person_comm: {}
 
             // totalPieData: {
             //     columns: ["type", "total"],
@@ -253,6 +294,10 @@ export default {
 
     mounted() {
         let that = this;
+
+        that.$nextTick(() => {
+            that.resize();
+        });
 
         //监听事件,由layout那边的resize抛出的
         if (window.addEventListener) {
@@ -293,8 +338,8 @@ export default {
                     if (res.code == 0) {
                         that.personChartData.rows = res.data.per_bar_data;
                         that.totalChartData.rows = res.data.total_bar_data;
-                        // that.personPieData.rows = res.data.per_pie_data;
-                        // that.totalPieData.rows = res.data.total_pei_data;
+                        that.total_comm = res.data.total_comm;
+                        that.person_comm = res.data.person_comm;
 
                         // that.yesterday_resume = res.data.yesterday_resume;
                         // that.yesterday_communicate =
@@ -345,12 +390,9 @@ export default {
             bottom: 0;
             left: 10px;
             right: 10px;
-            overflow: hidden;
+            // overflow: hidden;
             // > div {
-            //     position: absolute;
-            //     top: 50%;
-            //     left: 50%;
-            //     transform: translate(-50%, -50%);
+
             // }
 
             .chart-title {
@@ -358,11 +400,20 @@ export default {
                 margin: 10px 0;
             }
 
-            .text-row {
-                margin: 10px 0;
+            .text-content {
+                padding: 10px;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 100%;
 
-                .text-tip {
-                    color: #f92301;
+                .text-row {
+                    margin: 10px 0;
+
+                    .text-tip {
+                        color: #f92301;
+                    }
                 }
             }
 
