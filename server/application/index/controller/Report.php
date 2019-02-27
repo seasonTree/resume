@@ -32,14 +32,13 @@ class Report extends Controller
       }
 
       $where_communicate = "date(communicate_time) between '$parm[dtfm]' and '$parm[dtto]'";
-      $where_resume = "ct_time between '$parm[dtfm]' and '$parm[dtto]' or mfy_time between '$parm[dtfm]' and '$parm[dtto]'";
+      $where_communicate = isset($where_in)?$where_communicate." and ct_user in('$where_in')":$where_communicate;
+      $where_resume = "ct_time between '$parm[dtfm]' and '$parm[dtto]'";
       $where_resume = isset($where_in)?$where_resume." and ct_user in('$where_in')":$where_resume;
-
       $communicate = $comm->getComm($where_communicate);//获取该时间段所有沟通信息
       $resume_ids = array_unique(array_column($communicate,'resume_id'));//需要获取简历的id集合
       $resume_ids = implode("','",$resume_ids);
       $resumes = $resume->getCandidate($where_resume." or id in('$resume_ids')");
-
       $communicate_count = [];//沟通次数集合
 
       foreach ($communicate as $k => $v) {
@@ -56,7 +55,6 @@ class Report extends Controller
       foreach ($resumes as $k => $v) {
           $resumes[$k]['communicate_count'] = isset($communicate_count[$v['id']])?$communicate_count[$v['id']]:0;
       }
-      
       return $resumes;
 
 
