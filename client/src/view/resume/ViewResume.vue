@@ -62,13 +62,23 @@
                                 ></el-input>
                             </el-form-item>
 
-                            <el-form-item
+                            <!-- <el-form-item
                                 label="学历"
                                 prop="educational"
                             >
                                 <el-input
                                     size="mini"
                                     v-model.trim="form.educational"
+                                    autocomplete="off"
+                                ></el-input>
+                            </el-form-item> -->
+                            <el-form-item
+                                label="毕业时间"
+                                prop="graduation_time"
+                            >
+                                <el-input
+                                    size="mini"
+                                    v-model.trim="form.graduation_time"
                                     autocomplete="off"
                                 ></el-input>
                             </el-form-item>
@@ -183,7 +193,18 @@
                             ></el-input>
                         </el-form-item>
                         <el-form-item
-                            label="期望岗位"
+                            label="学历"
+                            prop="educational"
+                        >
+                            <el-input
+                                size="mini"
+                                v-model.trim="form.educational"
+                                autocomplete="off"
+                            ></el-input>
+                        </el-form-item>
+
+                        <el-form-item
+                            label="岗位"
                             prop="expected_job"
                         >
                             <el-input
@@ -202,7 +223,6 @@
                                 autocomplete="off"
                             ></el-input>
                         </el-form-item>
-
                         <el-form-item
                             label="电子邮箱"
                             prop="email"
@@ -218,7 +238,6 @@
                             label="毕业院校"
                             prop="school"
                         >
-
                             <el-input
                                 size="mini"
                                 v-model.trim="form.school"
@@ -246,7 +265,16 @@
                                 v-model.trim="form.nearest_job"
                                 autocomplete="off"
                             ></el-input>
-
+                        </el-form-item>
+                        <el-form-item
+                            label="公司来源"
+                            prop="company_type"
+                        >
+                            <el-input
+                                size="mini"
+                                v-model.trim="form.company_type"
+                                autocomplete="off"
+                            ></el-input>
                         </el-form-item>
 
                     </div>
@@ -426,7 +454,7 @@ export default {
                 status: "",
                 expected_job: "",
                 email: "",
-                source:"",
+                source: "",
 
                 //毕业时间
                 graduation_time: "",

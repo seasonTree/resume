@@ -13,7 +13,7 @@
                         class="block-content"
                         ref="blockContent"
                     >
-                        <div class="chart-title">个人最近7天简历和沟通的情况</div>
+                        <div class="chart-title">个人最近7天招聘的情况</div>
 
                         <ve-histogram
                             :data="personChartData"
@@ -29,13 +29,13 @@
                     class="block"
                     :span="12"
                 >
-                    <div class="block-content">
+                    <div class="block-content text-block">
                         <!-- <div>昨天简历沟通了{{yesterday_communicate}}份</div> -->
 
                         <!-- <div class="chart-title">个人最近7天沟通情况</div> -->
 
                         <div class="text-content">
-                            <div class="chart-title">个人最近7天沟通情况</div>
+                            <div class="chart-title">个人最近7天招聘情况</div>
 
                             <div class="text-row">推荐总数：
                                 <span class="text-tip">{{person_comm.screen}}</span>
@@ -76,7 +76,7 @@
                     :span="12"
                 >
                     <div class="block-content">
-                        <div class="chart-title">团队最近7天简历和沟通的情况</div>
+                        <div class="chart-title">团队最近7天招聘情况</div>
 
                         <ve-histogram
                             :data="totalChartData"
@@ -91,12 +91,12 @@
                     class="block"
                     :span="12"
                 >
-                    <div class="block-content">
+                    <div class="block-content text-block">
                         <!-- <div>上周简历总沟通了{{last_week_communicate}}次</div> -->
 
                         <!-- <div class="chart-title">团队最近7天沟通汇总情况</div> -->
                         <div class="text-content">
-                            <div class="chart-title">团队最近7天沟通汇总情况</div>
+                            <div class="chart-title">团队最近7天招聘情况</div>
 
                             <div class="text-row">推荐总数： <span class="text-tip">{{total_comm.screen}}</span></div>
                             <div class="text-row">安排总数： <span class="text-tip">{{total_comm.arrange_interview}}</span></div>
@@ -370,17 +370,28 @@ export default {
     }
 }
 .block-row {
-    padding: 10px 0;
+    // padding: 10px 0;
+    height: 50%;
+    box-sizing: border-box;
+
+    &:first-of-type {
+        padding-bottom: 20px;
+    }
+
     .block {
         height: 100%;
-        min-height: 360px;
+        // min-height: 360px;
         box-sizing: border-box;
         position: relative;
+
+        .text-block {
+            overflow: auto;
+        }
 
         .block-content {
             // width: 100%;
             // height: 100%;
-            border: 1px solid #e3e3e3;
+            border: 1px solid #bbbbbb;
             border-radius: 6px;
             // color: white;
             text-align: center;
@@ -390,7 +401,6 @@ export default {
             bottom: 0;
             left: 10px;
             right: 10px;
-            // overflow: hidden;
             // > div {
 
             // }
@@ -401,11 +411,11 @@ export default {
             }
 
             .text-content {
-                padding: 10px;
+                // padding: 10px;
                 position: absolute;
                 top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
+                // left: 50%;
+                transform: translate(0, -50%);
                 width: 100%;
 
                 .text-row {
