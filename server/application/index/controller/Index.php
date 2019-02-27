@@ -125,15 +125,47 @@ class Index extends Controller
            $person_comm['entry_percentage'] = round((($entry_person/$entry_total)*100),2).'%';
 
              
+           /*****************************修改原有的七天显示格式，保留以前旧格式，**************************************/
+           //处理统计数据
+           $total = array_reverse($total);
+           $resume_res = array_column($total,'resume');
+           $commun_res = array_column($total,'commun');
+           $total_bar_data[0]['date'] = $total[0]['date'];//今日数据
+           $total_bar_data[0]['resume'] = $resume_res[0];
+           $total_bar_data[0]['commun'] = $commun_res[0];
+
+           $total_bar_data[1]['date'] = $total[1]['date'];//昨日数据
+           $total_bar_data[1]['resume'] = $resume_res[1];
+           $total_bar_data[1]['commun'] = $commun_res[1];
+
+           $total_bar_data[2]['date'] = '最近7日';//7日之内的数据
+           $total_bar_data[2]['resume'] = array_sum($resume_res);
+           $total_bar_data[2]['commun'] = array_sum($commun_res);
+
+           //个人统计
+           $person = array_reverse($person);
+           $resume_res = array_column($person,'resume');
+           $commun_res = array_column($person,'commun');
+           $per_bar_data[0]['date'] = $person[0]['date'];//今日数据
+           $per_bar_data[0]['resume'] = $resume_res[0];
+           $per_bar_data[0]['commun'] = $commun_res[0];
+
+           $per_bar_data[1]['date'] = $person[1]['date'];//昨日数据
+           $per_bar_data[1]['resume'] = $resume_res[1];
+           $per_bar_data[1]['commun'] = $commun_res[1];
+
+           $per_bar_data[2]['date'] = '最近7日';//7日之内的数据
+           $per_bar_data[2]['resume'] = array_sum($resume_res);
+           $per_bar_data[2]['commun'] = array_sum($commun_res);
 
 
-
+           /********************************************************************************************************/
 
 
 
            
 
-           return json(['msg' => '获取成功','code' => 0,'data' => ['total_bar_data' => $total,'per_bar_data' => $person,'total_comm' => $total_comm,'person_comm' => $person_comm]]);
+           return json(['msg' => '获取成功','code' => 0,'data' => ['total_bar_data' => $total_bar_data,'per_bar_data' => $per_bar_data,'total_comm' => $total_comm,'person_comm' => $person_comm]]);
 		
     }
 
