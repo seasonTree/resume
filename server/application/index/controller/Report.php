@@ -20,126 +20,149 @@ class Report extends Controller
     	return json([ 'msg' => '获取成功','code' => 0,'data' => $data ]);
     }
 
-    // public function getCandidate($parm = ''){
-    //   //获取数据
-    //   $resume = new Resume();
-    //   $comm = new Communicate();
-    //   $user = new User();
+    public function getCandidate($parm = ''){
+      //获取数据
+      $resume = new Resume();
+      $comm = new Communicate();
+      $user = new User();
 
-    //   if (isset($parm['ur'])) {
-    //   $in_user = explode(',',$parm['ur']);
-    //   $where_in = implode("','",$in_user);
-    //   }
+      if (isset($parm['ur'])) {
+      $in_user = explode(',',$parm['ur']);
+      $where_in = implode("','",$in_user);
+      }
 
-    //   $where = "communicate_time between '$parm[dtfm]' and '$parm[dtto]'";
-    //   $communicate = $comm->getComm($where);//获取该时间段所有沟通信息
-    //   $resume_ids = array_unique(array_column($communicate,'resume_id'));//需要获取简历的id集合
-    //   $where_resume_in = implode("','",$resume_ids);
-    //   $resumes = $resume->where("id in('$where_resume_in')")->getCandidate();
-    //   foreach ($resumes as $k => $v) {
-          
-    //   }
+      $where_communicate = "date(communicate_time) between '$parm[dtfm]' and '$parm[dtto]'";
+      $where_resume = "ct_time between '$parm[dtfm]' and '$parm[dtto]' or mfy_time between '$parm[dtfm]' and '$parm[dtto]'";
+      $where_resume = isset($where_in)?$where_resume." and ct_user in('$where_in')":$where_resume;
+
+      $communicate = $comm->getComm($where_communicate);//获取该时间段所有沟通信息
+      $resume_ids = array_unique(array_column($communicate,'resume_id'));//需要获取简历的id集合
+      $resume_ids = implode("','",$resume_ids);
+      $resumes = $resume->getCandidate($where_resume." or id in('$resume_ids')");
+
+      $communicate_count = [];//沟通次数集合
+
+      foreach ($communicate as $k => $v) {
+        if (array_key_exists($v['resume_id'], $communicate_count)) {
+          $communicate_count[$v['resume_id']]++;
+        }
+        else{
+          $communicate_count[$v['resume_id']] = 1;  
+        }
+        
+      }
+
+
+      foreach ($resumes as $k => $v) {
+          $resumes[$k]['communicate_count'] = isset($communicate_count[$v['id']])?$communicate_count[$v['id']]:0;
+      }
       
+      return $resumes;
 
 
 
 
 
 
-    //   $candidate = $resume->getCandidate();
+      // $candidate = $resume->getCandidate();
       
-    //   foreach ($candidate as $k => $v) {
+      // foreach ($candidate as $k => $v) {
 
-    //     $where = "communicate_time between '$parm[dtfm]' and '$parm[dtto]' and resume_id = $v[id]";
-    //     if (isset($in_user)) {
-    //       $where.= " and a.ct_user in('$where_in')";
-    //     }
+      //   $where = "communicate_time between '$parm[dtfm]' and '$parm[dtto]' and resume_id = $v[id]";
+      //   if (isset($in_user)) {
+      //     $where.= " and a.ct_user in('$where_in')";
+      //   }
 
-    //     $communicate = $comm->getComm($where);
+      //   $communicate = $comm->getComm($where);
 
-    //     if (empty($communicate)) {
-    //       if (isset($in_user)) {
-    //         unset($candidate[$k]);
-    //         continue;
-    //       }
-    //       if (strtotime($parm['dtfm']) < strtotime($v['ct_time']) && strtotime($parm['dtto']) > strtotime($v['ct_time'])) {
-    //         $candidate[$k]['personal_name'] = $user->getUserName(['uname' => 'ct_user']);
-    //         $candidate[$k]['communicate_count'] = 0;
-    //       }
-    //       else{
-    //         unset($candidate[$k]);
-    //         continue;
-    //       }
-    //     }
-    //     else{
+      //   if (empty($communicate)) {
+      //     if (isset($in_user)) {
+      //       unset($candidate[$k]);
+      //       continue;
+      //     }
+      //     if (strtotime($parm['dtfm']) < strtotime($v['ct_time']) && strtotime($parm['dtto']) > strtotime($v['ct_time'])) {
+      //       $candidate[$k]['personal_name'] = $user->getUserName(['uname' => 'ct_user']);
+      //       $candidate[$k]['communicate_count'] = 0;
+      //     }
+      //     else{
+      //       unset($candidate[$k]);
+      //       continue;
+      //     }
+      //   }
+      //   else{
 
-    //       $candidate[$k]['personal_name'] = $communicate[0]['personal_name'];
-    //       $candidate[$k]['ct_time'] = $communicate[0]['communicate_time'];
-    //       $candidate[$k]['communicate_count'] = count($communicate);
+      //     $candidate[$k]['personal_name'] = $communicate[0]['personal_name'];
+      //     $candidate[$k]['ct_time'] = $communicate[0]['communicate_time'];
+      //     $candidate[$k]['communicate_count'] = count($communicate);
 
-    //     }
+      //   }
         
 
-    //   }
-    //   return array_merge($candidate);
-    // }
+      // }
+      // return array_merge($candidate);
+    }
 
-    public function getCandidate($parm = ''){
-    	//获取数据
-    	$resume = new Resume();
-    	$comm = new Communicate();
-    	$user = new User();
+/*******************************旧方法,获取候选人跟踪情况*****************************************/
 
-    	if (isset($parm['ur'])) {
-			$in_user = explode(',',$parm['ur']);
-			$where_in = implode("','",$in_user);
-    	}
+   //  public function getCandidate($parm = ''){
+   //  	//获取数据
+   //  	$resume = new Resume();
+   //  	$comm = new Communicate();
+   //  	$user = new User();
 
-    	$candidate = $resume->getCandidate();
-    	foreach ($candidate as $k => $v) {
+   //  	if (isset($parm['ur'])) {
+			// $in_user = explode(',',$parm['ur']);
+			// $where_in = implode("','",$in_user);
+   //  	}
 
-    		$where = "communicate_time between '$parm[dtfm]' and '$parm[dtto]' and resume_id = $v[id]";
-    		if (isset($in_user)) {
-    			$where.= " and a.ct_user in('$where_in')";
-    		}
+   //  	$candidate = $resume->getCandidate();
+   //  	foreach ($candidate as $k => $v) {
 
-    		$communicate = $comm->getComm($where);
-    		// if ($v['graduation_time'] != '') {
-    		// 	$graduation_time = explode('-',$v['graduation_time']);
-	    	// 	if (count($graduation_time) > 1) {
-	    	// 		$candidate[$k]['graduation_time'] = $graduation_time[1];
-	    	// 	}
-	    	// 	else{
-	    	// 		$candidate[$k]['graduation_time'] = $graduation_time[1];
-	    	// 	}
-    		// }
+   //  		$where = "communicate_time between '$parm[dtfm]' and '$parm[dtto]' and resume_id = $v[id]";
+   //  		if (isset($in_user)) {
+   //  			$where.= " and a.ct_user in('$where_in')";
+   //  		}
 
-    		if (empty($communicate)) {
-    			if (isset($in_user)) {
-    				unset($candidate[$k]);
-    				continue;
-    			}
-    			if (strtotime($parm['dtfm']) < strtotime($v['ct_time']) && strtotime($parm['dtto']) > strtotime($v['ct_time'])) {
-    				// $candidate[$k]['personal_name']	= $user->getUserName(['uname' => 'ct_user']);
-    				$candidate[$k]['communicate_count'] = 0;
-    			}
-    			else{
-    				unset($candidate[$k]);
-    				continue;
-    			}
-    		}
-    		else{
+   //  		$communicate = $comm->getComm($where);
+   //  		// if ($v['graduation_time'] != '') {
+   //  		// 	$graduation_time = explode('-',$v['graduation_time']);
+	  //   	// 	if (count($graduation_time) > 1) {
+	  //   	// 		$candidate[$k]['graduation_time'] = $graduation_time[1];
+	  //   	// 	}
+	  //   	// 	else{
+	  //   	// 		$candidate[$k]['graduation_time'] = $graduation_time[1];
+	  //   	// 	}
+   //  		// }
 
-    			// $candidate[$k]['personal_name'] = $communicate[0]['personal_name'];
-    			$candidate[$k]['ct_time'] = $communicate[0]['communicate_time'];
-    			$candidate[$k]['communicate_count'] = count($communicate);
+   //  		if (empty($communicate)) {
+   //  			if (isset($in_user)) {
+   //  				unset($candidate[$k]);
+   //  				continue;
+   //  			}
+   //  			if (strtotime($parm['dtfm']) < strtotime($v['ct_time']) && strtotime($parm['dtto']) > strtotime($v['ct_time'])) {
+   //  				// $candidate[$k]['personal_name']	= $user->getUserName(['uname' => 'ct_user']);
+   //  				$candidate[$k]['communicate_count'] = 0;
+   //  			}
+   //  			else{
+   //  				unset($candidate[$k]);
+   //  				continue;
+   //  			}
+   //  		}
+   //  		else{
 
-    		}
+   //  			// $candidate[$k]['personal_name'] = $communicate[0]['personal_name'];
+   //  			$candidate[$k]['ct_time'] = $communicate[0]['communicate_time'];
+   //  			$candidate[$k]['communicate_count'] = count($communicate);
+
+   //  		}
     		
 
-    	}
-    	return array_merge($candidate);
-    }
+   //  	}
+   //  	return array_merge($candidate);
+   //  }
+
+/******************************************************************************************************/
+
 
    //  public function getCandidate($parm = ''){
    //  	//获取数据
@@ -269,10 +292,10 @@ class Report extends Controller
     		}
 
     		$user_info[$k]['screen'] = 0;
-			$user_info[$k]['arrange_interview'] = 0;
-			$user_info[$k]['arrive'] = 0;
-			$user_info[$k]['approved_interview'] = 0;
-			$user_info[$k]['entry'] = 0;
+  			$user_info[$k]['arrange_interview'] = 0;
+  			$user_info[$k]['arrive'] = 0;
+  			$user_info[$k]['approved_interview'] = 0;
+  			$user_info[$k]['entry'] = 0;
     		$communicate = $comm->getCommInfo($where);
     		foreach ($communicate as $a => $b) {
     			$user_info[$k]['screen'] = $user_info[$k]['screen']+$b['screen'];
@@ -362,26 +385,26 @@ class Report extends Controller
     	if ($input['type'] == 0) {
     		//宽度设置
     		$obj->getActiveSheet()->getColumnDimension('A')->setWidth(12);
-			$obj->getActiveSheet()->getColumnDimension('B')->setWidth(12);
-			$obj->getActiveSheet()->getColumnDimension('C')->setWidth(10);
-			$obj->getActiveSheet()->getColumnDimension('D')->setWidth(10);
-			$obj->getActiveSheet()->getColumnDimension('E')->setWidth(10);
-			$obj->getActiveSheet()->getColumnDimension('F')->setWidth(10);
-			$obj->getActiveSheet()->getColumnDimension('G')->setWidth(10);
-			//表头
-    		$obj->getActiveSheet()->setCellValue("A1", '招聘负责人');
-			$obj->getActiveSheet()->setCellValue("B1", '候选人');
-			$obj->getActiveSheet()->setCellValue("C1", '是否推荐');
-			$obj->getActiveSheet()->setCellValue("D1", '是否安排');
-			$obj->getActiveSheet()->setCellValue("E1", '是否到场');
-			$obj->getActiveSheet()->setCellValue("F1", '是否通过');
-			$obj->getActiveSheet()->setCellValue("G1", '是否入职');
-			$data = $this->getRecruitment($input);
+  			$obj->getActiveSheet()->getColumnDimension('B')->setWidth(12);
+  			$obj->getActiveSheet()->getColumnDimension('C')->setWidth(10);
+  			$obj->getActiveSheet()->getColumnDimension('D')->setWidth(10);
+  			$obj->getActiveSheet()->getColumnDimension('E')->setWidth(10);
+  			$obj->getActiveSheet()->getColumnDimension('F')->setWidth(10);
+  			$obj->getActiveSheet()->getColumnDimension('G')->setWidth(10);
+  			//表头
+      		$obj->getActiveSheet()->setCellValue("A1", '招聘负责人');
+  			$obj->getActiveSheet()->setCellValue("B1", '候选人');
+  			$obj->getActiveSheet()->setCellValue("C1", '是否推荐');
+  			$obj->getActiveSheet()->setCellValue("D1", '是否安排');
+  			$obj->getActiveSheet()->setCellValue("E1", '是否到场');
+  			$obj->getActiveSheet()->setCellValue("F1", '是否通过');
+  			$obj->getActiveSheet()->setCellValue("G1", '是否入职');
+  			$data = $this->getRecruitment($input);
 			//数据
     		foreach ($data as $k => $v) {
     			$k = $k+2;
 
-    			$obj->getActiveSheet()->setCellValue("A".$k,$v['personal_name'] == ''?  $v['ct_user'] : $v['personal_name']);
+    			$obj->getActiveSheet()->setCellValue("A".$k,$v['ct_user']);
 				$obj->getActiveSheet()->setCellValue("B".$k, $v['name']);
 				$obj->getActiveSheet()->setCellValue("C".$k, $v['screen'] == 1 ?'是':'否');
 				$obj->getActiveSheet()->setCellValue("D".$k, $v['arrange_interview'] ==1 ?'是':'否');
@@ -416,7 +439,7 @@ class Report extends Controller
 			foreach ($data as $k => $v) {
 				$k = $k+2;
 
-    			$obj->getActiveSheet()->setCellValue("A".$k,$v['personal_name'] == ''?  $v['uname'] : $v['personal_name']);
+    			$obj->getActiveSheet()->setCellValue("A".$k,$v['uname']);
 				$obj->getActiveSheet()->setCellValue("B".$k, $v['screen']);
 				$obj->getActiveSheet()->setCellValue("C".$k, $v['arrange_interview']);
 				$obj->getActiveSheet()->setCellValue("D".$k, $v['arrive']);
@@ -468,23 +491,23 @@ class Report extends Controller
 			//数据
     		foreach ($data as $k => $v) {
     			$k = $k+2;
-    			$obj->getActiveSheet()->setCellValue("A".$k, $v['personal_name'] == ''?  $v['ct_user'] : $v['personal_name']);
-				$obj->getActiveSheet()->setCellValue("B".$k, $v['name']);
-				$obj->getActiveSheet()->setCellValue("C".$k, $v['phone']);
-				$obj->getActiveSheet()->setCellValue("D".$k, $v['email']);
-				$obj->getActiveSheet()->setCellValue("E".$k, $v['school']);
-				$obj->getActiveSheet()->setCellValue("F".$k, $v['educational']);
-				$obj->getActiveSheet()->setCellValue("G".$k, $v['graduation_time']);
-				$obj->getActiveSheet()->setCellValue("H".$k, $v['work_year']);
-				$obj->getActiveSheet()->setCellValue("I".$k, $v['source']);
-				$obj->getActiveSheet()->setCellValue("J".$k, $v['communicate_count']);
-				$content = $comm->getContent("communicate_time between '$input[dtfm]' and '$input[dtto]' and resume_id = $v[id]");
-				foreach ($content as $m => $n) {
-					$obj->getActiveSheet()->setCellValue($cel[$m].$k,$n['content']);
-				}
-    		}
+    			$obj->getActiveSheet()->setCellValue("A".$k,$v['ct_user']);
+  				$obj->getActiveSheet()->setCellValue("B".$k, $v['name']);
+  				$obj->getActiveSheet()->setCellValue("C".$k, $v['phone']);
+  				$obj->getActiveSheet()->setCellValue("D".$k, $v['email']);
+  				$obj->getActiveSheet()->setCellValue("E".$k, $v['school']);
+  				$obj->getActiveSheet()->setCellValue("F".$k, $v['educational']);
+  				$obj->getActiveSheet()->setCellValue("G".$k, $v['graduation_time']);
+  				$obj->getActiveSheet()->setCellValue("H".$k, $v['work_year']);
+  				$obj->getActiveSheet()->setCellValue("I".$k, $v['source']);
+  				$obj->getActiveSheet()->setCellValue("J".$k, $v['communicate_count']);
+  				$content = $comm->getContent("date(communicate_time) between '$input[dtfm]' and '$input[dtto]' and resume_id = $v[id]");
+  				foreach ($content as $m => $n) {
+  					$obj->getActiveSheet()->setCellValue($cel[$m].$k,$n['content']);
+  				}
+      		}
 
-    		header('Content-Type: application/vnd.ms-excel');
+      		header('Content-Type: application/vnd.ms-excel');
 	        header('Content-Disposition: attachment;filename="候选人跟踪表.xlsx"');
 	        ob_end_clean();//清除缓冲区,避免乱码
 	        $objWriter = \PHPExcel_IOFactory::createWriter($obj, 'Excel2007');
