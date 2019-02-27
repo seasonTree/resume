@@ -130,11 +130,11 @@ class Index extends Controller
            $total = array_reverse($total);
            $resume_res = array_column($total,'resume');
            $commun_res = array_column($total,'commun');
-           $total_bar_data[0]['date'] = $total[0]['date'];//今日数据
+           $total_bar_data[0]['date'] = '今天';//今日数据
            $total_bar_data[0]['resume'] = $resume_res[0];
            $total_bar_data[0]['commun'] = $commun_res[0];
 
-           $total_bar_data[1]['date'] = $total[1]['date'];//昨日数据
+           $total_bar_data[1]['date'] = '昨天';//昨日数据
            $total_bar_data[1]['resume'] = $resume_res[1];
            $total_bar_data[1]['commun'] = $commun_res[1];
 
@@ -146,15 +146,15 @@ class Index extends Controller
            $person = array_reverse($person);
            $resume_res = array_column($person,'resume');
            $commun_res = array_column($person,'commun');
-           $per_bar_data[0]['date'] = $person[0]['date'];//今日数据
+           $per_bar_data[0]['date'] = '今天';//今日数据
            $per_bar_data[0]['resume'] = $resume_res[0];
            $per_bar_data[0]['commun'] = $commun_res[0];
 
-           $per_bar_data[1]['date'] = $person[1]['date'];//昨日数据
+           $per_bar_data[1]['date'] = '昨天';//昨日数据
            $per_bar_data[1]['resume'] = $resume_res[1];
            $per_bar_data[1]['commun'] = $commun_res[1];
 
-           $per_bar_data[2]['date'] = '最近7日';//7日之内的数据
+           $per_bar_data[2]['date'] = '最近7天';//7日之内的数据
            $per_bar_data[2]['resume'] = array_sum($resume_res);
            $per_bar_data[2]['commun'] = array_sum($commun_res);
 
