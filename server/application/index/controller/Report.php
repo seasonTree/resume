@@ -55,7 +55,6 @@ class Report extends Controller
       foreach ($resumes as $k => $v) {
           $resumes[$k]['communicate_count'] = isset($communicate_count[$v['id']])?$communicate_count[$v['id']]:0;
       }
-      dump($resumes);exit;
       return $resumes;
 
 
