@@ -310,7 +310,7 @@ class Resume extends Controller
                         $list['graduation_time'] = $res[0];
                     }
                     else{
-                        $list['graduation_time'] = '未知';
+                        $list['graduation_time'] = '无学历';
                     }
                     
                 }
@@ -320,7 +320,7 @@ class Resume extends Controller
                         $list['graduation_time'] = $res[0];
                     }
                     else{
-                        $list['graduation_time'] = '未知';
+                        $list['graduation_time'] = '无学历';
                     }
                     
                 }
@@ -350,7 +350,6 @@ class Resume extends Controller
             if (empty($data)) {
                 return json(['msg' => '没有数据','code' => 2]);
             }
-            
             if (is_string($data)) {
                 return json(['msg' => $data,'code' => 3]);
             }
@@ -390,18 +389,24 @@ class Resume extends Controller
             $length = count($resume_ids)-1;
             foreach ($resume_ids as $key => $value) {
                 if(isset($data['communicate'][$key]['content1'])){
-                    $insert_comm[$keys]['ct_user'] = $data['communicate'][$key]['ct_user1'];
-                    $insert_comm[$keys]['communicate_time'] = $data['communicate'][$key]['communicate_time1'];
-                    $insert_comm[$keys]['content'] = $data['communicate'][$key]['content1'];
-                    $insert_comm[$keys]['resume_id'] = $value;
-                    $keys++;
+                    if (!empty($data['communicate'][$key]['content1'])) {
+                        $insert_comm[$keys]['ct_user'] = $data['communicate'][$key]['ct_user1'];
+                        $insert_comm[$keys]['communicate_time'] = $data['communicate'][$key]['communicate_time1'];
+                        $insert_comm[$keys]['content'] = $data['communicate'][$key]['content1'];
+                        $insert_comm[$keys]['resume_id'] = $value;
+                        $keys++;
+                    }
+
                 }
                 if(isset($data['communicate'][$key]['content2'])){
-                    $insert_comm[$keys]['ct_user'] = $data['communicate'][$key]['ct_user2'];
-                    $insert_comm[$keys]['communicate_time'] = $data['communicate'][$key]['communicate_time2'];
-                    $insert_comm[$keys]['content'] = $data['communicate'][$key]['content2'];
-                    $insert_comm[$keys]['resume_id'] = $value;
-                    $keys++;
+                    if (!empty($data['communicate'][$key]['content2'])) {
+                        $insert_comm[$keys]['ct_user'] = $data['communicate'][$key]['ct_user2'];
+                        $insert_comm[$keys]['communicate_time'] = $data['communicate'][$key]['communicate_time2'];
+                        $insert_comm[$keys]['content'] = $data['communicate'][$key]['content2'];
+                        $insert_comm[$keys]['resume_id'] = $value;
+                        $keys++;
+                    }
+
                 }
 
                 if ($insert_c == 200 && $key != $length) {
@@ -536,7 +541,17 @@ class Resume extends Controller
             }
             unset($info);//一定要unset之后才能进行删除操作，否则请求会被拒绝
             @unlink($file);
-            return json(['msg' => '上传成功','code' => 0,'data' => array_merge($data) ]);
+            if (is_string($data)) {
+                $msg = $data;
+                $code = 2;
+                $data = '';
+            }
+            else{
+                $msg = '上传成功';
+                $data = array_merge($data);
+                $code = 0;
+            }
+            return json(['msg' => $msg,'code' => $code,'data' => $data ]);
         }else{
             // 上传失败获取错误信息
             return json(['msg' => $file->getError(),'code' => 1]);
@@ -564,40 +579,95 @@ class Resume extends Controller
         $temp_time = '';
         $user = new User();
         $keys = 0;//沟通数据下标
-        
+        $source = ['前程无忧','中国人才','智联招聘','拉勾网','BOSS直聘','校园招聘','内部推荐','外部推荐','协调转入','实习憎','自动投递','返聘','其他渠道'];
+        $ct_user = $user->field('uname')->select()->toArray();//创建人
+        $ct_user = array_column($ct_user,'uname');
         if ($deleteID == true) {
             $resume = new ResumeModel();
-            $row_id = time().Session::get('user_info')['uname'];
-            $user_model = new User();
-            $ct_user = $user_model->field('uname')->select()->toArray();//创建人
-            $ct_user = array_column($ct_user,'uname');
-            // $insert_res = $resume->insert(['row_id' => $row_id]);//唯一标识占位用，
-            // if (!$insert_res) {
-            //     return json(['msg' => '导入失败，请重试','code' => 1]);
-            // }
+            $row_id = time().Session::get('user_info')['uname'];//生成唯一标识符，进行批量导入标识
         }
         
         // $resume_max_id = $resume->max('id');//获取最大id
         // $resume_max_id = $resume_max_id + 1;//最大+1为简历起始id
         
         // $personal_name = '';//真名
-        for($i = 2;$i <= $total;$i++){
-            $ct_user_name = $obj_excel -> getActiveSheet() -> getCell("A".$i)->getValue();
+        for($row = 2;$row <= $total;$row++){
             if ($deleteID != false) {
-                if (in_array($i,$deleteID)) {
+                if (in_array($row,$deleteID)) {
+                    //跳过不需要的行，进行导入
                     continue;
                 }
+            }
+            $a = $obj_excel -> getActiveSheet() -> getCell("A".$row)->getValue();//招聘负责人姓名
+            $b = $obj_excel -> getActiveSheet() -> getCell("B".$row)->getValue();//日期
+            $c = $obj_excel -> getActiveSheet() -> getCell("C".$row)->getValue();//岗位
+            $d = $obj_excel -> getActiveSheet() -> getCell("D".$row)->getValue();//候选人
+            $e = $obj_excel -> getActiveSheet() -> getCell("E".$row)->getValue();//联系电话
+            $f = $obj_excel -> getActiveSheet() -> getCell("F".$row)->getValue();//邮件
+            $g = $obj_excel -> getActiveSheet() -> getCell("G".$row)->getValue();//毕业学校
+            $h = $obj_excel -> getActiveSheet() -> getCell("H".$row)->getValue();//学历
+            $i = $obj_excel -> getActiveSheet() -> getCell("I".$row)->getValue();//毕业年份
+            $j = $obj_excel -> getActiveSheet() -> getCell("J".$row)->getValue();//工作年限
+            $k = $obj_excel -> getActiveSheet() -> getCell("K".$row)->getValue();//简历来源
+            $l = $obj_excel -> getActiveSheet() -> getCell("L".$row)->getValue();//公司类型
+            $m = $obj_excel -> getActiveSheet() -> getCell("M".$row)->getValue();//首次沟通
+            $n = $obj_excel -> getActiveSheet() -> getCell("N".$row)->getValue();//二次沟通
 
-                if (!in_array($ct_user_name,$ct_user) && $total < $i) {
-                    return '检测到不存在用户，请检查';
-                }
+
+            if (empty($a) && empty($b) && empty($c) && empty($d) && empty($e) && empty($f) && empty($g) && empty($h) && empty($i) && empty($j) && empty($k) && empty($l) && empty($m) && empty($n)) {
+                continue;//无效数据跳过
+            }
+
+            if (!in_array($a,$ct_user) && $total < $row) {
+                return '检测到不存在用户，请检查第'.$row.'行';
             }
             
-            if (empty($obj_excel -> getActiveSheet() -> getCell("B".$i)->getValue())) {
-                continue;
+            if (empty($b)) {
+                return '检测到缺少日期，请检查第'.$row.'行';
             }
+
+            if (empty($c)) {
+                return '检测到缺少岗位，请检查第'.$row.'行';
+            }
+
+            if (empty($d)) {
+                return '检测到缺少候选人，请检查第'.$row.'行';
+            }
+
+            if (empty($e)) {
+                return '检测到缺少联系电话，请检查第'.$row.'行';
+            }
+
+            if (empty($f)) {
+                return '检测到缺少邮件，请检查第'.$row.'行';
+            }
+
+            if (empty($g)) {
+                return '检测到缺少毕业学校，请检查第'.$row.'行';
+            }
+
+            if (empty($h)) {
+                return '检测到缺少学历，请检查第'.$row.'行';
+            }
+
+            if (empty($i)) {
+                return '检测到缺少毕业年份，请检查第'.$row.'行';
+            }
+
+            if (empty($j)) {
+                return '检测到缺少工作年限，请检查第'.$row.'行';
+            }
+
+            if (empty($k)) {
+                return '检测到缺少简历来源，请检查第'.$row.'行';
+            }
+
+            if (empty($l)) {
+                return '检测到缺少公司类型(大展/同和)，请检查第'.$row.'行';
+            }
+
             if ($deleteID == false) {
-                $data[$i]['personal_name'] = $obj_excel -> getActiveSheet() -> getCell("A".$i)->getValue();
+                $data[$row]['personal_name'] = $a;
             }
             else{
                 // if ($obj_excel -> getActiveSheet() -> getCell("A".$i)->getValue() != $personal_name) {
@@ -605,65 +675,66 @@ class Resume extends Controller
                 //     $personal_name = $obj_excel -> getActiveSheet() -> getCell("A".$i)->getValue();
                 // }
                 
-                $data[$i]['ct_user'] = $obj_excel -> getActiveSheet() -> getCell("A".$i)->getValue();
+                $data[$row]['ct_user'] = $a;
             }
             
-            $temp_time = $obj_excel -> getActiveSheet() -> getCell("B".$i)->getValue();
-
-            
-            if ($temp_time != '' && is_numeric($temp_time)) {
-                $time = ($temp_time-25569)*24*60*60; //获得秒数
-                $data[$i]['ct_time'] = date('Y-m-d', $time);   //转化时间
+            if ($b != '' && is_numeric($temp_time)) {
+                $time = ($b-25569)*24*60*60; //获得秒数
+                $data[$row]['ct_time'] = date('Y-m-d', $time);   //转化时间
             }
-            else if ($temp_time != '') {
-                $data[$i]['ct_time'] = $temp_time;
+            else if ($b != '') {
+                $data[$row]['ct_time'] = $b;
             }
             else{
-                $data[$i]['ct_time'] = '';
+                $data[$row]['ct_time'] = '';
             }
-            $deleteID == false?$data[$i]['row_id'] = $i:'';
-            $data[$i]['expected_job'] = $obj_excel -> getActiveSheet() -> getCell("C".$i)->getValue();
-            $data[$i]['name'] = $obj_excel -> getActiveSheet() -> getCell("D".$i)->getValue();
-            $data[$i]['phone'] = $obj_excel -> getActiveSheet() -> getCell("E".$i)->getValue();
-            $data[$i]['email'] = $obj_excel -> getActiveSheet() -> getCell("F".$i)->getValue();
-            $data[$i]['school'] = $obj_excel -> getActiveSheet() -> getCell("G".$i)->getValue();
-            $data[$i]['educational'] = $obj_excel -> getActiveSheet() -> getCell("H".$i)->getValue();
-            $data[$i]['graduation_time'] = $obj_excel -> getActiveSheet() -> getCell("I".$i)->getValue();
-            $data[$i]['work_year'] = $obj_excel -> getActiveSheet() -> getCell("J".$i)->getValue();
-            $data[$i]['source'] = $obj_excel -> getActiveSheet() -> getCell("K".$i)->getValue();
+            $deleteID == false?$data[$row]['row_id'] = $row:'';
+            $data[$row]['expected_job'] = $c;
+            $data[$row]['name'] = $d;
+            $data[$row]['phone'] = $e;
+            $data[$row]['email'] = $f;
+            $data[$row]['school'] = $g;
+            $data[$row]['educational'] = $h;
+            $data[$row]['graduation_time'] = $i;
+            $data[$row]['work_year'] = $j;
+
+            if (!in_array($k,$source)) {
+                return '检测到不存在的简历来源，请检查第'.$row.'行';
+            }
+            $data[$row]['source'] = $k;
             if ($deleteID == false) {
-                $data[$i]['custom1'] = $obj_excel -> getActiveSheet() -> getCell("M".$i)->getValue();
-                $data[$i]['custom2'] = $obj_excel -> getActiveSheet() -> getCell("N".$i)->getValue();
+                $data[$row]['custom1'] = $m;
+                $data[$row]['custom2'] = $n;
             }
             else{
 
-                if ($obj_excel -> getActiveSheet() -> getCell("M".$i)->getValue() != '') {
-                    $communicate[$keys]['ct_user1'] = $data[$i]['ct_user'];
-                    $communicate[$keys]['communicate_time1'] = $data[$i]['ct_time'];
+                // if ($obj_excel -> getActiveSheet() -> getCell("M".$i)->getValue() != '') {
+                    $communicate[$keys]['ct_user1'] = $data[$row]['ct_user'];
+                    $communicate[$keys]['communicate_time1'] = $data[$row]['ct_time'];
                     // $communicate[$keys]['resume_id'] = $resume_max_id;
                     $communicate[$keys]['row_id'] = $i;
-                    $communicate[$keys]['content1'] =  $obj_excel -> getActiveSheet() -> getCell("M".$i)->getValue();
+                    $communicate[$keys]['content1'] =  $m;
                     // $keys++;
-                }
-                if ($obj_excel -> getActiveSheet() -> getCell("N".$i)->getValue() != '') {
-                    $communicate[$keys]['ct_user2'] = $data[$i]['ct_user'];
-                    $communicate[$keys]['communicate_time2'] = $data[$i]['ct_time'];
+                // }
+                // if ($obj_excel -> getActiveSheet() -> getCell("N".$i)->getValue() != '') {
+                    $communicate[$keys]['ct_user2'] = $data[$row]['ct_user'];
+                    $communicate[$keys]['communicate_time2'] = $data[$row]['ct_time'];
                     // $communicate[$keys]['resume_id'] = $resume_max_id;
                     $communicate[$keys]['row_id'] = $i;
-                    $communicate[$keys]['content2'] =  $obj_excel -> getActiveSheet() -> getCell("N".$i)->getValue();
+                    $communicate[$keys]['content2'] =  $n;
                     // $keys++;
-                }
+                // }
                 $keys++;
                 // $data[$i]['id'] = $resume_max_id;
                 // $resume_max_id++;
                 // $data[$i]['row_id'] = $i;
-                $data[$i]['batch_id'] = $row_id;
+                $data[$row]['batch_id'] = $row_id;
 
             }
-            $data[$i]['custom1'] = $obj_excel -> getActiveSheet() -> getCell("M".$i)->getValue();
-            $data[$i]['custom2'] = $obj_excel -> getActiveSheet() -> getCell("N".$i)->getValue();
+            $data[$row]['custom1'] = $m;
+            $data[$row]['custom2'] = $n;
 
-            $data[$i]['company_type'] = $obj_excel -> getActiveSheet() -> getCell("L".$i)->getValue();
+            $data[$row]['company_type'] = $l;
 
         }
         if ($deleteID == false) {
