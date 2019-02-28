@@ -1830,9 +1830,9 @@ class Resume extends Controller
         $header = $section->createHeader();
         $table = $header->addTable();
         $table->addRow();
-        $table->addCell(4500)->addText('');
+        $table->addCell(9000)->addText('');
         $cellStyle = array('borderBottomColor' => '#000000');
-        $table->addCell(4500)->addImage($result['image'],$result['image_size']);
+        $table->addCell(9000)->addImage($result['image'],$result['image_size']);
         //内容
         //自定义字体
         $PHPWord->addFontStyle('FangSong19pt', array('name'=>'仿宋', 'size'=>19,'bold' => true));
@@ -1845,7 +1845,7 @@ class Resume extends Controller
         $content = $section->addTable();
         $cellStyle = array('bgColor' => '#FAF0E6');
         $content->addRow();
-        $content->addCell(4500,$cellStyle)->addText('基本信息','FangSong16pt');
+        $content->addCell(9000,$cellStyle)->addText('基本信息','FangSong16pt');
         //基本信息填充
         $section->addTextBreak();
         $section->addText($data['sex'].' | '.$data['birthday'].' | '.$data['work_year'].'年工作经验');
@@ -1854,7 +1854,7 @@ class Resume extends Controller
         $content = $section->addTable();
         $cellStyle = array('bgColor' => '#FAF0E6');
         $content->addRow();
-        $content->addCell(4500,$cellStyle)->addText('自我评价','FangSong16pt');
+        $content->addCell(9000,$cellStyle)->addText('自我评价','FangSong16pt');
         //自我评价填充
         $section->addTextBreak();
         $section->addText($data['selfEvaluation']);
@@ -1863,7 +1863,7 @@ class Resume extends Controller
         $content = $section->addTable();
         $cellStyle = array('bgColor' => '#FAF0E6');
         $content->addRow();
-        $content->addCell(4500,$cellStyle)->addText('工作经验','FangSong16pt');
+        $content->addCell(9000,$cellStyle)->addText('工作经验','FangSong16pt');
         //工作经验填充
         $section->addTextBreak();
         $workExperience = explode("\n", $data['workExperience']);
@@ -1884,7 +1884,7 @@ class Resume extends Controller
         $content = $section->addTable();
         $cellStyle = array('bgColor' => '#FAF0E6');
         $content->addRow();
-        $content->addCell(4500,$cellStyle)->addText('项目经验','FangSong16pt');
+        $content->addCell(9000,$cellStyle)->addText('项目经验','FangSong16pt');
         //项目经验填充
         $section->addTextBreak();
         $projectExperience = explode("\n", $data['projectExperience']);
@@ -1898,7 +1898,7 @@ class Resume extends Controller
         $content = $section->addTable();
         $cellStyle = array('bgColor' => '#FAF0E6');
         $content->addRow();
-        $content->addCell(4500,$cellStyle)->addText('教育经历','FangSong16pt');
+        $content->addCell(9000,$cellStyle)->addText('教育经历','FangSong16pt');
         //教育经历填充
         $section->addTextBreak();
         $educational_background = explode("\n", $data['educational_background']);
