@@ -1812,7 +1812,6 @@ class Resume extends Controller
         $PHPWord = new \PhpOffice\PhpWord\PhpWord();
         // $section = $PHPWord->createSection();
        
-
         $option = function($msg){
             if ($msg == 'tonghe') {
                 //同和
@@ -1853,7 +1852,7 @@ class Resume extends Controller
             if ($v == '') {
                 continue;
             }
-            $self->addText(str_replace('&','&amp;',$v),['size' => 10]);
+            $self->addText(htmlspecialchars($v),['size' => 10]);
             $self->addTextBreak(1);
         }
         $templateProcessor->setComplexBlock('self_evaluation',$self);
@@ -1867,7 +1866,7 @@ class Resume extends Controller
             if ($v == '' || in_array(trim($v),$group_list)) {
                 continue;
             }
-            $work->addText(str_replace('&','&amp;',$v),['size' => 10]);
+            $work->addText(htmlspecialchars($v),['size' => 10]);
             $work->addTextBreak(1);
         }
         $templateProcessor->setComplexBlock('work_experience',$work);
@@ -1880,7 +1879,7 @@ class Resume extends Controller
             if ($v == '' || in_array(trim($v),$group_list)) {
                 continue;
             }
-            $project->addText(str_replace('&','&amp;',$v),['size' => 10]);
+            $project->addText(htmlspecialchars($v),['size' => 10]);
             $project->addTextBreak(1);
         }
         $templateProcessor->setComplexBlock('project_experience',$project);
@@ -1891,7 +1890,7 @@ class Resume extends Controller
         $edu = [];
         $edu_string = '';
         $edu_key = 0;
-
+        $section = new TextRun();
         if(preg_match_all($edu_config['school'],$educational_background,$school)){
            preg_match_all($edu_config['graduation_time'],$educational_background,$graduation_time);
            preg_match_all($edu_config['speciality'],$educational_background,$speciality);
@@ -1901,7 +1900,6 @@ class Resume extends Controller
            // dump($graduation_time);
            // dump($speciality);
            // dump($educational);exit;
-           $section = new TextRun();
            $max_time_length = 0;
            $max_school_length = 0;
            $max_speciality_length = 0;
@@ -1942,9 +1940,8 @@ class Resume extends Controller
                $section->addTextBreak(1);
            }
 
-           $templateProcessor->setComplexBlock('edu_string',$section);
-
         }
+        $templateProcessor->setComplexBlock('edu_string',$section);
 
         
         $templateProcessor->saveAs($dest);
