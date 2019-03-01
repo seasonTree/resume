@@ -183,7 +183,7 @@ export default {
 
             //招聘负责人汇总
             recruTotalHead: [
-                { prop: "ct_user", label: "招聘负责人", fixed: "left" },
+                { prop: "uname", label: "招聘负责人", fixed: "left" },
                 { prop: "screen", label: "推荐人数", fixed: "left" },
                 { prop: "arrange_interview", label: "安排面试人数", fixed: "left" },
                 { prop: "arrive", label: "到场人数", fixed: "left" },
