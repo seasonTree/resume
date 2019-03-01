@@ -237,6 +237,11 @@ class Resume extends Controller
         return implode("\n",$parm);
     }
 
+    public function atSchool($parm){
+        //在校情况
+        return implode("\n",$parm);
+    }
+
     public function getResumeData(){
         //获取简历内容
         $content = input('content');
@@ -311,6 +316,7 @@ class Resume extends Controller
         unset($list['other']);
         unset($list['train']);
         unset($list['language']);
+        unset($list['atSchool']);
         //处理毕业时间
         if (isset($list['graduation_time'])) {
             if ($list['graduation_time'] != '') {
@@ -1854,9 +1860,11 @@ class Resume extends Controller
 
         //工作经验
         $work_experience = explode("\n",$data['workExperience']);
+        $group_list = config('config.group_list');
+
         $work = new TextRun();
         foreach ($work_experience as $k => $v) {
-            if ($v == '') {
+            if ($v == '' || in_array(trim($v),$group_list)) {
                 continue;
             }
             $work->addText(str_replace('&','&amp;',$v),['size' => 10]);
@@ -1866,9 +1874,10 @@ class Resume extends Controller
 
         //项目经验
         $project_experience = explode("\n",$data['projectExperience']);
+
         $project = new TextRun();
         foreach ($project_experience as $k => $v) {
-            if ($v == '') {
+            if ($v == '' || in_array(trim($v),$group_list)) {
                 continue;
             }
             $project->addText(str_replace('&','&amp;',$v),['size' => 10]);
