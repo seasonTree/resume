@@ -1876,7 +1876,7 @@ class Resume extends Controller
         }
         $templateProcessor->setComplexBlock('project_experience',$project);
 
-        $educational_background = explode("\n", $data['educational_background']);
+        $educational_background = explode("\n",str_replace(' ','', $data['educational_background']));
         $educational_background = implode("",$educational_background);
         $edu_config = config('config.educationalBackground');
         $edu = [];
@@ -1888,6 +1888,10 @@ class Resume extends Controller
            preg_match_all($edu_config['speciality'],$educational_background,$speciality);
            preg_match_all($edu_config['educational'],$educational_background,$educational);
 
+           // dump($school);
+           // dump($graduation_time);
+           // dump($speciality);
+           // dump($educational);exit;
            $section = new TextRun();
            $max_time_length = 0;
            $max_school_length = 0;
@@ -1899,12 +1903,17 @@ class Resume extends Controller
                isset($graduation_time[0][$i])?$time_string = $graduation_time[0][$i]:$time_string = '';
                isset($speciality[0][$i])?$speciality_string = $speciality[0][$i]:$speciality_string = '';
                isset($educational[0][$i])?$educational_string = $educational[0][$i]:$educational_string = '';
+               if ($speciality) {
+                   $speciality_string = str_replace($school_string,'',$speciality_string);
+                   $speciality_string = str_replace($time_string,'',$speciality_string);
+                   $speciality_string = str_replace($educational_string,'',$speciality_string);
+               }
                $edu[$i]['time_string'] = $time_string;
                $edu[$i]['school_string'] = $school_string;
                $edu[$i]['speciality_string'] = $speciality_string;
                $edu[$i]['educational_string'] = $educational_string;
                $max_time_length = $max_time_length >= strlen($time_string)?$max_time_length:strlen($time_string);
-               $max_school_length = $max_school_length >= strlen($time_string)?$max_school_length:strlen($school_string);
+               $max_school_length = $max_school_length >= strlen($school_string)?$max_school_length:strlen($school_string);
                $max_speciality_length = $max_speciality_length >= strlen($speciality_string)?$max_speciality_length:strlen($speciality_string);
                $max_educational_length = $max_educational_length >= strlen($educational_string)?$max_educational_length:strlen($educational_string);
 
@@ -1914,7 +1923,7 @@ class Resume extends Controller
                $edu_string = strlen($v['time_string']) >= $max_time_length?$v['time_string']:$v['time_string'].str_repeat(' ',($max_time_length-strlen($v['time_string']))/3*2);
 
                $school_string = strlen($v['school_string']) >= $max_school_length?$v['school_string']:$v['school_string'].str_repeat(' ',($max_school_length-strlen($v['school_string']))/3*2);
-
+               
                $speciality_string = strlen($v['speciality_string']) >= $max_speciality_length?$v['speciality_string']:$v['speciality_string'].str_repeat(' ',($max_speciality_length-strlen($v['speciality_string']))/3*2);
                
                $educational_string = strlen($v['educational_string']) >= $max_educational_length?$v['educational_string']:$v['educational_string'].str_repeat(' ',($max_educational_length-strlen($v['educational_string']))/3*2);
@@ -1923,6 +1932,7 @@ class Resume extends Controller
                $section->addText($edu_string);
                $section->addTextBreak(1);
            }
+
            $templateProcessor->setComplexBlock('edu_string',$section);
 
         }
