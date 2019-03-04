@@ -1811,7 +1811,6 @@ class Resume extends Controller
         //简历导出
         $PHPWord = new \PhpOffice\PhpWord\PhpWord();
         // $section = $PHPWord->createSection();
-       
         $option = function($msg){
             if ($msg == 'tonghe') {
                 //同和
@@ -1859,13 +1858,57 @@ class Resume extends Controller
 
         //工作经验
         $work_experience = explode("\n",$data['workExperience']);
-        $group_list = config('config.group_list');
+        // foreach ($work_experience as $k => $v) {
+        //     if(preg_match("/\d+(\s+)?(-|至|到)(\s+)?(\d+|至今)/",$v,$preg)){
+        //         $work_experience[$k] = preg_replace("/$preg[0]/",preg_replace("/\s+/",'',$preg[0]),$v);
+        //     }
+        //     //处理时间空格问题
+        // }
 
+        // $work_experience = implode("\n",$work_experience);
+        // $work_experience = str_replace("\n",' ',$work_experience);//去换行
+        // $work_experience = preg_replace("/\s+/",' ',$work_experience);//去空格
+        
+        // $work_experience = explode(' ',$work_experience);
+        // dump($work_experience);exit;
+ 
+        $group_list = config('config.group_list');//标题集合，去除标题
+        $work_rule = config('config.workExperience');//工作经验的匹配集合
         $work = new TextRun();
         foreach ($work_experience as $k => $v) {
             if ($v == '' || in_array(trim($v),$group_list)) {
                 continue;
             }
+            $v = preg_replace("/\|/",'',$v);//处理特殊符号
+            if (preg_match($work_rule['time_total'],$v)) {
+                $v = preg_replace("/\s+/",'',$v);
+            }
+            if(preg_match("/\d+(\s+)?(-|至|到)(\s+)?(\d+|至今)/",$v,$preg)){//处理时间格式，空格问题
+                $v = preg_replace("/$preg[0]/",preg_replace("/\s+/",'',$preg[0]),$v);
+            }
+            $v = preg_replace($work_rule['time_total'],'',$v);//处理时间
+            $v = preg_replace($work_rule['money'],'',$v);//处理钱
+            //处理时间空格问题
+            if (preg_match($work_rule['work_time'],$v,$preg)) {//标题加粗
+                $work->addTextBreak(1);//加换行
+                $v = preg_replace($work_rule['work_time'],$preg[0].'     ',$v);
+                $work->addText(htmlspecialchars($v),['size' => 10,'bold' => true]);
+                $work->addTextBreak(1);
+                continue;
+            }
+            if (preg_match("/\s+/",$v,$preg)) {//处理个别空格内容换行问题，主要是内容
+                $v = preg_replace("/\s+/",' ',$v);
+                $content = explode(' ',$v);
+                foreach ($content as $k => $v) {
+                    if (empty($v)) {
+                        continue;
+                    }
+                    $work->addText(htmlspecialchars($v),['size' => 10]);
+                    $work->addTextBreak(1);
+                }
+                continue;
+            }
+            
             $work->addText(htmlspecialchars($v),['size' => 10]);
             $work->addTextBreak(1);
         }
@@ -1873,10 +1916,32 @@ class Resume extends Controller
 
         //项目经验
         $project_experience = explode("\n",$data['projectExperience']);
-
+        $project_rule = config('config.projectExperience');
         $project = new TextRun();
         foreach ($project_experience as $k => $v) {
             if ($v == '' || in_array(trim($v),$group_list)) {
+                continue;
+            }
+            if(preg_match("/\d+(\s+)?(-|至|到)(\s+)?(\d+|至今)/",$v,$preg)){//处理时间格式，空格问题
+                $v = preg_replace("/$preg[0]/",preg_replace("/\s+/",'',$preg[0]),$v);
+            }
+            if (preg_match($project_rule['project_time'],$v,$preg)) {//标题加粗
+                $project->addTextBreak(1);//加换行
+                $v = preg_replace($project_rule['project_time'],$preg[0].'     ',$v);
+                $project->addText(htmlspecialchars($v),['size' => 10,'bold' => true]);
+                $project->addTextBreak(1);
+                continue;
+            }
+            if (preg_match("/\s+/",$v,$preg)) {//处理个别空格内容换行问题，主要是内容
+                $v = preg_replace("/\s+/",' ',$v);
+                $content = explode(' ',$v);
+                foreach ($content as $k => $v) {
+                    if (empty($v)) {
+                        continue;
+                    }
+                    $project->addText(htmlspecialchars($v),['size' => 10]);
+                    $project->addTextBreak(1);
+                }
                 continue;
             }
             $project->addText(htmlspecialchars($v),['size' => 10]);
@@ -1939,6 +2004,9 @@ class Resume extends Controller
                $section->addText($edu_string);
                $section->addTextBreak(1);
            }
+
+        }
+        else{
 
         }
         $templateProcessor->setComplexBlock('edu_string',$section);
