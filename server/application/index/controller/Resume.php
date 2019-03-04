@@ -1896,8 +1896,8 @@ class Resume extends Controller
                 $work->addTextBreak(1);
                 continue;
             }
-            if (preg_match("/\s+/",$v,$preg)) {//处理个别空格内容换行问题，主要是内容
-                $v = preg_replace("/\s+/",' ',$v);
+            if (preg_match("/(:|：)\s+/",$v,$preg)) {//处理个别空格内容换行问题，主要是内容
+                $v = preg_replace("/(:|：)\s+/",': ',$v);
                 $content = explode(' ',$v);
                 foreach ($content as $k => $v) {
                     if (empty($v)) {
@@ -1932,8 +1932,8 @@ class Resume extends Controller
                 $project->addTextBreak(1);
                 continue;
             }
-            if (preg_match("/\s+/",$v,$preg)) {//处理个别空格内容换行问题，主要是内容
-                $v = preg_replace("/\s+/",' ',$v);
+            if (preg_match("/(:|：)\s+/",$v,$preg)) {//处理个别空格内容换行问题，主要是内容
+                $v = preg_replace("/(:|：)\s+/",': ',$v);
                 $content = explode(' ',$v);
                 foreach ($content as $k => $v) {
                     if (empty($v)) {
