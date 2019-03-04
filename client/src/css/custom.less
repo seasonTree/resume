@@ -1,10 +1,184 @@
-.table-container{
+
+.table-container {
     margin-bottom: 15px;
 }
 
-.pager{
+.pager {
     text-align: right;
-    .el-pagination{
+    .pager-tip {
+        font-size: 14px;
+        color: #606266;
+        text-align: left;
+        margin-top: 8px;
+    }
+    .el-pagination {
         margin-right: -10px;
+    }
+}
+
+//全局处理左侧菜单收缩后，箭头要隐藏
+.hide-arrow {
+    i.el-submenu__icon-arrow {
+        display: none !important;
+    }
+}
+
+@color: #7266ba;
+@hover-color: #6254b2;
+.navbar {
+    .el-menu {
+        border: none;
+    }
+    .el-menu-item.is-active {
+        color: #7266ba;
+        border-right: 4px solid @color;
+        background-color: rgba(0, 0, 0, 0.06) !important;
+    }
+    .el-submenu .el-menu-item.is-active {
+        border-right: 6px solid @color;
+    }
+}
+
+//修改默认primary的颜色
+body .el-button--primary {
+    background: @color;
+    border-color: @color;
+    &:focus,
+    &:hover {
+        background: @hover-color;
+        border-color: @hover-color;
+    }
+}
+
+.view-form {
+    .el-input.is-disabled .el-input__inner {
+        color: black;
+    }
+}
+
+.right {
+    color: #00c100;
+}
+
+.ban {
+    color: #f56c6c;
+}
+
+.status-icon {
+    cursor: pointer;
+}
+
+.mb-10 {
+    margin-bottom: 10px;
+}
+
+.mb-20 {
+    margin-bottom: 20px;
+}
+
+.action-bar {
+    box-sizing: border-box;
+    .search-item {
+        display: inline-block;
+        margin: 0 10px 10px 0;
+    }
+    .action-bar-right {
+        float: right;
+        >div {
+            display: inline-block;
+        }
+    }
+    &::after {
+        .clear-float
+    }
+}
+
+.text-center {
+    text-align: center;
+}
+
+.search-input {
+    max-width: 160px;
+    margin-right: 10px;
+}
+
+.permission-forbid {
+    cursor: not-allowed;
+    opacity: .8 !important;
+    color: #5A6274;
+}
+
+.width100 {
+    width: 100% !important;
+}
+
+.custom-dialog {
+    .el-dialog__body {
+        border-top: 1px solid #dcdfe6;
+        border-bottom: 1px solid #dcdfe6;
+        padding: 20px 20px 0;
+    }
+    .dialog-footer {
+        >div {
+            display: inline-block;
+            margin-right: 10px;
+        }
+    }
+}
+
+.table-tr-view {
+    tbody {
+        tr {
+            cursor: pointer;
+        }
+    }
+}
+
+//自定义排序规则
+//不排序的样式------------
+.el-table .active-none .sort-caret.ascending{
+    border-bottom-color: #c0c4cc !important;
+}
+
+.el-table .active-none .sort-caret.descending {
+    border-top-color: #c0c4cc !important;
+}
+//-------------------
+
+//asc样式---------------
+.el-table .active-asc .sort-caret.ascending {
+    border-bottom-color: #409eff !important;
+}
+
+.el-table .active-asc .sort-caret.descending {
+    border-top-color: #c0c4cc !important;
+}
+//------------------------
+
+//des样式-----------------
+.el-table .active-desc .sort-caret.ascending {
+    border-bottom-color: #c0c4cc !important;
+}
+
+.el-table .active-desc .sort-caret.descending {
+    border-top-color: #409eff !important;
+}
+//---------------------
+
+//permission使用--------------------------------
+
+.premission-table{
+    
+    .hide-tr {
+        display: none;
+    }
+}
+
+//----------------------------
+
+//窗口查看模式下
+.view-dialog{
+    input.el-input__inner:disabled{
+        color: black;
     }
 }

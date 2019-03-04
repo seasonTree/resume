@@ -95,12 +95,6 @@
 </template>
 
 <script>
-import MenuTree from "@component/menutree/MenuTree";
-import ChangePassword from "./ChangePassword";
-import UserImage from "./UserImage";
-
-import { mapGetters } from "vuex";
-
 export default {
     name: "Layout",
     components: {
@@ -175,16 +169,18 @@ export default {
 
             changePasswordDialog: false,
 
-            userImageDialog: false
+            userImageDialog: false,
 
-            // userAvatar: 'url(./image/user_image.jpg)',
-
-            // showContent: false
+            navWidth: "280px",
+            showNav: true
         };
     },
 
     computed: {
         ...mapGetters(["userInfo", "menu"])
+        // asideWidth() {
+        //     return this.showNav ? this.navWidth : 0;
+        // }
     },
 
     created() {
@@ -198,14 +194,6 @@ export default {
 
                 that.mainBodyTimer = setTimeout(() => {
                     that.bodyHeight = that.$refs.mainBody.offsetHeight;
-
-                    //抛出事件
-                    if (window.fireEvent) {
-                        window.fireEvent("bodyChange");
-                    } else {
-                        let rzEvent = new Event("bodyChange");
-                        window.dispatchEvent(rzEvent);
-                    }
                 }, 100);
             };
 
@@ -220,9 +208,60 @@ export default {
         //     that.userAvatar = `url(${data})`;
         // },
 
+        handleFullScreen() {
+            let isFullscreen =
+                    document.fullScreen ||
+                    document.mozFullScreen ||
+                    document.webkitIsFullScreen,
+                element = document.documentElement;
+
+            if (!isFullscreen) {
+                //进入全屏,多重短路表达式
+                //普通
+                (element.requestFullscreen && element.requestFullscreen()) ||
+                    //moz
+                    (element.mozRequestFullScreen &&
+                        element.mozRequestFullScreen()) ||
+                    //webkit
+                    (element.webkitRequestFullscreen &&
+                        element.webkitRequestFullscreen()) ||
+                    //ie
+                    (element.msRequestFullscreen &&
+                        element.msRequestFullscreen());
+            } else {
+                //退出全屏,三目运算符
+                //普通
+                document.exitFullscreen
+                    ? document.exitFullscreen()
+                    : //moz
+                    document.mozCancelFullScreen
+                    ? document.mozCancelFullScreen()
+                    : //webkit
+                    document.webkitExitFullscreen
+                    ? document.webkitExitFullscreen()
+                    : //ie
+                    document.msExitFullscreen
+                    ? document.msExitFullscreen()
+                    : "";
+            }
+        },
+
+        navCollapse() {
+            let that = this;
+            that.showNav = !that.showNav;
+
+            if (that.showNav) {
+                //右侧拉开的时候加个延迟，避免加载闪动
+                setTimeout(() => {
+                    that.navWidth = "200px";
+                }, 140);
+            } else {
+                that.navWidth = "64px";
+            }
+        },
+
         logout() {
             let that = this;
-
             that.$api.user
                 .logout()
                 .then(res => {
@@ -234,122 +273,146 @@ export default {
                     // that.$router.replace("/login");
                 })
                 .catch(res => {
-                    that.$message.error("退出失败,请重试.");
+                    that.$message.error("Logout failed, please try again.");
                 });
         }
     }
 };
 </script>
 
-<style lang="less">
-@header-color: #409eff;
+<style lang="less" scoped>
+@header-color: #7266ba;
+@title-color: #6453ca;
 @nav-color: #eff1f6;
-
-.header {
-    border-bottom: @header-color;
-    background-color: @header-color;
-    color: white;
-    padding-left: 0 !important;
-
-    .title {
-        width: 200px;
-        font-size: 25px;
-        line-height: 60px;
-        background-color: rgba(0, 0, 0, 0.06);
-        text-align: center;
-    }
-
-    .dropdown-link {
-        line-height: 60px;
-        font-size: 16px;
-        color: white;
-        cursor: pointer;
-        padding: 0 6px;
-
-        &:hover {
-            background-color: rgba(0, 0, 0, 0.03);
-        }
-    }
-
-    .user-image {
-        // background-image: url(../../image/user_image.jpg);
-        height: 40px;
-        width: 40px;
-        vertical-align: middle;
-        margin-right: 4px;
-        border-radius: 50%;
-        background-size: 100% 100%;
-    }
-}
 
 .content {
     position: absolute;
-    top: 60px;
-    bottom: 0;
+    top: 0;
     width: 100%;
+    height: 100%;
+
+    .title {
+        position: absolute;
+        font-size: 25px;
+        line-height: 60px;
+        background-color: @title-color !important;
+        text-align: center;
+    }
+
+    .small-title {
+        padding: 0;
+    }
+
+    .header {
+        border-bottom: @header-color;
+        background-color: @header-color;
+        color: white;
+        width: 100%;
+
+        .dropdown-link {
+            line-height: 60px;
+            font-size: 16px;
+            color: white;
+            cursor: pointer;
+            padding: 0 6px;
+
+            &:hover {
+                background-color: rgba(0, 0, 0, 0.03);
+            }
+        }
+
+        .user-image {
+            height: 40px;
+            width: 40px;
+            vertical-align: middle;
+            margin-right: 4px;
+            border-radius: 50%;
+            background-size: 100% 100%;
+        }
+    }
 
     .main {
-        padding: 0;
         position: relative;
 
-        // .main-header,
-        // .main-body,
-        // .main-footer {
-        //     padding: 20px;
-        //     position: absolute;
-        //     left: 0;
-        //     right: 0;
-        // }
+        .header-left {
+            text-align: left;
+            line-height: 60px;
+            .shrink {
+                cursor: pointer;
+                transition: all 0.3s;
 
-        .main-header,
-        .main-body,
-        .main-footer {
-            padding: 20px;
+                &:hover {
+                    color: #ec8e00;
+                }
+            }
+
+            .collapse {
+                transform: rotate(90deg);
+            }
+        }
+
+        .header {
+            text-align: right;
+        }
+
+        .main-content {
+            position: relative;
+            padding: 0;
+
+            .main-header,
+            .main-body,
+            .main-footer {
+                padding: 20px;
+                position: absolute;
+                left: 0;
+                right: 0;
+                box-sizing: border-box;
+            }
+
+            .main-header {
+                background-color: #f7f7f7;
+                border-bottom: 1px solid #dcdfe6;
+
+                .full-screen {
+                    position: absolute;
+                    top: 14px;
+                    right: 20px;
+                    i {
+                        font-size: 24px;
+                        color: #8a8d92;
+                        cursor: pointer;
+
+                        &:hover {
+                            color: @header-color;
+                        }
+                    }
+                }
+            }
+
+            .main-body {
+                position: absolute;
+                overflow: auto;
+                top: 55px;
+                bottom: 0px;
+            }
+        }
+    }
+
+    .aside {
+        position: relative;
+        overflow-x: hidden;
+        transition: all 0.3s ease;
+
+        .navbar {
             position: absolute;
-            left: 0;
-            right: 0;
+            top: 60px;
+            bottom: 0;
+            width: 100%;
+            background-color: @nav-color;
+            border: 1px solid #e6e6e6;
+            overflow-x: hidden !important;
+            box-sizing: border-box;
         }
-
-        .main-header {
-            background-color: #f7f7f7;
-            border-bottom: 1px solid #dcdfe6;
-        }
-
-        .main-body {
-            position: absolute;
-            overflow: auto;
-            top: 55px;
-            bottom: 0px;
-        }
-
-        // .main-footer {
-        //     padding: 0;
-        //     bottom: 0;
-        //     line-height: 40px;
-        //     height: 40px !important;
-        //     text-align: center;
-        //     background-color: #dcdfe6;
-        // }
-    }
-}
-
-.navbar {
-    background-color: @nav-color;
-    border: 1px solid #e6e6e6;
-    overflow-x: hidden !important;
-    box-sizing: border-box;
-
-    .el-menu {
-        border: none;
-    }
-
-    .el-menu-item.is-active {
-        border-right: 4px solid @header-color;
-        background-color: rgba(0, 0, 0, 0.06) !important;
-    }
-
-    .el-submenu .el-menu-item.is-active {
-        border-right: 6px solid @header-color;
     }
 }
 </style>

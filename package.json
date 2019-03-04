@@ -6,14 +6,15 @@
 	"scripts": {
 		"dev-not-watch": "node ./node_modules/webpack/bin/webpack.js --config ./client/webpack/webpack.config.dev.js",
 		"dev": "node ./node_modules/webpack/bin/webpack.js --watch --config ./client/webpack/webpack.config.dev.js",
-		"build-project": "node ./node_modules/webpack/bin/webpack.js --config ./client/webpack/webpack.config.pro.js",
-		"dev-server": "node ./client/webpack/webpackServer.js",
-		"start": "node ./node_modules/concurrently/src/main.js \"npm run dev-watch\" \"npm run dev-server-watch\"",
+		"build-project": "cross-env NODE_ENV=production node ./node_modules/webpack/bin/webpack.js --config ./client/webpack/webpack.config.pro.js",
+		"dev-server": "cross-env NODE_ENV=development node ./client/webpack/webpackServer.js",
+		"start": "node ./node_modules/concurrently/src/main.js \"npm run dev-server\"",
 		"build": "npm install && npm run build-project"
 	},
 	"dependencies": {
 		"@babel/polyfill": "^7.2.5",
 		"axios": "^0.18.0",
+		"cross-env": "^5.2.0",
 		"echarts": "^4.2.0-rc.2",
 		"element-ui": "^2.4.11",
 		"v-charts": "^1.19.0",

@@ -1,3 +1,10 @@
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
 ::-webkit-scrollbar {
     width: 9px;
     height: 9px;
@@ -67,23 +74,6 @@
     background-size: cover;
 }
 
-.custom-dialog {
-    .el-dialog__body {
-        border-top: 1px solid #dcdfe6;
-        border-bottom: 1px solid #dcdfe6;
-        padding: 20px 20px 0;
-    }
-    .dialog-footer {
-        >div {
-            display: inline-block;
-            margin-right: 10px;
-        }
-    } // .dialog-content {
-    //     margin: auto;
-    //     margin-bottom: 20px;
-    // }
-}
-
 .clear-float{
     display: block;
     clear: both;
@@ -95,45 +85,6 @@
 
 .clearfix::after {
     .clear-float;
-}
-
-.mb-20 {
-    margin-bottom: 20px;
-}
-
-.action-bar {
-    margin-bottom: 10px;
-    box-sizing: border-box;
-
-    .search-item {
-        display: inline-block;
-        margin: 0 10px 10px 0;
-    }
-    .action-bar-right {
-        float: right;
-        >div {
-            display: inline-block;
-        }
-    }
-
-    &::after{
-        .clear-float
-    }
-}
-
-.text-center {
-    text-align: center;
-}
-
-.search-input {
-    max-width: 160px;
-    margin-right: 10px;
-}
-
-.permission-forbid{
-    cursor: not-allowed;
-    opacity: .8 !important;
-    color: #5A6274;
 }
 
 @import url("./font-awesome.min.css");

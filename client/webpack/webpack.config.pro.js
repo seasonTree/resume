@@ -9,7 +9,10 @@ const postSafeParse = require('postcss-safe-parser');
 module.exports = merge(baseWebpackConfig, {
     mode: 'production',
     plugins: [
-        new uglifyjs(),
+        new uglifyjs({
+            cache: true,
+            parallel: true
+        }),
 
         // https://zhuanlan.zhihu.com/p/37251575
         new optimizeCssAssetsPlugin({ //压缩css 

@@ -79,13 +79,15 @@ export default {
 };
 </script>
 <style lang='less'>
+@color: #7266ba;
 .login-container {
     position: absolute;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: #12afe3;
+    background-color: @color;
+    // 暂时取消背景
     // background-image: url(../image/login_bg.jpg);
     background-size: 100% 100%;
     

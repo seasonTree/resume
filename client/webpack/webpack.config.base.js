@@ -1,26 +1,16 @@
+//单个只有后台的版本
 const path = require('path');
+const fs = require('fs');
 const extractTextPlugin = require("extract-text-webpack-plugin");
 const vueLoaderPlugin = require('vue-loader/lib/plugin');
 const htmlPlugin = require('html-webpack-plugin');
-
-const fs = require('fs');
-
-//webpack
-// const webpack = require('webpack');
-
-//多线程打包, 使用 happypack@next
-const happyPack = require('happypack');
-const os = require('os');
-const happyThreadPool = happyPack.ThreadPool({
-    size: os.cpus().length
-});
-
+const webpack = require('webpack');
 const srcPath = path.resolve(__dirname, '../src');
 const outputPath = path.resolve(__dirname, '../dist');
-const uploadsPath = path.join(outputPath, 'uploads');
-const avatarPath = path.join(uploadsPath, 'avatar');
-
 const copyFile = require('copy-webpack-plugin');
+const env = process.env.NODE_ENV;
+const resourcePrfix = '';
+
 
 //如果dist文件不存在就创建
 try {
@@ -29,26 +19,13 @@ try {
     fs.mkdirSync(outputPath);
 }
 
-//创建uplaod文件
-try {
-    fs.statSync(uploadsPath);
-} catch (error) {
-    fs.mkdirSync(uploadsPath);
-}
-
-//如果avatar文件不存在就创建
-try {
-    fs.statSync(avatarPath);
-} catch (error) {
-    fs.mkdirSync(avatarPath);
-}
-
 //移除dist生成的path
 function rmGenFile(outputPath) {
     let files = fs.readdirSync(outputPath);
 
     files.forEach((item) => {
-        if (item !== 'uploads' && item != 'favicon.ico') {
+
+        if (item != 'favicon.ico' && item != 'uploads') {
             var fpath = path.resolve(outputPath, item),
                 fstat = fs.statSync(fpath);
 
@@ -72,11 +49,17 @@ let entry = {
 let plugins = [
     new vueLoaderPlugin(),
 
+    new webpack.DefinePlugin({
+        //设置全局的变量
+        // __token: JSON.stringify(token)
+    }),
+
     new htmlPlugin({
         filename: `${outputPath}/index.html`,
         template: `${srcPath}/index.html`,
         inject: 'body',
         chunksSortMode: 'auto',
+        minify: env == 'production'
     }),
 
     //不能写成common.css，打包的时候会缺少文件
@@ -84,31 +67,6 @@ let plugins = [
     new extractTextPlugin({
         filename: `css/[name][hash:4].css`,
         allChunks: true
-    }),
-
-    new happyPack({ //多线程打包js
-        id: 'happybabel',
-        loaders: ['babel-loader?cacheDirectory=true?presets=es2015'],
-        threadPool: happyThreadPool,
-        // cache: true,
-        verbose: true
-    }),
-    new happyPack({ //多线程打包css
-        id: 'postcss',
-        loaders: ["css-loader?-autoprefixer!postcss-loader"],
-        // loaders: ["css-loader?-autoprefixer", "postcss-loader"],
-        threadPool: happyThreadPool,
-        // cache: true,
-        verbose: true
-    }),
-    new happyPack({ //多线程打包less
-        id: 'postless',
-        //https://segmentfault.com/q/1010000009157879，注意编译顺序
-        loaders: ['css-loader?-autoprefixer!postcss-loader!less-loader'],
-        // loaders: ['css-loader?-autoprefixer', "postcss-loader", "less-loader"],
-        threadPool: happyThreadPool,
-        // cache: true,
-        verbose: true
     }),
 
     // new copyFile([
@@ -159,7 +117,6 @@ let plugins = [
     // new webpack.NamedModulesPlugin()
 ]
 
-
 module.exports = {
     performance: {
         hints: false
@@ -178,7 +135,7 @@ module.exports = {
         path: `${outputPath}`,
         filename: '[name]/index[hash:4].js',
         chunkFilename: 'js/chunks/[name][hash:4].js',
-        publicPath: '/'
+        publicPath: `${resourcePrfix}/`
     },
 
     // devServer: {
@@ -200,12 +157,12 @@ module.exports = {
     // context: sourcePath,
     resolve: {
         //一定要添加，不然无法找到vue文件
-        extensions: ['.js', '.vue', '.json', '.css', '.less'],
+        extensions: ['.js', '.vue', '.json', '.css', '.less', 'scss', 'sass'],
         alias: {
             'vue': 'vue/dist/vue.js',
             '@src': `${srcPath}`,
-            '@css': `${srcPath}/css`,
             '@view': `${srcPath}/view`,
+            '@css': `${srcPath}/css`,
             '@component': `${srcPath}/component`,
             '@common': `${srcPath}/common`
         }
@@ -230,17 +187,13 @@ module.exports = {
                     extractCSS: true,
                     loaders: {
                         css: extractTextPlugin.extract({
-                            //加入happypack后，会导致vue的css的scoped失效
-                            use: ["happypack/loader?id=postcss"],
-                            // use: ["css-loader?-autoprefixer", "postcss-loader"],
+                            use: ["css-loader?-autoprefixer", "postcss-loader"],
                             fallback: 'vue-style-loader',
                         }),
                         less: extractTextPlugin.extract({
-                            //加入happypack后，会导致vue的css的scoped失效
-                            use: ["happypack/loader?id=postless"],
-                            // use: ['css-loader?-autoprefixer', "postcss-loader", "less-loader"],
+                            use: ['css-loader?-autoprefixer', "postcss-loader", "less-loader"],
                             fallback: 'vue-style-loader',
-                        }),
+                        })
                     },
                     //转换src
                     transformToRequire: {
@@ -253,25 +206,21 @@ module.exports = {
             },
             {
                 test: /\.js$/,
-                loader: 'happypack/loader?id=happybabel', //已经在.babelrc配置，这里配置的话多线程任务会出错
-                exclude: /node_modules/
+                loader: 'babel-loader', //已经在.babelrc配置，这里配置的话多线程任务会出错
+                exclude: '/node_modules/'
             },
             {
                 test: /\.css$/,
                 use: extractTextPlugin.extract({ //单独打包
                     fallback: "style-loader", //一定要加fallback
-                    //加入happypack后，会导致vue的css的scoped失效
-                    use: ["happypack/loader?id=postcss"]
-                    // use: ["css-loader?-autoprefixer", "postcss-loader"]
+                    use: ["css-loader?-autoprefixer", "postcss-loader"]
                 }),
             },
             {
                 test: /\.less$/,
                 use: extractTextPlugin.extract({ //单独打包
                     fallback: 'style-loader', //一定要加fallback
-                    //加入happypack后，会导致vue的css的scoped失效
-                    use: ["happypack/loader?id=postless"]
-                    // use: ['css-loader?-autoprefixer', "postcss-loader", "less-loader"]
+                    use: ['css-loader?-autoprefixer', "postcss-loader", "less-loader"]
                 }),
             },
             {

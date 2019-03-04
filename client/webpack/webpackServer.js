@@ -17,7 +17,7 @@ app.use(express.static(path.resolve(__dirname, '../dist')))
 //配置webpack中间件
 
 //注入socket监听文件变化
-webpackConfig.entry.app = ['webpack-hot-middleware/client', webpackConfig.entry.app];
+webpackConfig.entry.app = ['webpack-hot-middleware/client', ...webpackConfig.entry.app];
 
 //加入hot replace
 webpackConfig.plugins.push(new webpack.HotModuleReplacementPlugin());
@@ -32,6 +32,6 @@ app.use(webpackDevMiddleware(compiler, {
 //hot replacement
 app.use(webpackHotMiddleware(compiler));
 
-app.listen(9000, () => {
-    console.log('list at http://localhost:9000')
+app.listen(9666, () => {
+    console.log('list at http://localhost:9666')
 });
