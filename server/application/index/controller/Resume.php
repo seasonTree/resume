@@ -160,7 +160,7 @@ class Resume extends Controller
                     $list[] = $preg[0];
                     // dump($rule);
                 }
-                
+
                 
             }
             
@@ -2054,7 +2054,7 @@ class Resume extends Controller
                 $project->addTextBreak(1);
                 continue;
             }
-            if (preg_match("/(责任描述:|责任描述：)(\s+)?/",$v,$preg)) {//处理个别空格内容换行问题，主要是内容
+            if (preg_match("/(责任描述:|责任描述：|项目责任:|项目责任：|项目职责：|项目职责:)(\s+)?/",$v,$preg)) {//处理个别空格内容换行问题，主要是内容
                 $v = preg_replace("/\s+/",'',$v);
                 $v = preg_replace("/(责任描述:|责任描述：)/",'责任描述: ',$v);
                 $content = explode(' ',$v);
