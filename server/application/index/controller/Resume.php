@@ -248,6 +248,7 @@ class Resume extends Controller
         if ($content == '') {
             return json(['code' => 1,'msg' => '缺少内容','data' => []]);
         }
+
         $rule = config('config.resume_rule');
         foreach ($rule as $k => $v) {
             //处理特定字符格式,加换行
@@ -320,8 +321,10 @@ class Resume extends Controller
         //处理毕业时间
         if (isset($list['graduation_time'])) {
             if ($list['graduation_time'] != '') {
+                $list['graduation_time'] = str_replace('—','-',$list['graduation_time']);//处理特殊符号
                 $graduation_time = explode('-',$list['graduation_time']);
                 if (count($graduation_time) > 1) {
+
                     preg_match("/\d{4}/", $graduation_time[1],$res);
                     if(isset($res[0])){
                         $list['graduation_time'] = $res[0];
@@ -593,7 +596,6 @@ class Resume extends Controller
         $total = $sheet -> getHighestRow(); // 取得总行数
         $data = [];
         $communicate = [];//沟通
-        $temp_time = '';
         $user = new User();
         $keys = 0;//沟通数据下标
         $source = ['前程无忧','中国人才','智联招聘','拉勾网','BOSS直聘','校园招聘','内部推荐','外部推荐','协调转入','实习憎','自动投递','返聘','其他渠道'];
@@ -695,7 +697,7 @@ class Resume extends Controller
                 $data[$row]['ct_user'] = $a;
             }
             
-            if ($b != '' && is_numeric($temp_time)) {
+            if ($b != '' && is_numeric($b)) {
                 $time = ($b-25569)*24*60*60; //获得秒数
                 $data[$row]['ct_time'] = date('Y-m-d', $time);   //转化时间
             }
@@ -1856,8 +1858,53 @@ class Resume extends Controller
         }
         $templateProcessor->setComplexBlock('self_evaluation',$self);
 
-        //工作经验
+        /**************************************************方法1********************************************/
         $work_experience = explode("\n",$data['workExperience']);
+        $group_list = config('config.group_list');//标题集合，去除标题
+        $work_rule = config('config.workExperience');//工作经验的匹配集合
+        $work = new TextRun();
+        foreach ($work_experience as $k => $v) {
+            if ($v == '' || in_array(trim($v),$group_list)) {
+                continue;
+            }
+            $v = preg_replace("/\|/",'',$v);//处理特殊符号
+            if (preg_match($work_rule['time_total'],$v)) {
+                $v = preg_replace("/\s+/",'',$v);
+            }
+            if(preg_match("/\d+(\s+)(-|至|到)(\s+)(\d+|至今)/",$v,$preg)){//处理时间格式，空格问题
+                $v = preg_replace("/$preg[0]/",preg_replace("/\s+/",'',$preg[0]),$v);
+            }
+            $v = preg_replace($work_rule['time_total'],'',$v);//处理时间
+            $v = preg_replace($work_rule['money'],'',$v);//处理钱
+            if (preg_match($work_rule['industry'],$v)) {
+                continue;
+            }
+
+            if (preg_match("/(:|：)(\s+)?/",$v,$preg)) {//处理个别空格内容换行问题，主要是内容
+                $v = preg_replace("/\s+/",'',$v);
+                $v = preg_replace("/(:|：)/",': ',$v);
+                $content = explode(' ',$v);
+                foreach ($content as $k => $v) {
+                    if (empty($v)) {
+                        continue;
+                    }
+                    $work->addText(htmlspecialchars($v),['size' => 10]);
+                    $work->addTextBreak(1);
+                }
+                continue;
+            }
+            
+            
+            $work->addText(htmlspecialchars($v),['size' => 10]);
+            $work->addTextBreak(1);
+        }
+        $templateProcessor->setComplexBlock('work_experience',$work);
+
+        /***************************************************************************************************/
+
+        /*************************************方法2备份*****************************************************/
+        //工作经验
+        /*$work_experience = explode("\n",$data['workExperience']);
         // foreach ($work_experience as $k => $v) {
         //     if(preg_match("/\d+(\s+)?(-|至|到)(\s+)?(\d+|至今)/",$v,$preg)){
         //         $work_experience[$k] = preg_replace("/$preg[0]/",preg_replace("/\s+/",'',$preg[0]),$v);
@@ -1875,6 +1922,11 @@ class Resume extends Controller
         $group_list = config('config.group_list');//标题集合，去除标题
         $work_rule = config('config.workExperience');//工作经验的匹配集合
         $work = new TextRun();
+        $preg_array = ['company','work_time'];//匹配时间和公司名字
+        $list = [];//结果集
+        $keys = 0;//下标
+        $max_company_length = 0;
+        $max_time_length = 0;
         foreach ($work_experience as $k => $v) {
             if ($v == '' || in_array(trim($v),$group_list)) {
                 continue;
@@ -1883,36 +1935,101 @@ class Resume extends Controller
             if (preg_match($work_rule['time_total'],$v)) {
                 $v = preg_replace("/\s+/",'',$v);
             }
-            if(preg_match("/\d+(\s+)?(-|至|到)(\s+)?(\d+|至今)/",$v,$preg)){//处理时间格式，空格问题
+            if(preg_match("/\d+(\s+)(-|至|到)(\s+)(\d+|至今)/",$v,$preg)){//处理时间格式，空格问题
                 $v = preg_replace("/$preg[0]/",preg_replace("/\s+/",'',$preg[0]),$v);
             }
             $v = preg_replace($work_rule['time_total'],'',$v);//处理时间
             $v = preg_replace($work_rule['money'],'',$v);//处理钱
+
+            if (empty($preg_array) && preg_match($work_rule['work_time'],$v,$preg) || empty($preg_array) && preg_match($work_rule['company'],$v,$preg)) {
+                $list[$keys]['job'] = $data['expected_job'];
+                $keys++;
+                $preg_array = ['company','work_time'];//匹配时间和公司名字
+            }
             //处理时间空格问题
-            if (preg_match($work_rule['work_time'],$v,$preg)) {//标题加粗
-                $work->addTextBreak(1);//加换行
-                $v = preg_replace($work_rule['work_time'],$preg[0].'     ',$v);
-                $work->addText(htmlspecialchars($v),['size' => 10,'bold' => true]);
+            if (preg_match($work_rule['work_time'],$v,$preg)) {
+                // if (preg_match("/至今/",$preg[0])) {
+                //     if (isset($list[0]['work_time'])) {
+                //         continue;//匹配到至今的字段将跳过
+                //     }
+                // }
+                if ($keys > 1) {
+                    if(strtotime($preg[0]) > strtotime($list[$keys-1]['work_time'])){
+                        continue;//时间错误跳过
+                    }
+                }
+                
+                if (in_array('work_time',$preg_array)) {
+                    $max_time_length = $max_time_length >= strlen($preg[0])?$max_time_length:strlen($preg[0]);
+                    $list[$keys]['work_time'] = $preg[0];//工作经历的时间
+                    $v = str_replace($preg[0],'',$v);
+                    array_pop($preg_array);//匹配成功之后弹出
+                }
+
+            }
+            if (preg_match($work_rule['company'],$v,$preg)) {
+                if (preg_match("/上市公司|创业公司/",$preg[0])) {
+                    continue;
+                }
+                if (in_array('company',$preg_array)) {
+                    $max_company_length = $max_company_length >= strlen($preg[0])?$max_company_length:strlen($preg[0]);
+                    $list[$keys]['company'] = $preg[0];//工作经历的时间
+                    $v = str_replace($preg[0],'',$v);
+                    array_shift($preg_array);//匹配成功后弹出
+                }
+
+            }
+            // if (empty($preg_array)) {
+            //     !isset($list[$keys]['content'])?$list[$keys]['content'] = '':'';
+            //     $list[$keys]['content'].= $v;
+            // }
+
+            // if (preg_match($work_rule['work_time'],$v,$preg)) {//标题加粗
+            //     $work->addTextBreak(1);//加换行
+            //     $v = preg_replace($work_rule['work_time'],$preg[0].'     ',$v);
+            //     $work->addText(htmlspecialchars($v),['size' => 10,'bold' => true]);
+            //     $work->addTextBreak(1);
+            //     continue;
+            // }
+            // if (preg_match("/(:|：)\s+/",$v,$preg)) {//处理个别空格内容换行问题，主要是内容
+            //     $v = preg_replace("/(:|：)\s+/",': ',$v);
+            //     $content = explode(' ',$v);
+            //     foreach ($content as $k => $v) {
+            //         if (empty($v)) {
+            //             continue;
+            //         }
+            //         $work->addText(htmlspecialchars($v),['size' => 10]);
+            //         $work->addTextBreak(1);
+            //     }
+            //     continue;
+            // }
+            
+            // $work->addText(htmlspecialchars($v),['size' => 10]);
+            // $work->addTextBreak(1);
+        }
+        isset($list[$keys]['work_time'])&&isset($list[$keys]['company'])?$list[$keys]['job'] = $data['expected_job']:'';
+        foreach ($list as $k => $v) {
+            isset($v['work_time'])?$time = $v['work_time']:$time = '';
+            isset($v['company'])?$company = $v['company']:$company = '';
+            isset($v['job'])?$job = $v['job']:$job = '';
+            $time = strlen($time) >= $max_time_length?$time:$time.str_repeat(' ',($max_time_length-strlen($time))/3*2); 
+            $company = strlen($company) >= $max_company_length?$company:$company.str_repeat(' ',($max_company_length-strlen($company))/3*2);
+            dump($company);
+            if ($time == ''|| $company == '' || $job == '') {
+                $error = '数据有异常，手动处理';
+                $work->addText(htmlspecialchars($time.'     '.$company.'     '.$job),['size' => 10,'color' => 'red','bold' => true]);
+                $work->addTextBreak(1);
+                $work->addText($error,['size' => 10,'color' => 'red']);
                 $work->addTextBreak(1);
                 continue;
             }
-            if (preg_match("/(:|：)\s+/",$v,$preg)) {//处理个别空格内容换行问题，主要是内容
-                $v = preg_replace("/(:|：)\s+/",': ',$v);
-                $content = explode(' ',$v);
-                foreach ($content as $k => $v) {
-                    if (empty($v)) {
-                        continue;
-                    }
-                    $work->addText(htmlspecialchars($v),['size' => 10]);
-                    $work->addTextBreak(1);
-                }
-                continue;
-            }
-            
-            $work->addText(htmlspecialchars($v),['size' => 10]);
+            $work->addText(htmlspecialchars($time.'     '.$company.'     '.$job),['size' => 10,'bold' => true]);
             $work->addTextBreak(1);
         }
         $templateProcessor->setComplexBlock('work_experience',$work);
+        */
+
+        /****************************************************************************************************************/
 
         //项目经验
         $project_experience = explode("\n",$data['projectExperience']);
@@ -1932,8 +2049,9 @@ class Resume extends Controller
                 $project->addTextBreak(1);
                 continue;
             }
-            if (preg_match("/(:|：)\s+/",$v,$preg)) {//处理个别空格内容换行问题，主要是内容
-                $v = preg_replace("/(:|：)\s+/",': ',$v);
+            if (preg_match("/(:|：)(\s+)?/",$v,$preg)) {//处理个别空格内容换行问题，主要是内容
+                $v = preg_replace("/\s+/",'',$v);
+                $v = preg_replace("/(:|：)/",': ',$v);
                 $content = explode(' ',$v);
                 foreach ($content as $k => $v) {
                     if (empty($v)) {
@@ -1949,6 +2067,7 @@ class Resume extends Controller
         }
         $templateProcessor->setComplexBlock('project_experience',$project);
 
+        //教育背景部分
         $educational_background = explode("\n",str_replace(' ','', $data['educational_background']));
         $educational_background = implode("",$educational_background);
         $edu_config = config('config.educationalBackground');
@@ -1961,54 +2080,62 @@ class Resume extends Controller
            preg_match_all($edu_config['speciality'],$educational_background,$speciality);
            preg_match_all($edu_config['educational'],$educational_background,$educational);
 
-           // dump($school);
-           // dump($graduation_time);
-           // dump($speciality);
-           // dump($educational);exit;
-           $max_time_length = 0;
-           $max_school_length = 0;
-           $max_speciality_length = 0;
-           $max_educational_length = 0;
+           
+               // dump($school);
+               // dump($graduation_time);
+               // dump($speciality);
+               // dump($educational);exit;
+               $max_time_length = 0;
+               $max_school_length = 0;
+               $max_speciality_length = 0;
+               $max_educational_length = 0;
 
-           for ($i=0,$len = count($school[0]); $i < $len ; $i++) { 
-               isset($school[0][$i])?$school_string = $school[0][$i]:$school_string = '';
-               isset($graduation_time[0][$i])?$time_string = $graduation_time[0][$i]:$time_string = '';
-               isset($speciality[0][$i])?$speciality_string = $speciality[0][$i]:$speciality_string = '';
-               isset($educational[0][$i])?$educational_string = $educational[0][$i]:$educational_string = '';
-               if ($speciality) {
-                   $speciality_string = str_replace($school_string,'',$speciality_string);
-                   $speciality_string = str_replace($time_string,'',$speciality_string);
-                   $speciality_string = str_replace($educational_string,'',$speciality_string);
+               for ($i=0,$len = count($school[0]); $i < $len ; $i++) { 
+                   isset($school[0][$i])?$school_string = $school[0][$i]:$school_string = '';
+                   isset($graduation_time[0][$i])?$time_string = $graduation_time[0][$i]:$time_string = '';
+                   isset($speciality[0][$i])?$speciality_string = $speciality[0][$i]:$speciality_string = '';
+                   isset($educational[0][$i])?$educational_string = $educational[0][$i]:$educational_string = '';
+                   if ($speciality) {
+                       $speciality_string = str_replace($school_string,'',$speciality_string);
+                       $speciality_string = str_replace($time_string,'',$speciality_string);
+                       $speciality_string = str_replace($educational_string,'',$speciality_string);
+                   }
+                   $edu[$i]['time_string'] = $time_string;
+                   $edu[$i]['school_string'] = $school_string;
+                   $edu[$i]['speciality_string'] = $speciality_string;
+                   $edu[$i]['educational_string'] = $educational_string;
+                   $max_time_length = $max_time_length >= strlen($time_string)?$max_time_length:strlen($time_string);
+                   $max_school_length = $max_school_length >= strlen($school_string)?$max_school_length:strlen($school_string);
+                   $max_speciality_length = $max_speciality_length >= strlen($speciality_string)?$max_speciality_length:strlen($speciality_string);
+                   $max_educational_length = $max_educational_length >= strlen($educational_string)?$max_educational_length:strlen($educational_string);
+
                }
-               $edu[$i]['time_string'] = $time_string;
-               $edu[$i]['school_string'] = $school_string;
-               $edu[$i]['speciality_string'] = $speciality_string;
-               $edu[$i]['educational_string'] = $educational_string;
-               $max_time_length = $max_time_length >= strlen($time_string)?$max_time_length:strlen($time_string);
-               $max_school_length = $max_school_length >= strlen($school_string)?$max_school_length:strlen($school_string);
-               $max_speciality_length = $max_speciality_length >= strlen($speciality_string)?$max_speciality_length:strlen($speciality_string);
-               $max_educational_length = $max_educational_length >= strlen($educational_string)?$max_educational_length:strlen($educational_string);
+               $color = 'black';
+               $error = '';
+               if (count($school[0]) != count($graduation_time[0]) || count($school[0]) != count($speciality[0]) || count($school[0]) != count($educational[0])) {
+                   $color = 'red';
+                   $error = '数据可能会存在异常请自行调整';
+               }
 
-           }
+               foreach ($edu as $k => $v) {
+                   $edu_string = strlen($v['time_string']) >= $max_time_length?$v['time_string']:$v['time_string'].str_repeat(' ',($max_time_length-strlen($v['time_string']))/3*2);
 
-           foreach ($edu as $k => $v) {
-               $edu_string = strlen($v['time_string']) >= $max_time_length?$v['time_string']:$v['time_string'].str_repeat(' ',($max_time_length-strlen($v['time_string']))/3*2);
+                   $school_string = strlen($v['school_string']) >= $max_school_length?$v['school_string']:$v['school_string'].str_repeat(' ',($max_school_length-strlen($v['school_string']))/3*2);
+                   
+                   $speciality_string = strlen($v['speciality_string']) >= $max_speciality_length?$v['speciality_string']:$v['speciality_string'].str_repeat(' ',($max_speciality_length-strlen($v['speciality_string']))/3*2);
+                   
+                   $educational_string = strlen($v['educational_string']) >= $max_educational_length?$v['educational_string']:$v['educational_string'].str_repeat(' ',($max_educational_length-strlen($v['educational_string']))/3*2);
 
-               $school_string = strlen($v['school_string']) >= $max_school_length?$v['school_string']:$v['school_string'].str_repeat(' ',($max_school_length-strlen($v['school_string']))/3*2);
+                   $edu_string = $time_string.'          '.$school_string.'          '.$speciality_string.'         '.$educational_string;
+                   $section->addText($edu_string,['color' => $color]);
+                   $section->addTextBreak(1);
+               }
+               $section->addText(htmlspecialchars($error),['color' => $color]);
                
-               $speciality_string = strlen($v['speciality_string']) >= $max_speciality_length?$v['speciality_string']:$v['speciality_string'].str_repeat(' ',($max_speciality_length-strlen($v['speciality_string']))/3*2);
-               
-               $educational_string = strlen($v['educational_string']) >= $max_educational_length?$v['educational_string']:$v['educational_string'].str_repeat(' ',($max_educational_length-strlen($v['educational_string']))/3*2);
-
-               $edu_string = $time_string.'          '.$school_string.'          '.$speciality_string.'         '.$educational_string;
-               $section->addText($edu_string);
-               $section->addTextBreak(1);
-           }
+           
 
         }
-        else{
 
-        }
         $templateProcessor->setComplexBlock('edu_string',$section);
 
         
