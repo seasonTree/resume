@@ -99,7 +99,7 @@
                     <div class="full-screen">
                         <el-tooltip
                             effect="dark"
-                            content="Full Screen"
+                            content="全屏"
                             placement="top"
                         ><i
                                 class="fa fa-expand-arrows-alt"
