@@ -64,14 +64,14 @@
                                         backgroundImage: `url(${userInfo.avatar})`
                                     }"
                                 ></span>
-                                <span class="inline-block">{{userInfo.userid}}</span>
+                                <span class="inline-block">{{userInfo.uname}}</span>
                             </span>
                             <el-dropdown-menu slot="dropdown">
                                 <el-dropdown-item @click.native="changePasswordDialog = true">
-                                    Change Password
+                                    修改密码
                                 </el-dropdown-item>
                                 <el-dropdown-item @click.native="logout">
-                                    Log Out
+                                    退出登录
                                 </el-dropdown-item>
                             </el-dropdown-menu>
                         </el-dropdown>
@@ -122,86 +122,7 @@
                 </div>
             </el-main>
         </el-container>
-
-        <!-- <el-header class="header clearfix">
-            <div class="inline-block title">
-                招聘管理系统
-            </div>
-            <div class="pull-left">
-
-            </div>
-
-            <div class="pull-right">
-                <el-dropdown class="dropdown-link">
-                    <span>
-                        <span
-                            @click="userImageDialog = true"
-                            class="inline-block bg-cover user-image"
-                            :style="{
-                                backgroundImage: `url(${userInfo.avatar})`
-                            }"
-                        ></span>
-                        <span class="inline-block">{{userInfo.uname}}</span>
-                    </span>
-                    <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item @click.native="changePasswordDialog = true">
-                            修改密码
-                        </el-dropdown-item>
-                        <el-dropdown-item @click.native="logout">
-                            退出登录
-                        </el-dropdown-item>
-                    </el-dropdown-menu>
-                </el-dropdown>
-            </div>
-
-        </el-header>
-        <el-container class="content">
-            <el-aside
-                width="200px"
-                class="navbar"
-            >
-                <el-menu
-                    :default-active="$route.path"
-                    background-color="#eff1f6"
-                    router
-                >
-                    <menu-tree :menu="menu"></menu-tree>
-                </el-menu>
-            </el-aside>
-
-            <el-main class="main">
-                <div class="main-header">
-                    <el-breadcrumb separator="/">
-
-                        <template v-for="(item, index) in $route.meta.paths">
-                            <template v-if="item.url">
-                                <el-breadcrumb-item :key="index">{{item.name}}</el-breadcrumb-item>
-                            </template>
-
-                            <template v-else>
-                                <el-breadcrumb-item :key="index">{{item.name}}</el-breadcrumb-item>
-                            </template>
-
-                        </template>
-
-                        <el-breadcrumb-item>{{$route.meta.name}}</el-breadcrumb-item>
-                    </el-breadcrumb>
-                </div>
-
-                <div
-                    class="main-body"
-                    ref="mainBody"
-                >
-                    <transition
-                        name="fade"
-                        mode="out-in"
-                    >
-                        <router-view :bodyHeight="bodyHeight"></router-view>
-                    </transition>
-                </div>
-            </el-main>
-        </el-container> -->
-
+        
         <change-password :show.sync="changePasswordDialog">
         </change-password>
 
@@ -397,7 +318,7 @@ export default {
                     // that.$router.replace("/login");
                 })
                 .catch(res => {
-                    that.$message.error("Logout failed, please try again.");
+                    that.$message.error("退出登录失败，请重试.");
                 });
         }
     }

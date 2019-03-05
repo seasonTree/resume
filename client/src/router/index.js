@@ -3,6 +3,9 @@ import VueRouter from "vue-router";
 import store from "../store";
 //组件模块登记
 import components from "./components";
+import {
+    Loading
+} from 'element-ui';
 
 //因为全局路由守卫不能获取this，这里直接使用方法来获取是否登录
 import {
@@ -310,10 +313,18 @@ router.beforeEach(async (to, from, next) => {
         return;
     }
 
+    //是否加载中
+    let loadingInstance = null;
+
     //获取当前登录的用户
     let user = store.getters.userInfo;
     if (!user.uname) {
         let checkError = false;
+
+        //加载loading
+        loadingInstance = Loading.service({
+            fullscreen: true
+        });
 
         try {
             let resp = await getUserInfo(),
@@ -325,9 +336,15 @@ router.beforeEach(async (to, from, next) => {
             } else {
                 store.commit("clearUserInfo");
             }
+
         } catch (error) {
             checkError = true;
+
         } finally {
+
+            //关闭loading
+            loadingInstance && loadingInstance.close();
+
             if (checkError) {
                 router.push("/error");
                 return;
@@ -340,6 +357,11 @@ router.beforeEach(async (to, from, next) => {
         //初始化菜单------------------------
 
         if (!initRouter) {
+            //加载loading
+            loadingInstance = Loading.service({
+                fullscreen: true
+            });
+
             let suceess = await genRoute(router, store);
 
             if (suceess) {
@@ -352,6 +374,9 @@ router.beforeEach(async (to, from, next) => {
                 //跳到出错页面
                 router.push("/error");
             }
+
+            loadingInstance && loadingInstance.close();
+
         } else if (toPath == "/login") {
 
             //登录后还想跳到登录页面的，直接跳首页
