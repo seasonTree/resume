@@ -239,6 +239,14 @@ export default {
 
                 that.mainBodyTimer = setTimeout(() => {
                     that.bodyHeight = that.$refs.mainBody.offsetHeight;
+
+                      //抛出事件
+                    if (window.fireEvent) {
+                        window.fireEvent("bodyChange");
+                    } else {
+                        let rzEvent = new Event("bodyChange");
+                        window.dispatchEvent(rzEvent);
+                    }
                 }, 100);
             };
 
