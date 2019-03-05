@@ -25,7 +25,7 @@ function rmGenFile(outputPath) {
 
     files.forEach((item) => {
 
-        if (item != 'favicon.ico' && item != 'uploads') {
+        if (item != 'favicon.ico' && item != 'uploads' && item != 'template') {
             var fpath = path.resolve(outputPath, item),
                 fstat = fs.statSync(fpath);
 

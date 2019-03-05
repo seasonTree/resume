@@ -14,7 +14,6 @@
 	"dependencies": {
 		"@babel/polyfill": "^7.2.5",
 		"axios": "^0.18.0",
-		"cross-env": "^5.2.0",
 		"echarts": "^4.2.0-rc.2",
 		"element-ui": "^2.4.11",
 		"v-charts": "^1.19.0",
