@@ -85,7 +85,7 @@
                             size="mini"
                             icon="el-icon-delete"
                             circle
-                            @click="del(scope.row.id, scope.$index)"
+                            @click="del(scope.row, scope.$index)"
                             :disabled="!$check_pm('permiss_del')"
                         ></el-button>
                     </template>

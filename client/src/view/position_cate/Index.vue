@@ -86,7 +86,7 @@
                                     size="mini"
                                     icon="el-icon-delete"
                                     circle
-                                    @click="del(scope.row.id, scope.$index)"
+                                    @click="del(scope.row, scope.$index)"
                                     :disabled="!$check_pm('position_cate_del')"
                                 ></el-button>
                             </el-tooltip>
