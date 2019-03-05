@@ -592,53 +592,53 @@ export default {
 
             // search.name
 
-            tdata: [
-                {
-                    name: "丁锋",
-                    phone: "13560727727",
-                    sex: "男",
-                    age: 28,
-                    work_year: 6,
-                    email: "sheissosex@163.com",
-                    expected_money_start: 15000,
-                    expected_money_end: 19999,
-                    expected_money: "15000-19999元/月",
-                    nearest_unit:
-                        "深圳飞钛科技和东莞小黄狗环保企业(团贷网旗下公司",
-                    nearest_job: "Java开发工程师",
-                    english: "",
-                    expected_job: "Java",
-                    expected_address: "深圳",
-                    school: "广东石油化工学院",
-                    educational: "本科",
-                    speciality: "计算机科学与技术",
-                    mfy_time: "2019-02-26 09:54:34",
-                    id: 464,
-                    ct_time: '2019-02-10'
-                },
-                {
-                    name: "阳鹏",
-                    phone: "18824278483",
-                    sex: "男",
-                    age: 26,
-                    work_year: 5,
-                    email: "958576496@qq.com",
-                    expected_money_start: 17000,
-                    expected_money_end: 17000,
-                    expected_money: "17000",
-                    nearest_unit: "",
-                    nearest_job: "",
-                    english: "",
-                    expected_job: "Java",
-                    expected_address: "深圳",
-                    school: "湖南机电学院",
-                    educational: "大专",
-                    speciality: "计算机应用专科",
-                    mfy_time: "2019-02-26 09:52:44",
-                    id: 463,
-                    ct_time: '2019-02-10'
-                }
-            ],
+            // tdata: [
+            //     {
+            //         name: "丁锋",
+            //         phone: "13560727727",
+            //         sex: "男",
+            //         age: 28,
+            //         work_year: 6,
+            //         email: "sheissosex@163.com",
+            //         expected_money_start: 15000,
+            //         expected_money_end: 19999,
+            //         expected_money: "15000-19999元/月",
+            //         nearest_unit:
+            //             "深圳飞钛科技和东莞小黄狗环保企业(团贷网旗下公司",
+            //         nearest_job: "Java开发工程师",
+            //         english: "",
+            //         expected_job: "Java",
+            //         expected_address: "深圳",
+            //         school: "广东石油化工学院",
+            //         educational: "本科",
+            //         speciality: "计算机科学与技术",
+            //         mfy_time: "2019-02-26 09:54:34",
+            //         id: 464,
+            //         ct_time: '2019-02-10'
+            //     },
+            //     {
+            //         name: "阳鹏",
+            //         phone: "18824278483",
+            //         sex: "男",
+            //         age: 26,
+            //         work_year: 5,
+            //         email: "958576496@qq.com",
+            //         expected_money_start: 17000,
+            //         expected_money_end: 17000,
+            //         expected_money: "17000",
+            //         nearest_unit: "",
+            //         nearest_job: "",
+            //         english: "",
+            //         expected_job: "Java",
+            //         expected_address: "深圳",
+            //         school: "湖南机电学院",
+            //         educational: "大专",
+            //         speciality: "计算机应用专科",
+            //         mfy_time: "2019-02-26 09:52:44",
+            //         id: 463,
+            //         ct_time: '2019-02-10'
+            //     }
+            // ],
 
             //沟通情况
             communicationDialog: false,
