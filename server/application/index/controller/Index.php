@@ -118,11 +118,11 @@ class Index extends Controller
            $person_comm['arrive'] = $arrive_person;
            $person_comm['approved_interview'] = $approved_interview_person;
            $person_comm['entry'] = $entry_person;
-           $person_comm['screen_percentage'] = round((($screen_person/$screen_total)*100),2).'%';
-           $person_comm['arrange_interview_percentage'] = round((($arrange_interview_person/$arrange_interview_total)*100),2).'%';
-           $person_comm['arrive_percentage'] = round((($arrive_person/$arrive_total)*100),2).'%';
-           $person_comm['approved_interview_percentage'] = round((($approved_interview_person/$approved_interview_total)*100),2).'%';
-           $person_comm['entry_percentage'] = round((($entry_person/$entry_total)*100),2).'%';
+           $person_comm['screen_percentage'] = $screen_total != 0?round((($screen_person/$screen_total)*100),2).'%':'0%';
+           $person_comm['arrange_interview_percentage'] = $arrange_interview_total !=0?round((($arrange_interview_person/$arrange_interview_total)*100),2).'%':'0%';
+           $person_comm['arrive_percentage'] = $arrive_total != 0?round((($arrive_person/$arrive_total)*100),2).'%':'0%';
+           $person_comm['approved_interview_percentage'] = $approved_interview_total != 0?round((($approved_interview_person/$approved_interview_total)*100),2).'%':'0%';
+           $person_comm['entry_percentage'] = $entry_total != 0?round((($entry_person/$entry_total)*100),2).'%':'0%';
 
              
            /*****************************修改原有的七天显示格式，保留以前旧格式，**************************************/
