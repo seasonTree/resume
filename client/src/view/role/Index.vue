@@ -80,6 +80,7 @@
                         fixed="right"
                         label="操作"
                         align="center"
+                        width="180"
                     >
                         <template slot-scope="scope">
 
