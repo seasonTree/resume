@@ -248,6 +248,7 @@ class Resume extends Controller
         if ($content == '') {
             return json(['code' => 1,'msg' => '缺少内容','data' => []]);
         }
+
         $rule = config('config.resume_rule');
         foreach ($rule as $k => $v) {
             //处理特定字符格式,加换行
@@ -320,8 +321,10 @@ class Resume extends Controller
         //处理毕业时间
         if (isset($list['graduation_time'])) {
             if ($list['graduation_time'] != '') {
+                $list['graduation_time'] = str_replace('—','-',$list['graduation_time']);//处理特殊符号
                 $graduation_time = explode('-',$list['graduation_time']);
                 if (count($graduation_time) > 1) {
+
                     preg_match("/\d{4}/", $graduation_time[1],$res);
                     if(isset($res[0])){
                         $list['graduation_time'] = $res[0];
@@ -593,7 +596,6 @@ class Resume extends Controller
         $total = $sheet -> getHighestRow(); // 取得总行数
         $data = [];
         $communicate = [];//沟通
-        $temp_time = '';
         $user = new User();
         $keys = 0;//沟通数据下标
         $source = ['前程无忧','中国人才','智联招聘','拉勾网','BOSS直聘','校园招聘','内部推荐','外部推荐','协调转入','实习憎','自动投递','返聘','其他渠道'];
@@ -695,7 +697,7 @@ class Resume extends Controller
                 $data[$row]['ct_user'] = $a;
             }
             
-            if ($b != '' && is_numeric($temp_time)) {
+            if ($b != '' && is_numeric($b)) {
                 $time = ($b-25569)*24*60*60; //获得秒数
                 $data[$row]['ct_time'] = date('Y-m-d', $time);   //转化时间
             }
@@ -1875,6 +1877,9 @@ class Resume extends Controller
         $group_list = config('config.group_list');//标题集合，去除标题
         $work_rule = config('config.workExperience');//工作经验的匹配集合
         $work = new TextRun();
+        $preg_array = ['company','work_time'];//匹配时间和公司名字
+        $list = [];//结果集
+        $keys = 0;//下标
         foreach ($work_experience as $k => $v) {
             if ($v == '' || in_array(trim($v),$group_list)) {
                 continue;
@@ -1883,34 +1888,68 @@ class Resume extends Controller
             if (preg_match($work_rule['time_total'],$v)) {
                 $v = preg_replace("/\s+/",'',$v);
             }
-            if(preg_match("/\d+(\s+)?(-|至|到)(\s+)?(\d+|至今)/",$v,$preg)){//处理时间格式，空格问题
+            if(preg_match("/\d+(\s+)(-|至|到)(\s+)(\d+|至今)/",$v,$preg)){//处理时间格式，空格问题
                 $v = preg_replace("/$preg[0]/",preg_replace("/\s+/",'',$preg[0]),$v);
             }
             $v = preg_replace($work_rule['time_total'],'',$v);//处理时间
             $v = preg_replace($work_rule['money'],'',$v);//处理钱
+
+            if (empty($preg_array) && preg_match($work_rule['work_time'],$v,$preg) || empty($preg_array) && preg_match($work_rule['company'],$v,$preg)) {
+                $list[$keys]['job'] = $data['expected_job'];
+                $keys++;
+                $preg_array = ['company','work_time'];//匹配时间和公司名字
+            }
             //处理时间空格问题
-            if (preg_match($work_rule['work_time'],$v,$preg)) {//标题加粗
-                $work->addTextBreak(1);//加换行
-                $v = preg_replace($work_rule['work_time'],$preg[0].'     ',$v);
-                $work->addText(htmlspecialchars($v),['size' => 10,'bold' => true]);
-                $work->addTextBreak(1);
-                continue;
-            }
-            if (preg_match("/(:|：)\s+/",$v,$preg)) {//处理个别空格内容换行问题，主要是内容
-                $v = preg_replace("/(:|：)\s+/",': ',$v);
-                $content = explode(' ',$v);
-                foreach ($content as $k => $v) {
-                    if (empty($v)) {
-                        continue;
-                    }
-                    $work->addText(htmlspecialchars($v),['size' => 10]);
-                    $work->addTextBreak(1);
+            if (preg_match($work_rule['work_time'],$v,$preg)) {
+                if (in_array('work_time',$preg_array)) {
+                    $list[$keys]['work_time'] = $preg[0];//工作经历的时间
+                    $v = str_replace($preg[0],'',$v);
+                    array_pop($preg_array);//匹配成功之后弹出
                 }
-                continue;
+
             }
+            if (preg_match($work_rule['company'],$v,$preg)) {
+                if (preg_match("/上市公司|创业公司/",$preg[0])) {
+                    continue;
+                }
+                if (in_array('company',$preg_array)) {
+                    $list[$keys]['company'] = $preg[0];//工作经历的时间
+                    $v = str_replace($preg[0],'',$v);
+                    array_shift($preg_array);//匹配成功后弹出
+                }
+
+            }
+            // if (empty($preg_array)) {
+            //     !isset($list[$keys]['content'])?$list[$keys]['content'] = '':'';
+            //     $list[$keys]['content'].= $v;
+            // }
+
+            // if (preg_match($work_rule['work_time'],$v,$preg)) {//标题加粗
+            //     $work->addTextBreak(1);//加换行
+            //     $v = preg_replace($work_rule['work_time'],$preg[0].'     ',$v);
+            //     $work->addText(htmlspecialchars($v),['size' => 10,'bold' => true]);
+            //     $work->addTextBreak(1);
+            //     continue;
+            // }
+            // if (preg_match("/(:|：)\s+/",$v,$preg)) {//处理个别空格内容换行问题，主要是内容
+            //     $v = preg_replace("/(:|：)\s+/",': ',$v);
+            //     $content = explode(' ',$v);
+            //     foreach ($content as $k => $v) {
+            //         if (empty($v)) {
+            //             continue;
+            //         }
+            //         $work->addText(htmlspecialchars($v),['size' => 10]);
+            //         $work->addTextBreak(1);
+            //     }
+            //     continue;
+            // }
             
-            $work->addText(htmlspecialchars($v),['size' => 10]);
-            $work->addTextBreak(1);
+            // $work->addText(htmlspecialchars($v),['size' => 10]);
+            // $work->addTextBreak(1);
+        }
+        isset($list[$keys]['work_time'])&&isset($list[$keys]['company'])?$list[$keys]['job'] = $data['expected_job']:'';
+        foreach ($list as $k => $v) {
+            // isset($v[''])
         }
         $templateProcessor->setComplexBlock('work_experience',$work);
 
@@ -1949,6 +1988,7 @@ class Resume extends Controller
         }
         $templateProcessor->setComplexBlock('project_experience',$project);
 
+        //教育背景部分
         $educational_background = explode("\n",str_replace(' ','', $data['educational_background']));
         $educational_background = implode("",$educational_background);
         $edu_config = config('config.educationalBackground');
