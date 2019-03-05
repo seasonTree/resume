@@ -1882,7 +1882,7 @@ class Resume extends Controller
 
             if (preg_match("/(工作描述:|工作描述：)(\s+)?/",$v,$preg)) {//处理个别空格内容换行问题，主要是内容
                 $v = preg_replace("/\s+/",'',$v);
-                $v = preg_replace("/(工作描述:|工作描述：)/",': ',$v);
+                $v = preg_replace("/(工作描述:|工作描述：)/",'工作描述: ',$v);
                 $content = explode(' ',$v);
                 foreach ($content as $k => $v) {
                     if (empty($v)) {
@@ -2051,7 +2051,7 @@ class Resume extends Controller
             }
             if (preg_match("/(责任描述:|责任描述：)(\s+)?/",$v,$preg)) {//处理个别空格内容换行问题，主要是内容
                 $v = preg_replace("/\s+/",'',$v);
-                $v = preg_replace("/(责任描述:|责任描述：)/",': ',$v);
+                $v = preg_replace("/(责任描述:|责任描述：)/",'责任描述: ',$v);
                 $content = explode(' ',$v);
                 foreach ($content as $k => $v) {
                     if (empty($v)) {
