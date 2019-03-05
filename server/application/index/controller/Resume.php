@@ -1876,9 +1876,9 @@ class Resume extends Controller
             }
             $v = preg_replace($work_rule['time_total'],'',$v);//处理时间
             $v = preg_replace($work_rule['money'],'',$v);//处理钱
-            if (preg_match($work_rule['industry'],$v)) {
-                continue;
-            }
+            // if (preg_match($work_rule['industry'],$v)) {
+            //     continue;
+            // }
 
             if (preg_match("/(:|：)(\s+)?/",$v,$preg)) {//处理个别空格内容换行问题，主要是内容
                 $v = preg_replace("/\s+/",'',$v);
