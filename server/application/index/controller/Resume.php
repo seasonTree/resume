@@ -1880,6 +1880,8 @@ class Resume extends Controller
         $preg_array = ['company','work_time'];//匹配时间和公司名字
         $list = [];//结果集
         $keys = 0;//下标
+        $max_company_length = 0;
+        $max_time_length = 0;
         foreach ($work_experience as $k => $v) {
             if ($v == '' || in_array(trim($v),$group_list)) {
                 continue;
@@ -1901,7 +1903,19 @@ class Resume extends Controller
             }
             //处理时间空格问题
             if (preg_match($work_rule['work_time'],$v,$preg)) {
+                // if (preg_match("/至今/",$preg[0])) {
+                //     if (isset($list[0]['work_time'])) {
+                //         continue;//匹配到至今的字段将跳过
+                //     }
+                // }
+                if ($keys > 1) {
+                    if(strtotime($preg[0]) > strtotime($list[$keys-1]['work_time'])){
+                        continue;//时间错误跳过
+                    }
+                }
+                
                 if (in_array('work_time',$preg_array)) {
+                    $max_time_length = $max_time_length >= strlen($preg[0])?$max_time_length:strlen($preg[0]);
                     $list[$keys]['work_time'] = $preg[0];//工作经历的时间
                     $v = str_replace($preg[0],'',$v);
                     array_pop($preg_array);//匹配成功之后弹出
@@ -1913,6 +1927,7 @@ class Resume extends Controller
                     continue;
                 }
                 if (in_array('company',$preg_array)) {
+                    $max_company_length = $max_company_length >= strlen($preg[0])?$max_company_length:strlen($preg[0]);
                     $list[$keys]['company'] = $preg[0];//工作经历的时间
                     $v = str_replace($preg[0],'',$v);
                     array_shift($preg_array);//匹配成功后弹出
@@ -1949,7 +1964,22 @@ class Resume extends Controller
         }
         isset($list[$keys]['work_time'])&&isset($list[$keys]['company'])?$list[$keys]['job'] = $data['expected_job']:'';
         foreach ($list as $k => $v) {
-            // isset($v[''])
+            isset($v['work_time'])?$time = $v['work_time']:$time = '';
+            isset($v['company'])?$company = $v['company']:$company = '';
+            isset($v['job'])?$job = $v['job']:$job = '';
+            $time = strlen($time) >= $max_time_length?$time:$time.str_repeat(' ',($max_time_length-strlen($time))/3*2); 
+            $company = strlen($company) >= $max_company_length?$company:$company.str_repeat(' ',($max_company_length-strlen($company))/3*2);
+            dump($company);
+            if ($time == ''|| $company == '' || $job == '') {
+                $error = '数据有异常，手动处理';
+                $work->addText(htmlspecialchars($time.'     '.$company.'     '.$job),['size' => 10,'color' => 'red','bold' => true]);
+                $work->addTextBreak(1);
+                $work->addText($error,['size' => 10,'color' => 'red']);
+                $work->addTextBreak(1);
+                continue;
+            }
+            $work->addText(htmlspecialchars($time.'     '.$company.'     '.$job),['size' => 10,'bold' => true]);
+            $work->addTextBreak(1);
         }
         $templateProcessor->setComplexBlock('work_experience',$work);
 
