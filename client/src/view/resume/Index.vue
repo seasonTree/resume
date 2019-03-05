@@ -353,7 +353,7 @@
                                 size="mini"
                                 icon="el-icon-edit"
                                 circle
-                                @click.stop="showEditDialog(scope.row.id)"
+                                @click.stop="showEditDialog(scope.row)"
                                 :disabled="!$check_pm('resume_edit')"
                             ></el-button>
                         </el-tooltip>

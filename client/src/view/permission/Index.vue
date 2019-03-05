@@ -77,7 +77,7 @@
                             size="mini"
                             icon="el-icon-edit"
                             circle
-                            @click="showEditDialog(scope.row.id)"
+                            @click="showEditDialog(scope.row)"
                             :disabled="!$check_pm('permiss_edit')"
                         ></el-button>
                         <el-button

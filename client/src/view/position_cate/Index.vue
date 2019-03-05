@@ -72,7 +72,7 @@
                                     size="mini"
                                     icon="el-icon-edit"
                                     circle
-                                    @click="showEditDialog(scope.row.id)"
+                                    @click="showEditDialog(scope.row)"
                                     :disabled="!$check_pm('position_cate_edit')"
                                 ></el-button>
                             </el-tooltip>
