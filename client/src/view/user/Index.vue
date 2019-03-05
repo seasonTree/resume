@@ -2,42 +2,32 @@
     <div>
         <el-row class="table-container">
             <div class="action-bar">
-
-                <el-row
-                    type="flex"
-                    justify="space-around"
-                    :gutter="20"
-                >
-                    <el-col :span="6">
+                <div class="search-item">
+                    <el-button
+                        type="primary"
+                        @click="addDialog = true"
+                        :disabled="!$check_pm('user_add')"
+                    >新增</el-button>
+                </div>
+                <div class="action-bar-right">
+                    <div class="search-item">
+                        <el-input
+                            type="text"
+                            class="search-input"
+                            v-model.trim="search.name"
+                            autocomplete="off"
+                            placeholder="请输入用户名或姓名"
+                            @keyup.enter="getData(true)"
+                        ></el-input>
                         <el-button
                             type="primary"
-                            @click="addDialog = true"
-                            :disabled="!$check_pm('user_add')"
-                        >新增</el-button>
-                    </el-col>
-                    <el-col :span="18">
-                        <el-row
-                            type="flex"
-                            justify="end"
-                        >
-                            <el-input
-                                type="text"
-                                class="search-input"
-                                v-model.trim="search.name"
-                                autocomplete="off"
-                                placeholder="请输入用户名或姓名"
-                                @keyup.enter="getData(true)"
-                            ></el-input>
-                            <el-button
-                                type="primary"
-                                circle
-                                icon="el-icon-search"
-                                @click="getData(true)"
-                                :loading="tableLoading"
-                            ></el-button>
-                        </el-row>
-                    </el-col>
-                </el-row>
+                            circle
+                            icon="el-icon-search"
+                            @click="getData(true)"
+                            :loading="tableLoading"
+                        ></el-button>
+                    </div>
+                </div>
             </div>
 
             <el-table
@@ -169,16 +159,21 @@
             </el-table>
         </el-row>
 
-        <el-row class="pager">
-            <el-pagination
-                @current-change="changePage"
-                background
-                layout="prev, pager, next"
-                :page-size="pager.size"
-                :total="pager.total"
-                :current-page="pager.current"
-            >
-            </el-pagination>
+        <el-row
+            class="pager"
+            type="flex"
+            justify="end"
+        >
+                <el-pagination
+                    @current-change="changePage"
+                    @size-change="pageSizeChange"
+                    background
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :page-sizes="[10, 20, 50, 100]"
+                    :page-size="pager.size"
+                    :total="pager.total"
+                    :current-page="pager.current"
+                ></el-pagination>
         </el-row>
 
         <add
@@ -244,7 +239,7 @@ export default {
                 //     uname: "123",
                 //     personal_name: "aaaaa",
                 //     phone: 128154444,
-                //     status: 1,
+                //     status: 0,
                 //     ct_user: "创建人",
                 //     ct_time: "创建时间",
                 //     mfy_user: "修改人",

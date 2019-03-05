@@ -14,7 +14,7 @@ export default {
             tdata: [],
             reportData: [],
             pager: {
-                total: 1,
+                total: 0,
                 current: 1,
                 size: 10
             },
@@ -25,15 +25,7 @@ export default {
         };
     },
 
-    computed: {
-        // tabelHeight() {
-        //     if (this.pager) {
-        //         return this.bodyHeight - 130;
-        //     } else {
-        //         return this.bodyHeight - 80;
-        //     }
-        // }
-    },
+    computed: {},
 
     watch: {
         bodyHeight(newValue, oldValue) {
@@ -52,7 +44,7 @@ export default {
     methods: {
         resizeTable() {
             let that = this,
-                height = that.bodyHeight - 165;
+                height = that.bodyHeight - 148;
 
             if (that.$refs.search) {
                 height -= that.$refs.search.offsetHeight;
@@ -89,9 +81,9 @@ export default {
                                 that.pager.size
                             );
                         }
-                    } else if (res.code) {
+                    } else {
                         that.$message.error(
-                            res.msg || "获取数据失败，请刷新后重试."
+                            res.message || "获取数据失败，请刷新后重试."
                         );
                     }
 
@@ -114,6 +106,18 @@ export default {
                     that.pager.size * (index - 1),
                     that.pager.size * (index - 1) + that.pager.size
                 );
+            }
+        },
+
+        pageSizeChange(val) {
+            let that = this;
+
+            if (that.pager) {
+                that.pager.size = val;
+
+                if(that.tdata.length){
+                    that.changePage(1);
+                }
             }
         }
     }

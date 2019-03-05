@@ -1,6 +1,129 @@
 <template>
-    <el-container>
-        <el-header class="header clearfix">
+    <el-container class="content">
+        <div
+            class="aside"
+            :style="{
+                width: navWidth
+            }"
+        >
+            <el-aside :width="navWidth">
+                <div>
+                    <el-header
+                        class="header title"
+                        v-show="showNav"
+                    >
+                        招聘管理系统
+                    </el-header>
+
+                    <el-header
+                        class="header title small-title"
+                        v-show="!showNav"
+                    >
+                        招
+                    </el-header>
+
+                    <div class="navbar">
+                        <el-menu
+                            :default-active="$route.path"
+                            background-color="#eff1f6"
+                            router
+                            :collapse="!showNav"
+                        >
+                            <menu-tree
+                                :menu="menu"
+                                :collapse="!showNav"
+                            ></menu-tree>
+                        </el-menu>
+
+                    </div>
+                </div>
+
+            </el-aside>
+        </div>
+        <el-container class="main">
+            <el-header class="header">
+                <el-row
+                    type="flex"
+                    class="row-bg"
+                    justify="space-between"
+                >
+                    <el-col class="header-left">
+                        <i
+                            @click="navCollapse"
+                            class="shrink fa fa-align-justify"
+                            :class="{ 'collapse': !showNav }"
+                        ></i>
+                    </el-col>
+                    <el-col>
+                        <el-dropdown class="dropdown-link">
+                            <span>
+                                <span
+                                    @click="userImageDialog = true"
+                                    class="inline-block bg-cover user-image"
+                                    :style="{
+                                        backgroundImage: `url(${userInfo.avatar})`
+                                    }"
+                                ></span>
+                                <span class="inline-block">{{userInfo.userid}}</span>
+                            </span>
+                            <el-dropdown-menu slot="dropdown">
+                                <el-dropdown-item @click.native="changePasswordDialog = true">
+                                    Change Password
+                                </el-dropdown-item>
+                                <el-dropdown-item @click.native="logout">
+                                    Log Out
+                                </el-dropdown-item>
+                            </el-dropdown-menu>
+                        </el-dropdown>
+                    </el-col>
+                </el-row>
+            </el-header>
+            <el-main class="main-content">
+                <div class="main-header">
+                    <el-breadcrumb separator="/">
+
+                        <template v-for="(item, index) in $route.meta.paths">
+                            <template v-if="item.url">
+                                <el-breadcrumb-item :key="index">{{item.name}}</el-breadcrumb-item>
+                            </template>
+
+                            <template v-else>
+                                <el-breadcrumb-item :key="index">{{item.name}}</el-breadcrumb-item>
+                            </template>
+
+                        </template>
+
+                        <el-breadcrumb-item>{{$route.meta.name}}</el-breadcrumb-item>
+                    </el-breadcrumb>
+
+                    <div class="full-screen">
+                        <el-tooltip
+                            effect="dark"
+                            content="Full Screen"
+                            placement="top"
+                        ><i
+                                class="fa fa-expand-arrows-alt"
+                                @click="handleFullScreen"
+                            ></i>
+                        </el-tooltip>
+                    </div>
+                </div>
+
+                <div
+                    class="main-body"
+                    ref="mainBody"
+                >
+                    <transition
+                        name="fade"
+                        mode="out-in"
+                    >
+                        <router-view :bodyHeight="bodyHeight"></router-view>
+                    </transition>
+                </div>
+            </el-main>
+        </el-container>
+
+        <!-- <el-header class="header clearfix">
             <div class="inline-block title">
                 招聘管理系统
             </div>
@@ -76,12 +199,8 @@
                         <router-view :bodyHeight="bodyHeight"></router-view>
                     </transition>
                 </div>
-
-                <!-- <el-footer class="main-footer">
-                    ACHIEVO CO. LIMITED
-                </el-footer> -->
             </el-main>
-        </el-container>
+        </el-container> -->
 
         <change-password :show.sync="changePasswordDialog">
         </change-password>
@@ -95,6 +214,11 @@
 </template>
 
 <script>
+import MenuTree from "@component/menutree/MenuTree";
+import ChangePassword from "./ChangePassword";
+import UserImage from "./UserImage";
+import { mapGetters } from "vuex";
+
 export default {
     name: "Layout",
     components: {
@@ -171,7 +295,7 @@ export default {
 
             userImageDialog: false,
 
-            navWidth: "280px",
+            navWidth: "200px",
             showNav: true
         };
     },

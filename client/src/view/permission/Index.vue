@@ -2,60 +2,28 @@
     <div>
         <el-row class="table-container">
             <div class="action-bar">
+                <div class="search-item">
+                    <el-button
+                        type="primary"
+                        @click="addDialog = true"
+                        :disabled="!$check_pm('permiss_add')"
+                    >新增</el-button>
 
-                <el-button
-                    type="primary"
-                    @click="addDialog = true"
-                    :disabled="!$check_pm('permiss_add')"
-                >新增</el-button>
+                    <el-button
+                        type="primary"
+                        @click="sortDialog = true"
+                        :disabled="!$check_pm('permiss_sort')"
+                    >排序</el-button>
 
-                <el-button
-                    type="primary"
-                    @click="sortDialog = true"
-                    :disabled="!$check_pm('permiss_sort')"
-                >排序</el-button>
-
-                <!-- <el-row
-                    type="flex"
-                    justify="space-around"
-                    :gutter="20"
-                >
-                    <el-col :span="6">
-                        <el-button
-                            type="primary"
-                            @click="addDialog = true"
-                        >新增</el-button>
-                    </el-col>
-                    <el-col :span="18">
-                        <el-row
-                            type="flex"
-                            justify="end"
-                        >
-                            <el-input
-                                type="text"
-                                class="search-input"
-                                v-model="search.name"
-                                autocomplete="off"
-                                placeholder="请输入权限名称"
-                            ></el-input>
-                            <el-button
-                                type="primary"
-                                circle
-                                icon="el-icon-search"
-                                @click="getData"
-                            ></el-button>
-                        </el-row>
-                    </el-col>
-                </el-row> -->
+                </div>
             </div>
-
             <el-table
                 border
                 stripe
                 :data="treeArrayData"
-                style="width: 100%"
                 :height="tabelHeight"
                 :row-class-name="showRow"
+                class="premission-table width100"
                 v-loading="tableLoading"
             >
                 <el-table-column
@@ -145,7 +113,7 @@
 
 <script>
 import TableBase from "@view/base/TableBase";
-import { treeToArray } from "../../common/util";
+import { treeToArray } from "@common/util";
 import Add from "./Add";
 import Edit from "./Edit";
 import Sort from "./Sort";
@@ -189,7 +157,7 @@ export default {
                 //             url: '/user/aaa',
                 //             api: "/44444/444",
                 //             ct_user: "44444444",
-                //             ct_time: "444444444444444"
+                //             ct_time:"444444444444444"
                 //         },
                 //         {
                 //             id: 3,
@@ -201,11 +169,11 @@ export default {
                 //             children: [
                 //                 {
                 //                     id: 4,
-                //                     p_name: "333333333333",
+                //                     p_name:"333333333333",
                 //                     url: '/user/aaa',
                 //                     api: "/33333",
                 //                     ct_user: "3333",
-                //                     ct_time: "3333333"
+                //                     ct_time:"3333333"
                 //                 }
                 //             ]
                 //         }
@@ -225,7 +193,7 @@ export default {
                 //             api: "/44444/444",
                 //             url: '/user/aaa',
                 //             ct_user: "44444444",
-                //             ct_time: "444444444444444"
+                //             ct_time:"444444444444444"
                 //         }
                 //     ]
                 // }
@@ -248,7 +216,7 @@ export default {
 
             row._show = show;
 
-            return show ? "show-tr" : "hide-tr";
+            return show ? "" : "hide-tr";
         },
 
         toggle(item) {
@@ -271,7 +239,7 @@ export default {
         afterDel(item) {
             let that = this;
             that.getData();
-        }
+        },
     }
 };
 </script>
@@ -280,23 +248,6 @@ export default {
     padding: 4px 6px;
     transition: all 0.2s;
     cursor: pointer;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-.show-tr {
-    animation: fadeIn 0.5s;
-}
-
-.hide-tr {
-    display: none;
 }
 
 .icon-down {

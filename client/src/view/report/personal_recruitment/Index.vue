@@ -81,7 +81,7 @@
                 border
                 stripe
                 :data="tdata"
-                style="width: 100%"
+                class="width100"
                 :height="tabelHeight"
                 v-loading="tableLoading"
                 @row-click="showCommunicationDialog"
@@ -97,16 +97,21 @@
             </el-table>
         </el-row>
 
-        <el-row class="pager">
-            <el-pagination
-                @current-change="changePage"
-                background
-                layout="prev, pager, next"
-                :page-size="pager.size"
-                :total="pager.total"
-                :current-page="pager.current"
-            >
-            </el-pagination>
+        <el-row
+            class="pager"
+            type="flex"
+            justify="end"
+        >
+                <el-pagination
+                    @current-change="changePage"
+                    @size-change="pageSizeChange"
+                    background
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :page-sizes="[10, 20, 50, 100]"
+                    :page-size="pager.size"
+                    :total="pager.total"
+                    :current-page="pager.current"
+                ></el-pagination>
         </el-row>
 
         <communication
@@ -155,7 +160,7 @@ export default {
 
                 that.tdata = [];
                 that.pager.current = 1;
-                that.pager.total = 1;
+                that.pager.total = 0;
             },
 
             immediate: true

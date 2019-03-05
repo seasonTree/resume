@@ -8,7 +8,9 @@ export default {
         return {
             form: {},
             formRules: {},
-            apiType: ""
+            apiType: "",
+
+            addMethod: "add"
         };
     },
 
@@ -25,9 +27,9 @@ export default {
                     //  console.log(that.form);
 
                     that.$api[that.apiType]
-                        .add(that.form)
+                        [that.addMethod](that.form)
                         .then(res => {
-                            if (res.code == 0) {
+                            if (res.code == 200) {
                                 //新增成功后
                                 that.afterAdd(res.data);
 
@@ -45,7 +47,8 @@ export default {
                                 that.closeDialog();
                             } else {
                                 that.$message.error(
-                                    res.msg || "新增失败，请重试."
+                                    res.message ||
+                                        "新增失败，请重试."
                                 );
                             }
 
@@ -53,7 +56,9 @@ export default {
                         })
                         .catch(res => {
                             that.commitLoading = false;
-                            that.$message.error("新增失败，请重试.");
+                            that.$message.error(
+                                "新增失败，请重试."
+                            );
                         });
                 }
             });

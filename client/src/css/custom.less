@@ -1,16 +1,17 @@
-
 .table-container {
     margin-bottom: 15px;
 }
 
 .pager {
     text-align: right;
+
     .pager-tip {
         font-size: 14px;
         color: #606266;
         text-align: left;
         margin-top: 8px;
     }
+
     .el-pagination {
         margin-right: -10px;
     }
@@ -25,24 +26,29 @@
 
 @color: #7266ba;
 @hover-color: #6254b2;
+
 .navbar {
     .el-menu {
         border: none;
     }
+
     .el-menu-item.is-active {
         color: #7266ba;
         border-right: 4px solid @color;
         background-color: rgba(0, 0, 0, 0.06) !important;
     }
+
     .el-submenu .el-menu-item.is-active {
         border-right: 6px solid @color;
     }
 }
 
 //修改默认primary的颜色
-body .el-button--primary {
+body .el-button--primary,
+body .el-pagination.is-background .el-pager li:not(.disabled).active {
     background: @color;
     border-color: @color;
+
     &:focus,
     &:hover {
         background: @hover-color;
@@ -78,16 +84,20 @@ body .el-button--primary {
 
 .action-bar {
     box-sizing: border-box;
+
     .search-item {
         display: inline-block;
         margin: 0 10px 10px 0;
     }
+
     .action-bar-right {
         float: right;
+
         >div {
             display: inline-block;
         }
     }
+
     &::after {
         .clear-float
     }
@@ -118,6 +128,7 @@ body .el-button--primary {
         border-bottom: 1px solid #dcdfe6;
         padding: 20px 20px 0;
     }
+
     .dialog-footer {
         >div {
             display: inline-block;
@@ -136,13 +147,14 @@ body .el-button--primary {
 
 //自定义排序规则
 //不排序的样式------------
-.el-table .active-none .sort-caret.ascending{
+.el-table .active-none .sort-caret.ascending {
     border-bottom-color: #c0c4cc !important;
 }
 
 .el-table .active-none .sort-caret.descending {
     border-top-color: #c0c4cc !important;
 }
+
 //-------------------
 
 //asc样式---------------
@@ -153,6 +165,7 @@ body .el-button--primary {
 .el-table .active-asc .sort-caret.descending {
     border-top-color: #c0c4cc !important;
 }
+
 //------------------------
 
 //des样式-----------------
@@ -163,12 +176,13 @@ body .el-button--primary {
 .el-table .active-desc .sort-caret.descending {
     border-top-color: #409eff !important;
 }
+
 //---------------------
 
 //permission使用--------------------------------
 
-.premission-table{
-    
+.premission-table {
+
     .hide-tr {
         display: none;
     }
@@ -177,8 +191,8 @@ body .el-button--primary {
 //----------------------------
 
 //窗口查看模式下
-.view-dialog{
-    input.el-input__inner:disabled{
+.view-dialog {
+    input.el-input__inner:disabled {
         color: black;
     }
 }

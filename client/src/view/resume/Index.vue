@@ -1,17 +1,19 @@
 <template>
     <div>
-        <el-row class="table-container resume">
+        <el-row class="table-container">
             <div class="action-bar">
-                <el-button
-                    type="primary"
-                    @click="addDialog = true"
-                    :disabled="!$check_pm('resume_add')"
-                >新增简历</el-button>
-                <el-button
-                    type="primary"
-                    @click="ImportExcelDialog = true"
-                    :disabled="!$check_pm('resume_batch_add')"
-                >批量导入</el-button>
+                <div class="search-item">
+                    <el-button
+                        type="primary"
+                        @click="addDialog = true"
+                        :disabled="!$check_pm('resume_add')"
+                    >新增简历</el-button>
+                    <el-button
+                        type="primary"
+                        @click="ImportExcelDialog = true"
+                        :disabled="!$check_pm('resume_batch_add')"
+                    >批量导入</el-button>
+                </div>
             </div>
 
             <div
@@ -30,7 +32,7 @@
                     </el-col>
                     <el-col :span="4">
                         <el-select
-                            style="width: 100%;"
+                            class="width100"
                             v-model="search.sex"
                             size="small"
                             placeholder="性别"
@@ -46,7 +48,7 @@
                     </el-col>
                     <el-col :span="4">
                         <el-select
-                            style="width: 100%;"
+                            class="width100"
                             v-model="search.educational"
                             size="small"
                             placeholder="学历"
@@ -100,52 +102,6 @@
                         class="other-search-detail"
                     >
                         <el-row :gutter="20">
-                            <!-- <el-col :span="4">
-                                <el-input-number
-                                    placeholder="最低薪资"
-                                    size="small"
-                                    style="width: 100%;"
-                                    v-model="search.expected_money_st"
-                                    controls-position="right"
-                                    :min="0"
-                                    @keyup.native.enter="getData(true)"
-                                ></el-input-number>
-                            </el-col>
-                            <el-col :span="4">
-                                <el-input-number
-                                    placeholder="最高薪资"
-                                    size="small"
-                                    style="width: 100%;"
-                                    v-model="search.expected_money_ed"
-                                    controls-position="right"
-                                    :min="0"
-                                    @keyup.native.enter="getData(true)"
-                                ></el-input-number>
-                            </el-col>
-                            <el-col :span="4">
-                                <el-input-number
-                                    placeholder="最小年龄要求"
-                                    size="small"
-                                    style="width: 100%;"
-                                    v-model="search.age_min"
-                                    controls-position="right"
-                                    :min="0"
-                                    :max="99"
-                                    @keyup.native.enter="getData(true)"
-                                ></el-input-number>
-                            </el-col>
-                            <el-col :span="4">
-                                <el-input-number
-                                    placeholder="最大年龄要求"
-                                    size="small"
-                                    style="width: 100%;"
-                                    v-model="search.age_max"
-                                    controls-position="right"
-                                    :min="0"
-                                    :max="99"
-                                    @keyup.native.enter="getData(true)"
-                                ></el-input-number>
-                            </el-col> -->
                             <el-col :span="8">
                                 <el-input
                                     v-model="search.ct_user"
@@ -159,7 +115,7 @@
                                     clearable
                                     placeholder="最小工作年限要求"
                                     size="small"
-                                    style="width: 100%;"
+                                    class="width100"
                                     v-model="search.work_year_min"
                                     controls-position="right"
                                     :min="0"
@@ -171,7 +127,7 @@
                                 <el-input-number
                                     placeholder="最大工作年限要求"
                                     size="small"
-                                    style="width: 100%;"
+                                    class="width100"
                                     v-model="search.work_year_max"
                                     controls-position="right"
                                     :min="0"
@@ -189,58 +145,6 @@
                                 ></el-input>
                             </el-col>
                         </el-row>
-
-                        <!-- <el-row :gutter="20">
-                            <el-col :span="4">
-                                <el-input
-                                    v-model="search.expected_job"
-                                    placeholder="岗位"
-                                    size="small"
-                                    @keyup.native.enter="getData(true)"
-                                ></el-input>
-                            </el-col>
-                            <el-col :span="4">
-                                <el-input
-                                    v-model="search.expected_address"
-                                    prop="status"
-                                    placeholder="期望工作地点"
-                                    size="small"
-                                    @keyup.native.enter="getData(true)"
-                                ></el-input>
-                            </el-col>
-                            <el-col :span="4">
-                                <el-input
-                                    v-model="search.status"
-                                    placeholder="当前状态"
-                                    size="small"
-                                    @keyup.native.enter="getData(true)"
-                                ></el-input>
-                            </el-col>
-                            <el-col :span="4">
-                                <el-input
-                                    v-model="search.school"
-                                    placeholder="毕业院校"
-                                    size="small"
-                                    @keyup.native.enter="getData(true)"
-                                ></el-input>
-                            </el-col>
-                            <el-col :span="4">
-                                <el-input
-                                    v-model="search.speciality"
-                                    placeholder="专业"
-                                    size="small"
-                                    @keyup.native.enter="getData(true)"
-                                ></el-input>
-                            </el-col>
-                            <el-col :span="4">
-                                <el-input
-                                    v-model="search.english"
-                                    placeholder="英语水平"
-                                    size="small"
-                                    @keyup.native.enter="getData(true)"
-                                ></el-input>
-                            </el-col>
-                        </el-row> -->
                         <el-row :gutter="20">
                             <el-col :span="24">
                                 <el-input
@@ -276,10 +180,9 @@
                 :data="tdata"
                 stripe
                 border
-                style="width: 100%"
+                class="table width100"
                 :height="tabelHeight"
                 @row-click="showViewDialog"
-                class="table"
                 v-loading="tableLoading"
             >
                 <el-table-column
@@ -332,51 +235,24 @@
                     fixed
                     prop="email"
                     label="电子邮箱"
-                    width="160"
+                    width="180"
                     align="center"
                 >
                     <template slot-scope="scope">
+
                         <el-tooltip
+
                             effect="dark"
+
                             :content="scope.row.email"
+
                             placement="top"
                         >
+
                             <div class="cell">{{scope.row.email}}</div>
                         </el-tooltip>
                     </template>
                 </el-table-column>
-                <!-- <el-table-column
-                    prop="sex"
-                    label="性别"
-                    width="50"
-                ></el-table-column> -->
-                <!-- <el-table-column
-                    prop="age"
-                    label="年龄"
-                    width="50"
-                ></el-table-column> -->
-                <!-- 
-                <el-table-column
-                    prop="expected_money"
-                    label="期望薪资"
-                    width="150"
-                ></el-table-column> -->
-                <!-- <el-table-column
-                    prop="inPosition"
-                    label="所处职位"
-                    width="120"
-                >
-                </el-table-column>-->
-                <!-- <el-table-column
-                    prop="nearest_unit"
-                    label="最近单位"
-                    width="220"
-                ></el-table-column>
-                <el-table-column
-                    prop="nearest_job"
-                    label="最近职位"
-                    width="140"
-                ></el-table-column> -->
                 <el-table-column
                     prop="school"
                     label="毕业院校"
@@ -406,30 +282,13 @@
                     label="简历来源"
                     width="80"
                     align="center"
-                ></el-table-column>                
+                ></el-table-column>
                 <el-table-column
                     prop="company_type"
                     label="同和/大展"
                     width="100"
                     align="center"
                 ></el-table-column>
-
-                <!-- <el-table-column
-                    prop="speciality"
-                    label="专业"
-                    width="140"
-                ></el-table-column> -->
-
-                <!-- <el-table-column
-                    prop="english"
-                    label="英语等级"
-                    width="100"
-                ></el-table-column> -->
-                <!-- <el-table-column
-                    prop="expected_address"
-                    label="期望工作地"
-                    width="100"
-                ></el-table-column> -->
                 <el-table-column
                     fixed="right"
                     label="操作"
@@ -460,11 +319,17 @@
                                 size="mini"
                                 icon="fa fa-folder-open"
                                 circle
+
                                 @click.stop="showUploadFile(scope.row.id)"
+
                                 :disabled="!$check_pm('resume_file_list')"
+
                             ></el-button>
+
                         </el-tooltip>
+
                         <el-tooltip
+
                             effect="dark"
                             content="沟通管理"
                             placement="bottom"
@@ -509,18 +374,23 @@
                     </template>
                 </el-table-column>
             </el-table>
-            <!-- </div> -->
         </el-row>
 
-        <el-row class="pager">
-            <el-pagination
-                @current-change="changePage"
-                background
-                layout="prev, pager, next"
-                :page-size="pager.size"
-                :total="pager.total"
-                :current-page="pager.current"
-            ></el-pagination>
+        <el-row
+            class="pager"
+            type="flex"
+            justify="end"
+        >
+                <el-pagination
+                    @current-change="changePage"
+                    @size-change="pageSizeChange"
+                    background
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :page-sizes="[10, 20, 50, 100]"
+                    :page-size="pager.size"
+                    :total="pager.total"
+                    :current-page="pager.current"
+                ></el-pagination>
         </el-row>
 
         <add
@@ -586,16 +456,6 @@ export default {
     },
 
     methods: {
-        //点击搜索条件缩放
-        // searchClick(e) {
-        //    this.showOtherSearch = !this.showOtherSearch
-        //    if(e.target.className == 'fa status-icon el-icon-caret-bottom'){
-        //        e.target.className = 'fa status-icon el-icon-caret-top'
-        //    }else{
-        //        e.target.className = 'fa status-icon el-icon-caret-bottom'
-        //    }
-        // },
-
         //格式化yyyy-MM-dd
         formatterDate(row, column, cellValue, index) {
             return formatDate(cellValue, "yyyy-MM-dd");
@@ -626,12 +486,6 @@ export default {
             let that = this;
             that.ImportExcelDialog = true;
         },
-
-        // showEditDialog(id) {
-        //     console.log(id);
-        //     let that = this;
-        //     that.editDialog = true;
-        // },
 
         //沟通管理
         showCommunicationDialog(id) {
@@ -738,53 +592,53 @@ export default {
 
             // search.name
 
-            // tdata: [
-            //     {
-            //         name: "丁锋",
-            //         phone: "13560727727",
-            //         sex: "男",
-            //         age: 28,
-            //         work_year: 6,
-            //         email: "sheissosex@163.com",
-            //         expected_money_start: 15000,
-            //         expected_money_end: 19999,
-            //         expected_money: "15000-19999元/月",
-            //         nearest_unit:
-            //             "深圳飞钛科技和东莞小黄狗环保企业(团贷网旗下公司",
-            //         nearest_job: "Java开发工程师",
-            //         english: "",
-            //         expected_job: "Java",
-            //         expected_address: "深圳",
-            //         school: "广东石油化工学院",
-            //         educational: "本科",
-            //         speciality: "计算机科学与技术",
-            //         mfy_time: "2019-02-26 09:54:34",
-            //         id: 464,
-            //         ct_time: '2019-02-10'
-            //     },
-            //     {
-            //         name: "阳鹏",
-            //         phone: "18824278483",
-            //         sex: "男",
-            //         age: 26,
-            //         work_year: 5,
-            //         email: "958576496@qq.com",
-            //         expected_money_start: 17000,
-            //         expected_money_end: 17000,
-            //         expected_money: "17000",
-            //         nearest_unit: "",
-            //         nearest_job: "",
-            //         english: "",
-            //         expected_job: "Java",
-            //         expected_address: "深圳",
-            //         school: "湖南机电学院",
-            //         educational: "大专",
-            //         speciality: "计算机应用专科",
-            //         mfy_time: "2019-02-26 09:52:44",
-            //         id: 463,
-            //         ct_time: '2019-02-10'
-            //     }
-            // ],
+            tdata: [
+                {
+                    name: "丁锋",
+                    phone: "13560727727",
+                    sex: "男",
+                    age: 28,
+                    work_year: 6,
+                    email: "sheissosex@163.com",
+                    expected_money_start: 15000,
+                    expected_money_end: 19999,
+                    expected_money: "15000-19999元/月",
+                    nearest_unit:
+                        "深圳飞钛科技和东莞小黄狗环保企业(团贷网旗下公司",
+                    nearest_job: "Java开发工程师",
+                    english: "",
+                    expected_job: "Java",
+                    expected_address: "深圳",
+                    school: "广东石油化工学院",
+                    educational: "本科",
+                    speciality: "计算机科学与技术",
+                    mfy_time: "2019-02-26 09:54:34",
+                    id: 464,
+                    ct_time: '2019-02-10'
+                },
+                {
+                    name: "阳鹏",
+                    phone: "18824278483",
+                    sex: "男",
+                    age: 26,
+                    work_year: 5,
+                    email: "958576496@qq.com",
+                    expected_money_start: 17000,
+                    expected_money_end: 17000,
+                    expected_money: "17000",
+                    nearest_unit: "",
+                    nearest_job: "",
+                    english: "",
+                    expected_job: "Java",
+                    expected_address: "深圳",
+                    school: "湖南机电学院",
+                    educational: "大专",
+                    speciality: "计算机应用专科",
+                    mfy_time: "2019-02-26 09:52:44",
+                    id: 463,
+                    ct_time: '2019-02-10'
+                }
+            ],
 
             //沟通情况
             communicationDialog: false,
@@ -814,64 +668,62 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.resume {
-    .table {
-        tbody {
-            tr {
-                cursor: pointer;
+.table {
+    tbody {
+        tr {
+            cursor: pointer;
 
-                td {
-                    .cell {
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                        white-space: nowrap;
-                    }
+            td {
+                .cell {
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
                 }
             }
         }
     }
+}
 
-    .search {
-        .el-row {
-            margin-bottom: 10px;
-            &:last-child {
-                margin-bottom: 5px;
+.search {
+    .el-row {
+        margin-bottom: 10px;
+        &:last-child {
+            margin-bottom: 5px;
+        }
+    }
+
+    .other-search-detail {
+        border-bottom: 1px solid #e3e3e3;
+        padding-bottom: 6px;
+        margin-bottom: 10px;
+    }
+
+    .other-search-container {
+        margin-bottom: 10px;
+        font-size: 15px;
+        text-align: center;
+
+        .other-search {
+            text-decoration: none;
+            color: #03b9b9;
+            transition: all 0.2s;
+
+            &:hover {
+                color: #06e2e2;
             }
-        }
 
-        .other-search-detail {
-            border-bottom: 1px solid #e3e3e3;
-            padding-bottom: 6px;
-            margin-bottom: 10px;
-        }
+            i {
+                transition: transform 0.2s;
 
-        .other-search-container {
-            margin-bottom: 10px;
-            font-size: 15px;
-            text-align: center;
-
-            .other-search {
-                text-decoration: none;
-                color: #03b9b9;
-                transition: all 0.2s;
-
-                &:hover {
-                    color: #06e2e2;
-                }
-
-                i {
-                    transition: transform 0.2s;
-
-                    &.up-icon {
-                        transform: rotate(180deg);
-                    }
+                &.up-icon {
+                    transform: rotate(180deg);
                 }
             }
         }
     }
+}
 
-    .search-collapse {
-        transition: all 0.3s ease-in-out;
-    }
+.search-collapse {
+    transition: all 0.3s ease-in-out;
 }
 </style>

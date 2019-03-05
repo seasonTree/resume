@@ -7,7 +7,7 @@
             class="custom-dialog"
             :close-on-click-modal="false"
             top="2vh"
-            width="60%"
+            width="80%"
             clearable="true"
             v-dialog-drag
         >
@@ -43,14 +43,14 @@
                             <el-col :span="12">
                                 <div class="grid-content bg-purple left-container">
                                     <div
-                                        class="sub-header"
-                                        style="margin-bottom: 10px;"
+                                        class="sub-header mb-10"
                                     >基本信息</div>
 
-                                    <div class="div-row">
+                                    <div class="base-info">
                                         <el-form-item
                                             label="姓名"
                                             prop="name"
+                                            class="split-row"
                                         >
                                             <el-input
                                                 size="mini"
@@ -62,6 +62,7 @@
                                         <el-form-item
                                             label="年龄"
                                             prop="age"
+                                            class="split-row"
                                         >
                                             <el-input
                                                 size="mini"
@@ -70,10 +71,11 @@
                                             ></el-input>
                                         </el-form-item>
                                     </div>
-                                    <div class="div-row">
+                                    <div class="base-info">
                                         <el-form-item
                                             label="性别"
                                             prop="sex"
+                                            class="split-row"
                                         >
                                             <el-input
                                                 size="mini"
@@ -85,6 +87,7 @@
                                         <el-form-item
                                             label="毕业时间"
                                             prop="graduation_time"
+                                            class="split-row"
                                         >
                                             <el-input
                                                 size="mini"
@@ -94,10 +97,11 @@
                                         </el-form-item>
                                     </div>
 
-                                    <div class="div-row">
+                                    <div class="base-info">
                                         <el-form-item
                                             label="专业"
                                             prop="speciality"
+                                            class="split-row"
                                         >
                                             <el-input
                                                 size="mini"
@@ -109,6 +113,7 @@
                                         <el-form-item
                                             label="生日"
                                             prop="birthday"
+                                            class="split-row"
                                         >
                                             <el-input
                                                 size="mini"
@@ -118,10 +123,11 @@
                                         </el-form-item>
                                     </div>
 
-                                    <div class="div-row">
+                                    <div class="base-info">
                                         <el-form-item
                                             label="期望薪资"
                                             prop="expected_money"
+                                            class="split-row"
                                         >
                                             <el-input
                                                 size="mini"
@@ -133,6 +139,7 @@
                                         <el-form-item
                                             label="移动电话"
                                             prop="phone"
+                                            class="split-row"
                                         >
                                             <el-input
                                                 size="mini"
@@ -142,10 +149,11 @@
                                         </el-form-item>
                                     </div>
 
-                                    <div class="div-row">
+                                    <div class="base-info">
                                         <el-form-item
                                             label="户口所在地"
                                             prop="native_place"
+                                            class="split-row"
                                         >
                                             <el-input
                                                 size="mini"
@@ -157,6 +165,7 @@
                                         <el-form-item
                                             label="工作年限"
                                             prop="work_year"
+                                            class="split-row"
                                         >
                                             <el-input
                                                 size="mini"
@@ -166,10 +175,11 @@
                                         </el-form-item>
                                     </div>
 
-                                    <div class="div-row">
+                                    <div class="base-info">
                                         <el-form-item
                                             label="英语水平"
                                             prop="english"
+                                            class="split-row"
                                         >
                                             <el-input
                                                 size="mini"
@@ -180,6 +190,7 @@
                                         <el-form-item
                                             label="期望工作地"
                                             prop="expected_address"
+                                            class="split-row"
                                         >
                                             <el-input
                                                 size="mini"
@@ -188,19 +199,6 @@
                                             ></el-input>
                                         </el-form-item>
                                     </div>
-                                    <!-- <div class="div-row">
-
-                                        <el-form-item
-                                            label="简历来源"
-                                            prop="source"
-                                        >
-                                            <el-input
-                                                size="mini"
-                                                v-model.trim="form.source"
-                                                autocomplete="off"
-                                            ></el-input>
-                                        </el-form-item>
-                                    </div> -->
                                     <el-form-item
                                         label="简历来源"
                                         prop="source"
@@ -212,7 +210,7 @@
                                             filterable
                                             placeholder=""
                                             size="small"
-                                            style="width: 100%;"
+                                            class="width100"
                                         >
                                             <el-option
                                                 v-for="item in source"
@@ -233,7 +231,7 @@
                                             filterable
                                             placeholder=""
                                             size="small"
-                                            style="width: 100%;"
+                                            class="width100"
                                         >
                                             <el-option
                                                 v-for="item in edu"
@@ -249,11 +247,11 @@
                                         prop="expected_job"
                                     >
                                         <el-select
-                                            style="width: 100%;"
+                                            class="width100"
                                             clearable
                                             v-model.trim="form.expected_job"
                                             filterable
-                                            placeholder="请选择岗位"
+                                            placeholder=""
                                             size="small"
                                         >
                                             <el-option
@@ -274,27 +272,6 @@
                                             autocomplete="off"
                                         ></el-input>
                                     </el-form-item>
-
-                                    <!-- <el-form-item
-                                        label="政治面貌"
-                                        prop="politicalLandscape"
-                                    >
-                                        <el-input
-                                            size="mini"
-                                            v-model.trim="form.politicalLandscape"
-                                            autocomplete="off"
-                                        ></el-input>
-                  </el-form-item>-->
-                                    <!-- <el-form-item
-                                    label="住址"
-                                    prop="address"
-                                >
-                                    <el-input
-                                        size="mini"
-                                        v-model.trim="form.address"
-                                        autocomplete="off"
-                                    ></el-input>
-                  </el-form-item>-->
                                     <el-form-item
                                         label="电子邮箱"
                                         prop="email"
@@ -317,16 +294,6 @@
                                         ></el-input>
                                     </el-form-item>
 
-                                    <!-- <el-form-item
-                                    label="求职意向"
-                                    prop="expected_industry"
-                                >
-                                    <el-input
-                                        size="mini"
-                                        v-model.trim="form.expected_industry"
-                                        autocomplete="off"
-                                    ></el-input>
-                  </el-form-item>-->
                                     <el-form-item
                                         label="最近单位"
                                         prop="nearest_unit"
@@ -369,14 +336,14 @@
                             >
                                 <el-tabs v-model="activeName2">
                                     <el-tab-pane
-                                        label="用户管理"
+                                        label="用户信息"
                                         name="first"
                                     >
                                         <el-row
                                             align="top"
-                                            class="row-height"
+                                            class="user-info"
                                         >
-                                            <el-col class="right-item">
+                                            <el-col class="user-item">
                                                 <div class="sub-header">教育背景</div>
                                                 <el-input
                                                     type="textarea"
@@ -385,7 +352,7 @@
                                                 ></el-input>
                                             </el-col>
 
-                                            <el-col class="right-item">
+                                            <el-col class="user-item">
                                                 <div class="sub-header">个人技能</div>
                                                 <el-input
                                                     type="textarea"
@@ -393,7 +360,7 @@
                                                     resize="none"
                                                 ></el-input>
                                             </el-col>
-                                            <el-col class="right-item">
+                                            <el-col class="user-item">
                                                 <div class="sub-header">自我评价</div>
                                                 <el-input
                                                     type="textarea"
@@ -401,23 +368,7 @@
                                                     resize="none"
                                                 ></el-input>
                                             </el-col>
-                                            <!-- <el-col class="right-item">
-                                            <div class="sub-header"> 培训经历</div>
-                                            <el-input
-                                                type="textarea"
-                                                v-model="form.trainingexperience"
-                                                resize="none"
-                                            ></el-input>
-                      </el-col>-->
-                                            <!-- <el-col class="right-item">
-                                            <div class="sub-header"> 所修课程</div>
-                                            <el-input
-                                                type="textarea"
-                                                v-model="form.coursescompleted"
-                                                resize="none"
-                                            ></el-input>
-                      </el-col>-->
-                                            <el-col class="right-item">
+                                            <el-col class="last-user-item">
                                                 <div class="sub-header">所获证书</div>
                                                 <el-input
                                                     type="textarea"
@@ -434,9 +385,9 @@
                                     >
                                         <el-row
                                             align="top"
-                                            class="row3-height"
+                                            class="other"
                                         >
-                                            <el-col class="right2-item">
+                                            <el-col class="other-item">
                                                 <el-input
                                                     type="textarea"
                                                     v-model="form.workExperience"
@@ -452,9 +403,9 @@
                                     >
                                         <el-row
                                             align="top"
-                                            class="row3-height"
+                                            class="other"
                                         >
-                                            <el-col class="right2-item">
+                                            <el-col class="other-item">
                                                 <el-input
                                                     type="textarea"
                                                     v-model="form.projectExperience"
@@ -469,10 +420,10 @@
                                         name="fourth"
                                     >
                                         <el-row
-                                            align="top"
-                                            class="row2-height"
+                                            justify="start"
+                                            class="custom-container"
                                         >
-                                            <el-col class="right2-item">
+                                            <el-col class="custom-item">
                                                 <div class="sub2-header">自定义01</div>
                                                 <el-input
                                                     type="textarea"
@@ -480,7 +431,7 @@
                                                     resize="none"
                                                 ></el-input>
                                             </el-col>
-                                            <el-col class="right2-item">
+                                            <el-col class="custom-item">
                                                 <div class="sub2-header">自定义02</div>
                                                 <el-input
                                                     type="textarea"
@@ -488,7 +439,7 @@
                                                     resize="none"
                                                 ></el-input>
                                             </el-col>
-                                            <el-col class="right2-item">
+                                            <el-col class="last-custom-item">
                                                 <div class="sub2-header">自定义03</div>
                                                 <el-input
                                                     type="textarea"
@@ -503,29 +454,6 @@
                         </el-row>
                     </el-form>
                 </el-tab-pane>
-
-                <!-- <el-tab-pane
-                label="上传简历"
-                name="third"
-            >
-                <div style="width:1068px; height:740px;display:flex;align-items:center;justify-content:center;" >
-                    <el-upload
-                        style=""
-                        class="upload-demo"
-                        drag
-                        action="https://jsonplaceholder.typicode.com/posts/"
-                        multiple
-                    >
-                        <i class="el-icon-upload"></i>
-                        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-                        <div
-                            class="el-upload__tip"
-                            slot="tip"
-                        >只能上传jpg/png文件，且不超过500kb</div>
-                    </el-upload>
-                </div>
-            </el-tab-pane>
-        -->
             </el-tabs>
 
             <div
@@ -575,7 +503,6 @@ export default {
         return {
             activeName: "second",
             activeName2: "first",
-            // dialog: "dialog",
             apiType: "resume",
 
             edu: [
@@ -1020,25 +947,6 @@ export default {
                 }
             }
         }
-        // addCommit(){
-        //     let that = this;
-
-        //     that.$api.resume
-        //         .add({
-        //             data: that.form
-        //         })
-        //         .then(res => {
-        //             // console.log(that.addDialog);
-        //             // console.log(that.tdata);
-        //             that.addDialog=false;
-
-        //             that.tdata.push(res.data);
-
-        //         })
-        //         .catch(res => {
-        //             that.$message.error("获取失败，请重试.");
-        //         });
-        // },
     }
 };
 </script>
@@ -1046,7 +954,6 @@ export default {
 <style lang="less" scoped>
 .left-container {
     padding: 10px;
-    margin-bottom: 5px;
 }
 
 .sub-header {
@@ -1065,10 +972,10 @@ export default {
         top: 0;
         bottom: 0;
 
-        .el-tabs {
+        /deep/ .el-tabs {
             height: 100%;
 
-            .el-tabs__content {
+            /deep/ .el-tabs__content {
                 position: absolute;
                 top: 54px;
                 bottom: 0;
@@ -1091,59 +998,72 @@ export default {
     font-size: 14px;
 }
 
-.row2-height {
+.custom-container {
     height: 100%;
 
-    .right2-item {
-        height: 33.57%;
+    .custom-item,
+    .last-custom-item {
+        height: 33.33%;
         position: relative;
 
-        .el-textarea {
+        /deep/ textarea {
             position: absolute;
             top: 34px;
             bottom: 10px;
+        }
+    }
 
-            textarea {
+    .last-custom-item {
+        /deep/ textarea {
+            bottom: 0;
+        }
+    }
+}
+
+.user-info {
+    height: 100%;
+
+    .user-item,
+    .last-user-item {
+        height: 25%;
+        position: relative;
+
+        /deep/ textarea {
+            position: absolute;
+            top: 34px;
+            bottom: 10px;
+        }
+    }
+
+    .last-user-item {
+        /deep/ textarea {
+            bottom: 0;
+        }
+    }
+}
+
+.other {
+    height: 100%;
+
+    .other-item {
+        height: 100%;
+        position: relative;
+
+        /deep/ .el-textarea {
+            height: 100%;
+
+            /deep/ textarea {
                 height: 100%;
             }
         }
     }
 }
-// .row-height {
-//     height: 100%;
 
-//     .right-item {
-//         height: 25.19%;
-//         position: relative;
-
-//         .el-textarea {
-//             position: absolute;
-//             top: 34px;
-//             bottom: 10px;
-
-//             textarea {
-//                 height: 100%;
-//             }
-//         }
-//     }
-// }
-
-.row3-height {
-    height: 100%;
-
-    .right2-item {
-        height: 100%;
-        position: relative;
-
-        .el-textarea {
-            position: absolute;
-            top: 4px;
-            bottom: 50px;
-
-            textarea {
-                height: 109.5%;
-            }
-        }
+.base-info {
+    width: 100%;
+    display: flex;
+    .split-row {
+        width: 50%;
     }
 }
 
@@ -1159,20 +1079,13 @@ export default {
         margin-bottom: 6px;
     }
 }
-.row-bg {
-    padding: 10px 0;
-    background-color: #f9fafc;
-}
-.div-row {
-    display: flex;
-}
 
 .analyze-content {
     height: 579px;
     width: 100%;
     box-sizing: border-box;
 
-    textarea {
+    /deep/ textarea {
         height: 100%;
     }
 }

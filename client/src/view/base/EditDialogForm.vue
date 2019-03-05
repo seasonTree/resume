@@ -1,6 +1,6 @@
 <script>
 import DialogForm from "./DialogForm";
-import { deepClone } from "../../common/util";
+import { deepClone } from "@common/util";
 export default {
     mixins: [DialogForm],
 
@@ -15,7 +15,9 @@ export default {
         return {
             form: {},
             formRules: {},
-            apiType: ""
+            apiType: "",
+
+            editMethod: "edit"
         };
     },
 
@@ -45,13 +47,14 @@ export default {
             that.$refs["form"].validate(valid => {
                 if (valid) {
                     that.commitLoading = true;
+
                     //提交之前
                     that.beforeEdit(that.form);
 
                     that.$api[that.apiType]
-                        .edit(that.form)
+                        [that.editMethod](that.form)
                         .then(res => {
-                            if (res.code == 0) {
+                            if (res.code == 200) {
                                 //修改成功后
                                 that.afterEdit(res.data);
 
@@ -69,14 +72,17 @@ export default {
                                 that.closeDialog();
                             } else {
                                 that.$message.error(
-                                    res.msg || "修改失败，请重试."
+                                    res.message ||
+                                        "修改失败，请重试."
                                 );
                             }
 
                             that.commitLoading = false;
                         })
                         .catch(res => {
-                            that.$message.error("修改失败，请重试.");
+                            that.$message.error(
+                                "修改失败，请重试."
+                            );
 
                             that.commitLoading = false;
                         });

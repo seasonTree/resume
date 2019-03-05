@@ -134,11 +134,17 @@
                     </el-table-column>
                 </el-table>
 
-                <el-row class="pager">
+                <el-row
+                    class="pager"
+                    type="flex"
+                    justify="end"
+                >
                     <el-pagination
                         @current-change="changePage"
+                        @size-change="pageSizeChange"
                         background
-                        layout="prev, pager, next"
+                        layout="total, sizes, prev, pager, next, jumper"
+                        :page-sizes="[10, 20, 50, 100]"
                         :page-size="pager.size"
                         :total="pager.total"
                         :current-page="pager.current"
@@ -193,7 +199,7 @@ export default {
             excelData: [],
 
             pager: {
-                total: 1,
+                total: 0,
                 current: 1,
                 size: 10
             },
@@ -209,8 +215,8 @@ export default {
 
             that.commitLoading = true;
 
-            params.append('excelFile', that.excelFile);
-            params.append('deleteID', that.deleteID);
+            params.append("excelFile", that.excelFile);
+            params.append("deleteID", that.deleteID);
 
             that.$api.resume
                 .batchAdd(params)
@@ -280,6 +286,12 @@ export default {
             }
         },
 
+        pageSizeChange(val) {
+            let that = this;
+            that.pager.size = val;
+            that.changePage(1);
+        },
+
         changePage(index) {
             let that = this;
 
@@ -305,7 +317,7 @@ export default {
             that.uploadLoading = false;
             that.excelData = [];
             that.pager = {
-                total: 1,
+                total: 0,
                 current: 1,
                 size: 10
             };
