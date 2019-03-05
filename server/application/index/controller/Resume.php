@@ -132,14 +132,18 @@ class Resume extends Controller
         unset($rule['speciality_info']);
         foreach ($parm as $k => $v) {
             $v = $this->trimall($v);
+
+            if(preg_match("/\d+(\s+)?(-|至|到|–)(\s+)?(\d+|至今)/",$v,$preg)){//处理时间格式，空格问题
+                $v = preg_replace("/$preg[0]/",preg_replace("/\s+/",'',$preg[0]),$v);
+            }
             // $v = phpanalysis($v);
-            // dump($v);
             if (preg_match($del_rule,$v,$res)) {
                 continue;//剔除无用信息
             }
             foreach ($rule as $n => $pattern) {
                 
                 if (preg_match($pattern,$v,$preg)) {
+
                     // $strpos = strpos($v,$preg[0]);
                     // $strlen = strlen($preg[0]);
                     // for ($i = 0;$i < $strlen; $i++) {
@@ -157,13 +161,14 @@ class Resume extends Controller
                     // dump($rule);
                 }
                 
+                
             }
             
             
         }
         if (isset($arr['graduation_time'])) {
             
-            $arr['graduation_time'] = preg_replace("/(至|--|到)/",'-',$arr['graduation_time']);
+            $arr['graduation_time'] = preg_replace("/(至|--|到|–)/",'-',$arr['graduation_time']);
 
             if (strpos($arr['graduation_time'], '-今')) {
                 $arr['graduation_time'] = preg_replace("/-今/",'至今',$arr['graduation_time']);
