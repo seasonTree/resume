@@ -123,7 +123,7 @@
                                     size="mini"
                                     icon="el-icon-edit"
                                     circle
-                                    @click="showEditDialog(scope.row.id)"
+                                    @click="showEditDialog(scope.row)"
                                     :disabled="!$check_pm('role_edit')"
                                 ></el-button>
                             </el-tooltip>
@@ -137,7 +137,7 @@
                                     size="mini"
                                     icon="el-icon-delete"
                                     circle
-                                    @click="del(scope.row.id, scope.$index)"
+                                    @click="del(scope.row, scope.$index)"
                                     :disabled="!$check_pm('role_del')"
                                 ></el-button>
                             </el-tooltip>

@@ -353,7 +353,7 @@
                                 size="mini"
                                 icon="el-icon-edit"
                                 circle
-                                @click.stop="showEditDialog(scope.row.id)"
+                                @click.stop="showEditDialog(scope.row)"
                                 :disabled="!$check_pm('resume_edit')"
                             ></el-button>
                         </el-tooltip>
@@ -367,7 +367,7 @@
                                 size="mini"
                                 icon="el-icon-delete"
                                 circle
-                                @click.stop="del(scope.row.id, scope.$index)"
+                                @click.stop="del(scope.row, scope.$index)"
                                 :disabled="!$check_pm('resume_del')"
                             ></el-button>
                         </el-tooltip>
