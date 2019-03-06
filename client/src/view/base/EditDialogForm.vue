@@ -54,7 +54,7 @@ export default {
                     that.$api[that.apiType]
                         [that.editMethod](that.form)
                         .then(res => {
-                            if (res.code == 200) {
+                            if (res.code == 0) {
                                 //修改成功后
                                 that.afterEdit(res.data);
 
