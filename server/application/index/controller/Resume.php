@@ -45,7 +45,7 @@ class Resume extends Controller
     public function basicData($parm){
         //基本资料
         $parm = implode("\n",$parm);
-        $parm = preg_replace("/(\s+|:|：)/","\n",$parm);
+        $parm = preg_replace("/(\s+|:|：|\(|（|\)|）)/","\n",$parm);
         $parm = preg_replace("/姓名|性别|户口|联系电话|联系方式|求职意向|更新时间|智联|智联招聘|前程无忧|个人信息|个人简历|应聘职位|应聘机构/",'',$parm);//去除多余的信息
         $rule = config('config.resume_rule');
         $base_rule = config('config.base_rule');
@@ -133,7 +133,8 @@ class Resume extends Controller
         $parm = preg_replace("/月|教育经历|教育背景/",'',$parm);//统一把月,多余的字符去掉
         $parm = preg_replace("/(至|到|–|—)+/",'-',$parm);//统一把范围符换成-
         $parm = preg_replace("/-今/",'至今',$parm);//以防上一步替换"至今"变成-今，因此要替换回去
-        $parm = preg_replace("/\s+|\||\(|（|\)|）/","\n",$parm);//空格和|,括号变成换行符
+        $parm = preg_replace("/\s+|\|/","\n",$parm);//空格和|变成换行符
+
         if(preg_match_all("/\d+(\s+)?(-|至|到|–|—)+(\s+)?(\d+|至今)/",$parm,$preg)){//处理时间格式，空格问题,去除空格
             foreach ($preg[0] as $k => $v) {
                 $parm = preg_replace("/$v/",preg_replace("/\s+/",'',$v),$parm);
