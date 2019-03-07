@@ -1738,7 +1738,7 @@ class Resume extends Controller
             if ($v == '' || in_array(trim($v),$group_list)) {
                 continue;
             }
-            $v = preg_replace("/\|/",'',$v);//处理特殊符号
+            $v = preg_replace("/\||￥/",'',$v);//处理特殊符号
             if (preg_match($work_rule['time_total'],$v)) {
                 $v = preg_replace("/\s+/",'',$v);
             }
