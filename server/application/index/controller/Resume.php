@@ -22,6 +22,7 @@ use PhpOffice\PhpWord\SimpleType\TblWidth;
 use PhpOffice\PhpWord\Element\Text;
 require_once dirname(Env::get('ROOT_PATH')).'/server/extend/Analysis.php';
 require_once dirname(Env::get('ROOT_PATH')).'/server/extend/phpanalysis/phpanalysis.class.php';
+require_once dirname(Env::get('ROOT_PATH')).'/server/extend/Docx.php';
 
 class Resume extends Controller
 {	
@@ -43,11 +44,13 @@ class Resume extends Controller
 
     public function basicData($parm){
         //基本资料
-        // dump($parm);exit;
         $parm = implode("\n",$parm);
+        $parm = preg_replace("/(\s+|:|：)/","\n",$parm);
+        $parm = preg_replace("/姓名|性别|户口|联系电话|联系方式|求职意向|更新时间|智联|智联招聘|前程无忧|个人信息|个人简历|应聘职位|应聘机构/",'',$parm);//去除多余的信息
         $rule = config('config.resume_rule');
         $base_rule = config('config.base_rule');
         $base_replace_blank = config('config.base_replace_blank');
+
         foreach ($base_rule as $string) {
             //处理特定字符格式
             $parm = preg_replace("/$string/","\n".$string,$parm);
@@ -125,24 +128,40 @@ class Resume extends Controller
 
     public function educationalBackground($parm){
         //教育背景
+        $parm = implode("\n",$parm);
+        $parm = preg_replace("/年/",'.',$parm);//统一把年换成.
+        $parm = preg_replace("/月|教育经历|教育背景/",'',$parm);//统一把月,多余的字符去掉
+        $parm = preg_replace("/(至|到|–|—)+/",'-',$parm);//统一把范围符换成-
+        $parm = preg_replace("/-今/",'至今',$parm);//以防上一步替换"至今"变成-今，因此要替换回去
+        $parm = preg_replace("/\s+|\|/","\n",$parm);//空格和|变成换行符
+        if(preg_match_all("/\d+(\s+)?(-|至|到|–|—)+(\s+)?(\d+|至今)/",$parm,$preg)){//处理时间格式，空格问题,去除空格
+            foreach ($preg[0] as $k => $v) {
+                $parm = preg_replace("/$v/",preg_replace("/\s+/",'',$v),$parm);
+            }
+        }
         $arr = [];
+        // $arr['educational_background'] = $parm;//整个教育背景输出
+
+        // $parm = preg_replace("/(:|：|\s+|\|)/","\n",$parm);//统一把各种符号换成换行符
+        $parm = explode("\n",$parm);//用换行符分割成数组
+        
         $list = [];
         $rule = config('config.educationalBackground');
+
+
         $del_rule = $rule['speciality_info'];
         unset($rule['speciality_info']);
         foreach ($parm as $k => $v) {
             $v = $this->trimall($v);
-
-            if(preg_match("/\d+(\s+)?(-|至|到|–)(\s+)?(\d+|至今)/",$v,$preg)){//处理时间格式，空格问题
-                $v = preg_replace("/$preg[0]/",preg_replace("/\s+/",'',$preg[0]),$v);
-            }
             // $v = phpanalysis($v);
             if (preg_match($del_rule,$v,$res)) {
                 continue;//剔除无用信息
             }
+
             foreach ($rule as $n => $pattern) {
                 
                 if (preg_match($pattern,$v,$preg)) {
+
 
                     // $strpos = strpos($v,$preg[0]);
                     // $strlen = strlen($preg[0]);
@@ -166,16 +185,18 @@ class Resume extends Controller
             
             
         }
-        if (isset($arr['graduation_time'])) {
+        // if (isset($arr['graduation_time'])) {
             
-            $arr['graduation_time'] = preg_replace("/(至|--|到|–)/",'-',$arr['graduation_time']);
+        //     $arr['graduation_time'] = preg_replace("/(至|-|到|–|—)+/",'-',$arr['graduation_time']);
 
-            if (strpos($arr['graduation_time'], '-今')) {
-                $arr['graduation_time'] = preg_replace("/-今/",'至今',$arr['graduation_time']);
-            }
+        //     if (strpos($arr['graduation_time'], '-今')) {
+        //         $arr['graduation_time'] = preg_replace("/-今/",'至今',$arr['graduation_time']);
+        //     }
            
-        }
+        // }
         $arr['educational_background'] = implode("\n", $list);
+        // dump($arr);
+
         return $arr;
     }
 
@@ -1156,192 +1177,22 @@ class Resume extends Controller
 
     
     }
-    public function test($where = []){
-        $where['pageSize'] = 100000000;
-        $where['pageIndex'] = 1;
-        $resume = new ResumeModel();
-        $email = isset($where['email'])?$where['email']:'';
-        if ($email) {
-            //先判断邮箱搜索条件
-            $data = $resume->getId(['email' => $email]);
-            if (isset($data2[0])) {
-                $ids = [];
-                foreach ($data as $k => $v) {
-                    $ids[] = $v['id']; 
-                }
-                $arr_ids[] = $ids;
-            }   
-            else{
-                // $arr_ids[] = [];
-                return [];
-            }
-        }
+    public function test(){
+        $source = dirname(Env::get('ROOT_PATH')).'/client/dist/uploads/file/test.docx';
+        // $text = new \Docx2Text();
+        // $text->setDocx($source);
+        // $docx = $text->extract();
+        // dump($docx);
+        // $obj = new \Analysis();
 
-        $sphinx = new \SphinxClient;
-        $sphinx->setServer("192.168.199.134", 9312);
-        $sphinx->setMatchMode(SPH_MATCH_EXTENDED2);   //匹配模式 ANY为关键词自动拆词，ALL为不拆词匹配（完全匹配），EXTENDED2,多词匹配
-        $sphinx->SetArrayResult ( true );   //返回的结果集为数组
-        
+        // $start1=microtime(true);
 
-        // $money_st = isset($where['expected_money_st'])?$where['expected_money_st']:'';
-        // $money_ed = isset($where['expected_money_ed'])?$where['expected_money_ed']:'';
-        // if ($money_st && $money_ed) {
-        //     $sphinx->SetFilterRange('expected_money_start',$money_st,$money_ed);
-        //     $sphinx->SetFilterRange('expected_money_end',$money_st,$money_ed);
-        //     // $sphinx->SetFilterRange('expected_money_end', 0, $money_st);
-        // }else if($money_st && !$money_ed){  //期望薪资
-        //     $sphinx->SetFilterRange('expected_money_start', $money_st, 100000000);
-        //     // $sphinx->SetFilterRange('expected_money_end', 0,$money_st);
-        // }else if(!$money_st && $money_ed){
-        //     // $sphinx->SetFilterRange('expected_money_end', $money_ed,100000000);
-        //     $sphinx->SetFilterRange('expected_money_end',0,$money_ed);
-        // }else{
-        //     // $arr_ids[] = [];
-        // }
+        // $content = $obj->getContent($source,'string');
+        $phpWord = IOFactory::load($source);
+        // dump($phpWord);
+        // $source = dirname(Env::get('ROOT_PATH')).'/client/dist/uploads/file/test.pdf';
+        // PDF_open_file($pdf,$source);
 
-        $age_min = isset($where['age_min'])?$where['age_min']:'';
-        $age_max = isset($where['age_max'])?$where['age_max']:'';
-        if ($age_min && $age_max) {
-            $sphinx->SetFilterRange('age', $age_min, $age_max);//查找年龄最小-最大之间
-        }else if($age_min && !$age_max){    //年龄
-            $sphinx->SetFilterRange('age', $age_min, 100);//查找年龄最小-100之间
-        }else if(!$age_min && $age_max){
-            $sphinx->SetFilterRange('age', 0, $age_max);//查找年龄0-最大之间
-        }else{
-            // $arr_ids[] = [];
-        }
-
-        $work_year_min = isset($where['work_year_min'])?$where['work_year_min']:'';
-        $work_year_max = isset($where['work_year_max'])?$where['work_year_max']:'';
-        if ($work_year_min && $work_year_max) {
-            $sphinx->SetFilterRange('work_year', $work_year_min, $work_year_max);
-        }else if($work_year_min && !$work_year_max){    
-            $sphinx->SetFilterRange('work_year', $work_year_min, 100);
-        }else if(!$work_year_min && $work_year_max){
-            $sphinx->SetFilterRange('work_year', 0, $work_year_max);
-        }else{
-            // $arr_ids[] = [];
-            
-        }
-
-
-        $arr = [];
-        $arr['name'] = isset($where['name'])?$where['name']:'';
-        $arr['sex'] = isset($where['sex'])?$where['sex']:'';
-        $arr['educational'] = isset($where['educational'])?$where['educational']:'';
-        $arr['phone'] = isset($where['phone'])?$where['phone']:'';
-        $arr['expected_job'] = isset($where['expected_job'])?$where['expected_job']:'';
-        $arr['status'] = isset($where['status'])?$where['status']:'';
-        $arr['school'] = isset($where['school'])?$where['school']:'';
-        $arr['speciality'] = isset($where['speciality'])?$where['speciality']:'';
-        $arr['english'] = isset($where['english'])?$where['english']:'';
-        $phinx_where = '';
-        $count_arr = count($arr);
-        $arr_ids = [];
-        $n = 1;
-        foreach ($arr as $k => $v) {
-            if ($v == '') {
-                continue;
-            }
-            if ($count_arr == $n) {
-
-                $phinx_where.= "@$k $v";
-            }
-            else{
-                $phinx_where.= "@$k $v & ";
-            }
-            $n++;
-        }
-        if($phinx_where != ''){
-            // $sphinx->AddQuery($phinx_where,'resume');
-            $phinx_where = '('.$phinx_where.')';
-        }
-
-        $other = isset($where['other'])?$where['other']:'';
-        if ($other) {
-            $other = preg_replace("/(,|，)/",',',$other);
-            $other = explode(',',$other);
-            $other = implode('"|"',$other);
-            // $other = "'".'"'.$other.'"'."'";
-            $other = '("'.$other.'")';
-            $phinx_where = empty($phinx_where)?$other:$phinx_where.' & '.$other;
-            
-            // $sphinx->AddQuery($other,'resume');
-        }
-        // $data = $sphinx->RunQueries();
-        $sphinx->SetLimits(($where['pageIndex'] - 1) * $where['pageSize'] , $where['pageSize'] , 3000);
-        $res = $sphinx->query('','resume');
-        dump($res);exit;
-        $data = [];
-
-        $money_st = isset($where['expected_money_st'])?$where['expected_money_st']:'';
-        $money_ed = isset($where['expected_money_ed'])?$where['expected_money_ed']:'';
-        //筛选薪资范围
-
-        if (isset($res['matches'])) {
-            $data_arr = $res['matches'];
-            $data_num = 0;//定义数据量
-            $page_end = $where['pageSize'] * $where['pageIndex'];
-            $page_start = $page_end - $where['pageSize'];
-
-            $list_arr = array_slice($data_arr,$page_start,$where['pageSize']);
-            foreach ($list_arr as $k => $v) {
-                // if ($k < $page_start) {
-                //     continue;//分页处理，过滤不符合要求的数据
-                // }
-                // if ($data_num == $where['pageSize']) {
-                //     break;//数据取够之后直接跳出循环
-                // }
-                if ($money_st && $money_ed) {
-                    $check_start = false;
-                    if($money_st >= $v['attrs']['expected_money_start'] && $money_st <= $v['attrs']['expected_money_end']){
-                        $check_start = true;
-                    }
-                    $check_end = false;
-                    if($money_ed >= $v['attrs']['expected_money_start'] && $money_ed <= $v['attrs']['expected_money_end']){
-                        $check_end = true;
-                    }
-                    $check_between = false;
-                    if($money_st <= $v['attrs']['expected_money_start'] && $money_ed >= $v['attrs']['expected_money_end']){
-                        $check_between = true;
-                    }
-                    if ($check_start || $check_end || $check_between) {
-                        $data[$k] = $v['attrs'];
-                        $data[$k]['id'] = $v['id'];
-                    }
-                }else if($money_st && !$money_ed){  //期望薪资
-                    $check = false;
-                    if($money_st >= $v['attrs']['expected_money_start'] && $money_st <= $v['attrs']['expected_money_end']){
-                        $check = true;
-                    }
-                    if ($money_st <= $v['attrs']['expected_money_end'] || $check) {
-
-                        $data[$k] = $v['attrs'];
-                        $data[$k]['id'] = $v['id'];
-                    }
-                    
-                }else if(!$money_st && $money_ed){
-                    $check = false;
-                    if($money_ed >= $v['attrs']['expected_money_start'] && $money_ed <= $v['attrs']['expected_money_end']){
-                        $check = true;
-                    }
-
-                    if ($money_ed >= $v['attrs']['expected_money_end'] || $check) {
-                        $data[$k] = $v['attrs'];
-                        $data[$k]['id'] = $v['id'];
-                    }
-                }else{
-                    $data[$k] = $v['attrs'];
-                    $data[$k]['id'] = $v['id'];
-                }
-
-                // $data_num++;
-                
-            }
-            $data[] = count($data_arr);//总数
-
-        }
-        dump($data);
     }
 
     // public function search($where = ''){
@@ -2073,74 +1924,158 @@ class Resume extends Controller
         $templateProcessor->setComplexBlock('project_experience',$project);
 
         //教育背景部分
-        $educational_background = explode("\n",str_replace(' ','', $data['educational_background']));
-        $educational_background = implode("",$educational_background);
+        $educational_background = explode("\n", preg_replace("/\s+/","\n", $data['educational_background']));
+        $section = new TextRun();
         $edu_config = config('config.educationalBackground');
         $edu = [];
-        $edu_string = '';
         $edu_key = 0;
-        $section = new TextRun();
-        if(preg_match_all($edu_config['school'],$educational_background,$school)){
-           preg_match_all($edu_config['graduation_time'],$educational_background,$graduation_time);
-           preg_match_all($edu_config['speciality'],$educational_background,$speciality);
-           preg_match_all($edu_config['educational'],$educational_background,$educational);
+        $max_time_length = 0;
+        $max_school_length = 0;
+        $max_speciality_length = 0;
+        $max_educational_length = 0;
+        $error = '';//警告
+        $color = 'black';//字体颜色
+
+        foreach ($educational_background as $k => $v) {
+            if(preg_match($edu_config['graduation_time'],$v,$preg)){
+                if (isset($edu[$edu_key]['graduation_time'])) {
+                    $edu_key++;
+                }
+                $max_time_length = $max_time_length >= strlen($preg[0])?$max_time_length:strlen($preg[0]);
+                $edu[$edu_key]['graduation_time'] = $preg[0];
+                // $v = preg_replace("/$preg[0]/",'',$v);
+                $v = str_replace($preg[0],'',$v);
+            }
+            if(preg_match($edu_config['educational'],$v,$preg)){
+                if (isset($edu[$edu_key]['educational'])) {
+                    $edu_key++;
+                }
+                $max_educational_length = $max_educational_length >= strlen($preg[0])?$max_educational_length:strlen($preg[0]);
+                $edu[$edu_key]['educational'] = $preg[0];
+                // $v = preg_replace("/$preg[0]/",'',$v);
+                $v = str_replace($preg[0],'',$v);
+            }
+            if(preg_match($edu_config['school'],$v,$preg)){
+                if (isset($edu[$edu_key]['school'])) {
+                    $edu_key++;
+                }
+                $max_school_length = $max_school_length >= strlen($preg[0])?$max_school_length:strlen($preg[0]);
+                $edu[$edu_key]['school'] = $preg[0];
+                // $v = preg_replace("/$preg[0]/",'',$v);
+                $v = str_replace($preg[0],'',$v);
+            }
+            $edu[$edu_key]['speciality'] = isset($edu[$edu_key]['speciality'])?$edu[$edu_key]['speciality'].$v:$edu[$edu_key]['speciality'] = '';
+            // $edu[$edu_key]['school'] = isset($edu[$edu_key]['school'])?'':$edu[$edu_key]['school'] = '';
+            // $edu[$edu_key]['educational'] = isset($edu[$edu_key]['educational'])?'':$edu[$edu_key]['educational'] = '';
+            // $edu[$edu_key]['graduation_time'] = isset($edu[$edu_key]['graduation_time'])?'':$edu[$edu_key]['graduation_time'] = '';
+            $max_speciality_length = $max_speciality_length >= strlen($edu[$edu_key]['speciality'])?$max_speciality_length:strlen($edu[$edu_key]['speciality']);
+
+        }
+        foreach ($edu as $k => $v) {
+               if ($v['graduation_time'] == '') {
+                   $v['graduation_time'] = '时间有误请自行补全';
+                   $color = 'red';
+               }
+               if ($v['school'] == '') {
+                   $v['school'] = '学校有误请自行补全';
+                   $color = 'red';
+               }
+               if ($v['speciality'] == '') {
+                   $v['speciality'] = '专业有误请自行补全';
+                   $color = 'red';
+               }
+               if ($v['educational'] == '') {
+                   $v['educational'] = '专业有误请自行补全';
+                   $color = 'red';
+               }
+
+               $time_string = strlen($v['graduation_time']) >= $max_time_length?$v['graduation_time']:$v['graduation_time'].str_repeat(' ',($max_time_length-strlen($v['graduation_time']))/3*2);
+
+               $school_string = strlen($v['school']) >= $max_school_length?$v['school']:$v['school'].str_repeat(' ',($max_school_length-strlen($v['school']))/3*2);
+               
+               $speciality_string = strlen($v['speciality']) >= $max_speciality_length?$v['speciality']:$v['speciality'].str_repeat(' ',($max_speciality_length-strlen($v['speciality']))/3*2);
+               
+               $educational_string = strlen($v['educational']) >= $max_educational_length?$v['educational']:$v['educational'].str_repeat(' ',($max_educational_length-strlen($v['educational']))/3*2);
+
+               $edu_string = $time_string.'          '.$school_string.'          '.$speciality_string.'         '.$educational_string;
+               $section->addText($edu_string,['color' => $color]);
+               $section->addTextBreak(1);
+           }
+           // $section->addText(htmlspecialchars($error),['color' => $color]);
+
+
+
+        /**********************************************旧方法，暂时不动*******************************************/
+
+        // $educational_background = explode("\n",str_replace(' ','', $data['educational_background']));
+        // $educational_background = implode("",$educational_background);
+        // $edu_config = config('config.educationalBackground');
+        // $edu = [];
+        // $edu_string = '';
+        // $edu_key = 0;
+        // $section = new TextRun();
+        // if(preg_match_all($edu_config['school'],$educational_background,$school)){
+        //    preg_match_all($edu_config['graduation_time'],$educational_background,$graduation_time);
+        //    preg_match_all($edu_config['speciality'],$educational_background,$speciality);
+        //    preg_match_all($edu_config['educational'],$educational_background,$educational);
 
            
-               // dump($school);
-               // dump($graduation_time);
-               // dump($speciality);
-               // dump($educational);exit;
-               $max_time_length = 0;
-               $max_school_length = 0;
-               $max_speciality_length = 0;
-               $max_educational_length = 0;
+        //        // dump($school);
+        //        // dump($graduation_time);
+        //        // dump($speciality);
+        //        // dump($educational);exit;
+        //        $max_time_length = 0;
+        //        $max_school_length = 0;
+        //        $max_speciality_length = 0;
+        //        $max_educational_length = 0;
 
-               for ($i=0,$len = count($school[0]); $i < $len ; $i++) { 
-                   isset($school[0][$i])?$school_string = $school[0][$i]:$school_string = '';
-                   isset($graduation_time[0][$i])?$time_string = $graduation_time[0][$i]:$time_string = '';
-                   isset($speciality[0][$i])?$speciality_string = $speciality[0][$i]:$speciality_string = '';
-                   isset($educational[0][$i])?$educational_string = $educational[0][$i]:$educational_string = '';
-                   if ($speciality) {
-                       $speciality_string = str_replace($school_string,'',$speciality_string);
-                       $speciality_string = str_replace($time_string,'',$speciality_string);
-                       $speciality_string = str_replace($educational_string,'',$speciality_string);
-                   }
-                   $edu[$i]['time_string'] = $time_string;
-                   $edu[$i]['school_string'] = $school_string;
-                   $edu[$i]['speciality_string'] = $speciality_string;
-                   $edu[$i]['educational_string'] = $educational_string;
-                   $max_time_length = $max_time_length >= strlen($time_string)?$max_time_length:strlen($time_string);
-                   $max_school_length = $max_school_length >= strlen($school_string)?$max_school_length:strlen($school_string);
-                   $max_speciality_length = $max_speciality_length >= strlen($speciality_string)?$max_speciality_length:strlen($speciality_string);
-                   $max_educational_length = $max_educational_length >= strlen($educational_string)?$max_educational_length:strlen($educational_string);
+        //        for ($i=0,$len = count($school[0]); $i < $len ; $i++) { 
+        //            isset($school[0][$i])?$school_string = $school[0][$i]:$school_string = '';
+        //            isset($graduation_time[0][$i])?$time_string = $graduation_time[0][$i]:$time_string = '';
+        //            isset($speciality[0][$i])?$speciality_string = $speciality[0][$i]:$speciality_string = '';
+        //            isset($educational[0][$i])?$educational_string = $educational[0][$i]:$educational_string = '';
+        //            if ($speciality) {
+        //                $speciality_string = str_replace($school_string,'',$speciality_string);
+        //                $speciality_string = str_replace($time_string,'',$speciality_string);
+        //                $speciality_string = str_replace($educational_string,'',$speciality_string);
+        //            }
+        //            $edu[$i]['time_string'] = $time_string;
+        //            $edu[$i]['school_string'] = $school_string;
+        //            $edu[$i]['speciality_string'] = $speciality_string;
+        //            $edu[$i]['educational_string'] = $educational_string;
+        //            $max_time_length = $max_time_length >= strlen($time_string)?$max_time_length:strlen($time_string);
+        //            $max_school_length = $max_school_length >= strlen($school_string)?$max_school_length:strlen($school_string);
+        //            $max_speciality_length = $max_speciality_length >= strlen($speciality_string)?$max_speciality_length:strlen($speciality_string);
+        //            $max_educational_length = $max_educational_length >= strlen($educational_string)?$max_educational_length:strlen($educational_string);
 
-               }
-               $color = 'black';
-               $error = '';
-               if (count($school[0]) != count($graduation_time[0]) || count($school[0]) != count($speciality[0]) || count($school[0]) != count($educational[0])) {
-                   $color = 'red';
-                   $error = '数据可能会存在异常请自行调整';
-               }
+        //        }
+        //        $color = 'black';
+        //        $error = '';
+        //        if (count($school[0]) != count($graduation_time[0]) || count($school[0]) != count($speciality[0]) || count($school[0]) != count($educational[0])) {
+        //            $color = 'red';
+        //            $error = '数据可能会存在异常请自行检查后调整，如果没问题可忽略此条';
+        //        }
 
-               foreach ($edu as $k => $v) {
-                   $edu_string = strlen($v['time_string']) >= $max_time_length?$v['time_string']:$v['time_string'].str_repeat(' ',($max_time_length-strlen($v['time_string']))/3*2);
+        //        foreach ($edu as $k => $v) {
+        //            $edu_string = strlen($v['time_string']) >= $max_time_length?$v['time_string']:$v['time_string'].str_repeat(' ',($max_time_length-strlen($v['time_string']))/3*2);
 
-                   $school_string = strlen($v['school_string']) >= $max_school_length?$v['school_string']:$v['school_string'].str_repeat(' ',($max_school_length-strlen($v['school_string']))/3*2);
+        //            $school_string = strlen($v['school_string']) >= $max_school_length?$v['school_string']:$v['school_string'].str_repeat(' ',($max_school_length-strlen($v['school_string']))/3*2);
                    
-                   $speciality_string = strlen($v['speciality_string']) >= $max_speciality_length?$v['speciality_string']:$v['speciality_string'].str_repeat(' ',($max_speciality_length-strlen($v['speciality_string']))/3*2);
+        //            $speciality_string = strlen($v['speciality_string']) >= $max_speciality_length?$v['speciality_string']:$v['speciality_string'].str_repeat(' ',($max_speciality_length-strlen($v['speciality_string']))/3*2);
                    
-                   $educational_string = strlen($v['educational_string']) >= $max_educational_length?$v['educational_string']:$v['educational_string'].str_repeat(' ',($max_educational_length-strlen($v['educational_string']))/3*2);
+        //            $educational_string = strlen($v['educational_string']) >= $max_educational_length?$v['educational_string']:$v['educational_string'].str_repeat(' ',($max_educational_length-strlen($v['educational_string']))/3*2);
 
-                   $edu_string = $time_string.'          '.$school_string.'          '.$speciality_string.'         '.$educational_string;
-                   $section->addText($edu_string,['color' => $color]);
-                   $section->addTextBreak(1);
-               }
-               $section->addText(htmlspecialchars($error),['color' => $color]);
+        //            $edu_string = $time_string.'          '.$school_string.'          '.$speciality_string.'         '.$educational_string;
+        //            $section->addText($edu_string,['color' => $color]);
+        //            $section->addTextBreak(1);
+        //        }
+        //        $section->addText(htmlspecialchars($error),['color' => $color]);
                
            
 
-        }
+        // }
 
+        /***************************************************************************************************************/
         $templateProcessor->setComplexBlock('edu_string',$section);
 
         
