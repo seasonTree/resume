@@ -29,7 +29,7 @@ export default {
                     that.$api[that.apiType]
                         [that.addMethod](that.form)
                         .then(res => {
-                            if (res.code == 200) {
+                            if (res.code == 0) {
                                 //新增成功后
                                 that.afterAdd(res.data);
 
