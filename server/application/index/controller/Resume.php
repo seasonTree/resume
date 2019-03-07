@@ -1973,11 +1973,11 @@ class Resume extends Controller
 
         }
         foreach ($edu as $k => $v) {
-               if ($v['graduation_time'] == '') {
+               if (!isset($v['graduation_time'])) {
                    $v['graduation_time'] = '时间有误请自行补全';
                    $color = 'red';
                }
-               if ($v['school'] == '') {
+               if (!isset($v['school'])) {
                    $v['school'] = '学校有误请自行补全';
                    $color = 'red';
                }
@@ -1985,8 +1985,8 @@ class Resume extends Controller
                    $v['speciality'] = '专业有误请自行补全';
                    $color = 'red';
                }
-               if ($v['educational'] == '') {
-                   $v['educational'] = '专业有误请自行补全';
+               if (!isset($v['educational'])) {
+                   $v['educational'] = '学历有误请自行补全';
                    $color = 'red';
                }
 
