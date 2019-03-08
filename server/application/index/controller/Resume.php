@@ -883,15 +883,15 @@ class Resume extends Controller
     public function getResumeList(){
         //简历列表
         $input = input('get.');
-        // if (count($input) > 3 ) {
-            $data = $this->search($input);
-            // $count = array_pop($data);//sphinx获取的总条数并不准确，所以用mysql获取条数
-        // }
-        // else{
+        $data = $this->search($input);
+        if (count($input) > 3 ) {
+            $count = array_pop($data);//sphinx获取的总条数设置上限为10000条，可能导致某些结果不准确
+        }
+        else{
             $resume = new ResumeModel();
-        //     $data = $resume->get();
+            // $data = $resume->get();
             $count = $resume->getCount();
-        // }
+        }
         
         return json(['msg' => '获取成功','code' => 0,'data' => [ 'row' => $data,'total' => $count]]);
     }
@@ -1535,7 +1535,7 @@ class Resume extends Controller
             }
         }
 
-        // $data[] = $res['total'];
+        $data[] = $res['total'];
 
         // $money_st = isset($where['expected_money_st'])?$where['expected_money_st']:'';
         // $money_ed = isset($where['expected_money_ed'])?$where['expected_money_ed']:'';
@@ -1601,7 +1601,7 @@ class Resume extends Controller
         //         // $data_num++;
                 
         //     }
-        //     $data[] = count($data_arr);//总数
+            // $data[] = count($data_arr);//总数
 
         // }
         return $data;
@@ -1962,7 +1962,10 @@ class Resume extends Controller
         $templateProcessor->setComplexBlock('project_experience',$project);
 
         //教育背景部分
-        $educational_background = explode("\n", preg_replace("/\s+/","\n", $data['educational_background']));
+        if(preg_match("/\d+(\s+)?(至|-|—|–|―|到)+(\s+)?(\d+|至今)/",$data['educational_background'],$preg)){//处理时间格式，空格问题
+            $educational_background = preg_replace("/$preg[0]/",preg_replace("/\s+/",'',$preg[0]),$data['educational_background']);
+        }
+        $educational_background = explode("\n", preg_replace("/\s+/","\n",$educational_background));
         $section = new TextRun();
         $edu_config = config('config.educationalBackground');
         $edu = [];
@@ -1975,9 +1978,7 @@ class Resume extends Controller
         $color = 'black';//字体颜色
 
         foreach ($educational_background as $k => $v) {
-            if(preg_match("/\d+(\s+)?(至|-|—|–|―|到)+(\s+)?(\d+|至今)/",$v,$preg)){//处理时间格式，空格问题
-                $v = preg_replace("/$preg[0]/",preg_replace("/\s+/",'',$preg[0]),$v);
-            }
+            
             if(preg_match($edu_config['graduation_time'],$v,$preg)){
                 if (isset($edu[$edu_key]['graduation_time'])) {
                     $edu_key++;
