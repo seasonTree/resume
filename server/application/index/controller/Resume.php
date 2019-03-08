@@ -884,10 +884,8 @@ class Resume extends Controller
         //简历列表
         $input = input('get.');
         $data = $this->search($input);
+        $count = array_pop($data);//sphinx获取的总条数设置上限为10000条，可能导致某些结果不准确
         if (count($input) > 3 ) {
-            $count = array_pop($data);//sphinx获取的总条数设置上限为10000条，可能导致某些结果不准确
-        }
-        else{
             $resume = new ResumeModel();
             // $data = $resume->get();
             $count = $resume->getCount();
