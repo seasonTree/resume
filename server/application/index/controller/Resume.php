@@ -1765,7 +1765,7 @@ class Resume extends Controller
             if (preg_match($work_rule['time_total'],$v)) {
                 $v = preg_replace("/\s+/",'',$v);
             }
-            if(preg_match("/\d+(\s+)(-|至|到)(\s+)(\d+|至今)/",$v,$preg)){//处理时间格式，空格问题
+            if(preg_match("/\d+(\s+)(至|-|—|–|―|到)+(\s+)(\d+|至今)/",$v,$preg)){//处理时间格式，空格问题
                 $v = preg_replace("/$preg[0]/",preg_replace("/\s+/",'',$preg[0]),$v);
             }
             $v = preg_replace($work_rule['time_total'],'',$v);//处理时间
@@ -1933,7 +1933,7 @@ class Resume extends Controller
             if ($v == '' || in_array(trim($v),$group_list)) {
                 continue;
             }
-            if(preg_match("/\d+(\s+)?(-|至|到)(\s+)?(\d+|至今)/",$v,$preg)){//处理时间格式，空格问题
+            if(preg_match("/\d+(\s+)?(至|-|—|–|―|到)+(\s+)?(\d+|至今)/",$v,$preg)){//处理时间格式，空格问题
                 $v = preg_replace("/$preg[0]/",preg_replace("/\s+/",'',$preg[0]),$v);
             }
             if (preg_match($project_rule['project_time'],$v,$preg)) {//标题加粗
@@ -1975,6 +1975,9 @@ class Resume extends Controller
         $color = 'black';//字体颜色
 
         foreach ($educational_background as $k => $v) {
+            if(preg_match("/\d+(\s+)?(至|-|—|–|―|到)+(\s+)?(\d+|至今)/",$v,$preg)){//处理时间格式，空格问题
+                $v = preg_replace("/$preg[0]/",preg_replace("/\s+/",'',$preg[0]),$v);
+            }
             if(preg_match($edu_config['graduation_time'],$v,$preg)){
                 if (isset($edu[$edu_key]['graduation_time'])) {
                     $edu_key++;
