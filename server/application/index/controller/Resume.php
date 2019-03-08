@@ -885,10 +885,10 @@ class Resume extends Controller
         $input = input('get.');
         $data = $this->search($input);
         $count = array_pop($data);//sphinx获取的总条数设置上限为10000条，可能导致某些结果不准确
-        if (count($input) > 3 ) {
+        if (count($input) == 3 ) {
             $resume = new ResumeModel();
             // $data = $resume->get();
-            $count = $resume->getCount();
+            $count = $resume->getCount();//
         }
         
         return json(['msg' => '获取成功','code' => 0,'data' => [ 'row' => $data,'total' => $count]]);
