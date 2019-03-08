@@ -478,6 +478,14 @@ class Resume extends Controller
                         $insert_comm[$keys]['communicate_time'] = $data['communicate'][$key]['communicate_time1'];
                         $insert_comm[$keys]['content'] = $data['communicate'][$key]['content1'];
                         $insert_comm[$keys]['resume_id'] = $value;
+
+                        /*******************************暂不开放对沟通详细情况的导入**************************************/
+                        // $insert_comm[$keys]['screen'] = 0;
+                        // $insert_comm[$keys]['arrange_interview'] = 0;
+                        // $insert_comm[$keys]['arrive'] = 0;
+                        // $insert_comm[$keys]['approved_interview'] = 0;
+                        // $insert_comm[$keys]['entry'] = 0;
+                        /*********************************************************************************************/
                         $keys++;
                     }
 
@@ -488,10 +496,30 @@ class Resume extends Controller
                         $insert_comm[$keys]['communicate_time'] = $data['communicate'][$key]['communicate_time2'];
                         $insert_comm[$keys]['content'] = $data['communicate'][$key]['content2'];
                         $insert_comm[$keys]['resume_id'] = $value;
+
+                        /*******************************暂不开放对沟通详细情况的导入**************************************/
+                        // $insert_comm[$keys]['screen'] = $data['communicate'][$key]['screen'];
+                        // $insert_comm[$keys]['arrange_interview'] = $data['communicate'][$key]['arrange_interview'];
+                        // $insert_comm[$keys]['arrive'] = $data['communicate'][$key]['arrive'];
+                        // $insert_comm[$keys]['approved_interview'] = $data['communicate'][$key]['approved_interview'];
+                        // $insert_comm[$keys]['entry'] = $data['communicate'][$key]['entry'];
+                        /**********************************************************************************************/
                         $keys++;
                     }
 
                 }
+                /*******************************暂不开放对沟通详细情况的导入**************************************/
+                // else if(isset($data['communicate'][$key]['content1'])){
+                //     if (!empty($data['communicate'][$key]['content1'])) {
+                //         $insert_comm[$keys-1]['screen'] = $data['communicate'][$key]['screen'];
+                //         $insert_comm[$keys-1]['arrange_interview'] = $data['communicate'][$key]['arrange_interview'];
+                //         $insert_comm[$keys-1]['arrive'] = $data['communicate'][$key]['arrive'];
+                //         $insert_comm[$keys-1]['approved_interview'] = $data['communicate'][$key]['approved_interview'];
+                //         $insert_comm[$keys-1]['entry'] = $data['communicate'][$key]['entry'];
+                //     }
+                // }
+                /***************************************************************************************************/
+
 
                 if ($insert_c == 200 && $key != $length) {
                     $communicate_res = $communicate->insertAll($insert_comm);
@@ -696,6 +724,14 @@ class Resume extends Controller
             $m = $obj_excel -> getActiveSheet() -> getCell("M".$row)->getValue();//首次沟通
             $n = $obj_excel -> getActiveSheet() -> getCell("N".$row)->getValue();//二次沟通
 
+            /*******************************暂不开放对沟通详细情况的导入**************************************/
+            // $o = $obj_excel -> getActiveSheet() -> getCell("O".$row)->getValue();//推荐
+            // $p = $obj_excel -> getActiveSheet() -> getCell("P".$row)->getValue();//安排
+            // $q = $obj_excel -> getActiveSheet() -> getCell("Q".$row)->getValue();//到场
+            // $r = $obj_excel -> getActiveSheet() -> getCell("R".$row)->getValue();//通过
+            // $s = $obj_excel -> getActiveSheet() -> getCell("S".$row)->getValue();//入职
+            /**********************************************************************************************/
+
 
             if (empty($a) && empty($b) && empty($c) && empty($d) && empty($e) && empty($f) && empty($g) && empty($h) && empty($i) && empty($j) && empty($k) && empty($l) && empty($m) && empty($n)) {
                 continue;//无效数据跳过
@@ -806,6 +842,14 @@ class Resume extends Controller
                     $communicate[$keys]['row_id'] = $i;
                     $communicate[$keys]['content2'] =  $n;
                     // $keys++;
+                    /*******************************暂不开放对沟通详细情况的导入**************************************/
+                    // $communicate[$keys]['screen'] = $o == ''?0:1;//沟通情况，通过
+                    // $communicate[$keys]['arrange_interview'] = $p == ''?0:1;//安排
+                    // $communicate[$keys]['arrive'] = $q == ''?0:1;//到场
+                    // $communicate[$keys]['approved_interview'] = $r == ''?0:1;//通过
+                    // $communicate[$keys]['entry'] = $s == ''?0:1;//入职
+                    /***********************************************************************************************/
+
                 // }
                 $keys++;
                 // $data[$i]['id'] = $resume_max_id;
