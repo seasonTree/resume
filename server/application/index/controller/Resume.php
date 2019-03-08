@@ -152,6 +152,9 @@ class Resume extends Controller
 
         $del_rule = $rule['speciality_info'];
         unset($rule['speciality_info']);
+
+        $keys = 0;//记录下标
+
         foreach ($parm as $k => $v) {
             $v = $this->trimall($v);
             // $v = phpanalysis($v);
@@ -176,8 +179,21 @@ class Resume extends Controller
                     if (!array_key_exists($n, $arr)) {
                         $arr[$n] = $preg[0];
                     }
+
+                    if ($n == 'school' || $n == 'graduation_time') {
+                        isset($list[$keys][$n])?$keys++:'';
+                        $list[$keys][$n] = $preg[0];
+
+                    }
+                    if ($n == 'speciality') {
+                        isset($list[$keys]['speciality'])?'':$list[$keys]['speciality'] = $preg[0];
+                    }
+
+                    if ($n == 'educational') {
+                        $list[$keys][$n] = $preg[0];
+                    }
                     
-                    $list[] = $preg[0];
+                    
                     // dump($rule);
                 }
 
@@ -195,7 +211,14 @@ class Resume extends Controller
         //     }
            
         // }
-        $arr['educational_background'] = implode("\n", $list);
+        $arr['educational_background'] = '';
+        foreach ($list as $k => $v) {
+            isset($v['graduation_time'])?$arr['educational_background'].=$v['graduation_time']."  ":$arr['educational_background'].='无法识别或缺少时间'.'   ';
+            isset($v['school'])?$arr['educational_background'].=$v['school']."  ":$arr['educational_background'].='无法识别或缺少学校'.'   ';
+            isset($v['speciality'])?$arr['educational_background'].=$v['speciality']."  ":$arr['educational_background'].='无法识别或缺少专业'.'   ';
+            isset($v['educational'])?$arr['educational_background'].=$v['educational']."\n":$arr['educational_background'].='无法识别或缺少学历'."\n";
+        }
+        // $arr['educational_background'] = implode("\n", $list);
         // dump($arr);
 
         return $arr;
@@ -862,12 +885,12 @@ class Resume extends Controller
         $input = input('get.');
         // if (count($input) > 3 ) {
             $data = $this->search($input);
-            $count = array_pop($data);
+            // $count = array_pop($data);//sphinx获取的总条数并不准确，所以用mysql获取条数
         // }
         // else{
-            // $resume = new ResumeModel();
+            $resume = new ResumeModel();
         //     $data = $resume->get();
-            // $count = $resume->getCount();
+            $count = $resume->getCount();
         // }
         
         return json(['msg' => '获取成功','code' => 0,'data' => [ 'row' => $data,'total' => $count]]);
@@ -1512,7 +1535,7 @@ class Resume extends Controller
             }
         }
 
-        $data[] = $res['total'];
+        // $data[] = $res['total'];
 
         // $money_st = isset($where['expected_money_st'])?$where['expected_money_st']:'';
         // $money_ed = isset($where['expected_money_ed'])?$where['expected_money_ed']:'';
