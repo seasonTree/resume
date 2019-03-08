@@ -33,8 +33,8 @@
 
                     <el-table-column
                         align="center"
-                        prop="nearest_job"
-                        label="最近岗位"
+                        prop="expected_job"
+                        label="岗位"
                     ></el-table-column>
 
                     <el-table-column
