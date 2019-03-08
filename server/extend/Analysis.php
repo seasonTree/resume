@@ -182,7 +182,6 @@ class Analysis {
         $docx = new \ZipArchive();
         $ret = $docx->open($path);
         $document = $docx->getFromName('word/document.xml');
-        
         $content = explode("</w:tcPr>", $document);
         $data = '';
         $temp = '';
