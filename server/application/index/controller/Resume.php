@@ -1071,16 +1071,24 @@ class Resume extends Controller
                 $data['educational_background'] = preg_replace("/缺少或不能识别学历/",$educational,$data['educational_background']);
 
             }
-            
-            
 
         }
 
-        
+        if (isset($data['speciality'])) {
+            //追加新的专业
+            $speciality_arr = explode('|',file_get_contents(dirname(Env::get('ROOT_PATH')).'/server/extend/speciality.txt'));
+            if (!in_array($data['speciality'],$speciality_arr)) {
+                file_put_contents(dirname(Env::get('ROOT_PATH')).'/server/extend/speciality.txt','|'.$data['speciality'],FILE_APPEND);
+
+            }
+        }
+
         $id = $resume->add($data);
         $data['id'] = $id;
         $data['ct_time'] = date('Y-m-d H:i:s',time());
         if ($data) {
+
+
             return json(['msg' => '添加成功','code' => 0,'data' => $data]);
         }
         else{
@@ -2084,7 +2092,7 @@ class Resume extends Controller
                    $v['school'] = '学校有误请自行补全';
                    $color = 'red';
                }
-               if ($v['speciality'] == '') {
+               if ($v['speciality'] == '无法识别或缺少专业') {
                    $v['speciality'] = '专业有误请自行补全';
                    $color = 'red';
                }
