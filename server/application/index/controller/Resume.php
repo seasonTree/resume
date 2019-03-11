@@ -46,7 +46,7 @@ class Resume extends Controller
         //基本资料
         $parm = implode("\n",$parm);
         $parm = preg_replace("/(\s+|:|：|\(|（|\)|）)/","\n",$parm);
-        $parm = preg_replace("/姓名|性别|户口|联系电话|联系方式|求职意向|更新时间|智联|智联招聘|前程无忧|个人信息|个人简历|应聘职位|应聘机构|基本信息|基本情况|简历/",'',$parm);//去除多余的信息
+        $parm = preg_replace("/姓名|性别|户口|联系电话|联系方式|求职意向|更新时间|智联|智联招聘|前程无忧|个人信息|个人简历|应聘职位|应聘机构|基本信息|基本情况|简历|毕业学校|毕业院校/",'',$parm);//去除多余的信息
         $rule = config('config.resume_rule');
         $base_rule = config('config.base_rule');
         $base_replace_blank = config('config.base_replace_blank');
@@ -130,7 +130,7 @@ class Resume extends Controller
         //教育背景
         $parm = implode("\n",$parm);
         $parm = preg_replace("/年/",'.',$parm);//统一把年换成.
-        $parm = preg_replace("/月|教育经历|教育背景/",'',$parm);//统一把月,多余的字符去掉
+        $parm = preg_replace("/月|教育经历|教育背景|毕业学校|毕业院校/",'',$parm);//统一把月,多余的字符去掉
         $parm = preg_replace("/(至|到|–|—|―)+/",'-',$parm);//统一把范围符换成-
         $parm = preg_replace("/-今/",'至今',$parm);//以防上一步替换"至今"变成-今，因此要替换回去
         $parm = preg_replace("/\s+|\|/","\n",$parm);//空格和|变成换行符
@@ -399,16 +399,10 @@ class Resume extends Controller
 
         if (!isset($list['educational_background'])) {
             //匹配不到教育背景的时候
-            $list['educational_background'] = '';
-            if (isset($list['school'])) {
-                $list['educational_background'].= $list['school']."\n";
-            }
-            if (isset($list['speciality'])) {
-                $list['educational_background'].= $list['speciality']."\n";
-            }
-            if (isset($list['educational'])) {
-                $list['educational_background'].= $list['educational']."\n";
-            }
+            $list['educational_background'] = '缺少或不能识别毕业时间   ';
+            $list['educational_background'].= isset($list['school'])?$list['school']."   ":'缺少或不能识别毕业院校   ';
+            $list['educational_background'].= isset($list['speciality'])?$list['speciality']."   ":'缺少或不能识别专业   ';
+            $list['educational_background'].= isset($list['educational'])?$list['educational']."   ":'缺少或不能识别学历   ';
         }
         
 
@@ -1056,7 +1050,32 @@ class Resume extends Controller
             }
         }
 
-        
+        if (isset($data['educational_background'])) {
+            if (count(explode('   ',$data['educational_background'])) <= 5) {
+
+                if (isset($data['graduation_time'])) {
+                    if(preg_match("/\d{4}/",$data['graduation_time'],$res)){
+                        $graduation_time = $res[0].'年毕业';
+                        $data['educational_background'] = preg_replace("/缺少或不能识别毕业时间/",$graduation_time,$data['educational_background']);
+
+                    }
+                }
+               
+                $school = isset($data['school'])?$data['school']:'缺少毕业院校';
+                $data['educational_background'] = preg_replace("/缺少或不能识别毕业院校/",$school,$data['educational_background']);
+
+                $speciality = isset($data['speciality'])?$data['speciality']:'缺少专业';
+                $data['educational_background'] = preg_replace("/缺少或不能识别专业/",$speciality,$data['educational_background']);
+
+                $educational = isset($data['educational'])?$data['educational']:'缺少学历';
+                $data['educational_background'] = preg_replace("/缺少或不能识别学历/",$educational,$data['educational_background']);
+
+            }
+            
+            
+
+        }
+
         
         $id = $resume->add($data);
         $data['id'] = $id;
@@ -2004,8 +2023,9 @@ class Resume extends Controller
         $templateProcessor->setComplexBlock('project_experience',$project);
 
         //教育背景部分
+        $educational_background = $data['educational_background'];
         if(preg_match("/\d+(\s+)?(至|-|—|–|―|到)+(\s+)?(\d+|至今)/",$data['educational_background'],$preg)){//处理时间格式，空格问题
-            $educational_background = preg_replace("/$preg[0]/",preg_replace("/\s+/",'',$preg[0]),$data['educational_background']);
+            $educational_background = preg_replace("/$preg[0]/",preg_replace("/\s+/",'',$preg[0]),$educational_background);
         }
         $educational_background = explode("\n", preg_replace("/\s+/","\n",$educational_background));
         $section = new TextRun();
