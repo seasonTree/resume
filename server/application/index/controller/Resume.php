@@ -1267,7 +1267,7 @@ class Resume extends Controller
         Header("Content-type: application/octet-stream");
         Header("Accept-Ranges: bytes"); 
         Header("Accept-Length:".$file_size); 
-        Header("Content-Disposition: attachment; filename=".$parm['file_name']); 
+        Header("Content-Disposition: attachment;filename='$parm[file_name]'"); 
         //================重点====================
         ob_clean();
         flush();
