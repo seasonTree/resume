@@ -397,12 +397,18 @@ class Resume extends Controller
             }
         }
 
+        $company_config = config('config.workExperience.company');
+        //误匹配公司成专业的情况，需要去掉
+        if (isset($list['speciality']) && preg_match($company_config, $list['speciality'])) {
+            unset($list['speciality']);
+        }
+
         if (!isset($list['educational_background'])) {
             //匹配不到教育背景的时候
-            $list['educational_background'] = '缺少或不能识别毕业时间   ';
-            $list['educational_background'].= isset($list['school'])?$list['school']."   ":'缺少或不能识别毕业院校   ';
-            $list['educational_background'].= isset($list['speciality'])?$list['speciality']."   ":'缺少或不能识别专业   ';
-            $list['educational_background'].= isset($list['educational'])?$list['educational']."   ":'缺少或不能识别学历   ';
+            $list['educational_background'] = '无法识别或缺少时间   ';
+            $list['educational_background'].= isset($list['school'])?$list['school']."   ":'无法识别或缺少学校   ';
+            $list['educational_background'].= isset($list['speciality'])?$list['speciality']."   ":'无法识别或缺少专业   ';
+            $list['educational_background'].= isset($list['educational'])?$list['educational']."   ":'无法识别或缺少学历   ';
         }
         
 
@@ -1052,23 +1058,22 @@ class Resume extends Controller
 
         if (isset($data['educational_background'])) {
             if (count(explode('   ',$data['educational_background'])) <= 5) {
-
                 if (isset($data['graduation_time'])) {
                     if(preg_match("/\d{4}/",$data['graduation_time'],$res)){
                         $graduation_time = $res[0].'年毕业';
-                        $data['educational_background'] = preg_replace("/缺少或不能识别毕业时间/",$graduation_time,$data['educational_background']);
+                        $data['educational_background'] = preg_replace("/无法识别或缺少时间/",$graduation_time,$data['educational_background']);
 
                     }
                 }
                
                 $school = isset($data['school'])?$data['school']:'缺少毕业院校';
-                $data['educational_background'] = preg_replace("/缺少或不能识别毕业院校/",$school,$data['educational_background']);
+                $data['educational_background'] = preg_replace("/无法识别或缺少学校/",$school,$data['educational_background']);
 
                 $speciality = isset($data['speciality'])?$data['speciality']:'缺少专业';
-                $data['educational_background'] = preg_replace("/缺少或不能识别专业/",$speciality,$data['educational_background']);
+                $data['educational_background'] = preg_replace("/无法识别或缺少专业/",$speciality,$data['educational_background']);
 
                 $educational = isset($data['educational'])?$data['educational']:'缺少学历';
-                $data['educational_background'] = preg_replace("/缺少或不能识别学历/",$educational,$data['educational_background']);
+                $data['educational_background'] = preg_replace("/无法识别或缺少学历/",$educational,$data['educational_background']);
 
             }
 
