@@ -23,6 +23,7 @@ class Communicate extends Model
                           ->join('rs_user b','a.ct_user = b.uname')
                           ->field('a.*,b.personal_name')
                           ->where($where)
+                          ->order('communicate_time desc')
                           ->select();
     }
 
