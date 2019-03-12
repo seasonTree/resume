@@ -1534,6 +1534,11 @@ class Resume extends Controller
             
         }
 
+        $ct_time = isset($where['ct_time'])?$where['ct_time']:'';
+        if ($ct_time != '') {
+            $sphinx->SetFilterRange('ct_time',$ct_time.' 00:00:00',$ct_time.' 23:59:59');
+        }
+
 
         $arr = [];
         $arr['name'] = isset($where['name'])?$where['name']:'';
@@ -1541,7 +1546,6 @@ class Resume extends Controller
         $arr['educational'] = isset($where['educational'])?$where['educational']:'';
         $arr['phone'] = isset($where['phone'])?$where['phone']:'';
         $arr['expected_job'] = isset($where['expected_job'])?$where['expected_job']:'';
-        $arr['ct_time'] = isset($where['ct_time'])?'^'.$where['ct_time'].'$':'';
         // $arr['status'] = isset($where['status'])?$where['status']:'';
         // $arr['school'] = isset($where['school'])?$where['school']:'';
         // $arr['speciality'] = isset($where['speciality'])?$where['speciality']:'';
