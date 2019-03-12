@@ -1089,6 +1089,7 @@ class Resume extends Controller
 
             }
         }
+        $data['ct_timestamp'] = time();
 
         $id = $resume->add($data);
         $data['id'] = $id;
