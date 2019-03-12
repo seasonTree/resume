@@ -798,17 +798,21 @@ class Resume extends Controller
                 
                 $data[$row]['ct_user'] = $a;
             }
-            
+
             if ($b != '' && is_numeric($b)) {
                 $time = ($b-25569)*24*60*60; //获得秒数
-                $data[$row]['ct_time'] = date('Y-m-d', $time);   //转化时间
+                    $data[$row]['ct_timestamp'] = $time;
+                    $data[$row]['ct_time'] = date('Y-m-d', $time);   //转化时间
+                }
+                else if ($b != '') {
+                    $data[$row]['ct_timestamp'] = strtotime($b);
+                    $data[$row]['ct_time'] = $b;
+                }
+                else{
+                    $data[$row]['ct_timestamp'] = 0;
+                    $data[$row]['ct_time'] = '';
             }
-            else if ($b != '') {
-                $data[$row]['ct_time'] = $b;
-            }
-            else{
-                $data[$row]['ct_time'] = '';
-            }
+            
             $deleteID == false?$data[$row]['row_id'] = $row:'';
             $data[$row]['expected_job'] = $c;
             $data[$row]['name'] = $d;
