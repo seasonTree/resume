@@ -111,6 +111,26 @@
                                 ></el-input>
                             </el-col>
                             <el-col :span="4">
+                                <el-date-picker
+                                    v-model="search.ct_time"
+                                    size="small"
+                                    type="date"
+                                    placeholder="选择日期"
+                                    class="width100"
+                                    format="yyyy-MM-dd"
+                                    value-format="yyyy-MM-dd"
+                                    @change="getData(true)"
+                                >
+                                </el-date-picker>
+
+                                <!-- <el-input
+                                    v-model="search.ct_time"
+                                    placeholder="日期"
+                                    size="small"
+                                    @keyup.native.enter="getData(true)"
+                                ></el-input> -->
+                            </el-col>
+                            <el-col :span="4">
                                 <el-input-number
                                     clearable
                                     placeholder="最小工作年限要求"
@@ -241,14 +261,10 @@
                     <template slot-scope="scope">
 
                         <el-tooltip
-
                             effect="dark"
-
                             :content="scope.row.email"
-
                             placement="top"
                         >
-
                             <div class="cell">{{scope.row.email}}</div>
                         </el-tooltip>
                     </template>
@@ -319,17 +335,13 @@
                                 size="mini"
                                 icon="fa fa-folder-open"
                                 circle
-
                                 @click.stop="showUploadFile(scope.row.id)"
-
                                 :disabled="!$check_pm('resume_file_list')"
-
                             ></el-button>
 
                         </el-tooltip>
 
                         <el-tooltip
-
                             effect="dark"
                             content="沟通管理"
                             placement="bottom"
@@ -381,16 +393,16 @@
             type="flex"
             justify="end"
         >
-                <el-pagination
-                    @current-change="changePage"
-                    @size-change="pageSizeChange"
-                    background
-                    layout="total, sizes, prev, pager, next, jumper"
-                    :page-sizes="[10, 20, 50, 100]"
-                    :page-size="pager.size"
-                    :total="pager.total"
-                    :current-page="pager.current"
-                ></el-pagination>
+            <el-pagination
+                @current-change="changePage"
+                @size-change="pageSizeChange"
+                background
+                layout="total, sizes, prev, pager, next, jumper"
+                :page-sizes="[10, 20, 50, 100]"
+                :page-size="pager.size"
+                :total="pager.total"
+                :current-page="pager.current"
+            ></el-pagination>
         </el-row>
 
         <add

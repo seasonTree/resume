@@ -23,7 +23,7 @@
                     v-model="form.communicate_time"
                     type="date"
                     placeholder="选择日期"
-                    forma="yyyy-MM-dd"
+                    format="yyyy-MM-dd"
                     value-format="yyyy-MM-dd"
                 >
                 </el-date-picker>
