@@ -1376,7 +1376,8 @@ class Resume extends Controller
             if ($data) {
                 //取id结果集合
                 $ids = array_column($data,'id');
-                $sphinx->SetFilter('attachment', 50,100);
+                dump($ids);exit;
+                $sphinx->SetFilter('attachment',$ids);
             }
             else{
                 //没有结果集，说明所选的日期没有数据
