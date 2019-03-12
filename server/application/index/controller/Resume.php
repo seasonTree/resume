@@ -1292,7 +1292,7 @@ class Resume extends Controller
     
     }
     public function test(){
-        $source = dirname(Env::get('ROOT_PATH')).'/client/dist/uploads/file/test.docx';
+        // $source = dirname(Env::get('ROOT_PATH')).'/client/dist/uploads/file/test.docx';
         // $text = new \Docx2Text();
         // $text->setDocx($source);
         // $docx = $text->extract();
@@ -1302,10 +1302,169 @@ class Resume extends Controller
         // $start1=microtime(true);
 
         // $content = $obj->getContent($source,'string');
-        $phpWord = IOFactory::load($source);
+        // $phpWord = IOFactory::load($source);
         // dump($phpWord);
         // $source = dirname(Env::get('ROOT_PATH')).'/client/dist/uploads/file/test.pdf';
         // PDF_open_file($pdf,$source);
+
+        $resume = new ResumeModel();
+        $email = isset($where['email'])?$where['email']:'';
+        if ($email) {
+            //先判断邮箱搜索条件
+            $data = $resume->getId(['email' => $email]);
+            if (isset($data2[0])) {
+                $ids = [];
+                foreach ($data as $k => $v) {
+                    $ids[] = $v['id']; 
+                }
+                $arr_ids[] = $ids;
+            }   
+            else{
+                // $arr_ids[] = [];
+                return [];
+            }
+        }
+
+        $sphinx = new \SphinxClient;
+        $sphinx->setServer("192.168.199.134", 9312);
+        $sphinx->setMatchMode(SPH_MATCH_EXTENDED2);   //匹配模式 
+        // $sphinx->setMatchMode(SPH_MATCH_BOOLEAN);   //匹配模式 
+        // $sphinx->setMatchMode(SPH_MATCH_PHRASE);   //匹配模式 
+        //ANY为关键词自动拆词，ALL为不拆词匹配（完全匹配），EXTENDED2,多词匹配
+        $sphinx->SetArrayResult ( true );   //返回的结果集为数组
+        // $sphinx->SetLimits(0 , 100000000 , 6000);
+        $sphinx->SetLimits(($where['pageIndex'] - 1) * $where['pageSize'] , $where['pageSize'] , 3000);//分页
+
+        //**********************************先不要的条件去掉**********************************************/
+
+        // $money_st = isset($where['expected_money_st'])?$where['expected_money_st']:'';
+        // $money_ed = isset($where['expected_money_ed'])?$where['expected_money_ed']:'';
+        // if ($money_st && $money_ed) {
+        //     $sphinx->SetFilterRange('expected_money_start',$money_st,$money_ed);
+        //     $sphinx->SetFilterRange('expected_money_end',$money_st,$money_ed);
+        //     // $sphinx->SetFilterRange('expected_money_end', 0, $money_st);
+        // }else if($money_st && !$money_ed){  //期望薪资
+        //     $sphinx->SetFilterRange('expected_money_start', $money_st, 100000000);
+        //     // $sphinx->SetFilterRange('expected_money_end', 0,$money_st);
+        // }else if(!$money_st && $money_ed){
+        //     // $sphinx->SetFilterRange('expected_money_end', $money_ed,100000000);
+        //     $sphinx->SetFilterRange('expected_money_end',0,$money_ed);
+        // }else{
+        //     // $arr_ids[] = [];
+        // }
+
+        // $age_min = isset($where['age_min'])?$where['age_min']:'';
+        // $age_max = isset($where['age_max'])?$where['age_max']:'';
+        // if ($age_min && $age_max) {
+        //     $sphinx->SetFilterRange('age', $age_min, $age_max);//查找年龄最小-最大之间
+        // }else if($age_min && !$age_max){    //年龄
+        //     $sphinx->SetFilterRange('age', $age_min, 100);//查找年龄最小-100之间
+        // }else if(!$age_min && $age_max){
+        //     $sphinx->SetFilterRange('age', 0, $age_max);//查找年龄0-最大之间
+        // }else{
+        //     // $arr_ids[] = [];
+        // }
+
+        /*************************************************************************************************/
+
+        $work_year_min = isset($where['work_year_min'])?$where['work_year_min']:'';
+        $work_year_max = isset($where['work_year_max'])?$where['work_year_max']:'';
+        if ($work_year_min && $work_year_max) {
+            $sphinx->SetFilterRange('work_year', $work_year_min, $work_year_max);
+        }else if($work_year_min && !$work_year_max){    
+            $sphinx->SetFilterRange('work_year', $work_year_min, 100);
+        }else if(!$work_year_min && $work_year_max){
+            $sphinx->SetFilterRange('work_year', 0, $work_year_max);
+        }else{
+            // $arr_ids[] = [];
+            
+        }
+
+        $ct_time = isset($where['ct_time'])?$where['ct_time']:'';
+        if ($ct_time != '') {
+            $sphinx->SetFilterRange('ct_time',$ct_time.' 00:00:00',$ct_time.' 23:59:59');
+        }
+
+
+        $arr = [];
+        $arr['name'] = isset($where['name'])?$where['name']:'';
+        $arr['sex'] = isset($where['sex'])?$where['sex']:'';
+        $arr['educational'] = isset($where['educational'])?$where['educational']:'';
+        $arr['phone'] = isset($where['phone'])?$where['phone']:'';
+        $arr['expected_job'] = isset($where['expected_job'])?$where['expected_job']:'';
+        // $arr['status'] = isset($where['status'])?$where['status']:'';
+        // $arr['school'] = isset($where['school'])?$where['school']:'';
+        // $arr['speciality'] = isset($where['speciality'])?$where['speciality']:'';
+        // $arr['english'] = isset($where['english'])?$where['english']:'';
+        $phinx_where = '';
+        $count_arr = count($arr);
+        $arr_ids = [];
+        $n = 1;
+        foreach ($arr as $k => $v) {
+            if ($v == '') {
+                continue;
+            }
+            if ($count_arr == $n) {
+
+                $phinx_where.= "@$k $v";
+            }
+            else{
+                $phinx_where.= "@$k $v & ";
+            }
+            $n++;
+        }
+        if($phinx_where != ''){
+            // $sphinx->AddQuery($phinx_where,'resume');
+            $phinx_where = '('.$phinx_where.')';
+        }
+
+        $ct_user = isset($where['ct_user'])?$where['ct_user']:'';
+        if ($ct_user) {
+            $ct_user = preg_replace("/(,|，)/",',',$ct_user);
+            $ct_user = explode(",",$ct_user);
+            $ct_user_where = '';
+            $ct_user_length = count($ct_user)-1;
+            foreach ($ct_user as $k => $v) {
+                if ($k == $ct_user_length) {
+                    $ct_user_where.=$ct_user_where."@ct_user $v";
+                }
+                else{
+                    $ct_user_where.=$ct_user_where."@ct_user $v |";
+                }
+                
+            }
+            $phinx_where = empty($phinx_where)?$ct_user_where:$phinx_where.' & '.$ct_user_where;
+            
+            // $sphinx->AddQuery($other,'resume');
+        }
+
+        $other = isset($where['other'])?$where['other']:'';
+        if ($other) {
+            $other = preg_replace("/(,|，)/",',',$other);
+            $other = explode(',',$other);
+            $other = implode('"|"',$other);
+            // $other = "'".'"'.$other.'"'."'";
+            $other = '("'.$other.'")';
+            $phinx_where = empty($phinx_where)?$other:$phinx_where.' & '.$other;
+            
+            // $sphinx->AddQuery($other,'resume');
+        }
+        // $data = $sphinx->RunQueries();
+        $sphinx->SetSortMode(SPH_SORT_ATTR_DESC,'mfy_time');
+        $res = $sphinx->query($phinx_where,'resume');
+
+        // dump($res);exit;
+        $data = [];
+
+        if (isset($res['matches'])) {
+            foreach ($res['matches'] as $k => $v) {
+                $data[$k] = $v['attrs'];
+                $data[$k]['id'] = $v['id'];
+            }
+        }
+
+        $data[] = $res['total'];
+        return $data;
 
     }
 
