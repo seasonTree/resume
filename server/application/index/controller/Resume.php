@@ -1089,7 +1089,7 @@ class Resume extends Controller
             //追加新的专业
             $speciality_arr = explode('|',file_get_contents(dirname(Env::get('ROOT_PATH')).'/server/extend/speciality.txt'));
             if (!in_array($data['speciality'],$speciality_arr) && !empty($data['speciality'])) {
-                // file_put_contents(dirname(Env::get('ROOT_PATH')).'/server/extend/speciality.txt','|'.$data['speciality'],FILE_APPEND);
+                file_put_contents(dirname(Env::get('ROOT_PATH')).'/server/extend/speciality.txt','|'.$data['speciality'],FILE_APPEND);
 
             }
         }
