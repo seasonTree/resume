@@ -1306,7 +1306,7 @@ class Resume extends Controller
         // dump($phpWord);
         // $source = dirname(Env::get('ROOT_PATH')).'/client/dist/uploads/file/test.pdf';
         // PDF_open_file($pdf,$source);
-
+        $where = input('get.');
         $resume = new ResumeModel();
         $email = isset($where['email'])?$where['email']:'';
         if ($email) {
