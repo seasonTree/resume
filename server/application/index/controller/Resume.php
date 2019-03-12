@@ -1380,7 +1380,7 @@ class Resume extends Controller
             
         }
 
-        $sphinx->setMatchMode(SPH_MATCH_PHRASE);   //匹配模式 
+        $sphinx->setMatchMode(SPH_MATCH_ALL);   //匹配模式 
         $arr = [];
         $arr['name'] = isset($where['name'])?$where['name']:'';
         $arr['sex'] = isset($where['sex'])?$where['sex']:'';
