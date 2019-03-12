@@ -279,3 +279,7 @@ INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, url, p_
 INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, url, p_act_name, p_component, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (53, 14, '获取所用的用户(设置角色用户)', 1, '', '', 'user_all_list', '', '/api/user/all_list', 28, 'admin', '2018-12-27 15:24:40', 'admin', '2018-12-27 15:31:23');
 INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, url, p_act_name, p_component, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (54, 40, '招聘负责人汇总', 1, '', '', 'report_person_recru_total', '', '/api/report/person_recru/recruitment_total', 50, 'admin', '2019-01-03 10:55:58', 'admin', '2019-01-05 20:45:58');
 INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, url, p_act_name, p_component, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (55, 14, '修改用户的头像', 1, '', '', 'user_change_avatar', '', '/api/user/change_user_avatar', 29, 'admin', '2019-01-05 20:45:43', 'admin', '2019-01-05 20:45:58');
+
+-- 简历表加入时间戳
+alter table  rs_resume add column `ct_timestamp` int(20) default 0 not null comment '简历时间的时间戳';
+update rs_resume set ct_timestamp = unix_timestamp(ct_time) where 1 = 1;
