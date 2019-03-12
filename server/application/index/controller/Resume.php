@@ -1327,8 +1327,8 @@ class Resume extends Controller
 
         $sphinx = new \SphinxClient;
         $sphinx->setServer("192.168.199.134", 9312);
-        $sphinx->setMatchMode(SPH_MATCH_EXTENDED2);   //匹配模式 
-        // $sphinx->setMatchMode(SPH_MATCH_BOOLEAN);   //匹配模式 
+        // $sphinx->setMatchMode(SPH_MATCH_EXTENDED2);   //匹配模式 
+        $sphinx->setMatchMode(SPH_MATCH_BOOLEAN);   //匹配模式 
         // $sphinx->setMatchMode(SPH_MATCH_PHRASE);   //匹配模式 
         //ANY为关键词自动拆词，ALL为不拆词匹配（完全匹配），EXTENDED2,多词匹配
         $sphinx->SetArrayResult ( true );   //返回的结果集为数组
@@ -1379,18 +1379,15 @@ class Resume extends Controller
             // $arr_ids[] = [];
             
         }
-        $ct_time = isset($where['ct_time'])?$where['ct_time']:'';
-        if ($ct_time != '') {
-            $sphinx->SetFilterRange('ct_time',$ct_time.' 00:00:00',$ct_time.' 23:59:59');
-        }
 
-
+        $sphinx->setMatchMode(SPH_MATCH_PHRASE);   //匹配模式 
         $arr = [];
         $arr['name'] = isset($where['name'])?$where['name']:'';
         $arr['sex'] = isset($where['sex'])?$where['sex']:'';
         $arr['educational'] = isset($where['educational'])?$where['educational']:'';
         $arr['phone'] = isset($where['phone'])?$where['phone']:'';
         $arr['expected_job'] = isset($where['expected_job'])?$where['expected_job']:'';
+        $arr['ct_time'] = isset($where['ct_time'])?$where['ct_time']:'';
         // $arr['status'] = isset($where['status'])?$where['status']:'';
         // $arr['school'] = isset($where['school'])?$where['school']:'';
         // $arr['speciality'] = isset($where['speciality'])?$where['speciality']:'';
@@ -1417,6 +1414,7 @@ class Resume extends Controller
             $phinx_where = '('.$phinx_where.')';
         }
 
+        $sphinx->setMatchMode(SPH_MATCH_BOOLEAN);   //匹配模式 
         $ct_user = isset($where['ct_user'])?$where['ct_user']:'';
         if ($ct_user) {
             $ct_user = preg_replace("/(,|，)/",',',$ct_user);
