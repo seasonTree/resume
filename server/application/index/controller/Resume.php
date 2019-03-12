@@ -1330,8 +1330,8 @@ class Resume extends Controller
 
         $sphinx = new \SphinxClient;
         $sphinx->setServer("192.168.199.134", 9312);
-        // $sphinx->setMatchMode(SPH_MATCH_EXTENDED2);   //匹配模式 
-        $sphinx->setMatchMode(SPH_MATCH_BOOLEAN);   //匹配模式 
+        $sphinx->setMatchMode(SPH_MATCH_EXTENDED2);   //匹配模式 
+        // $sphinx->setMatchMode(SPH_MATCH_BOOLEAN);   //匹配模式 
         // $sphinx->setMatchMode(SPH_MATCH_PHRASE);   //匹配模式 
         //ANY为关键词自动拆词，ALL为不拆词匹配（完全匹配），EXTENDED2,多词匹配
         $sphinx->SetArrayResult ( true );   //返回的结果集为数组
@@ -1373,8 +1373,6 @@ class Resume extends Controller
         if ($ct_time) {
             $min_time = strtotime($ct_time.' 00:00:00');
             $max_time = strtotime($ct_time.' 23:59:59');
-            dump($min_time);
-            dump($max_time);
             $sphinx->SetFilterRange('ct_timestamp',$min_time,$max_time);
         }
 
