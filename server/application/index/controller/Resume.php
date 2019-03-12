@@ -1370,6 +1370,11 @@ class Resume extends Controller
 
         /*************************************************************************************************/
         $ct_time = isset($where['ct_time'])?$where['ct_time']:'';
+        if ($ct_time) {
+            $min_time = strtotime($ct_time.' 00:00:00');
+            $max_time = strtotime($ct_time.' 23:59:59');
+            $sphinx->SetFilterRange('ct_timestamp',$min_time,$max_time);
+        }
 
         // if ($ct_time) {
         //     $data = $resume->getId("ct_time between '$ct_time 00:00:00' and '$ct_time 23:59:59'");
