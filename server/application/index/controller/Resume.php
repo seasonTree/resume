@@ -1370,21 +1370,21 @@ class Resume extends Controller
         /*************************************************************************************************/
         $ct_time = isset($where['ct_time'])?$where['ct_time']:'';
 
-        if ($ct_time) {
-            $data = $resume->getId("ct_time between '$ct_time 00:00:00' and '$ct_time 23:59:59'");
-            //说明有结果
-            if ($data) {
-                //取id结果集合
-                $ids = array_column($data,'id');
-                dump($ids);exit;
-                $sphinx->SetFilter('attachment',$ids);
-            }
-            else{
-                //没有结果集，说明所选的日期没有数据
-                return [];
-            }
+        // if ($ct_time) {
+        //     $data = $resume->getId("ct_time between '$ct_time 00:00:00' and '$ct_time 23:59:59'");
+        //     //说明有结果
+        //     if ($data) {
+        //         //取id结果集合
+        //         $ids = array_column($data,'id');
+        //         dump($ids);exit;
+        //         $sphinx->SetFilter('attachment',$ids);
+        //     }
+        //     else{
+        //         //没有结果集，说明所选的日期没有数据
+        //         return [];
+        //     }
             
-        }
+        // }
 
 
         $work_year_min = isset($where['work_year_min'])?$where['work_year_min']:'';
