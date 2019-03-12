@@ -1373,7 +1373,7 @@ class Resume extends Controller
         if ($ct_time) {
             $min_time = strtotime($ct_time.' 00:00:00');
             $max_time = strtotime($ct_time.' 23:59:59');
-            $sphinx->SetFilterRange('ct_timestamp',0,$max_time);
+            $sphinx->SetFilterRange('ct_timestamp',$min_time,$max_time);
         }
         $res = $sphinx->query('','resume');
         dump($res);exit;
@@ -1716,10 +1716,13 @@ class Resume extends Controller
             
         }
 
-        // $ct_time = isset($where['ct_time'])?$where['ct_time']:'';
-        // if ($ct_time != '') {
-        //     $sphinx->SetFilterRange('ct_time',$ct_time.' 00:00:00',$ct_time.' 23:59:59');
-        // }
+        //时间搜索条件
+        $ct_time = isset($where['ct_time'])?$where['ct_time']:'';
+        if ($ct_time) {
+            $min_time = strtotime($ct_time.' 00:00:00');
+            $max_time = strtotime($ct_time.' 23:59:59');
+            $sphinx->SetFilterRange('ct_timestamp',$min_time,$max_time);
+        }
 
 
         $arr = [];
