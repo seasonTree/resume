@@ -1373,7 +1373,7 @@ class Resume extends Controller
         if ($ct_time) {
             $min_time = strtotime($ct_time.' 00:00:00');
             $max_time = strtotime($ct_time.' 23:59:59');
-            $sphinx->SetFilterRange('ct_timestamp',$min_time,$max_time);
+            $sphinx->SetFilterRange('ct_timestamp',0,$max_time);
         }
         $res = $sphinx->query('','resume');
         dump($res);exit;
