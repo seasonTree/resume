@@ -1293,7 +1293,7 @@ class Resume extends Controller
     
     }
     public function test(){
-        dump(file_get_contents(dirname(Env::get('ROOT_PATH')).'/server/extend/speciality.txt'));
+        // dump(file_get_contents(dirname(Env::get('ROOT_PATH')).'/server/extend/speciality.txt'));
         file_put_contents(dirname(Env::get('ROOT_PATH')).'/server/extend/speciality.txt','|sdf',FILE_APPEND);
         exit;
         // $source = dirname(Env::get('ROOT_PATH')).'/client/dist/uploads/file/test.docx';
