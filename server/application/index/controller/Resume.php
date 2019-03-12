@@ -1534,10 +1534,10 @@ class Resume extends Controller
             
         }
 
-        $ct_time = isset($where['ct_time'])?$where['ct_time']:'';
-        if ($ct_time != '') {
-            $sphinx->SetFilterRange('ct_time',$ct_time.' 00:00:00',$ct_time.' 23:59:59');
-        }
+        // $ct_time = isset($where['ct_time'])?$where['ct_time']:'';
+        // if ($ct_time != '') {
+        //     $sphinx->SetFilterRange('ct_time',$ct_time.' 00:00:00',$ct_time.' 23:59:59');
+        // }
 
 
         $arr = [];
