@@ -1371,7 +1371,7 @@ class Resume extends Controller
         $ct_time = isset($where['ct_time'])?$where['ct_time']:'';
 
         if ($ct_time) {
-            $data = $resume->getId('ct_time between '.$ct_time.' 00:00:00 and '.$ct_time.' 23:59:59');
+            $data = $resume->getId("ct_time between '$ct_time 00:00:00' and '$ct_time 23:59:59'");
             //说明有结果
             if ($data) {
                 //取id结果集合
