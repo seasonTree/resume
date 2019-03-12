@@ -1380,14 +1380,18 @@ class Resume extends Controller
             
         }
 
-        $sphinx->setMatchMode(SPH_MATCH_PHRASE);   //匹配模式 
+        $ct_time = isset($where['ct_time'])?$where['ct_time']:'';
+        if ($ct_time != '') {
+            $sphinx->SetFilterRange('ct_time','2019-03-02 00:00:00','2019-03-02 23:59:59');
+        }
+
+
         $arr = [];
         $arr['name'] = isset($where['name'])?$where['name']:'';
         $arr['sex'] = isset($where['sex'])?$where['sex']:'';
         $arr['educational'] = isset($where['educational'])?$where['educational']:'';
         $arr['phone'] = isset($where['phone'])?$where['phone']:'';
         $arr['expected_job'] = isset($where['expected_job'])?$where['expected_job']:'';
-        $arr['ct_time'] = isset($where['ct_time'])?$where['ct_time']:'';
         // $arr['status'] = isset($where['status'])?$where['status']:'';
         // $arr['school'] = isset($where['school'])?$where['school']:'';
         // $arr['speciality'] = isset($where['speciality'])?$where['speciality']:'';
@@ -1414,7 +1418,6 @@ class Resume extends Controller
             $phinx_where = '('.$phinx_where.')';
         }
 
-        $sphinx->setMatchMode(SPH_MATCH_BOOLEAN);   //匹配模式 
         $ct_user = isset($where['ct_user'])?$where['ct_user']:'';
         if ($ct_user) {
             $ct_user = preg_replace("/(,|，)/",',',$ct_user);
