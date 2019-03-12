@@ -154,16 +154,17 @@ class Resume extends Controller
         unset($rule['speciality_info']);
 
         $keys = 0;//记录下标
-
         foreach ($parm as $k => $v) {
             $v = $this->trimall($v);
             // $v = phpanalysis($v);
             if (preg_match($del_rule,$v,$res)) {
                 continue;//剔除无用信息
             }
+            if (empty($v)) {
+                continue;//跳过空
+            }
 
             foreach ($rule as $n => $pattern) {
-                
                 if (preg_match($pattern,$v,$preg)) {
 
 
@@ -174,6 +175,7 @@ class Resume extends Controller
                     //     $strpos++;
                     // }
                     $v = str_replace($preg[0],'',$v);
+
                     
                     // unset($rule[$n]);
                     if (!array_key_exists($n, $arr)) {
