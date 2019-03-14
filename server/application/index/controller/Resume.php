@@ -1046,7 +1046,9 @@ class Resume extends Controller
     public function addResume(){
         //添加简历
         $data = input('post.');
-        @unset($data['self_evaluation']);
+        if(isset($data['self_evaluation'])){
+            unset($data['self_evaluation']);
+        }
         $resume = new ResumeModel();
         $res = $resume->getOne(['name' => $data['name'],'phone' => $data['phone'],'email' => $data['email']]);
         if ($res) {
