@@ -130,7 +130,8 @@ create table rs_resume
 	source varchar(50) default '' comment '简历来源',
 	batch_id varchar(30) default '' comment '批量导入标识符',
 	-- INDEX `name` (`name`) USING BTREE 
-	index `name` (`name`)
+	index `name` (`name`),
+	index `phone` (`phone`)
 );
 -- -----------------------------------------------------
 -- 上传
