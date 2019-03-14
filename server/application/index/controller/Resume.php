@@ -1379,69 +1379,71 @@ class Resume extends Controller
     
     }
     public function test(){
-        $resume = new Resume();
-        $data = Db::query("select id,phone from rs_resume GROUP BY phone HAVING count(phone) > 1");//313条//查询有重复记录的简历数据
-        $resume_id = array_column($data,'id');
-        $phone = array_column($data,'phone');
+        dump(file_get_contents(dirname(Env::get('ROOT_PATH')).'/server/extend/speciality.txt'));
+        exit;
+        // $resume = new Resume();
+        // $data = Db::query("select id,phone from rs_resume GROUP BY phone HAVING count(phone) > 1");//313条//查询有重复记录的简历数据
+        // $resume_id = array_column($data,'id');
+        // $phone = array_column($data,'phone');
 
-        $in_phone = implode(',',$phone);
-        $data = Db::query("select id,phone,email from rs_resume where phone in($in_phone)");//661条//查询出所有重复记录的简历信息
+        // $in_phone = implode(',',$phone);
+        // $data = Db::query("select id,phone,email from rs_resume where phone in($in_phone)");//661条//查询出所有重复记录的简历信息
 
-        $comm_list = [];
-        $in_resume_id = implode(',',array_column($data,'id'));
-        $comm = Db::query("select id,resume_id from rs_communicate where resume_id in($in_resume_id) order by resume_id asc");//682条//查询这批简历中的所有沟通记录
+        // $comm_list = [];
+        // $in_resume_id = implode(',',array_column($data,'id'));
+        // $comm = Db::query("select id,resume_id from rs_communicate where resume_id in($in_resume_id) order by resume_id asc");//682条//查询这批简历中的所有沟通记录
 
-        $resume_ids = array_column($comm,'resume_id');
-        $comm_ids = array_column($comm,'id');
+        // $resume_ids = array_column($comm,'resume_id');
+        // $comm_ids = array_column($comm,'id');
 
-        $res = Db::query("select id from rs_resume where phone in (select phone from rs_resume GROUP BY phone HAVING count(phone) > 1) and id not in (select min(id) from rs_resume GROUP BY phone HAVING count(phone) > 1)");
+        // $res = Db::query("select id from rs_resume where phone in (select phone from rs_resume GROUP BY phone HAVING count(phone) > 1) and id not in (select min(id) from rs_resume GROUP BY phone HAVING count(phone) > 1)");
 
-        $resume_id = implode(',',array_column($res,'id'));
+        // $resume_id = implode(',',array_column($res,'id'));
 
-        $res = Db::query("select resume_id from rs_resume_upload where resume_id in($resume_id)");
+        // $res = Db::query("select resume_id from rs_resume_upload where resume_id in($resume_id)");
 
-        dump($res);exit;
-        // dump($resume_ids);exit;
-        // $list = [];//新集合
+        // dump($res);exit;
+        // // dump($resume_ids);exit;
+        // // $list = [];//新集合
+        // // foreach ($data as $k => $v) {
+        // //     $list[$v['phone']][$v['id']] = isset($comm_list[$v['id']])?$comm_list[$v['id']]:'';//把各条的沟通记录分别对应到各个简历下
+        // // }
+        // // $update_comm = [];//需要修改沟通记录的集合
+        // // foreach ($list as $k => $v) {
+            
+        // // }
+        // $phone_resume = [];//需要修改对应列
+        // // $phone_list = [];//所有的简历(电话)集合
         // foreach ($data as $k => $v) {
-        //     $list[$v['phone']][$v['id']] = isset($comm_list[$v['id']])?$comm_list[$v['id']]:'';//把各条的沟通记录分别对应到各个简历下
-        // }
-        // $update_comm = [];//需要修改沟通记录的集合
-        // foreach ($list as $k => $v) {
+        //     $phone_resume[trim($v['phone'])][] = $v['id'];
             
         // }
-        $phone_resume = [];//需要修改对应列
-        // $phone_list = [];//所有的简历(电话)集合
-        foreach ($data as $k => $v) {
-            $phone_resume[trim($v['phone'])][] = $v['id'];
-            
-        }
-        $update_comm = [];//主简历的对应关系处理
-        $comm_keys = 0;//key
-        // dump($phone_resume);exit;
-        foreach ($phone_resume as $k => $v) {
-            foreach ($v as $a => $b) {
-                $resume_id_keys = array_search($b,$resume_ids);//寻找简历id的key值
-                if ($resume_id_keys == false) {
-                    continue;//没有找到简历id，说明该简历没有对应任何沟通记录，直接跳过
-                }
-                if ($a == 0) {
-                    unset($comm_ids[$resume_id_keys]);//删除对应元素
-                    unset($resume_ids[$resume_id_keys]);//删除对应元素，
-                    continue;//第一个元素是该简历保留的第一条，我们不做任何处理，直接跳过第一个元素
-                }
-                $update_comm[$comm_keys]['id'] = $comm_ids[$resume_id_keys];//在comm_ids的数组的$resume_ids_key处取出对应的沟通id
-                $update_comm[$comm_keys]['resume_id'] = $v[0];//简历id改成第一份简历的id，进行合并
-                unset($comm_ids[$resume_id_keys]);//删除对应元素
-                unset($resume_ids[$resume_id_keys]);//删除对应元素，
-                $comm_keys++;
-            }
-            // $update_comm[]
-        }
-        $comm_model = new Communicate();
-        $res = $comm_model->saveAll($update_comm);
-        dump($res);
-        // dump($update_comm);
+        // $update_comm = [];//主简历的对应关系处理
+        // $comm_keys = 0;//key
+        // // dump($phone_resume);exit;
+        // foreach ($phone_resume as $k => $v) {
+        //     foreach ($v as $a => $b) {
+        //         $resume_id_keys = array_search($b,$resume_ids);//寻找简历id的key值
+        //         if ($resume_id_keys == false) {
+        //             continue;//没有找到简历id，说明该简历没有对应任何沟通记录，直接跳过
+        //         }
+        //         if ($a == 0) {
+        //             unset($comm_ids[$resume_id_keys]);//删除对应元素
+        //             unset($resume_ids[$resume_id_keys]);//删除对应元素，
+        //             continue;//第一个元素是该简历保留的第一条，我们不做任何处理，直接跳过第一个元素
+        //         }
+        //         $update_comm[$comm_keys]['id'] = $comm_ids[$resume_id_keys];//在comm_ids的数组的$resume_ids_key处取出对应的沟通id
+        //         $update_comm[$comm_keys]['resume_id'] = $v[0];//简历id改成第一份简历的id，进行合并
+        //         unset($comm_ids[$resume_id_keys]);//删除对应元素
+        //         unset($resume_ids[$resume_id_keys]);//删除对应元素，
+        //         $comm_keys++;
+        //     }
+        //     // $update_comm[]
+        // }
+        // $comm_model = new Communicate();
+        // $res = $comm_model->saveAll($update_comm);
+        // dump($res);
+        // // dump($update_comm);
 
     }
 
