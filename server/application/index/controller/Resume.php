@@ -145,7 +145,6 @@ class Resume extends Controller
 
         // $parm = preg_replace("/(:|：|\s+|\|)/","\n",$parm);//统一把各种符号换成换行符
         $parm = explode("\n",$parm);//用换行符分割成数组
-        
         $list = [];
         $rule = config('config.educationalBackground');
 
@@ -310,7 +309,7 @@ class Resume extends Controller
         $content = explode("\n",$content);
 
         array_unshift($content,'基本资料');
-        // dump($content);exit;
+        
         $begin = 0;
         $rule = config('config.group_title');
         $arr = [];//分类集合
@@ -349,6 +348,7 @@ class Resume extends Controller
 
         }
         $list = [];
+
         foreach ($arr as $method => $parm) {
             // $list[$method] = $this->$method($parm);
             $temp = $this->$method($parm);
