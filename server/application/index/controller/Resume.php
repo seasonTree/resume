@@ -540,9 +540,9 @@ class Resume extends Controller
 
                     $res = $communicate->insertAll($insert_comm);
                     // $res = $resume->where(['row_id' => $data['resume'][2]['row_id']])->limit(1)->delete();
-                    if ($res) {
-                        // Db::commit();//提交
-                        // return json(['msg' => '批量导入完成','code' => 0]);
+                    if ($res && empty($data['comm_list'])) {
+                        Db::commit();//提交
+                        return json(['msg' => '批量导入完成','code' => 0]);
                     }
                     else{
                         Db::rollback();//回滚
@@ -594,6 +594,7 @@ class Resume extends Controller
                     }
 
             }
+
 
             // $res = $resume->where(['row_id' => $data['resume'][2]['row_id']])->limit(1)->delete();
 
@@ -937,7 +938,7 @@ class Resume extends Controller
 
             //检查这个人是否已经存在
             $phone_exists = implode(',',$phone_arr);
-            $res = $resume->where("phone in($phone_exists)")->field('id,phone')->select()->toArray();
+            $res = $resume->where("phone in($phone_exists)")->field('id,phone')->group('phone asc')->select()->toArray();
             $comm_list = [];//对已经存在简历的对应的沟通集合
 
             if ($res) {
