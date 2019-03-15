@@ -540,11 +540,12 @@ class Resume extends Controller
 
                     $res = $communicate->insertAll($insert_comm);
                     // $res = $resume->where(['row_id' => $data['resume'][2]['row_id']])->limit(1)->delete();
-                    if ($res && empty($data['comm_list'])) {
+                    if ($res) {
                         Db::commit();//提交
-                        return json(['msg' => '批量导入完成','code' => 0]);
+                        // return json(['msg' => '批量导入完成','code' => 0]);
                     }
                     else{
+
                         Db::rollback();//回滚
                         return json(['msg' => '导入失败，请重试','code' => 500]);
                     }
@@ -594,6 +595,9 @@ class Resume extends Controller
                     }
 
             }
+            else{
+                return json(['msg' => '批量导入完成','code' => 0]);
+            }
 
 
             // $res = $resume->where(['row_id' => $data['resume'][2]['row_id']])->limit(1)->delete();
@@ -611,7 +615,7 @@ class Resume extends Controller
             // if ($res_resume && $res_comm) {
                 
             // }
-            return json(['msg' => '批量导入失败','code' => 3]);
+            // return json(['msg' => '批量导入失败','code' => 3]);
         }else{
             // 上传失败获取错误信息
             return json(['msg' => $file->getError(),'code' => 1]);
