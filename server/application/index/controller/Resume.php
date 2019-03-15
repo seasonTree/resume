@@ -944,11 +944,13 @@ class Resume extends Controller
                 //假如有结果
                 foreach ($res as $k => $v) {
                     $keys = array_search($v['phone'],$phone_arr)+2;//查找这个电话存在的key读出来(因为excel数据从第二行开始算，所以key查出来需要+2才是真正的位置)
+                    if ($keys != false) {
+                        unset($data[$keys]);//删掉已存在的简历，防止重复导入
+                        $communicate[$keys]['resume_id'] = $v['id'];//把该简历的id写入到沟通集合
+                        $comm_list[] = $communicate[$keys];//把简历的沟通记录单独分出来
+                        unset($communicate[$keys]);//然后从列表删掉
+                    }
 
-                    unset($data[$keys]);//删掉已存在的简历，防止重复导入
-                    $communicate[$keys]['resume_id'] = $v['id'];//把该简历的id写入到沟通集合
-                    $comm_list[] = $communicate[$keys];//把简历的沟通记录单独分出来
-                    unset($communicate[$keys]);//然后从列表删掉
                 }
 
             }
@@ -1046,9 +1048,9 @@ class Resume extends Controller
     public function addResume(){
         //添加简历
         $data = input('post.');
-        if(isset($data['self_evaluation'])){
-            unset($data['self_evaluation']);
-        }
+        // if(isset($data['self_evaluation'])){
+        //     unset($data['self_evaluation']);
+        // }
         $resume = new ResumeModel();
         $res = $resume->getOne(['name' => $data['name'],'phone' => $data['phone'],'email' => $data['email']]);
         if ($res) {

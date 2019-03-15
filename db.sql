@@ -96,7 +96,7 @@ create table rs_resume
 	age varchar(20) default '' comment '年龄',
 	work_year varchar(20) default '' comment '工作年限',
 	native_place varchar(20) default '' comment '户口所在地',
-	email varchar(30) default '' comment '电子邮箱',
+	email varchar(64) default '' comment '电子邮箱',
 	expected_money_start  int(10) unsigned NOT NULL DEFAULT 0 COMMENT '薪资起始' ,
 	expected_money_end  int(10) unsigned NOT NULL DEFAULT 0 COMMENT '薪资终止' ,
 	expected_money varchar(30) default '' comment '期望薪资',
