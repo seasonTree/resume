@@ -541,7 +541,7 @@ class Resume extends Controller
                     $res = $communicate->insertAll($insert_comm);
                     // $res = $resume->where(['row_id' => $data['resume'][2]['row_id']])->limit(1)->delete();
                     if ($res) {
-                        Db::commit();//提交
+                        // Db::commit();//提交
                         // return json(['msg' => '批量导入完成','code' => 0]);
                     }
                     else{
@@ -596,6 +596,7 @@ class Resume extends Controller
 
             }
             else{
+                Db::commit();//提交
                 return json(['msg' => '批量导入完成','code' => 0]);
             }
 
@@ -790,14 +791,15 @@ class Resume extends Controller
                 continue;//无效数据跳过
             }
 
-            $phone_arr[] = $e;//联系电话//写入联系电话
-
+            
             if ($deleteID != false) {
                 if (in_array($row,$deleteID)) {
                     //跳过不需要的行，进行导入
                     continue;
                 }
             }
+            $phone_arr[] = $e;//联系电话//写入联系电话
+
 
             if (!in_array($a,$ct_user) && $total < $row) {
                 return '检测到不存在用户，请检查第'.$row.'行';
