@@ -1311,7 +1311,7 @@ class Resume extends Controller
                     @unlink($v['resume_url']);
                 }
                 $comm = new Communicate();
-                $res = $comm->del(['id' => $id]);
+                $res = $comm->del(['resume_id' => $id]);
                 if ($res) {
                     return json(['msg' => '删除成功','code' => 0]);
                 }
