@@ -16,7 +16,8 @@ export function recruitment_list(data) {
     return request({
         url: `${prefix}/recruitment_list`,
         method: 'get',
-        params: data
+        params: data,
+        timeout: 120e3
     })
 }
 

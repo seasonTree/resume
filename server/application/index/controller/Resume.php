@@ -1310,6 +1310,8 @@ class Resume extends Controller
                     $upload->del(['id' => $v['id']]);
                     @unlink($v['resume_url']);
                 }
+                $comm = new Communicate();
+                $res = $comm->del(['id' => $id]);
                 if ($res) {
                     return json(['msg' => '删除成功','code' => 0]);
                 }
@@ -1391,6 +1393,9 @@ class Resume extends Controller
     
     }
     public function test(){
+        $res = array_column( Db::query('select rs_communicate.id from rs_communicate LEFT JOIN rs_resume on rs_resume.id = rs_communicate.resume_id where name is null'),'id');
+        $res = Db::execute('delete from rs_communicate where id in('.implode(',',$res).')');
+        dump($res);
         dump(file_get_contents(dirname(Env::get('ROOT_PATH')).'/server/extend/speciality.txt'));
         exit;
         // $resume = new Resume();
