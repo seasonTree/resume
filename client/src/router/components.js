@@ -33,6 +33,11 @@ const components = {
         require.ensure([], () =>
             resolve(require("@view/report/personal_recruitment/Index"))
         ),
+    //客户
+    "/client/Index": resolve =>
+    require.ensure([], () =>
+        resolve(require("@view/client/Index"))
+    ),
 };
 
 export default components;

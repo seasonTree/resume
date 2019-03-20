@@ -301,3 +301,11 @@ create table rs_client
 	mfy_time datetime default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP not null comment '修改时间',
 	unique index `client_name` (`client_name`)	
 ) engine=InnoDB;
+
+INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, url, p_act_name, p_component, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (64, 1, '客户管理', 0, 'fa fa-grin', '/client/index', '', '/client/Index', '', 61, 'admin', '2019-03-20 15:50:34', '', '2019-03-20 15:50:34');
+INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, url, p_act_name, p_component, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (65, 64, '查看客户列表', 1, '', '', 'client_list', '', '/api/client/list', 62, 'admin', '2019-03-20 15:53:30', '', '2019-03-20 15:53:30');
+INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, url, p_act_name, p_component, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (66, 64, '获取角色单条数据(修改)', 1, '', '', 'client_get_row', '', '/api/client/get_by_id', 63, 'admin', '2019-03-20 15:54:20', '', '2019-03-20 15:54:20');
+INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, url, p_act_name, p_component, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (67, 64, '新增客户', 1, '', '', 'client_add', '', '/api/client/add', 64, 'admin', '2019-03-20 15:55:02', '', '2019-03-20 15:55:02');
+INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, url, p_act_name, p_component, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (68, 64, '修改客户', 1, '', '', 'client_edit', '', '/api/client/edit', 65, 'admin', '2019-03-20 15:55:30', '', '2019-03-20 15:55:30');
+INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, url, p_act_name, p_component, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (69, 64, '客户删除', 1, '', '', 'client_del', '', '/api/client/del', 66, 'admin', '2019-03-20 15:56:06', '', '2019-03-20 15:56:06');
+INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, url, p_act_name, p_component, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (70, 64, '修改客户状态', 1, '', '', 'client_change_status', '', '/api/client/change_status', 67, 'admin', '2019-03-20 15:56:46', '', '2019-03-20 15:56:46');

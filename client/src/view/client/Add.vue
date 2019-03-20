@@ -33,7 +33,7 @@
                 type="primary"
                 @click="addCommit"
                 :loading="commitLoading"
-                :disabled="!$check_pm('user_add')"
+                :disabled="!$check_pm('client_add')"
             >确 定</el-button>
         </div>
     </el-dialog>

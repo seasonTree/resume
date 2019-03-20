@@ -6,7 +6,7 @@
                     <el-button
                         type="primary"
                         @click="addDialog = true"
-                        :disabled="!$check_pm('user_add')"
+                        :disabled="!$check_pm('client_add')"
                     >新增</el-button>
                 </div>
                 <div class="action-bar-right">
@@ -88,7 +88,7 @@
                                 icon="el-icon-edit"
                                 circle
                                 @click="showEditDialog(scope.row)"
-                                :disabled="!$check_pm('user_edit')"
+                                :disabled="!$check_pm('client_edit')"
                             ></el-button>
                         </el-tooltip>
                         <el-tooltip
@@ -102,7 +102,7 @@
                                 icon="el-icon-delete"
                                 circle
                                 @click="del(scope.row, scope.$index)"
-                                :disabled="!$check_pm('user_del')"
+                                :disabled="!$check_pm('client_del')"
                             ></el-button>
                         </el-tooltip>
                     </template>
@@ -162,9 +162,7 @@ export default {
             tdata: [
                 // {
                 //     id: 1,
-                //     uname: "123",
-                //     personal_name: "aaaaa",
-                //     phone: 128154444,
+                //     client_name: "123",
                 //     status: 0,
                 //     ct_user: "创建人",
                 //     ct_time: "创建时间",
@@ -173,9 +171,7 @@ export default {
                 // },
                 //  {
                 //     id: 1,
-                //     uname: "123",
-                //     personal_name: "aaaaa",
-                //     phone: 128154444,
+                //     client_name: "123",
                 //     status: 1,
                 //     ct_user: "创建人",
                 //     ct_time: "创建时间",
@@ -195,7 +191,7 @@ export default {
         changeStatus(id, status, item) {
             let that = this;
 
-            that.$api.user
+            that.$api.client
                 .changeStatus({
                     id,
                     status
