@@ -360,7 +360,7 @@ export default {
                 arrange_interview: 0,
                 arrange_interview_client: [],
                 arrive: 0,
-                arrive_id: [],
+                arrive_client: [],
                 approved_interview: 0,
                 approved_interview_client: [],
                 entry: 0,
