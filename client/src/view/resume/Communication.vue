@@ -6,7 +6,8 @@
             :before-close="closeDialog"
             class="custom-dialog"
             :close-on-click-modal="false"
-            width="80%"
+            top="5vh"
+            width="90%"
             v-dialog-drag
         >
 
@@ -38,7 +39,7 @@
                     align="center"
                     prop="screen"
                     label="推荐"
-                    width="60"
+                    width="120"
                 >
                     <template slot-scope="scope">
                         <i
@@ -53,7 +54,7 @@
                     align="center"
                     prop="arrange_interview "
                     label="安排"
-                    width="60"
+                    width="120"
                 >
                     <template slot-scope="scope">
                         <i
@@ -68,7 +69,7 @@
                     align="center"
                     prop="arrive "
                     label="到场"
-                    width="60"
+                    width="120"
                 >
                     <template slot-scope="scope">
                         <i
@@ -76,7 +77,6 @@
                             class="fa fa-check right status-icon"
                             @click="changeStatus(scope.row.id, 1, scope.row)"
                         ></i>
-
                     </template>
                 </el-table-column>
 
@@ -84,7 +84,7 @@
                     align="center"
                     prop="approved_interview "
                     label="通过"
-                    width="60"
+                    width="120"
                 >
                     <template slot-scope="scope">
                         <i
@@ -92,7 +92,6 @@
                             class="fa fa-check right status-icon"
                             @click="changeStatus(scope.row.id, 1, scope.row)"
                         ></i>
-
                     </template>
                 </el-table-column>
 
@@ -100,7 +99,7 @@
                     align="center"
                     prop="entry"
                     label="入职"
-                    width="60"
+                    width="120"
                 >
                     <template slot-scope="scope">
                         <i
@@ -108,7 +107,6 @@
                             class="fa fa-check right status-icon"
                             @click="changeStatus(scope.row.id, 1, scope.row)"
                         ></i>
-
                     </template>
                 </el-table-column>
 

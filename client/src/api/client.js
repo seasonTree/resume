@@ -193,7 +193,7 @@ export function del(data){
  */
 export function getAll(data){
     return request({
-        url: `${prefix}/all_list`,
+        url: `${prefix}/get_all`,
         method: 'get',
         params: data
     })

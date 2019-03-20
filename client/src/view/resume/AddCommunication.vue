@@ -1,12 +1,12 @@
 <template>
     <el-dialog
-        top="20vh"
+        top="2vh"
         title="新增沟通信息"
         :visible.sync="show"
         :before-close="closeDialog"
         class="custom-dialog"
         :close-on-click-modal="false"
-        width="500px"
+        width="800px"
         v-dialog-drag
     >
         <el-form
@@ -27,12 +27,204 @@
                     value-format="yyyy-MM-dd"
                 >
                 </el-date-picker>
+            </el-form-item>
 
-                <el-row>
+            <el-row
+                :gutter="20"
+                class="comm-row"
+            >
+                <el-col
+                    :span="12"
+                    class="flex"
+                >
+                    <el-form-item
+                        label="是否推荐："
+                        prop="screen"
+                        class="flex-item form-el"
+                    >
+                        <el-switch
+                            v-model="form.screen"
+                            active-color="#13ce66"
+                            :inactive-value="0"
+                            :active-value="1"
+                        >
+                        </el-switch>
+                    </el-form-item>
 
-                    <div class="addcom_div-row">
+                    <el-select
+                        v-model="form.screen_client"
+                        multiple
+                        placeholder="请选择客户"
+                        class="flex-item"
+                        :disabled="form.screen == 0"
+                        filterable
+                    >
+                        <el-option
+                            v-for="item in client"
+                            :key="item.id"
+                            :label="item.client_name"
+                            :value="item.id"
+                        >
+                        </el-option>
+                    </el-select>
+                </el-col>
+                <el-col
+                    :span="12"
+                    class="flex"
+                >
+                    <el-form-item
+                        label="是否安排："
+                        prop="arrange_interview"
+                        class="flex-item form-el"
+                    >
+                        <el-switch
+                            v-model="form.arrange_interview"
+                            active-color="#13ce66"
+                            :inactive-value="0"
+                            :active-value="1"
+                        >
+                        </el-switch>
+                    </el-form-item>
+
+                    <el-select
+                        v-model="form.arrange_interview_client"
+                        multiple
+                        placeholder="请选择客户"
+                        class="flex-item"
+                        :disabled="form.arrange_interview == 0"
+                        filterable
+                    >
+                        <el-option
+                            v-for="item in client"
+                            :key="item.id"
+                            :label="item.client_name"
+                            :value="item.id"
+                        >
+                        </el-option>
+                    </el-select>
+                </el-col>
+            </el-row>
+
+            <el-row
+                :gutter="20"
+                class="comm-row"
+            >
+                <el-col
+                    :span="12"
+                    class="flex"
+                >
+                    <el-form-item
+                        label="是否到场："
+                        prop="arrive"
+                        class="flex-item form-el"
+                    >
+                        <el-switch
+                            v-model="form.arrive"
+                            active-color="#13ce66"
+                            :inactive-value="0"
+                            :active-value="1"
+                        >
+                        </el-switch>
+                    </el-form-item>
+
+                    <el-select
+                        v-model="form.arrive_client"
+                        multiple
+                        placeholder="请选择客户"
+                        class="flex-item"
+                        :disabled="form.arrive == 0"
+                        filterable
+                    >
+                        <el-option
+                            v-for="item in client"
+                            :key="item.id"
+                            :label="item.client_name"
+                            :value="item.id"
+                        >
+                        </el-option>
+                    </el-select>
+                </el-col>
+                <el-col
+                    :span="12"
+                    class="flex"
+                >
+                    <el-form-item
+                        label="是否通过："
+                        prop="approved_interview"
+                        class="flex-item form-el"
+                    >
+                        <el-switch
+                            v-model="form.approved_interview"
+                            active-color="#13ce66"
+                            :inactive-value="0"
+                            :active-value="1"
+                        >
+                        </el-switch>
+                    </el-form-item>
+
+                    <el-select
+                        v-model="form.approved_interview_client"
+                        multiple
+                        placeholder="请选择客户"
+                        class="flex-item"
+                        :disabled="form.approved_interview == 0"
+                        filterable
+                    >
+                        <el-option
+                            v-for="item in client"
+                            :key="item.id"
+                            :label="item.client_name"
+                            :value="item.id"
+                        >
+                        </el-option>
+                    </el-select>
+                </el-col>
+            </el-row>
+
+            <el-row
+                :gutter="20"
+                class="comm-row"
+            >
+                <el-col
+                    :span="12"
+                    class="flex"
+                >
+                    <el-form-item
+                        label="是否入职："
+                        prop="entry"
+                        class="flex-item form-el"
+                    >
+                        <el-switch
+                            v-model="form.entry"
+                            active-color="#13ce66"
+                            :inactive-value="0"
+                            :active-value="1"
+                        >
+                        </el-switch>
+                    </el-form-item>
+
+                    <el-select
+                        v-model="form.entry_client"
+                        multiple
+                        placeholder="请选择客户"
+                        class="flex-item"
+                        :disabled="form.entry == 0"
+                        filterable
+                    >
+                        <el-option
+                            v-for="item in client"
+                            :key="item.id"
+                            :label="item.client_name"
+                            :value="item.id"
+                        >
+                        </el-option>
+                    </el-select>
+                </el-col>
+
+            </el-row>
+
+            <!-- <div class="addcom_div-row">
                         <el-form-item
-                            style="display: flex"
                             label="是否推荐："
                             prop="screen"
                         >
@@ -101,8 +293,8 @@
                         </el-form-item>
                     </div>
 
-                </el-row>
-            </el-form-item>
+                </el-row> -->
+            <!-- </el-form-item> -->
 
             <el-form-item
                 label=""
@@ -151,26 +343,59 @@ export default {
         }
     },
 
+    watch: {
+        show(newValue, oldValue) {
+            if (newValue) {
+                let that = this;
+                that.getClietData();
+            }
+        }
+    },
+
     data() {
         return {
             apiType: "communication",
             form: {
                 screen: 0,
+                screen_client: [],
                 arrange_interview: 0,
+                arrange_interview_client: [],
                 arrive: 0,
+                arrive_id: [],
                 approved_interview: 0,
+                approved_interview_client: [],
                 entry: 0,
+                entry_client: [],
                 content: "",
                 communicate_time: new Date()
-            }
-            // date: "",?
-            // content: ""
+            },
+
+            client: []
         };
     },
     methods: {
         beforeAdd() {
             let that = this;
             that.form.resume_id = that.resume_id;
+        },
+
+        getClietData() {
+            let that = this;
+
+            that.$api.client
+                .getAll()
+                .then(res => {
+                    if (res.code == 0) {
+                        that.client = res.data;
+                    } else {
+                        that.$message.error(
+                            res.msg || "获取客户列表失败，请重试."
+                        );
+                    }
+                })
+                .catch(res => {
+                    that.$message.error("获取客户列表失败，请重试.");
+                });
         }
 
         // addCommit() {
@@ -211,14 +436,49 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.addcom_div-row {
+.flex {
     display: flex;
+}
 
-    justify-content: space-between;
+.form-el {
+    margin-bottom: 0;
 }
-.addcom_div-row2 {
-    display: flex;
-    width: 63%;
-    justify-content: space-between;
+
+.flex-item {
+    .flex;
+    flex: 1 auto;
 }
+
+.comm-row {
+    margin-bottom: 16px;
+}
+
+// .comm-row {
+//     .flex;
+//     width: 100%;
+//     justify-content: start;
+
+//     .sub-item {
+//         .flex;
+//         flex: 1;
+//         padding-right: 20px;
+
+//         .form-el {
+//             .flex;
+//             width: 240px;
+//             padding-right: 10px;
+//         }
+//     }
+// }
+
+// .addcom_div-row {
+//     display: flex;
+
+//     justify-content: space-between;
+// }
+// .addcom_div-row2 {
+//     display: flex;
+//     width: 63%;
+//     justify-content: space-between;
+// }
 </style>
