@@ -42,8 +42,10 @@
                     width="120"
                 >
                     <template slot-scope="scope">
+                        <div v-if="scope.row.screen_name">{{scope.row.screen_name}}</div>
+
                         <i
-                            v-if="scope.row.screen == 1"
+                            v-if="!scope.row.screen_name && scope.row.screen == 1"
                             class="fa fa-check right status-icon"
                             @click="changeStatus(scope.row.id, 1, scope.row)"
                         ></i>
