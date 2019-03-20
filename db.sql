@@ -96,7 +96,7 @@ create table rs_resume
 	age varchar(20) default '' comment '年龄',
 	work_year varchar(20) default '' comment '工作年限',
 	native_place varchar(20) default '' comment '户口所在地',
-	email varchar(30) default '' comment '电子邮箱',
+	email varchar(64) default '' comment '电子邮箱',
 	expected_money_start  int(10) unsigned NOT NULL DEFAULT 0 COMMENT '薪资起始' ,
 	expected_money_end  int(10) unsigned NOT NULL DEFAULT 0 COMMENT '薪资终止' ,
 	expected_money varchar(30) default '' comment '期望薪资',
@@ -130,7 +130,8 @@ create table rs_resume
 	source varchar(50) default '' comment '简历来源',
 	batch_id varchar(30) default '' comment '批量导入标识符',
 	-- INDEX `name` (`name`) USING BTREE 
-	index `name` (`name`)
+	index `name` (`name`),
+	index `phone` (`phone`)
 );
 -- -----------------------------------------------------
 -- 上传
