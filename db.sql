@@ -283,3 +283,20 @@ INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, url, p_
 -- 简历表加入时间戳
 alter table  rs_resume add column `ct_timestamp` int(20) default 0 not null comment '简历时间的时间戳';
 update rs_resume set ct_timestamp = unix_timestamp(ct_time) where 1 = 1;
+
+-- 2019-03-20 新增客户表 ----------------------------------------------------
+-- ---------------------------------------------------
+-- 客户
+-- ---------------------------------------------------
+drop table if exists rs_client;
+create table rs_client
+(
+	id bigint(20) unsigned auto_increment primary key comment '自增id',
+	client_name varchar(64) not null comment '用户名',
+    status tinyint(1) not null default 0 comment '0: 正常， 1: 禁用',
+	ct_user varchar(64) default '' null comment '创建人',
+	ct_time datetime default CURRENT_TIMESTAMP not null comment '创建时间',
+	mfy_user varchar(64) default '' null comment '修改人',
+	mfy_time datetime default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP not null comment '修改时间',
+	unique index `client_name` (`client_name`)	
+) engine=InnoDB;
