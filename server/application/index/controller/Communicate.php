@@ -17,6 +17,7 @@ class Communicate
        $comm = new CommunicateModel();
        $data = $comm->get(['resume_id' => $id]);
        if ($data) {
+         
          return json(['msg' => '获取成功','code' => 0,'data' => $data]);
        }
        else{

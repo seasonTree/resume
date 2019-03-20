@@ -309,3 +309,17 @@ INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, url, p_
 INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, url, p_act_name, p_component, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (68, 64, '修改客户', 1, '', '', 'client_edit', '', '/api/client/edit', 65, 'admin', '2019-03-20 15:55:30', '', '2019-03-20 15:55:30');
 INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, url, p_act_name, p_component, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (69, 64, '客户删除', 1, '', '', 'client_del', '', '/api/client/del', 66, 'admin', '2019-03-20 15:56:06', '', '2019-03-20 15:56:06');
 INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, url, p_act_name, p_component, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (70, 64, '修改客户状态', 1, '', '', 'client_change_status', '', '/api/client/change_status', 67, 'admin', '2019-03-20 15:56:46', '', '2019-03-20 15:56:46');
+
+
+-- 2019-03-20 新增客户沟通中间表 ----------------------------------------------------
+-- ---------------------------------------------------
+-- 沟通中间表
+-- ---------------------------------------------------
+drop table if exists rs_client_communicate;
+create table rs_client_communicate
+(
+	id bigint(20) unsigned auto_increment primary key comment '自增id',
+	client_id int(10) not null comment '对应关联客户id',
+    type tinyint(1) not null comment '类型：1，推荐，2，安排，3，到场，4，通过，5，入职',
+	comm_id bigint(20) not null comment '对应关联沟通id'	
+) engine=InnoDB;

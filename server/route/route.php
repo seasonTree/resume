@@ -103,6 +103,13 @@ Route::post('api/position_cate/edit','Resume/editJob');
 Route::post('api/position_cate/del','Resume/delJob');
 Route::get('api/resume/export','Resume/export');
 
+//客户相关
+Route::get('api/client/list','Client/getList');//客户列表
+Route::post('api/client/add','Client/addClient');//添加客户
+Route::post('api/client/del','Client/delClient');//删除客户
+Route::post('api/client/get_by_id','Client/getCliById');//获取单条
+Route::post('api/client/change_status','Client/changeStatus');//改变状态
+Route::post('api/client/edit','Client/editClient');
 Route::get(':name','Index/index');
 Route::post(':name','Index/index');
 //###################################################################

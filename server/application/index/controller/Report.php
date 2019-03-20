@@ -334,6 +334,8 @@ class Report extends Controller
     	else{
     		$user_data = $user->getUserInfo();
     	}
+
+      
     	foreach ($user_data as $k => $v) {
     		if ($parm != '') {
     			$where = "communicate_time between '$parm[dtfm]' and '$parm[dtto]' and ct_user = '$v[uname]'";
