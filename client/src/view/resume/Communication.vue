@@ -59,8 +59,9 @@
                     width="120"
                 >
                     <template slot-scope="scope">
+                        <div v-if="scope.row.arrange_interview_name">{{scope.row.arrange_interview_name}}</div>
                         <i
-                            v-if="scope.row.arrange_interview == 1"
+                            v-if="!scope.row.arrange_interview_name && scope.row.arrange_interview == 1"
                             class="fa fa-check right status-icon"
                             @click="changeStatus(scope.row.id, 1, scope.row)"
                         ></i>
@@ -74,8 +75,9 @@
                     width="120"
                 >
                     <template slot-scope="scope">
+                        <div v-if="scope.row.arrive_name">{{scope.row.arrive_name}}</div>
                         <i
-                            v-if="scope.row.arrive == 1"
+                            v-if="!scope.row.arrive_name && scope.row.arrive == 1"
                             class="fa fa-check right status-icon"
                             @click="changeStatus(scope.row.id, 1, scope.row)"
                         ></i>
@@ -89,8 +91,9 @@
                     width="120"
                 >
                     <template slot-scope="scope">
+                        <div v-if="scope.row.approved_interview_name">{{scope.row.approved_interview_name}}</div>
                         <i
-                            v-if="scope.row.approved_interview == 1"
+                            v-if="!scope.row.approved_interview_name && scope.row.approved_interview == 1"
                             class="fa fa-check right status-icon"
                             @click="changeStatus(scope.row.id, 1, scope.row)"
                         ></i>
@@ -104,8 +107,9 @@
                     width="120"
                 >
                     <template slot-scope="scope">
+                        <div v-if="scope.row.entry_name">{{scope.row.entry_name}}</div>
                         <i
-                            v-if="scope.row.entry == 1"
+                            v-if="!scope.row.entry_name && scope.row.entry == 1"
                             class="fa fa-check right status-icon"
                             @click="changeStatus(scope.row.id, 1, scope.row)"
                         ></i>
