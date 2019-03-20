@@ -1,12 +1,12 @@
 <template>
     <el-dialog
-        top="20vh"
+        top="2vh"
         title="修改沟通信息"
         :visible.sync="show"
         :before-close="closeDialog"
         class="custom-dialog"
         :close-on-click-modal="false"
-        width="500px"
+        width="800px"
         v-dialog-drag
     >
         <el-form
