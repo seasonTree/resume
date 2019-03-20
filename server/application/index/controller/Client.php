@@ -88,5 +88,11 @@ class Client extends Controller
     	return json(['msg' => '修改失败','code' => 500]);
     }
 
+    public function getAll(){
+    	//获取所有客户
+    	$list = $this->cli->get(['status' => 0]);
+    	return json(['msg' => '获取成功','code' => 0,'data' => $list]);
+    }
+
     
 }

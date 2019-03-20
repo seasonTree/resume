@@ -109,7 +109,8 @@ Route::post('api/client/add','Client/addClient');//添加客户
 Route::post('api/client/del','Client/delClient');//删除客户
 Route::post('api/client/get_by_id','Client/getCliById');//获取单条
 Route::post('api/client/change_status','Client/changeStatus');//改变状态
-Route::post('api/client/edit','Client/editClient');
+Route::post('api/client/edit','Client/editClient');//修改
+Route::get('api/client/get_all','Client/getAll');//获取所有
 Route::get(':name','Index/index');
 Route::post(':name','Index/index');
 //###################################################################
