@@ -6,7 +6,7 @@
         :before-close="closeDialog"
         class="custom-dialog"
         :close-on-click-modal="false"
-        width="800px"
+        width="1000px"
         v-dialog-drag
     >
         <el-form
@@ -47,6 +47,7 @@
                             active-color="#13ce66"
                             :inactive-value="0"
                             :active-value="1"
+                            @change="statusChange('screen')"
                         >
                         </el-switch>
                     </el-form-item>
@@ -82,6 +83,7 @@
                             active-color="#13ce66"
                             :inactive-value="0"
                             :active-value="1"
+                            @change="statusChange('arrange_interview')"
                         >
                         </el-switch>
                     </el-form-item>
@@ -123,6 +125,7 @@
                             active-color="#13ce66"
                             :inactive-value="0"
                             :active-value="1"
+                            @change="statusChange('arrive')"
                         >
                         </el-switch>
                     </el-form-item>
@@ -158,6 +161,7 @@
                             active-color="#13ce66"
                             :inactive-value="0"
                             :active-value="1"
+                            @change="statusChange('approved_interview')"
                         >
                         </el-switch>
                     </el-form-item>
@@ -199,6 +203,7 @@
                             active-color="#13ce66"
                             :inactive-value="0"
                             :active-value="1"
+                            @change="statusChange('entry')"
                         >
                         </el-switch>
                     </el-form-item>
@@ -388,7 +393,9 @@ export default {
                 entry_client: [],
                 content: "",
                 communicate_time: ""
-            }
+            },
+
+            client: []
         };
     },
 
@@ -419,6 +426,30 @@ export default {
                 .catch(res => {
                     that.$message.error("获取客户列表失败，请重试.");
                 });
+        },
+
+        statusChange(type) {
+            let that = this;
+
+            switch (type) {
+                case "screen":
+                    that.form.screen == 0 && (that.form.screen_client = []);
+                    break;
+                case "arrange_interview":
+                    that.form.arrange_interview == 0 &&
+                        (that.form.arrange_interview_client = []);
+                    break;
+                case "arrive":
+                    that.form.arrive == 0 && (that.form.arrive_client = []);
+                    break;
+                case "approved_interview":
+                    that.form.approved_interview == 0 &&
+                        (that.form.approved_interview_client = []);
+                    break;
+                case "entry":
+                    that.form.entry == 0 && (that.form.entry_client = []);
+                    break;
+            }
         }
 
         // editCommit() {
@@ -456,14 +487,31 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.addcom_div-row {
-    display: flex;
+// .addcom_div-row {
+//     display: flex;
 
-    justify-content: space-between;
-}
-.addcom_div-row2 {
+//     justify-content: space-between;
+// }
+// .addcom_div-row2 {
+//     display: flex;
+//     width: 63%;
+//     justify-content: space-between;
+// }
+
+.flex {
     display: flex;
-    width: 63%;
-    justify-content: space-between;
+}
+
+.form-el {
+    margin-bottom: 0;
+}
+
+.flex-item {
+    .flex;
+    flex: 1 auto;
+}
+
+.comm-row {
+    margin-bottom: 16px;
 }
 </style>
