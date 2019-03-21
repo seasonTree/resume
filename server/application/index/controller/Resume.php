@@ -7,6 +7,7 @@ use think\Db;
 use app\index\model\ResumeUpload;
 use app\index\model\Communicate;
 use app\index\model\Resume as ResumeModel;
+use app\index\model\ClientComm;
 use app\index\model\User;
 use app\index\model\JobSel;
 use PHPExcel_IOFactory;
@@ -1311,6 +1312,10 @@ class Resume extends Controller
                     @unlink($v['resume_url']);
                 }
                 $comm = new Communicate();
+                $comm_ids = $comm->where(['resume_id' => $id])->field('id')->select()->toArray();
+                $comm_ids = implode(',', array_column($comm_ids,'id'));
+                $cli_comm_model = new ClientComm();
+                $cli_comm_model->where("comm_id in($comm_ids)")->delete();
                 $res = $comm->del(['resume_id' => $id]);
                 if ($res) {
                     return json(['msg' => '删除成功','code' => 0]);
@@ -1642,7 +1647,7 @@ class Resume extends Controller
         //ANY为关键词自动拆词，ALL为不拆词匹配（完全匹配），EXTENDED2,多词匹配
         $sphinx->SetArrayResult ( true );   //返回的结果集为数组
         // $sphinx->SetLimits(0 , 100000000 , 6000);
-        $sphinx->SetLimits(($where['pageIndex'] - 1) * $where['pageSize'] , $where['pageSize'] , 3000);//分页
+        $sphinx->SetLimits(($where['pageIndex'] - 1) * $where['pageSize'] , $where['pageSize'] , 500000);//分页
 
         //**********************************先不要的条件去掉**********************************************/
 
@@ -2281,7 +2286,7 @@ class Resume extends Controller
                $educational_string = strlen($v['educational']) >= $max_educational_length?$v['educational']:$v['educational'].str_repeat(' ',($max_educational_length-strlen($v['educational']))/3*2);
 
                $edu_string = $time_string.'          '.$school_string.'          '.$speciality_string.'         '.$educational_string;
-               $section->addText($edu_string,['color' => $color]);
+               $section->addText($edu_string,['color' => $color,'size' => 10]);
                $section->addTextBreak(1);
            }
            // $section->addText(htmlspecialchars($error),['color' => $color]);

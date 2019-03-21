@@ -5,6 +5,7 @@ use think\facade\Session;
 use think\facade\Env;
 use app\index\model\Resume;
 use app\index\model\Communicate;
+use app\index\model\ClientComm;
 use app\index\model\Client as ClientModel;
 use think\Db;
 
@@ -46,6 +47,10 @@ class Client extends Controller
     	//删除客户
     	if (input('post.id') == '') {
     		return json(['msg' => '没有找到id','code' => 404]);
+    	}
+    	$cli_comm_model = new ClientComm();
+    	if($cli_comm_model->where(['client_id' => input('post.id')])->find()){
+    		return json(['msg' => '该客户已被使用，不可以删除','code' => 500]);
     	}
     	$res = $this->cli->del(['id' => input('post.id')]);
     	if ($res) {
