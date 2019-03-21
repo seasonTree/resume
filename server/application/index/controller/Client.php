@@ -33,10 +33,10 @@ class Client extends Controller
     public function addClient(){
     	//添加客户
     	if (input('post.client_name') == '') {
-    		return json(['msg' => '请输入客户名称','code' => 404]);
+    		return json(['msg' => '请输入客户名称.','code' => 404]);
     	}
     	if($this->cli->getOne(['client_name' => input('post.client_name')])){
-    		return json(['msg' => '该客户已存在','code' => 500]);
+    		return json(['msg' => '该客户已存在.','code' => 500]);
     	}
     	$id = $this->cli->add(['client_name' => input('post.client_name'),'ct_user' => Session::get('user_info')['uname']]);
     	$data = $this->cli->getOne(['id' => $id]);
@@ -50,7 +50,7 @@ class Client extends Controller
     	}
     	$cli_comm_model = new ClientComm();
     	if($cli_comm_model->where(['client_id' => input('post.id')])->find()){
-    		return json(['msg' => '该客户已被使用，不可以删除','code' => 500]);
+    		return json(['msg' => '该客户已被使用，不可以删除.','code' => 500]);
     	}
     	$res = $this->cli->del(['id' => input('post.id')]);
     	if ($res) {
@@ -64,7 +64,7 @@ class Client extends Controller
     	//修改客户
     	$data = input('post.');
     	if (!$this->cli->getOne($data)) {
-    		return json(['msg' => '数据已发生变化，请刷新','code' => 500]);
+    		return json(['msg' => '数据已发生变化，请刷新.','code' => 500]);
     	}
     	unset($data['mfy_time']);//删除修改时间，让数据库自动写入
     	$data['mfy_user'] = Session::get('user_info')['uname'];//写入修改人
@@ -78,7 +78,7 @@ class Client extends Controller
     public function getCliById(){
     	//获取单个客户信息
     	if (input('post.id') == '') {
-    		return json(['msg' => '没有找到id','code' => 404]);
+    		return json(['msg' => '没有找到id.','code' => 404]);
     	}
     	$data = $this->cli->getOne(['id' => input('post.id')]);
     	return json(['msg' => '获取成功','code' => 0,'data' => $data]);
