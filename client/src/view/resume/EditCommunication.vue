@@ -450,6 +450,16 @@ export default {
                     that.form.entry == 0 && (that.form.entry_client = []);
                     break;
             }
+        },
+
+        afterEdit(){
+            let that = this;
+
+            that.form.screen_client = [];
+            that.form.arrange_interview_client = [];
+            that.form.arrive_client = [];
+            that.form.approved_interview_client = [];
+            that.form.entry_client = [];
         }
 
         // editCommit() {
