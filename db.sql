@@ -302,6 +302,41 @@ create table rs_client
 	unique index `client_name` (`client_name`)	
 ) engine=InnoDB;
 
+INSERT INTO resume.rs_client (id, client_name, status, ct_user, ct_time, mfy_user, mfy_time) VALUES (1, '微众银行', 0, '', '2019-03-21 16:19:26', '', '2019-03-21 16:19:26');
+INSERT INTO resume.rs_client (id, client_name, status, ct_user, ct_time, mfy_user, mfy_time) VALUES (2, '上海微众银行', 0, '', '2019-03-21 16:19:26', '', '2019-03-21 16:19:26');
+INSERT INTO resume.rs_client (id, client_name, status, ct_user, ct_time, mfy_user, mfy_time) VALUES (3, '安信证券', 0, '', '2019-03-21 16:19:26', '', '2019-03-21 16:19:26');
+INSERT INTO resume.rs_client (id, client_name, status, ct_user, ct_time, mfy_user, mfy_time) VALUES (4, '万科', 0, '', '2019-03-21 16:19:26', '', '2019-03-21 16:19:26');
+INSERT INTO resume.rs_client (id, client_name, status, ct_user, ct_time, mfy_user, mfy_time) VALUES (5, '长沙万科', 0, '', '2019-03-21 16:19:26', '', '2019-03-21 16:19:26');
+INSERT INTO resume.rs_client (id, client_name, status, ct_user, ct_time, mfy_user, mfy_time) VALUES (6, '万睿', 0, '', '2019-03-21 16:19:26', '', '2019-03-21 16:19:26');
+INSERT INTO resume.rs_client (id, client_name, status, ct_user, ct_time, mfy_user, mfy_time) VALUES (7, '万翼', 0, '', '2019-03-21 16:19:26', '', '2019-03-21 16:19:26');
+INSERT INTO resume.rs_client (id, client_name, status, ct_user, ct_time, mfy_user, mfy_time) VALUES (8, '深圳农商行', 0, '', '2019-03-21 16:19:27', '', '2019-03-21 16:19:27');
+INSERT INTO resume.rs_client (id, client_name, status, ct_user, ct_time, mfy_user, mfy_time) VALUES (9, '广州农商行', 0, '', '2019-03-21 16:19:27', '', '2019-03-21 16:19:27');
+INSERT INTO resume.rs_client (id, client_name, status, ct_user, ct_time, mfy_user, mfy_time) VALUES (10, '顺德农商行', 0, '', '2019-03-21 16:19:27', '', '2019-03-21 16:19:27');
+INSERT INTO resume.rs_client (id, client_name, status, ct_user, ct_time, mfy_user, mfy_time) VALUES (11, '中投证券', 0, '', '2019-03-21 16:19:27', '', '2019-03-21 16:19:27');
+INSERT INTO resume.rs_client (id, client_name, status, ct_user, ct_time, mfy_user, mfy_time) VALUES (12, '国信证券', 0, '', '2019-03-21 16:19:27', '', '2019-03-21 16:19:27');
+INSERT INTO resume.rs_client (id, client_name, status, ct_user, ct_time, mfy_user, mfy_time) VALUES (13, '深高速', 0, '', '2019-03-21 16:19:27', '', '2019-03-21 16:19:27');
+INSERT INTO resume.rs_client (id, client_name, status, ct_user, ct_time, mfy_user, mfy_time) VALUES (14, '恒大人寿', 0, '', '2019-03-21 16:19:27', '', '2019-03-21 16:19:27');
+INSERT INTO resume.rs_client (id, client_name, status, ct_user, ct_time, mfy_user, mfy_time) VALUES (15, '平安', 0, '', '2019-03-21 16:19:27', '', '2019-03-21 16:19:27');
+INSERT INTO resume.rs_client (id, client_name, status, ct_user, ct_time, mfy_user, mfy_time) VALUES (16, '平安信用卡', 0, '', '2019-03-21 16:19:27', '', '2019-03-21 16:19:27');
+INSERT INTO resume.rs_client (id, client_name, status, ct_user, ct_time, mfy_user, mfy_time) VALUES (17, '航电建筑', 0, '', '2019-03-21 16:19:27', '', '2019-03-21 16:19:27');
+INSERT INTO resume.rs_client (id, client_name, status, ct_user, ct_time, mfy_user, mfy_time) VALUES (18, '酷开', 0, '', '2019-03-21 16:19:27', '', '2019-03-21 16:19:27');
+INSERT INTO resume.rs_client (id, client_name, status, ct_user, ct_time, mfy_user, mfy_time) VALUES (19, '招商金融', 0, '', '2019-03-21 16:19:27', '', '2019-03-21 16:19:27');
+INSERT INTO resume.rs_client (id, client_name, status, ct_user, ct_time, mfy_user, mfy_time) VALUES (20, '小泊科技', 0, '', '2019-03-21 16:19:27', '', '2019-03-21 16:19:27');
+INSERT INTO resume.rs_client (id, client_name, status, ct_user, ct_time, mfy_user, mfy_time) VALUES (21, '华星光电', 0, '', '2019-03-21 16:19:27', '', '2019-03-21 16:19:27');
+INSERT INTO resume.rs_client (id, client_name, status, ct_user, ct_time, mfy_user, mfy_time) VALUES (22, '内部', 0, '', '2019-03-21 16:19:27', '', '2019-03-21 16:19:27');
+INSERT INTO resume.rs_client (id, client_name, status, ct_user, ct_time, mfy_user, mfy_time) VALUES (23, '大新银行', 0, '', '2019-03-21 16:19:27', '', '2019-03-21 16:19:27');
+INSERT INTO resume.rs_client (id, client_name, status, ct_user, ct_time, mfy_user, mfy_time) VALUES (24, '前海财险', 0, '', '2019-03-21 16:19:27', '', '2019-03-21 16:19:27');
+INSERT INTO resume.rs_client (id, client_name, status, ct_user, ct_time, mfy_user, mfy_time) VALUES (25, '象翌微链', 0, '', '2019-03-21 16:19:27', '', '2019-03-21 16:19:27');
+INSERT INTO resume.rs_client (id, client_name, status, ct_user, ct_time, mfy_user, mfy_time) VALUES (26, '新科佳都', 0, '', '2019-03-21 16:19:27', '', '2019-03-21 16:19:27');
+INSERT INTO resume.rs_client (id, client_name, status, ct_user, ct_time, mfy_user, mfy_time) VALUES (27, '佳都新太', 0, '', '2019-03-21 16:19:27', '', '2019-03-21 16:19:27');
+INSERT INTO resume.rs_client (id, client_name, status, ct_user, ct_time, mfy_user, mfy_time) VALUES (28, '东聚电子', 0, '', '2019-03-21 16:19:27', '', '2019-03-21 16:19:27');
+INSERT INTO resume.rs_client (id, client_name, status, ct_user, ct_time, mfy_user, mfy_time) VALUES (29, '翼卡车', 0, '', '2019-03-21 16:19:27', '', '2019-03-21 16:19:27');
+INSERT INTO resume.rs_client (id, client_name, status, ct_user, ct_time, mfy_user, mfy_time) VALUES (30, '优克联', 0, '', '2019-03-21 16:19:27', '', '2019-03-21 16:19:27');
+INSERT INTO resume.rs_client (id, client_name, status, ct_user, ct_time, mfy_user, mfy_time) VALUES (31, '臻络科技', 0, '', '2019-03-21 16:19:27', '', '2019-03-21 16:19:27');
+INSERT INTO resume.rs_client (id, client_name, status, ct_user, ct_time, mfy_user, mfy_time) VALUES (32, '东亚前海证券', 0, '', '2019-03-21 16:19:27', '', '2019-03-21 16:19:27');
+INSERT INTO resume.rs_client (id, client_name, status, ct_user, ct_time, mfy_user, mfy_time) VALUES (33, '天风证券', 0, '', '2019-03-21 16:19:27', '', '2019-03-21 16:19:27');
+INSERT INTO resume.rs_client (id, client_name, status, ct_user, ct_time, mfy_user, mfy_time) VALUES (34, '中证信用', 0, '', '2019-03-21 16:19:27', '', '2019-03-21 16:19:27');
+
 INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, url, p_act_name, p_component, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (64, 1, '客户管理', 0, 'fa fa-grin', '/client/index', '', '/client/Index', '', 61, 'admin', '2019-03-20 15:50:34', '', '2019-03-20 15:50:34');
 INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, url, p_act_name, p_component, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (65, 64, '查看客户列表', 1, '', '', 'client_list', '', '/api/client/list', 62, 'admin', '2019-03-20 15:53:30', '', '2019-03-20 15:53:30');
 INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, url, p_act_name, p_component, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (66, 64, '获取角色单条数据(修改)', 1, '', '', 'client_get_row', '', '/api/client/get_by_id', 63, 'admin', '2019-03-20 15:54:20', '', '2019-03-20 15:54:20');
