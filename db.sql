@@ -309,7 +309,7 @@ INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, url, p_
 INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, url, p_act_name, p_component, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (68, 64, '修改客户', 1, '', '', 'client_edit', '', '/api/client/edit', 65, 'admin', '2019-03-20 15:55:30', '', '2019-03-20 15:55:30');
 INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, url, p_act_name, p_component, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (69, 64, '客户删除', 1, '', '', 'client_del', '', '/api/client/del', 66, 'admin', '2019-03-20 15:56:06', '', '2019-03-20 15:56:06');
 INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, url, p_act_name, p_component, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (70, 64, '修改客户状态', 1, '', '', 'client_change_status', '', '/api/client/change_status', 67, 'admin', '2019-03-20 15:56:46', '', '2019-03-20 15:56:46');
-
+INSERT INTO resume.rs_permission (id, parent_id, p_name, p_type, p_icon, url, p_act_name, p_component, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (71, 2, '简历沟通获取活动客户列表', 1, '', '', 'resume_get_client', '', '/api/client/get_all', 68, 'admin', '2019-03-21 16:05:02', '', '2019-03-21 16:05:02');
 
 -- 2019-03-20 新增客户沟通中间表 ----------------------------------------------------
 -- ---------------------------------------------------

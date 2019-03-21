@@ -189,7 +189,7 @@ export default {
                             }
                         } else {
                             that.$message.error(
-                                res.message ||
+                                res.msg ||
                                     "获取数据失败，请重试."
                             );
                         }
@@ -244,7 +244,7 @@ export default {
                             that.editDialog = true;
                         } else {
                             that.$message.error(
-                                res.message ||
+                                res.msg ||
                                     "获取数据失败，请重试."
                             );
                         }
@@ -327,7 +327,7 @@ export default {
                                     that.afterDel(delItem);
                                 }
                             } else {
-                                that.$message.error(res.message);
+                                that.$message.error(res.msg);
                             }
                         })
                         .catch(res => {
