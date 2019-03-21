@@ -107,7 +107,7 @@ class Communicate
       $cli_comm_model = new ClientComm();
       $res = $cli_comm_model->insertAll($cli_comm_list);
 
-      if ($res) {
+      if ($comm_id) {
          Db::commit();
          $data['id'] = $comm_id;
 
