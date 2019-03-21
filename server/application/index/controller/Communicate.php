@@ -225,31 +225,38 @@ class Communicate
 
            $cli_comm_list = $cli_comm_model->where(['comm_id' => $data['id']])->field('type,client_id')->select()->toArray();
 
-              foreach ($cli_comm_list as $a => $b) {
 
-                 switch ($b['type']) {
-                   case 1:
-                     $data['screen_name'] = isset($data['screen_name'])?$data['screen_name'].','.$cli_name[$b['client_id']]:$cli_name[$b['client_id']];
-                     break;
-                   
-                   case 2:
-                     $data['arrange_interview_name'] = isset($data['arrange_interview_name'])?$data['arrange_interview_name'].','.$cli_name[$b['client_id']]:$cli_name[$b['client_id']];
-                     break;
+          $data['screen_name'] = '';
+          $data['arrange_interview_name'] = '';
+          $data['arrive_name'] = '';
+          $data['approved_interview_name'] = '';
+          $data['entry_name'] = '';
 
-                   case 3:
-                     $data['arrive_name'] = isset($data['arrive_name'])?$data['arrive_name'].','.$cli_name[$b['client_id']]:$cli_name[$b['client_id']];
-                     break;
+          foreach ($cli_comm_list as $a => $b) {
 
-                   case 4:
-                     $data['approved_interview_name'] = isset($data['approved_interview_name'])?$data['approved_interview_name'].','.$cli_name[$b['client_id']]:$cli_name[$b['client_id']];
-                     break;
+              switch ($b['type']) {
+                case 1:
+                  $data['screen_name'] = strlen($data['screen_name'])?$data['screen_name'].','.$cli_name[$b['client_id']]:$cli_name[$b['client_id']];
+                  break;
+                
+                case 2:
+                  $data['arrange_interview_name'] = strlen($data['arrange_interview_name'])?$data['arrange_interview_name'].','.$cli_name[$b['client_id']]:$cli_name[$b['client_id']];
+                  break;
 
-                   case 5:
-                     $data['entry_name'] = isset($data['entry_name'])?$data['entry_name'].','.$cli_name[$b['client_id']]:$cli_name[$b['client_id']];
-                     break;
-                 }
+                case 3:
+                  $data['arrive_name'] = strlen($data['arrive_name'])?$data['arrive_name'].','.$cli_name[$b['client_id']]:$cli_name[$b['client_id']];
+                  break;
 
+                case 4:
+                  $data['approved_interview_name'] = strlen($data['approved_interview_name'])?$data['approved_interview_name'].','.$cli_name[$b['client_id']]:$cli_name[$b['client_id']];
+                  break;
+
+                case 5:
+                  $data['entry_name'] = strlen($data['entry_name'])?$data['entry_name'].','.$cli_name[$b['client_id']]:$cli_name[$b['client_id']];
+                  break;
               }
+
+          }
 
            return json(['msg' => '修改成功','code' => 0,'data' => $data]);
        }else{
