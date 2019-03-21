@@ -15,12 +15,6 @@
             class="form-container"
             ref="form"
         >
-            <el-form
-                :model="form"
-                :rules="formRules"
-                class="form-container"
-                ref="form"
-            >
                 <el-form-item
                     label="沟通日期"
                     prop="communicate_time"
