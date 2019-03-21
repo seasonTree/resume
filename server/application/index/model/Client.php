@@ -10,7 +10,7 @@ class Client extends Model
     // 主键
     protected $pk = 'id';
 
-    public function get($where = '1=1',$order = 'id desc'){
+    public function get($where = '1=1',$order = 'ct_time desc'){
     	//获取
     	return Client::where($where)->order($order)->select();
     }
