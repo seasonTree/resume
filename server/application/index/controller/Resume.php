@@ -1187,14 +1187,17 @@ class Resume extends Controller
 
         }
 
-        if (isset($data['speciality'])) {
-            //追加新的专业
-            $speciality_arr = explode('|',file_get_contents(dirname(Env::get('ROOT_PATH')).'/server/extend/speciality.txt'));
-            if (!in_array($data['speciality'],$speciality_arr) && !empty($data['speciality'])) {
-                file_put_contents(dirname(Env::get('ROOT_PATH')).'/server/extend/speciality.txt','|'.$data['speciality'],FILE_APPEND);
+        /******************************************关闭追加功能***********************************************************/
+        // if (isset($data['speciality'])) {
+        //     //追加新的专业
+        //     $speciality_arr = explode('|',file_get_contents(dirname(Env::get('ROOT_PATH')).'/server/extend/speciality.txt'));
+        //     if (!in_array($data['speciality'],$speciality_arr) && !empty($data['speciality'])) {
+        //         file_put_contents(dirname(Env::get('ROOT_PATH')).'/server/extend/speciality.txt','|'.$data['speciality'],FILE_APPEND);
+        //         //暂时关闭追加功能，这里存在一个问题，追加内容出现特殊符号的时候，会影响到正则匹配，因此先关闭这个追加功能
 
-            }
-        }
+        //     }
+        // }
+        /*****************************************************************************************************************/
         $data['ct_timestamp'] = time();
 
         $id = $resume->add($data);
