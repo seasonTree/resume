@@ -801,7 +801,7 @@ class Resume extends Controller
                 }
             }
             if (is_numeric($e)) {
-                $phone_arr[] = $e;//联系电话//写入联系电话
+                $phone_arr[$row] = $e;//联系电话//写入联系电话
             }
             
             if (!in_array($a,$ct_user) && $total < $row) {
@@ -958,11 +958,9 @@ class Resume extends Controller
                         $array_merge[$v['phone']] = $v['id'];
                     }
 
-                    $phone_column = array_column($data,'phone');//取出电话列
-                    foreach ($phone_column as $k => $v) {
+                    foreach ($phone_arr as $k => $v) {
 
                         if(array_key_exists($v,$array_merge)){
-                            dump($k);
                             unset($data[$k]);//删掉已存在的简历，防止重复导入
                             $communicate[$k]['resume_id'] = $array_merge[$v];//把该简历的id写入到沟通集合
                             $comm_list[] = $communicate[$k];//把简历的沟通记录单独分出来
@@ -974,8 +972,7 @@ class Resume extends Controller
                 }
 
             }
-
-            // dump($data);exit;
+            
             if (empty($data)) {
                 return '请不要重复导入';
             }
