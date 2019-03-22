@@ -56,8 +56,14 @@ class Communicate
                }
 
             }
+            !isset($data[$k]['screen_name'])?$data[$k]['screen_name']='':'';
+            !isset($data[$k]['arrange_interview_name'])?$data[$k]['arrange_interview_name']='':'';
+            !isset($data[$k]['arrive_name'])?$data[$k]['arrive_name']='':'';
+            !isset($data[$k]['approved_interview_name'])?$data[$k]['approved_interview_name']='':'';
+            !isset($data[$k]['entry_name'])?$data[$k]['entry_name']='':'';
 
          }
+
          return json(['msg' => '获取成功','code' => 0,'data' => $data]);
        }
        else{
