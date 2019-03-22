@@ -340,7 +340,7 @@ class Report extends Controller
 
     	foreach ($user_data as $k => $v) {
     		if ($parm != '') {
-    			$where = "communicate_time between '$parm[dtfm]' and '$parm[dtto]' and ct_user = '$v[uname]'";
+    			$where = "date(communicate_time) between '$parm[dtfm]' and '$parm[dtto]' and ct_user = '$v[uname]'";
     		}
     		else{
     			$where = "ct_user = '$v[uname]'";
