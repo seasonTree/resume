@@ -270,7 +270,6 @@ class Report extends Controller
     	//获取招聘负责人统计数据
     	$user = new User();
     	$comm = new Communicate();
-    	
 
     	if (isset($parm['ur'])) {
 			$in_user = explode(',',$parm['ur']);
@@ -284,7 +283,7 @@ class Report extends Controller
     	
     	foreach ($user_info as $k => $v) {
 
-    		$where = "communicate_time between '$parm[dtfm]' and '$parm[dtto]' and ct_user = '$v[uname]'";
+    		$where = "date(communicate_time) between '$parm[dtfm]' and '$parm[dtto]' and ct_user = '$v[uname]'";
     		if (isset($in_user)) {
     			$where.= " and ct_user in('$where_in')";
     		}
@@ -295,6 +294,7 @@ class Report extends Controller
   			$user_info[$k]['approved_interview'] = 0;
   			$user_info[$k]['entry'] = 0;
     		$communicate = $comm->getCommInfo($where);
+
     		foreach ($communicate as $a => $b) {
     			$user_info[$k]['screen'] = $user_info[$k]['screen']+$b['screen'];
     			$user_info[$k]['arrange_interview'] = $user_info[$k]['arrange_interview']+$b['arrange_interview'];
@@ -303,6 +303,7 @@ class Report extends Controller
     			$user_info[$k]['entry'] = $user_info[$k]['entry']+$b['entry'];
     		}
     	}
+
     	return $user_info;
     }
 
@@ -320,8 +321,10 @@ class Report extends Controller
     public function getRecruitment($parm = ''){
     	//获取数据主方法
     	$resume = new Resume();
-    	$candidate = $resume->getCandidate();
+    	// $candidate = $resume->getCandidate();
+
     	$comm = new Communicate();
+      /*******************************************旧方法，先存档***************************************************/
     	$data = []; //最终数据
     	$user_arr = [];//临时数组,记录是否有重复数据用于叠加
     	$key = 1;//data数组的key
@@ -335,7 +338,6 @@ class Report extends Controller
     		$user_data = $user->getUserInfo();
     	}
 
-      
     	foreach ($user_data as $k => $v) {
     		if ($parm != '') {
     			$where = "communicate_time between '$parm[dtfm]' and '$parm[dtto]' and ct_user = '$v[uname]'";
@@ -373,6 +375,19 @@ class Report extends Controller
     	}
 
     	return array_merge($data);
+
+      /******************************************************************************/
+      // $where = "communicate_time between '$parm[dtfm]' and '$parm[dtto]'";
+      // if (isset($parm['ur'])) {
+      //     $in_user = explode(',',$parm['ur']);
+      //     $where_in = implode("','",$in_user);
+      //     $where.= " and a.ct_user in('$where_in')";
+      // }
+      // $data = $comm->alias('a')->join('rs_resume b','a.resume_id=b.id')->where($where)->field('a.*,b.name')->order('a.ct_user')->select()->toArray();
+      // foreach ($data as $k => $v) {
+      //   # code...
+      // }
+
     }
 
     public function export(){
