@@ -434,6 +434,7 @@ class Resume extends Controller
             $delete_id = explode(",",$delete_id);
             $file = $path.$info->getSaveName();//获取路径
             $data = $this->readResume($file,$delete_id);
+
             if (empty($data)) {
                 return json(['msg' => '没有数据','code' => 2]);
             }
@@ -799,9 +800,10 @@ class Resume extends Controller
                     continue;
                 }
             }
-            $phone_arr[] = $e;//联系电话//写入联系电话
-
-
+            if (is_numeric($e)) {
+                $phone_arr[] = $e;//联系电话//写入联系电话
+            }
+            
             if (!in_array($a,$ct_user) && $total < $row) {
                 return '检测到不存在用户，请检查第'.$row.'行';
             }
@@ -835,10 +837,11 @@ class Resume extends Controller
             }
 
             if (empty($i)) {
+
                 return '检测到缺少毕业年份，请检查第'.$row.'行';
             }
 
-            if (empty($j)) {
+            if (!strlen($j)) {
                 return '检测到缺少工作年限，请检查第'.$row.'行';
             }
 
@@ -943,25 +946,29 @@ class Resume extends Controller
         }
         else{
 
-            //检查这个人是否已经存在
-            $phone_exists = implode(',',$phone_arr);
-            $res = $resume->where("phone in($phone_exists)")->field('id,phone')->group('phone asc')->select()->toArray();
             $comm_list = [];//对已经存在简历的对应的沟通集合
+            if (!empty($phone_arr)) {
+                //检查这个人是否已经存在
+                $phone_exists = implode(',',$phone_arr);
+                $res = $resume->where("phone in($phone_exists)")->field('id,phone')->group('phone asc')->select()->toArray();
+                
 
-            if ($res) {
-                //假如有结果
-                foreach ($res as $k => $v) {
-                    $keys = array_search($v['phone'],$phone_arr)+2;//查找这个电话存在的key读出来(因为excel数据从第二行开始算，所以key查出来需要+2才是真正的位置)
-                    if ($keys != false) {
-                        unset($data[$keys]);//删掉已存在的简历，防止重复导入
-                        $communicate[$keys]['resume_id'] = $v['id'];//把该简历的id写入到沟通集合
-                        $comm_list[] = $communicate[$keys];//把简历的沟通记录单独分出来
-                        unset($communicate[$keys]);//然后从列表删掉
+                if ($res) {
+                    //假如有结果
+                    foreach ($res as $k => $v) {
+                        $keys = array_search($v['phone'],$phone_arr)+2;//查找这个电话存在的key读出来(因为excel数据从第二行开始算，所以key查出来需要+2才是真正的位置)
+                        if ($keys != false) {
+                            unset($data[$keys]);//删掉已存在的简历，防止重复导入
+                            $communicate[$keys]['resume_id'] = $v['id'];//把该简历的id写入到沟通集合
+                            $comm_list[] = $communicate[$keys];//把简历的沟通记录单独分出来
+                            unset($communicate[$keys]);//然后从列表删掉
+                        }
+
                     }
 
                 }
-
             }
+            
 
             if (empty($data)) {
                 return '请不要重复导入';
