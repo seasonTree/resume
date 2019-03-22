@@ -1307,7 +1307,7 @@ class Resume extends Controller
         }
         else{
             $ct_user = $resume->where('id','=',$id)->value('ct_user');
-            if ($ct_user != Session::get('user_info')['uname']) {
+            if (strtolower($ct_user) != strtolower(Session::get('user_info')['uname'])) {
                 return json(['msg' => '没有权限删除别人的简历','code' => 500]);
             }
             else{
@@ -1349,7 +1349,7 @@ class Resume extends Controller
         }
         else{
             $ct_user = $upload->where('id','=',$id)->value('ct_user');
-            if ($ct_user != Session::get('user_info')['uname']) {
+            if (strtolower($ct_user) != strtolower(Session::get('user_info')['uname'])) {
                 return json(['msg' => '没有权限删除别人的上传文件','code' => 500]);
             }
             else{
