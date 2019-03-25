@@ -283,9 +283,9 @@ class Report extends Controller
     	
     	foreach ($user_info as $k => $v) {
 
-    		$where = "date(communicate_time) between '$parm[dtfm]' and '$parm[dtto]' and ct_user = '$v[uname]'";
+    		$where = "date(communicate_time) between '$parm[dtfm]' and '$parm[dtto]' and a.ct_user = '$v[uname]'";
     		if (isset($in_user)) {
-    			$where.= " and ct_user in('$where_in')";
+    			$where.= " and a.ct_user in('$where_in')";
     		}
 
     		$user_info[$k]['screen'] = 0;
@@ -340,10 +340,10 @@ class Report extends Controller
 
     	foreach ($user_data as $k => $v) {
     		if ($parm != '') {
-    			$where = "date(communicate_time) between '$parm[dtfm]' and '$parm[dtto]' and ct_user = '$v[uname]'";
+    			$where = "date(communicate_time) between '$parm[dtfm]' and '$parm[dtto]' and a.ct_user = '$v[uname]'";
     		}
     		else{
-    			$where = "ct_user = '$v[uname]'";
+    			$where = "a.ct_user = '$v[uname]'";
     		}
 
     		$temp_data = $comm->getCommInfo($where);
@@ -364,10 +364,12 @@ class Report extends Controller
     			else{
     				$b['id'] = $key;
     				$data[$key] = $b;
-    				$data[$key]['personal_name'] = $v['personal_name'];
-    				$data[$key]['name'] = $resume->getUname(['id' => $b['resume_id']]);
+    				// $data[$key]['personal_name'] = $v['personal_name'];
+    				// $data[$key]['name'] = $resume->getUname(['id' => $b['resume_id']]);
 	    			$user_arr[$b['resume_id']] = $key;
 	    			$key++;
+
+
     			}
     			
     		}
@@ -378,14 +380,22 @@ class Report extends Controller
 
       /******************************************************************************/
       // $where = "communicate_time between '$parm[dtfm]' and '$parm[dtto]'";
+
       // if (isset($parm['ur'])) {
       //     $in_user = explode(',',$parm['ur']);
       //     $where_in = implode("','",$in_user);
       //     $where.= " and a.ct_user in('$where_in')";
       // }
+      // else{
+      //     $user_model = new User();
+      //     $in_user = array_column($user_model->field('uname')->select()->toArray(),'uname');
+      // }
+
       // $data = $comm->alias('a')->join('rs_resume b','a.resume_id=b.id')->where($where)->field('a.*,b.name')->order('a.ct_user')->select()->toArray();
       // foreach ($data as $k => $v) {
-      //   # code...
+      //     if () {
+      //       # code...
+      //     }
       // }
 
     }

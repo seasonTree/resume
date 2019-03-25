@@ -79,7 +79,7 @@ class Communicate extends Model
     public function getCommInfo($where = '1=1'){
         //获取沟通信息部分字段
       // echo $where;exit;
-        return Communicate::field('screen,arrange_interview,arrive,approved_interview,entry,ct_user,resume_id,communicate_time')->where($where)->select()->toArray();
+        return Communicate::alias('a')->join('rs_resume b','a.resume_id=b.id')->field('b.name,screen,arrange_interview,arrive,approved_interview,entry,a.ct_user,resume_id,communicate_time')->where($where)->select()->toArray();
       
 
     }
