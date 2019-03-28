@@ -801,7 +801,7 @@ class Resume extends Controller
                 }
             }
             if (is_numeric($e)) {
-                $phone_arr[] = $e;//联系电话//写入联系电话
+                $phone_arr[$row] = $e;//联系电话//写入联系电话
             }
             
             if (!in_array($a,$ct_user) && $total < $row) {
@@ -945,7 +945,6 @@ class Resume extends Controller
             return $data;
         }
         else{
-
             $comm_list = [];//对已经存在简历的对应的沟通集合
             if (!empty($phone_arr)) {
                 //检查这个人是否已经存在
@@ -954,22 +953,26 @@ class Resume extends Controller
                 
 
                 if ($res) {
-                    //假如有结果
+                    $array_merge = [];//重组数组
                     foreach ($res as $k => $v) {
-                        $keys = array_search($v['phone'],$phone_arr)+2;//查找这个电话存在的key读出来(因为excel数据从第二行开始算，所以key查出来需要+2才是真正的位置)
-                        if ($keys != false) {
-                            unset($data[$keys]);//删掉已存在的简历，防止重复导入
-                            $communicate[$keys]['resume_id'] = $v['id'];//把该简历的id写入到沟通集合
-                            $comm_list[] = $communicate[$keys];//把简历的沟通记录单独分出来
-                            unset($communicate[$keys]);//然后从列表删掉
-                        }
+                        $array_merge[$v['phone']] = $v['id'];
+                    }
 
+                    foreach ($phone_arr as $k => $v) {
+
+                        if(array_key_exists($v,$array_merge)){
+                            unset($data[$k]);//删掉已存在的简历，防止重复导入
+                            $communicate[$k]['resume_id'] = $array_merge[$v];//把该简历的id写入到沟通集合
+                            $comm_list[] = $communicate[$k];//把简历的沟通记录单独分出来
+                            unset($communicate[$k]);//然后从列表删掉
+                        }
+                            
                     }
 
                 }
+
             }
             
-
             if (empty($data)) {
                 return '请不要重复导入';
             }
@@ -1965,11 +1968,11 @@ class Resume extends Controller
         $option = function($msg){
             if ($msg == 'tonghe') {
                 //同和
-                return ['source' => dirname(Env::get('ROOT_PATH')).'/client/dist/template/'.'tonghe.docx','file_type' => '同和'];
+                return ['source' => dirname(Env::get('ROOT_PATH')).'/client/dist/template/'.'tonghe.docx','file_type' => '同和信息'];
             }
             else if ($msg == 'avo') {
                 //大展
-                return ['source' => dirname(Env::get('ROOT_PATH')).'/client/dist/template/'.'avo.docx','file_type' => '大展'];
+                return ['source' => dirname(Env::get('ROOT_PATH')).'/client/dist/template/'.'avo.docx','file_type' => '大展科技'];
             }
             else{
                 //缺少类型或者简历id
