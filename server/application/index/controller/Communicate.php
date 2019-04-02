@@ -24,11 +24,29 @@ class Communicate
          $cli_model = new Client();
          $cli_name = [];
          $cli_res = $cli_model->field('id,client_name')->select()->toArray();
+         $comm_data = [];//沟通数据
+         $comm_user = [];//沟通人
          foreach ($cli_res as $k => $v) {
            $cli_name[$v['id']] = $v['client_name'];
          }
          
          foreach ($data as $k => $v) {
+
+            if (in_array($v['content'], $comm_data)) {
+                $comm_key = array_search($v['content'],$comm_data);
+
+                if($comm_user[$comm_key] == $v['ct_user']){
+                   if (!$data[$comm_key]['screen'] && !$data[$comm_key]['arrange_interview'] && !$data[$comm_key]['arrive'] && !$data[$comm_key]['approved_interview'] && !$data[$comm_key]['entry']) {
+                        //判断全部为0的时候，表示是重复数据，不输出并删除
+                        unset($data[$k]);
+                        continue;
+                   }
+                   
+                }
+            }
+            $comm_user[$k] = $v['ct_user'];
+            $comm_data[$k] = $v['content'];
+
             $cli_comm_list = $cli_comm_model->where(['comm_id' => $v['id']])->field('type,client_id')->select()->toArray();
 
             foreach ($cli_comm_list as $a => $b) {
