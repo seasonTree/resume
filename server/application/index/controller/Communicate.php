@@ -34,13 +34,26 @@ class Communicate
 
             if (in_array($v['content'], $comm_data)) {
                 $comm_key = array_search($v['content'],$comm_data);
-
+                // dump($comm_key);
                 if($comm_user[$comm_key] == $v['ct_user']){
-                   if (!$data[$comm_key]['screen'] && !$data[$comm_key]['arrange_interview'] && !$data[$comm_key]['arrive'] && !$data[$comm_key]['approved_interview'] && !$data[$comm_key]['entry']) {
-                        //判断全部为0的时候，表示是重复数据，不输出并删除
+
+                  if (!$data[$k]['screen'] && !$data[$k]['arrange_interview'] && !$data[$k]['arrive'] && !$data[$k]['approved_interview'] && !$data[$k]['entry']) {
+                        //判断重复数据里面是否有全零，如果有删除并跳过
                         unset($data[$k]);
                         continue;
                    }
+                   
+                   if (!$data[$comm_key]['screen'] && !$data[$comm_key]['arrange_interview'] && !$data[$comm_key]['arrive'] && !$data[$comm_key]['approved_interview'] && !$data[$comm_key]['entry']) {
+                        //判断全部为0的时候，表示是重复数据，不输出并删除
+                        unset($data[$comm_key]);
+                        continue;
+                   }
+
+                   // else{
+                   //      unset($data[$comm_key]);
+                   //      unset($comm_user[$comm_key]);
+                   //      unset($comm_data[$comm_key]);
+                   // }
                    
                 }
             }
