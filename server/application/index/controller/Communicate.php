@@ -357,8 +357,52 @@ class Communicate
       //查询招聘负责人列表
       $input = input('get.');
       $comm = new CommunicateModel();
+      $where = "communicate_time between '$input[dtfm]' and '$input[dtto]' and ct_user = '$input[uname]'";
+
+      $data = $comm->where($where)->select()->toArray();
+      //获取一次数据，处理重复
+      if ($data) {
+         $comm_data = [];//沟通数据
+         $comm_resume_id = [];//是否同一份简历
+         $del_ids = [];//处理多余没用的数据的id，mysql里面删掉(针对批量导入多次重复的沟通记录)
+      
+         foreach ($data as $k => $v) {
+
+            if (in_array($v['content'], $comm_data)) {
+              //判断该沟通记录是否已经存在
+                $comm_key = array_search($v['content'],$comm_data);
+                //把存在对应的key取出来
+                // dump($comm_key);
+                if($comm_resume_id[$comm_key] == $v['resume_id']){
+                  //再查看对应的沟通记录的沟通人和这一条是否一致
+                  if (!$data[$k]['screen'] && !$data[$k]['arrange_interview'] && !$data[$k]['arrive'] && !$data[$k]['approved_interview'] && !$data[$k]['entry']) {
+                        //判断重复数据里面是否有全零，如果有删除并跳过
+                        $del_ids[] = $data[$k]['id'];//记录应该要删除记录的id
+                        continue;
+                   }
+
+                   if (!$data[$comm_key]['screen'] && !$data[$comm_key]['arrange_interview'] && !$data[$comm_key]['arrive'] && !$data[$comm_key]['approved_interview'] && !$data[$comm_key]['entry']) {
+                        //判断全部为0的时候，表示是重复数据，不输出并删除
+                        $del_ids[] = $data[$comm_key]['id'];//记录应该删除的记录id
+                        continue;
+                   }
+                }
+            }
+            $comm_resume_id[$k] = $v['resume_id'];//存储每一次的沟通人记录
+            $comm_data[$k] = $v['content'];
+         }
+
+         if (!empty($del_ids)) {
+          //删除多余的数据
+            $del_ids = implode(',',$del_ids);
+            $comm->where("id in($del_ids)")->delete();
+         }
+         
+      }
+
       $where = "communicate_time between '$input[dtfm]' and '$input[dtto]' and a.ct_user = '$input[uname]'";
       $data = $comm->getCommByUname($where);
+
       return json(['msg' => '获取成功','code' => 0,'data' => $data]);
     }
 
