@@ -351,7 +351,7 @@ export default {
         show(newValue, oldValue) {
             if (newValue) {
                 let that = this;
-                that.getClietData();
+                that.getClientData();
             }
         }
     },
@@ -383,7 +383,7 @@ export default {
             that.form.resume_id = that.resume_id;
         },
 
-        getClietData() {
+        getClientData() {
             let that = this;
 
             that.$api.client

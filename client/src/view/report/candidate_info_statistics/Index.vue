@@ -20,6 +20,46 @@
                 </div>
 
                 <div class="search-item">
+                    <el-select
+                        v-model="selectUser"
+                        multiple
+                        collapse-tags
+                        placeholder="选择负责人"
+                        clearable
+                        autocomplete
+                        filterable
+                    >
+                        <el-option
+                            v-for="item in users"
+                            :key="item.uname"
+                            :label="item.uname"
+                            :value="item.uname"
+                        >
+                        </el-option>
+                    </el-select>
+                </div>
+
+                <div class="search-item">
+                    <el-select
+                        v-model="selectClient"
+                        multiple
+                        collapse-tags
+                        placeholder="选择客户"
+                        clearable
+                        autocomplete
+                        filterable
+                    >
+                        <el-option
+                            v-for="item in client"
+                            :key="item.id"
+                            :label="item.client_name"
+                            :value="item.id"
+                        >
+                        </el-option>
+                    </el-select>
+                </div>
+
+                <div class="search-item">
                     <el-button
                         type="primary"
                         circle
@@ -53,6 +93,7 @@
                     :fixed="item.fixed"
                     :formatter="item.formatter"
                 ></el-table-column>
+
             </el-table>
         </el-row>
 
@@ -88,13 +129,39 @@ export default {
             ltWeek = getLtWeek();
 
         that.search.dateRange = [ltWeek.ltWeekStart, ltWeek.ltWeekEnd];
+
+        that.getUsers();
+        that.getClientData();
     },
 
     data() {
         return {
+            //候选人信息统计
+            thead: [
+                { prop: "ct_user", label: "推荐时间", fixed: "left" },
+                { prop: "name", label: "姓名", fixed: "left" },
+                { prop: "screen", label: "联系方式", fixed: "left" },
+                { prop: "arrange_interview", label: "客户", fixed: "left" },
+                { prop: "arrive", label: "跟踪人", fixed: "left" },
+                { prop: "entry", label: "岗位", fixed: "left" },
+                { prop: "entry", label: "学历", fixed: "left" },
+                { prop: "entry", label: "毕业年份", fixed: "left" },
+                { prop: "entry", label: "毕业院校", fixed: "left" },
+                { prop: "entry", label: "公司", fixed: "left" },
+                { prop: "entry", label: "是否安排面试", fixed: "left" },
+                { prop: "entry", label: "是否参加面试", fixed: "left" },
+                { prop: "entry", label: "是否通过面试", fixed: "left" }
+            ],
+
             search: {
                 dateRange: []
             },
+
+            selectUser: [],
+            users: [],
+
+            client: [],
+            selectClient: [],
 
             pickerOptions: {
                 shortcuts: [
@@ -129,7 +196,9 @@ export default {
             let that = this,
                 params = {
                     dtfm: that.search.dateRange[0],
-                    dtto: that.search.dateRange[1]
+                    dtto: that.search.dateRange[1],
+                    ur: that.selectUser.join(","),
+                    client: that.selectClient.join(",")
                 };
 
             that.pager.current = 1;
@@ -142,6 +211,45 @@ export default {
             }
         },
 
+        //获取所用的用户
+        getUsers() {
+            let that = this;
+
+            that.$api.user
+                .getAll()
+                .then(res => {
+                    if (res.code == 0) {
+                        that.users = res.data;
+                    } else {
+                        that.$message.error(
+                            res.msg || "获取所有用户失败，请刷新后重试."
+                        );
+                    }
+                })
+                .catch(res => {
+                    that.$message.error("获取所有用户失败，请刷新后重试.");
+                });
+        },
+
+        getClientData() {
+            let that = this;
+
+            that.$api.client
+                .getAll()
+                .then(res => {
+                    if (res.code == 0) {
+                        that.client = res.data;
+                    } else {
+                        that.$message.error(
+                            res.msg || "获取客户列表失败，请重试."
+                        );
+                    }
+                })
+                .catch(res => {
+                    that.$message.error("获取客户列表失败，请重试.");
+                });
+        },
+
         //获取 候选人信息统计
         getCandidateInfoStatistics(params) {
             let that = this;
@@ -150,7 +258,6 @@ export default {
                 .candidate_info_statistics(params)
                 .then(res => {
                     if (res.code == 0) {
-
                         that.reportData = res.data;
 
                         if (that.pager) {
@@ -178,20 +285,29 @@ export default {
                 pObj = {
                     dtfm: that.search.dateRange[0],
                     dtto: that.search.dateRange[1],
+                    ur: that.selectUser.join(","),
+                    client: that.selectClient.join(",")
                 },
                 pArr = [];
 
-            for (var key in pObj) {
-                var item = pObj[key];
+            if (that.$check_pm("report_candidate_info_statistics_export")) {
+                for (var key in pObj) {
+                    var item = pObj[key];
 
-                if (item !== null && item !== undefined && item !== "") {
-                    pArr.push(key + "=" + item);
+                    if (item !== null && item !== undefined && item !== "") {
+                        pArr.push(key + "=" + item);
+                    }
                 }
+
+                let params = pArr.join("&");
+
+                window.open(
+                    `/api/report/candidate_info_statistics/export?${params}`,
+                    "_blank"
+                );
+            } else {
+                that.$message.error("无此权限.");
             }
-
-            let params = pArr.join("&");
-
-            window.open(`/api/report/candidate_info_statistics/export?${params}`, "_blank");
         }
     }
 };

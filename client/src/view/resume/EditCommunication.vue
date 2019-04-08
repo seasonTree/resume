@@ -403,13 +403,13 @@ export default {
         show(newValue, oldValue) {
             if (newValue) {
                 let that = this;
-                that.getClietData();
+                that.getClientData();
             }
         }
     },
 
     methods: {
-        getClietData() {
+        getClientData() {
             let that = this;
 
             that.$api.client

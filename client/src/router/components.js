@@ -41,6 +41,12 @@ const components = {
     "/personal_candidate_info/Index": resolve =>
         require.ensure([], () =>
             resolve(require("@view/report/personal_candidate_info/Index"))
+        ),
+
+    //候选人信息统计
+    "/candidate_info_statistics/Index": resolve =>
+        require.ensure([], () =>
+            resolve(require("@view/report/candidate_info_statistics/Index"))
         )
 };
 

@@ -309,17 +309,18 @@ export default {
             let that = this,
                 params = {
                     dtfm: that.search.dateRange[0],
-                    dtto: that.search.dateRange[1]
+                    dtto: that.search.dateRange[1],
+                    ur: that.selectUser.join(",")
                 };
 
             that.pager.current = 1;
             // that.pager.total = 1;
 
-            let urs = that.selectUser.join(",");
+            // let urs = that.selectUser.join(",");
 
-            if (urs) {
-                params["ur"] = urs;
-            }
+            // if (urs) {
+            //     params["ur"] = urs;
+            // }
 
             if (that.search.type == 0) {
                 if (that.$check_pm("report_person_recru_list")) {
