@@ -136,7 +136,7 @@ export default {
 
             if (that.$check_pm("report_candidate_info_statistics")) {
                 //权限
-                that.getRecruitmentList(params);
+                that.getCandidateInfoStatistics(params);
             } else {
                 that.$message.error("无此权限.");
             }
@@ -178,8 +178,6 @@ export default {
                 pObj = {
                     dtfm: that.search.dateRange[0],
                     dtto: that.search.dateRange[1],
-                    type: that.search.type,
-                    ur: that.selectUser.join(",")
                 },
                 pArr = [];
 

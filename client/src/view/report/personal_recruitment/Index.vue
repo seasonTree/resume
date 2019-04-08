@@ -497,7 +497,7 @@ export default {
 
                 let params = pArr.join("&");
 
-                window.open(`/api/person_recru/export?${params}`, "_blank");
+                window.open(`/api/report/person_recru/export?${params}`, "_blank");
             } else {
                 that.$message.error("无此权限.");
             }
