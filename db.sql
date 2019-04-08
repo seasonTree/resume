@@ -358,3 +358,8 @@ create table rs_client_communicate
     type tinyint(1) not null comment '类型：1，推荐，2，安排，3，到场，4，通过，5，入职',
 	comm_id bigint(20) not null comment '对应关联沟通id'	
 ) engine=InnoDB;
+
+-- 2019-04-08 新增报表菜单 ----------------------------------------------------
+INSERT INTO test_resume.rs_permission (id, parent_id, p_name, p_type, p_icon, url, p_act_name, p_component, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (72, 39, '个人候选人信息', 0, 'fa fa-file-alt', 'personal_candidate_info/index', '', 'personal_candidate_info/Index', '', 69, 'admin', '2019-04-08 15:00:36', '', '2019-04-08 15:00:36');
+INSERT INTO test_resume.rs_permission (id, parent_id, p_name, p_type, p_icon, url, p_act_name, p_component, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (73, 72, '个人候选人信息', 1, '', '', 'report_person_candidate_info', '', '/report/personal_candidate_info', 70, 'admin', '2019-04-08 15:01:52', '', '2019-04-08 15:01:52');
+INSERT INTO test_resume.rs_permission (id, parent_id, p_name, p_type, p_icon, url, p_act_name, p_component, api, idx, ct_user, ct_time, mfy_user, mfy_time) VALUES (74, 72, '个人候选人信息导出表', 1, '', '', 'report_person_candidate_info_export', '', '/api/person_candidate_info/export', 71, 'admin', '2019-04-08 15:03:08', '', '2019-04-08 15:03:08');
