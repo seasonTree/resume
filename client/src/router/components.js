@@ -35,9 +35,13 @@ const components = {
         ),
     //客户
     "/client/Index": resolve =>
-    require.ensure([], () =>
-        resolve(require("@view/client/Index"))
-    ),
+        require.ensure([], () => resolve(require("@view/client/Index"))),
+
+    //个人候选人信息
+    "/personal_candidate_info/Index": resolve =>
+        require.ensure([], () =>
+            resolve(require("@view/report/personal_candidate_info/Index"))
+        )
 };
 
 export default components;

@@ -44,7 +44,6 @@
                 class="width100"
                 :height="tabelHeight"
                 v-loading="tableLoading"
-                @row-click="showCommunicationDialog"
             >
                 <el-table-column
                     v-for="(item, index) in thead"
@@ -74,12 +73,6 @@
             ></el-pagination>
         </el-row>
 
-        <communication
-            :show.sync="communicationDialog"
-            :communication_data="communicationID"
-        >
-        </communication>
-
     </div>
 </template>
 
@@ -90,17 +83,11 @@ import { getLtWeek, getLtMonth } from "@common/util";
 export default {
     mixins: [ReportBase],
 
-    components: {
-        CutImage
-    },
-
     created() {
         let that = this,
             ltWeek = getLtWeek();
 
         that.search.dateRange = [ltWeek.ltWeekStart, ltWeek.ltWeekEnd];
-
-        that.getUsers();
     },
 
     data() {
