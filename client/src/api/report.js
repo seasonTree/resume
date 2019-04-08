@@ -9,3 +9,13 @@ export function personal_candidate_info(data){
         params: data
     })
 }
+
+//获取 候选人信息统计
+export function candidate_info_statistics(data){
+    return request({
+        url: `${prefix}/candidate_info_statistics`,
+        method: 'get',
+        params: data
+    })
+}
+

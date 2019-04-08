@@ -219,7 +219,7 @@ export default {
                 let params = pArr.join("&");
 
                 window.open(
-                    `/api/person_candidate_info/export?${params}`,
+                    `/api/report/person_candidate_info/export?${params}`,
                     "_blank"
                 );
             } else {
