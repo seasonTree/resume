@@ -107,6 +107,7 @@ export default {
                 { prop: "screen", label: "推荐人数", fixed: "left" },
                 { prop: "arrange_interview", label: "安排人数", fixed: "left" },
                 { prop: "arrive", label: "到场人数", fixed: "left" },
+                { prop: "approved_interview", label: "通过人数", fixed: "left" },
                 { prop: "entry", label: "入职人数", fixed: "left" }
             ],
 
