@@ -165,26 +165,30 @@ export default {
                     ...that.searchData,
                     pageIndex: that.pager.current,
                     pageSize: that.pager.size
-				};
-				
-            that.$api.report
-                .client_statistics_detail(params)
-                .then(res => {
-                    if (res.code == 200) {
-                        that.tdata = res.data.row;
-                        that.pager.total = res.data.total || 0;
-                    } else {
-                        that.$message.error(
-                            res.message || "获取客户明细数据失败，请重试."
-                        );
-                    }
+                };
 
-                    that.tableLoading = false;
-                })
-                .catch(res => {
-                    that.tableLoading = false;
-                    that.$message.error("获取客户明细数据失败，请重试.");
-                });
+            if (that.$check_pm("report_client_statistics_detail")) {
+                that.$api.report
+                    .client_statistics_detail(params)
+                    .then(res => {
+                        if (res.code == 200) {
+                            that.tdata = res.data.row;
+                            that.pager.total = res.data.total || 0;
+                        } else {
+                            that.$message.error(
+                                res.message || "获取客户明细数据失败，请重试."
+                            );
+                        }
+
+                        that.tableLoading = false;
+                    })
+                    .catch(res => {
+                        that.tableLoading = false;
+                        that.$message.error("获取客户明细数据失败，请重试.");
+                    });
+            } else {
+                that.$message.error("无此权限.");
+            }
         },
 
         //关闭窗口后调用

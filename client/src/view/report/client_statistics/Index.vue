@@ -74,10 +74,10 @@
             ></el-pagination>
         </el-row>
 
-    <client-detail 
-        :show.sync="clientDialog"
-        :searchData="clientSearchData"
-    ></client-detail>
+        <client-detail
+            :show.sync="clientDialog"
+            :searchData="clientSearchData"
+        ></client-detail>
 
     </div>
 </template>
@@ -90,7 +90,7 @@ import ClientDetail from "./ClientDetail";
 export default {
     mixins: [ReportBase],
 
-    components: {ClientDetail},
+    components: { ClientDetail },
 
     created() {
         let that = this,
@@ -169,10 +169,12 @@ export default {
                     dtfm: that.search.dateRange[0],
                     dtto: that.search.dateRange[1],
                     client_id: row.client_id
-                }
+                };
 
-            that.clientSearchData = obj;
-            that.clientDialog = true;
+            if (that.$check_pm("report_client_statistics_detail")) {
+                that.clientSearchData = obj;
+                that.clientDialog = true;
+            }
         },
 
         //获取 客户人数的报表
