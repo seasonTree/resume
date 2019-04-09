@@ -216,7 +216,7 @@ export default {
 
             userImageDialog: false,
 
-            navWidth: "200px",
+            navWidth: "220px",
             showNav: true
         };
     },
@@ -306,7 +306,7 @@ export default {
             if (that.showNav) {
                 //右侧拉开的时候加个延迟，避免加载闪动
                 setTimeout(() => {
-                    that.navWidth = "200px";
+                    that.navWidth = "220px";
                 }, 140);
             } else {
                 that.navWidth = "64px";

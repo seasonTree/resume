@@ -19,3 +19,20 @@ export function candidate_info_statistics(data){
     })
 }
 
+//获取 客户统计信息
+export function client_statistics(data){
+    return request({
+        url: `${prefix}/client_statistics`,
+        method: 'get',
+        params: data
+    })
+}
+
+//获取 客户信息的明细
+export function client_statistics_detail(data){
+    return request({
+        url: `${prefix}/client_statistics_detail`,
+        method: 'get',
+        params: data
+    })
+}

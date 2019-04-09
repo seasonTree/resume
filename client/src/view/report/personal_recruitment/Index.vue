@@ -116,7 +116,7 @@
 
         <communication
             :show.sync="communicationDialog"
-            :communication_data="communicationID"
+            :communication_data="communicationData"
         >
         </communication>
 
@@ -273,7 +273,7 @@ export default {
 
             //沟通情况
             communicationDialog: false,
-            communicationID: 0
+            communicationData: {}
         };
     },
 
@@ -471,7 +471,7 @@ export default {
             obj.dtto = that.search.dateRange[1];
 
             if (that.search.type == 1) {
-                that.communicationID = obj;
+                that.communicationData = obj;
                 that.communicationDialog = true;
             }
         },
