@@ -103,7 +103,7 @@ export default {
         return {
             //招聘负责人明细
             thead: [
-                { prop: "ct_user", label: "客户名称", fixed: "left" },
+                { prop: "client_name", label: "客户名称", fixed: "left" },
                 { prop: "screen", label: "推荐人数", fixed: "left" },
                 { prop: "arrange_interview", label: "安排人数", fixed: "left" },
                 { prop: "arrive", label: "到场人数", fixed: "left" },

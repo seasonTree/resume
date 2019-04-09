@@ -28,7 +28,7 @@ Route::post('api/user/update_avatar','User/updateAvatar');//更新用户自己�
 //-----------------------------------------------
 
 //测试使用----------------------------------------
-Route::get('test','Resume/test');//测试用
+Route::get('test','Report/clientRec');//测试用
 //-----------------------------------------------
 
 //简历api-----------------------------------------
@@ -89,9 +89,12 @@ Route::post('api/permission/sort','Privilege/sort'); //排序
 
 //个人招聘统计api----------------------------------
 Route::get('api/report/person_recru/candidate_list','Report/candidateList');//获取个人招聘统计候选人跟踪报表
-Route::get('api/report/person_recru/recruitment_list','Report/recruitmentList');//获取 招聘负责人明细的报表
+Route::get('api/report/person_recru/recruitment_list','Report/recruitmentList');//获取 招聘负责人明细的报表(针对所有)
 Route::get('api/report/person_recru/recruitment_total','Report/recruitmentTotal');//招聘负责人统计汇总
-Route::get('api/person_recru/export','Report/export');//导出
+Route::get('api/report/person_recru/export','Report/export');//导出
+/**新加模块标记**/
+Route::get('api/report/personal_candidate_info','Report/getPersonRec');//个人招聘负责人明细统计报表(针对个人)
+Route::get('api/report/person_candidate_info/export','Report/PersonRecExport');//导出
 //-----------------------------------------------
 
 //获取职业分类
@@ -104,6 +107,10 @@ Route::post('api/position_cate/del','Resume/delJob');
 Route::get('api/resume/export','Resume/export');
 
 //客户相关
+/***新加功能***/
+Route::get('api/report/client_statistics','Report/clientRec');
+// Route::get('api/report/client_statistics/export','Report/clientRecExport');
+/******************************************************************/
 Route::get('api/client/list','Client/getList');//客户列表
 Route::post('api/client/add','Client/addClient');//添加客户
 Route::post('api/client/del','Client/delClient');//删除客户
@@ -113,7 +120,11 @@ Route::post('api/client/edit','Client/editClient');//修改
 Route::get('api/client/get_all','Client/getAll');//获取所有
 Route::get(':name','Index/index');
 Route::post(':name','Index/index');
+
 //###################################################################
+
+//待定模块
+
 
 
 return [
