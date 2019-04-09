@@ -31,14 +31,21 @@
                     label="日期"
                     align="center"
                     fixed
-                >				
+                >
                 </el-table-column>
-				<el-table-column
+                <el-table-column
                     prop="ct_time"
                     label="类型"
                     align="center"
                     fixed
-                >				
+                >
+                    <template slot-scope="scope">
+                        <span v-if="scope.row.type == 1">推荐</span>
+                        <span v-if="scope.row.type == 2">安排</span>
+                        <span v-if="scope.row.type == 3">到场</span>
+                        <span v-if="scope.row.type == 4">通过</span>
+                        <span v-if="scope.row.type == 5">入职</span>
+                    </template>
                 </el-table-column>
                 <el-table-column
                     prop="name"
