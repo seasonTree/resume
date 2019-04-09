@@ -108,8 +108,9 @@ Route::get('api/resume/export','Resume/export');
 
 //客户相关
 /***新加功能***/
+Route::get('api/report/client_statistics$','Report/clientRec');
 Route::get('api/report/client_statistics/export','Report/clientRecExport');
-Route::get('api/report/client_statistics','Report/clientRec');
+Route::get('api/report/client_statistics_detail','Report/clientRecDetail');
 /******************************************************************/
 Route::get('api/client/list','Client/getList');//客户列表
 Route::post('api/client/add','Client/addClient');//添加客户

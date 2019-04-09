@@ -601,14 +601,8 @@ class Report extends Controller
     	}
     }
 
-    public function clientRec(){
-      //客户统计明细
-      $input = input('get.');
-      $check_date = isset($input['dtfm']) && isset($input['dtto'])?true:false;
-      if (!$check_date) {
-         return json(['msg' => '缺少日期','code' => 404]);
-      }
-
+    public function clientRecData($input){
+      //获取客户统计明细的数据
       $client_model = new Client();//取出客户信息
       $client_data = $client_model->field('id,client_name')->select()->toArray();
       $client_new = [];
@@ -626,7 +620,7 @@ class Report extends Controller
       $new_data[0]['approved_interview'] = 0;
       $new_data[0]['entry'] = 0;
       $new_data[0]['client_name'] = '总共';
-      $new_data[0]['client_id'] = 99999;
+      $new_data[0]['client_id'] = 0;
 
       $count = function($option,$new_data,$keys){
         //处理统计内容
@@ -722,8 +716,18 @@ class Report extends Controller
             $new_data[$keys]['client_name'] = $v;
          }
       }
+      return $new_data;
+    }
 
-     return json(['msg' => '获取成功','code' => 0,'data' => $new_data]);
+    public function clientRec(){
+      //客户统计明细
+      $input = input('get.');
+      $check_date = isset($input['dtfm']) && isset($input['dtto'])?true:false;
+      if (!$check_date) {
+         return json(['msg' => '缺少日期','code' => 404]);
+      }
+
+      return json(['msg' => '获取成功','code' => 0,'data' => $this->clientRecData($input)]);
 
     }
 
@@ -731,7 +735,7 @@ class Report extends Controller
       //导出客户统计数据
       $input = input('get.');
       $check_date = isset($input['dtfm']) && isset($input['dtto'])?true:false;
-      
+
       if (!$check_date) {
         return json(['msg' => '缺少日期','code' => 404]);
       }
@@ -739,40 +743,108 @@ class Report extends Controller
       $obj = new \PHPExcel();//phpexcel
       $obj->setActiveSheetIndex(0);
       //宽度设置
-      $obj->getActiveSheet()->getColumnDimension('A')->setWidth(12);
-      $obj->getActiveSheet()->getColumnDimension('B')->setWidth(12);
-      $obj->getActiveSheet()->getColumnDimension('C')->setWidth(10);
-      $obj->getActiveSheet()->getColumnDimension('D')->setWidth(10);
-      $obj->getActiveSheet()->getColumnDimension('E')->setWidth(10);
-      $obj->getActiveSheet()->getColumnDimension('F')->setWidth(10);
-      $obj->getActiveSheet()->getColumnDimension('G')->setWidth(10);
-      //表头
-      $obj->getActiveSheet()->setCellValue("A1", '招聘负责人');
-      $obj->getActiveSheet()->setCellValue("B1", '候选人');
-      $obj->getActiveSheet()->setCellValue("C1", '是否推荐');
-      $obj->getActiveSheet()->setCellValue("D1", '是否安排');
-      $obj->getActiveSheet()->setCellValue("E1", '是否到场');
-      $obj->getActiveSheet()->setCellValue("F1", '是否通过');
-      $obj->getActiveSheet()->setCellValue("G1", '是否入职');
-      $data = $this->getRecruitment($input);
-      //数据
-      foreach ($data as $k => $v) {
-        $k = $k+2;
+      $obj->getActiveSheet()->getColumnDimension('A')->setWidth(16);
+      $obj->getActiveSheet()->getColumnDimension('B')->setWidth(16);
+      $obj->getActiveSheet()->getColumnDimension('C')->setWidth(20);
 
-        $obj->getActiveSheet()->setCellValue("A".$k,$v['ct_user']);
-        $obj->getActiveSheet()->setCellValue("B".$k, $v['name']);
-        $obj->getActiveSheet()->setCellValue("C".$k, $v['screen'] == 1 ?'是':'否');
-        $obj->getActiveSheet()->setCellValue("D".$k, $v['arrange_interview'] ==1 ?'是':'否');
-        $obj->getActiveSheet()->setCellValue("E".$k, $v['arrive'] == 1 ?'是':'否');
-        $obj->getActiveSheet()->setCellValue("F".$k, $v['approved_interview'] == 1 ?'是':'否');
-        $obj->getActiveSheet()->setCellValue("G".$k, $v['entry'] == 1 ?'是':'否');
+      //设置居中
+      $obj->getDefaultStyle()->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+      $obj->getDefaultStyle()->getAlignment()->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
+      //颜色
+      $obj->getActiveSheet()->getStyle('A1:C1')->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID);
+      $obj->getActiveSheet()->getStyle('A1:C1')->getFill()->getStartColor()->setARGB('FFDDAA');
+
+      //表头
+      $obj->getActiveSheet()->setCellValue("A1", '客户');
+      $obj->getActiveSheet()->setCellValue("B1", '统计');
+      $obj->getActiveSheet()->setCellValue("C1", $input['dtfm'].'到'.$input['dtto']);
+
+      $data = $this->clientRecData($input);
+      //数据
+      $n = 2;//第二行开始
+      $start = 0;//合并用，开始
+      $end = 0;//用于合并用，结束
+      foreach ($data as $k => $v) {
+        // $k = $k + 2;//第二行开始
+        // $obj->getActiveSheet()->setCellValue("B".$k, $v['entry'] == 1 ?'是':'否');
+        $start = $n;
+        for ($i=0; $i < 5 ; $i++) { 
+           switch ($i) {
+             case 0:
+               $obj->getActiveSheet()->setCellValue("B".$n,'推荐简历数');
+               $obj->getActiveSheet()->setCellValue("C".$n,$v['screen']);
+               break;
+             case 1:
+               $obj->getActiveSheet()->setCellValue("B".$n,'安排面试数');
+               $obj->getActiveSheet()->setCellValue("C".$n,$v['arrange_interview']);
+               break;
+             case 2:
+               $obj->getActiveSheet()->setCellValue("B".$n,'参加面试数');
+               $obj->getActiveSheet()->setCellValue("C".$n,$v['arrive']);
+               break;
+             case 3:
+               $obj->getActiveSheet()->setCellValue("B".$n,'通过面试数');
+               $obj->getActiveSheet()->setCellValue("C".$n,$v['approved_interview']);
+               break;
+             case 4:
+               $obj->getActiveSheet()->setCellValue("B".$n,'入职人数');
+               $obj->getActiveSheet()->setCellValue("C".$n,$v['entry']);
+               break;
+           }
+           $end = $n;
+           $n++;
+        }
+        $obj->getActiveSheet()->setCellValue("A".$start,$v['client_name']);
+        $obj->getActiveSheet()->mergeCells("A{$start}:A{$end}");
       }
+      //背景颜色
+      $obj->getActiveSheet()->getStyle('A1:A'.$end)->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID);
+      $obj->getActiveSheet()->getStyle('A1:A'.$end)->getFill()->getStartColor()->setARGB('FFDDAA');
+      $obj->getActiveSheet()->getStyle('B1:B'.$end)->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID);
+      $obj->getActiveSheet()->getStyle('B1:B'.$end)->getFill()->getStartColor()->setARGB('FFDDAA');
+      //边框线
+      $style_array = array( 
+                            'borders' => array( 
+                                'allborders' => array( 
+                                'style' => \PHPExcel_Style_Border::BORDER_THIN 
+                              ) 
+                            )
+                          ); 
+
+      $obj->getActiveSheet()->getStyle('A1:C'.$end)->applyFromArray($style_array);
+
+      $filename = $input['dtfm'].'到'.$input['dtto'].'客户明细统计.xlsx';
       header('Content-Type: application/vnd.ms-excel');
-      header('Content-Disposition: attachment;filename="招聘负责人明细.xlsx"');
+      header('Content-Disposition: attachment;filename='.$filename);
       ob_end_clean();//清除缓冲区,避免乱码
       $objWriter = \PHPExcel_IOFactory::createWriter($obj, 'Excel2007');
       $objWriter->save('php://output');
       $obj->disconnectWorksheets();
+    }
+
+    public function clientRecDetail(){
+      //查看客户统计详细内容
+      $input = input('get.');
+      $parm = ['dtfm' => '开始时间','dtto' => '结束时间','client_id' => '客户id','pageIndex' => '当前页数','pageSize' => '显示页数'];//定义参数
+
+      foreach ($parm as $k => $v) {
+        //参数检测
+         if (!array_key_exists($k, $input)) {
+            return json(['msg' => '缺少'.$v,'code' => 404]);
+         }
+      }
+
+      $resume_model = new Resume();
+      $data = $resume_model->alias('a')
+                   ->join('rs_communicate b','a.id=b.resume_id','left')
+                   ->join('rs_client_communicate c','b.id=c.comm_id','left')
+                   ->field('a.id,a.name,b.ct_user,b.communicate_time,a.expected_job,a.phone,a.educational,a.graduation_time,a.source,a.company_type,type,client_id')
+                   ->where("date(communicate_time) between '$input[dtfm]' and '$input[dtto]' and client_id=$input[client_id]")
+                   ->select()
+                   ->toArray();
+      
+      return json(['msg' => '获取成功','code' => 0,'data' => ['row' => $data,'total' => 20]]);
+
     }
 
     

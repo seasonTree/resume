@@ -27,14 +27,14 @@
                 >
                 </el-table-column>
                 <el-table-column
-                    prop="ct_time"
+                    prop="communicate_time"
                     label="日期"
                     align="center"
                     fixed
                 >				
                 </el-table-column>
 				<el-table-column
-                    prop="ct_time"
+                    prop="type"
                     label="类型"
                     align="center"
                     fixed
@@ -178,7 +178,7 @@ export default {
                 that.$api.report
                     .client_statistics_detail(params)
                     .then(res => {
-                        if (res.code == 200) {
+                        if (res.code == 0) {
                             that.tdata = res.data.row;
                             that.pager.total = res.data.total || 0;
                         } else {
