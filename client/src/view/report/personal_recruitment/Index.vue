@@ -173,6 +173,7 @@ export default {
             recruHead: [
                 { prop: "ct_user", label: "招聘负责人", fixed: "left" },
                 { prop: "name", label: "候选人", fixed: "left" },
+                { prop: "client_name", label: "客户", fixed: "left" },
                 { prop: "screen", label: "是否推荐", fixed: "left" },
                 { prop: "arrange_interview", label: "是否安排", fixed: "left" },
                 { prop: "arrive", label: "是否到场", fixed: "left" },

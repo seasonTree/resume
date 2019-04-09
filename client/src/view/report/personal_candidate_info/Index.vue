@@ -18,6 +18,25 @@
                     >
                     </el-date-picker>
                 </div>
+                <div class="search-item">
+                    <el-select
+                        v-model="selectClient"
+                        multiple
+                        collapse-tags
+                        placeholder="选择客户"
+                        clearable
+                        autocomplete
+                        filterable
+                    >
+                        <el-option
+                            v-for="item in client"
+                            :key="item.id"
+                            :label="item.client_name"
+                            :value="item.id"
+                        >
+                        </el-option>
+                    </el-select>
+                </div>
 
                 <div class="search-item">
                     <el-button
@@ -88,23 +107,29 @@ export default {
             ltWeek = getLtWeek();
 
         that.search.dateRange = [ltWeek.ltWeekStart, ltWeek.ltWeekEnd];
+
+        that.getClientData();
     },
 
     data() {
         return {
             //招聘负责人明细
             thead: [
-                { prop: "ct_user", label: "招聘负责人", fixed: "left" },
-                { prop: "name", label: "候选人", fixed: "left" },
-                { prop: "screen", label: "是否推荐", fixed: "left" },
-                { prop: "arrange_interview", label: "是否安排", fixed: "left" },
-                { prop: "arrive", label: "是否到场", fixed: "left" },
-                {
-                    prop: "approved_interview",
-                    label: "是否通过",
-                    fixed: "left"
-                },
-                { prop: "entry", label: "是否入职", fixed: "left" }
+                { prop: "ct_user", label: "推荐时间", fixed: "left" },
+                { prop: "name", label: "姓名", fixed: "left" },
+                { prop: "screen", label: "联系方式", fixed: "left" },
+                { prop: "arrange_interview", label: "客户", fixed: "left" },
+                { prop: "arrive", label: "跟踪人", fixed: "left" },
+                { prop: "entry", label: "岗位", fixed: "left" },
+                { prop: "entry", label: "学历", fixed: "left" },
+                { prop: "entry", label: "毕业年份", fixed: "left" },
+                { prop: "entry", label: "毕业院校", fixed: "left" },
+                { prop: "entry", label: "公司", fixed: "left" },
+                { prop: "entry", label: "是否推荐", fixed: false },
+                { prop: "entry", label: "是否安排", fixed: false },
+                { prop: "entry", label: "是否到场", fixed: false },
+                { prop: "entry", label: "是否通过", fixed: false },
+                { prop: "entry", label: "是否入职", fixed: false }
             ],
 
             search: {
@@ -135,7 +160,10 @@ export default {
                         }
                     }
                 ]
-            }
+            },
+
+            client: [],
+            selectClient: []
         };
     },
 
@@ -144,7 +172,8 @@ export default {
             let that = this,
                 params = {
                     dtfm: that.search.dateRange[0],
-                    dtto: that.search.dateRange[1]
+                    dtto: that.search.dateRange[1],
+                    client: that.selectClient.join(",")
                 };
 
             that.pager.current = 1;
@@ -155,6 +184,25 @@ export default {
             } else {
                 that.$message.error("无此权限.");
             }
+        },
+
+        getClientData() {
+            let that = this;
+
+            that.$api.client
+                .getAll()
+                .then(res => {
+                    if (res.code == 0) {
+                        that.client = res.data;
+                    } else {
+                        that.$message.error(
+                            res.msg || "获取客户列表失败，请重试."
+                        );
+                    }
+                })
+                .catch(res => {
+                    that.$message.error("获取客户列表失败，请重试.");
+                });
         },
 
         //获取 招聘负责人明细的报表
@@ -203,7 +251,8 @@ export default {
             let that = this,
                 pObj = {
                     dtfm: that.search.dateRange[0],
-                    dtto: that.search.dateRange[1]
+                    dtto: that.search.dateRange[1],
+                    client: that.selectClient.join(",")
                 },
                 pArr = [];
 

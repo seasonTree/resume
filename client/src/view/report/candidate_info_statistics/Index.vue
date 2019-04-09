@@ -148,9 +148,11 @@ export default {
                 { prop: "entry", label: "毕业年份", fixed: "left" },
                 { prop: "entry", label: "毕业院校", fixed: "left" },
                 { prop: "entry", label: "公司", fixed: "left" },
-                { prop: "entry", label: "是否安排面试", fixed: "left" },
-                { prop: "entry", label: "是否参加面试", fixed: "left" },
-                { prop: "entry", label: "是否通过面试", fixed: "left" }
+                { prop: "entry", label: "是否推荐", fixed: false },
+                { prop: "entry", label: "是否安排", fixed: false },
+                { prop: "entry", label: "是否到场", fixed: false },
+                { prop: "entry", label: "是否通过", fixed: false },
+                { prop: "entry", label: "是否入职", fixed: false }
             ],
 
             search: {
