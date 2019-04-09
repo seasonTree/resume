@@ -1,6 +1,6 @@
 <template>
     <el-dialog
-        title="客户推荐记录"
+        title="客户明细"
         :visible.sync="show"
         :before-close="closeDialog"
         class="custom-dialog view-dialog"
@@ -28,10 +28,17 @@
                 </el-table-column>
                 <el-table-column
                     prop="ct_time"
-                    label="推荐日期"
+                    label="日期"
                     align="center"
                     fixed
-                >
+                >				
+                </el-table-column>
+				<el-table-column
+                    prop="ct_time"
+                    label="类型"
+                    align="center"
+                    fixed
+                >				
                 </el-table-column>
                 <el-table-column
                     prop="name"
@@ -57,12 +64,12 @@
                     align="center"
                 >
                 </el-table-column>
-                <el-table-column
+                <!-- <el-table-column
                     prop="graduation_time"
                     label="毕业年份"
                     align="center"
                 >
-                </el-table-column>
+                </el-table-column> -->
                 <el-table-column
                     prop="source"
                     label="简历来源"
