@@ -27,10 +27,11 @@
                 >
                 </el-table-column>
                 <el-table-column
-                    prop="ct_time"
+                    prop="communicate_time"
                     label="日期"
                     align="center"
                     fixed
+					:formatter="formatterDate"
                 >
                 </el-table-column>
                 <el-table-column
@@ -66,7 +67,7 @@
                 >
                 </el-table-column>
                 <el-table-column
-                    prop="school"
+                    prop="educational"
                     label="学历"
                     align="center"
                 >
@@ -122,11 +123,12 @@
 
 <script>
 import DialogForm from "@view/base/DialogForm";
+import Utils from "@view/base/Utils";
 
 export default {
     name: "ClientDetail",
 
-    mixins: [DialogForm],
+    mixins: [DialogForm, Utils],
 
     props: {
         searchData: {
@@ -185,7 +187,7 @@ export default {
                 that.$api.report
                     .client_statistics_detail(params)
                     .then(res => {
-                        if (res.code == 200) {
+                        if (res.code == 0) {
                             that.tdata = res.data.row;
                             that.pager.total = res.data.total || 0;
                         } else {
