@@ -452,7 +452,7 @@ export default {
             }
         },
 
-        afterEdit(){
+        afterClose() {
             let that = this;
 
             that.form.screen_client = [];
@@ -460,39 +460,85 @@ export default {
             that.form.arrive_client = [];
             that.form.approved_interview_client = [];
             that.form.entry_client = [];
-        }
+        },
 
-        // editCommit() {
-        //     let that = this;
-        //     that.form.resume_id = that.resume_id;
-        //     that.$refs["form"].validate(valid => {
-        //         if (valid) {
-        //             that.$api.communication
-        //                 .editCommunication(that.form)
-        //                 .then(res => {
-        //                     if (res.code == 0) {
-        //                         that.$emit(
-        //                             "edit-item",
-        //                             JSON.parse(JSON.stringify(res.data))
-        //                         );
-        //                         that.$message({
-        //                             message: "修改成功.",
-        //                             type: "success",
-        //                             duration: 800
-        //                         });
-        //                         that.closeDialog();
-        //                     } else {
-        //                         that.$message.error(
-        //                             res.msg || "修改失败，请重试."
-        //                         );
-        //                     }
-        //                 })
-        //                 .catch(res => {
-        //                     that.$message.error("修改失败，请重试.");
-        //                 });
-        //         }
-        //     });
-        // }
+        editCommit() {
+            let that = this;
+
+            //限定选中后一定要选客户------------------------------
+            if (that.form.screen == 1 && that.form.screen_client.length == 0) {
+                that.$message.error("请选择推荐的客户.");
+                return;
+            } else if (
+                that.form.arrange_interview == 1 &&
+                that.form.arrange_interview_client.length == 0
+            ) {
+                that.$message.error("请选择安排面试的客户.");
+                return;
+            } else if (
+                that.form.arrive == 1 &&
+                that.form.arrive_client.length == 0
+            ) {
+                that.$message.error("请选择到场的客户.");
+                return;
+            } else if (
+                that.form.approved_interview == 1 &&
+                that.form.approved_interview_client.length == 0
+            ) {
+                that.$message.error("请选择通过面试的客户.");
+                return;
+            } else if (
+                that.form.entry == 1 &&
+                that.form.entry_client.length == 0
+            ) {
+                that.$message.error("请选择入职的客户.");
+                return;
+            }
+
+            //--------------------------------------------
+
+            that.$refs["form"].validate(valid => {
+                if (valid) {
+                    that.commitLoading = true;
+
+                    //提交之前
+                    that.beforeEdit(that.form);
+
+                    that.$api[that.apiType]
+                        [that.editMethod](that.form)
+                        .then(res => {
+                            if (res.code == 0) {
+                                //修改成功后
+                                that.afterEdit(res.data);
+
+                                that.$emit(
+                                    "edit-item",
+                                    JSON.parse(JSON.stringify(res.data))
+                                );
+
+                                that.$message({
+                                    message: "修改成功.",
+                                    type: "success",
+                                    duration: 800
+                                });
+
+                                that.closeDialog();
+                            } else {
+                                that.$message.error(
+                                    res.message || "修改失败，请重试."
+                                );
+                            }
+
+                            that.commitLoading = false;
+                        })
+                        .catch(res => {
+                            that.$message.error("修改失败，请重试.");
+
+                            that.commitLoading = false;
+                        });
+                }
+            });
+        }
     }
 };
 </script>
