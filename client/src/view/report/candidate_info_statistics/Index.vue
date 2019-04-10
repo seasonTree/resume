@@ -92,6 +92,7 @@
                     :label="item.label"
                     :fixed="item.fixed"
                     :formatter="item.formatter"
+                    :width="item.width"
                 ></el-table-column>
 
             </el-table>
@@ -119,11 +120,11 @@
 
 <script>
 import ReportBase from "@view/base/ReportBase";
-import Utils from "@view/base/Utils";
 import { getLtWeek, getLtMonth } from "@common/util";
+import { formatDate } from "@common/util";
 
 export default {
-    mixins: [ReportBase, Utils],
+    mixins: [ReportBase],
 
     created() {
         let that = this,
@@ -139,16 +140,24 @@ export default {
         return {
             //候选人信息统计
             thead: [
-                { prop: "communicate_time", label: "推荐时间", fixed: "left", formatter: Utils.formatterDate },
+                {
+                    prop: "communicate_time",
+                    label: "推荐时间",
+                    fixed: "left",
+                    width: '90',
+                    formatter: (row, column, cellValue, index) => {
+                        return formatDate(cellValue, "yyyy-MM-dd");
+                    }
+                },
                 { prop: "name", label: "姓名", fixed: "left" },
-                { prop: "phone", label: "联系方式", fixed: "left" },
+                { prop: "phone", label: "联系方式", fixed: "left", width: '100', },
                 { prop: "client_name", label: "客户", fixed: "left" },
                 { prop: "ct_user", label: "跟踪人", fixed: "left" },
                 { prop: "expected_job", label: "岗位", fixed: "left" },
                 { prop: "educational", label: "学历", fixed: "left" },
-                { prop: "graduation_time", label: "毕业年份", fixed: "left" },
-                { prop: "school", label: "毕业院校", fixed: "left" },
-                { prop: "company_type", label: "公司", fixed: "left" },
+                { prop: "graduation_time", label: "毕业年份", fixed: false },
+                { prop: "school", label: "毕业院校", fixed: false },
+                { prop: "company_type", label: "公司", fixed: false },
                 { prop: "screen", label: "是否推荐", fixed: false },
                 { prop: "arrange_interview", label: "是否安排", fixed: false },
                 { prop: "arrive", label: "是否到场", fixed: false },
@@ -261,18 +270,19 @@ export default {
                 .candidate_info_statistics(params)
                 .then(res => {
                     if (res.code == 0) {
-
-                        for(var i = 0; i < res.data.length; i++){
+                        for (var i = 0; i < res.data.length; i++) {
                             var item = res.data[i];
-                            
-                            item.screen = item.screen == 0? '否' : '是';
-                            item.arrange_interview = item.arrange_interview == 0? '否' : '是';
-                            item.arrive = item.arrive == 0? '否' : '是';
-                            item.approved_interview = item.approved_interview == 0? '否' : '是';
-                            item.entry = item.entry == 0? '否' : '是';
+
+                            item.screen = item.screen == 0 ? "否" : "是";
+                            item.arrange_interview =
+                                item.arrange_interview == 0 ? "否" : "是";
+                            item.arrive = item.arrive == 0 ? "否" : "是";
+                            item.approved_interview =
+                                item.approved_interview == 0 ? "否" : "是";
+                            item.entry = item.entry == 0 ? "否" : "是";
                         }
 
-                        that.reportData = res.data;                        
+                        that.reportData = res.data;
 
                         if (that.pager) {
                             that.pager.total = that.reportData.length;

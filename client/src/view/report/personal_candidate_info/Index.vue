@@ -71,6 +71,7 @@
                     :label="item.label"
                     :fixed="item.fixed"
                     :formatter="item.formatter"
+                    :width="item.width"
                 ></el-table-column>
             </el-table>
         </el-row>
@@ -98,6 +99,7 @@
 <script>
 import ReportBase from "@view/base/ReportBase";
 import { getLtWeek, getLtMonth } from "@common/util";
+import { formatDate } from "@common/util";
 
 export default {
     mixins: [ReportBase],
@@ -115,20 +117,28 @@ export default {
         return {
             //招聘负责人明细
             thead: [
-                { prop: "ct_user", label: "推荐时间", fixed: "left" },
+                {
+                    prop: "communicate_time",
+                    label: "推荐时间",
+                    fixed: "left",
+                    width: '90',
+                    formatter: (row, column, cellValue, index) => {
+                        return formatDate(cellValue, "yyyy-MM-dd");
+                    }
+                },
                 { prop: "name", label: "姓名", fixed: "left" },
-                { prop: "screen", label: "联系方式", fixed: "left" },
-                { prop: "arrange_interview", label: "客户", fixed: "left" },
-                { prop: "arrive", label: "跟踪人", fixed: "left" },
-                { prop: "entry", label: "岗位", fixed: "left" },
-                { prop: "entry", label: "学历", fixed: "left" },
-                { prop: "entry", label: "毕业年份", fixed: "left" },
-                { prop: "entry", label: "毕业院校", fixed: "left" },
-                { prop: "entry", label: "公司", fixed: "left" },
-                { prop: "entry", label: "是否推荐", fixed: false },
-                { prop: "entry", label: "是否安排", fixed: false },
-                { prop: "entry", label: "是否到场", fixed: false },
-                { prop: "entry", label: "是否通过", fixed: false },
+                { prop: "phone", label: "联系方式", fixed: "left", width: '100', },
+                { prop: "client_name", label: "客户", fixed: "left" },
+                { prop: "ct_user", label: "跟踪人", fixed: "left" },
+                { prop: "expected_job", label: "岗位", fixed: "left" },
+                { prop: "educational", label: "学历", fixed: "left" },
+                { prop: "graduation_time", label: "毕业年份", fixed: false },
+                { prop: "school", label: "毕业院校", fixed: false },
+                { prop: "company_type", label: "公司", fixed: false },
+                { prop: "screen", label: "是否推荐", fixed: false },
+                { prop: "arrange_interview", label: "是否安排", fixed: false },
+                { prop: "arrive", label: "是否到场", fixed: false },
+                { prop: "approved_interview", label: "是否通过", fixed: false },
                 { prop: "entry", label: "是否入职", fixed: false }
             ],
 
