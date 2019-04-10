@@ -889,19 +889,30 @@ class Report extends Controller
       $data = $comm_cli->alias('a')->join('rs_client b','a.client_id=b.id')
                        ->join('rs_communicate c','a.comm_id=c.id')
                        ->join('rs_resume d','c.resume_id=d.id')
-                       ->field('c.communicate_time,c.ct_user,c.screen,c.arrange_interview,c.arrive,c.approved_interview,c.entry,d.name,d.phone,d.expected_job,d.educational,d.graduation_time,d.school,d.company_type,b.client_name')
+                       ->field('max(type=1) as screen,max(type=2) as arrange_interview,max(type=3) as arrive,max(type=4) as approved_interview,max(type=5) as entry,c.communicate_time,c.ct_user,d.name,d.phone,d.expected_job,d.educational,d.graduation_time,d.school,d.company_type,b.client_name')
                        ->where($where)
-                       ->order('communicate_time desc,name asc,type desc')
-                       ->select();
+                       ->group('phone,client_name')
+                       ->select()
+                       ->toArray();
 
-      // $phone = [];//记录电话
-      // $new_data = [];//新数据
-      // foreach ($data as $k => $v) {
-      //    if (in_array($v, haystack)) {
-      //      # code...
+      $data = array_unique($data, SORT_REGULAR);//数组去重
+      // $phone = array_column($data,'phone');//取出电话
+      // $phone_mark = [];//标记
+      // foreach ($phone as $k => $v) {
+      //    if (array_key_exists($v,$phone_mark)) {
+      //      $data[$phone_mark[$v]]['screen'] == 1?'':$data[$phone_mark[$v]]['screen'] = $data[$k]['screen'];
+      //      $data[$phone_mark[$v]]['arrange_interview'] == 1?'':$data[$phone_mark[$v]]['arrange_interview'] = $data[$k]['arrange_interview'];
+      //      $data[$phone_mark[$v]]['arrive'] == 1?'':$data[$phone_mark[$v]]['arrive'] = $data[$k]['arrive'];
+      //      $data[$phone_mark[$v]]['approved_interview'] == 1?'':$data[$phone_mark[$v]]['approved_interview'] = $data[$k]['approved_interview'];
+      //      $data[$phone_mark[$v]]['entry'] == 1?'':$data[$phone_mark[$v]]['entry'] = $data[$k]['entry'];
+
+      //      unset($data[$k]);
+      //      continue;
       //    }
+      //    $phone_mark[$v] = $k;
       // }
-      return json(['msg' => '获取成功','code' => 0,'data' => $data]);
+
+      return json(['msg' => '获取成功','code' => 0,'data' => array_merge($data)]);
 
     }
 
