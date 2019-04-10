@@ -833,17 +833,75 @@ class Report extends Controller
             return json(['msg' => '缺少'.$v,'code' => 404]);
          }
       }
+      $pageSize = $input['pageSize'];
+      $pageIndex = $input['pageIndex'];
+      $begin = ($pageIndex-1)*$pageSize;
+
+      $where = "date(communicate_time) between '$input[dtfm]' and '$input[dtto]'";
+      $input['client_id'] == 0?'':$where.=" and client_id=$input[client_id]";
 
       $resume_model = new Resume();
       $data = $resume_model->alias('a')
-                   ->join('rs_communicate b','a.id=b.resume_id','left')
-                   ->join('rs_client_communicate c','b.id=c.comm_id','left')
+                   ->join('rs_communicate b','a.id=b.resume_id')
+                   ->join('rs_client_communicate c','b.id=c.comm_id')
                    ->field('a.id,a.name,b.ct_user,b.communicate_time,a.expected_job,a.phone,a.educational,a.graduation_time,a.source,a.company_type,type,client_id')
-                   ->where("date(communicate_time) between '$input[dtfm]' and '$input[dtto]' and client_id=$input[client_id]")
+                   ->where($where)
+                   ->limit($begin,$pageSize)
+                   ->order('communicate_time desc,name asc,type desc')
                    ->select()
                    ->toArray();
-      
-      return json(['msg' => '获取成功','code' => 0,'data' => ['row' => $data,'total' => 20]]);
+      $total = $resume_model->alias('a')
+                   ->join('rs_communicate b','a.id=b.resume_id')
+                   ->join('rs_client_communicate c','b.id=c.comm_id')
+                   ->where($where)
+                   ->count();
+      return json(['msg' => '获取成功','code' => 0,'data' => ['row' => $data,'total' => $total]]);
+
+    }
+
+    public function candidateRec(){
+      //候选人信息统计
+      $input = input('get.');
+      $parm = ['dtfm' => '开始时间','dtto' => '结束时间'];//定义参数
+
+      foreach ($parm as $k => $v) {
+        //参数检测
+         if (!array_key_exists($k, $input)) {
+            return json(['msg' => '缺少'.$v,'code' => 404]);
+         }
+      }
+      $where = "date(communicate_time) between '$input[dtfm]' and '$input[dtto]'";//时间
+      $where_ur = $input['ur'] != ''? implode("','",explode(',',$input['ur'])):'';//招聘负责人
+      $where_ur == ''?'':$where.=" and c.ct_user in('$where_ur')";
+      $input['client'] != ''?$where.=" and a.client_id in($input[client])":'';//客户
+
+      // $comm = new Communicate();
+
+      // $data = $comm->alias('a')->join('rs_resume b','a.resume_id=b.id')
+      //                  ->join('rs_client_communicate c','a.id=c.comm_id')
+      //                  ->join('rs_client d','c.client_id=d.id')
+      //                  ->field('a.communicate_time,a.ct_user,a.screen,a.arrange_interview,a.arrive,a.approved_interview,a.entry,b.name,b.phone,b.expected_job,b.educational,b.graduation_time,b.school,b.company_type,d.client_name')
+      //                  ->where($where)
+      //                  ->order('communicate_time desc,name asc,type desc')
+      //                  ->select();
+
+      $comm_cli = new ClientComm();
+      $data = $comm_cli->alias('a')->join('rs_client b','a.client_id=b.id')
+                       ->join('rs_communicate c','a.comm_id=c.id')
+                       ->join('rs_resume d','c.resume_id=d.id')
+                       ->field('c.communicate_time,c.ct_user,c.screen,c.arrange_interview,c.arrive,c.approved_interview,c.entry,d.name,d.phone,d.expected_job,d.educational,d.graduation_time,d.school,d.company_type,b.client_name')
+                       ->where($where)
+                       ->order('communicate_time desc,name asc,type desc')
+                       ->select();
+
+      // $phone = [];//记录电话
+      // $new_data = [];//新数据
+      // foreach ($data as $k => $v) {
+      //    if (in_array($v, haystack)) {
+      //      # code...
+      //    }
+      // }
+      return json(['msg' => '获取成功','code' => 0,'data' => $data]);
 
     }
 
