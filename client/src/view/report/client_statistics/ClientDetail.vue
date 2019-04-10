@@ -7,7 +7,7 @@
         :close-on-click-modal="true"
         v-dialog-drag
         top="5vh"
-        width="1000px"
+        width="1200px"
     >
         <div class="mb-20">
             <el-table
