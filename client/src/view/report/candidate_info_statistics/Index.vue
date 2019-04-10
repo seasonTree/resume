@@ -119,10 +119,11 @@
 
 <script>
 import ReportBase from "@view/base/ReportBase";
+import Utils from "@view/base/Utils";
 import { getLtWeek, getLtMonth } from "@common/util";
 
 export default {
-    mixins: [ReportBase],
+    mixins: [ReportBase, Utils],
 
     created() {
         let that = this,
@@ -138,7 +139,7 @@ export default {
         return {
             //候选人信息统计
             thead: [
-                { prop: "ct_user", label: "推荐时间", fixed: "left" },
+                { prop: "ct_user", label: "推荐时间", fixed: "left", formatter: Utils.formatterDate },
                 { prop: "name", label: "姓名", fixed: "left" },
                 { prop: "screen", label: "联系方式", fixed: "left" },
                 { prop: "arrange_interview", label: "客户", fixed: "left" },
@@ -260,7 +261,13 @@ export default {
                 .candidate_info_statistics(params)
                 .then(res => {
                     if (res.code == 0) {
-                        that.reportData = res.data;
+
+                        for(var i = 0; i < res.data.length; i++){
+                            var item = res.data[i];
+                            
+                        }
+
+                        that.reportData = res.data;                        
 
                         if (that.pager) {
                             that.pager.total = that.reportData.length;
