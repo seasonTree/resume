@@ -150,7 +150,7 @@ export default {
                     }
                 },
                 { prop: "name", label: "姓名", fixed: "left" },
-                { prop: "phone", label: "联系方式", fixed: "left", width: '100', },
+                { prop: "phone", label: "联系方式", fixed: "left", width: '130', },
                 { prop: "client_name", label: "客户", fixed: "left" },
                 { prop: "ct_user", label: "跟踪人", fixed: "left" },
                 { prop: "expected_job", label: "岗位", fixed: "left" },

@@ -10,6 +10,7 @@ use app\index\model\Client;
 use app\index\model\ClientComm;
 use PHPExcel_IOFactory;
 use PHPExcel;
+use think\Db;
 
 class Report extends Controller
 {	
@@ -27,7 +28,7 @@ class Report extends Controller
       $comm = new Communicate();
       $user = new User();
 
-      if (isset($parm['ur'])) {
+      if (isset($parm['ur']) && $parm['ur'] != '') {
       $in_user = explode(',',$parm['ur']);
       $where_in = implode("','",$in_user);
       }
@@ -262,45 +263,83 @@ class Report extends Controller
     	return json(['code' => 0,'msg' => '获取成功','data' => $data]);
     }
 
-    public function getRecruitmentTotal($parm){
+    public function getRecruitmentTotal($input){
     	//获取招聘负责人统计数据
     	$user = new User();
-    	$comm = new Communicate();
 
-    	if (isset($parm['ur'])) {
-			$in_user = explode(',',$parm['ur']);
-			$where_in = implode("','",$in_user);
-			$user_info = $user->getUserInfo("uname in('$where_in')");
-    	}
-    	else{
-    		$user_info = $user->getUserInfo();
-    	}
+      $where = "date(a.communicate_time) between '$input[dtfm]' and '$input[dtto]'";//时间
+      $where_ur = isset($input['ur']) && $input['ur'] != ''? implode("','",explode(',',$input['ur'])):'';//招聘负责人
+      $where_ur == ''?'':$where.=" and a.ct_user in('$where_ur')";
+
+      // $data = $user->alias('a')->join('rs_communicate b','a.uname=b.ct_user')
+      //                  ->field('uname,sum(screen) as screen,sum(arrange_interview) as arrange_interview,sum(arrive) as arrive,sum(approved_interview) as approved_interview,sum(entry) as entry')
+      //                  ->where($where)
+      //                  ->group('uname')
+      //                  ->select()
+      //                  ->toArray();
+
+      $data = Db::query("select b.ct_user as uname, sum(b.screen) as screen,sum(b.arrange_interview) as arrange_interview,sum(b.arrive) as arrive,sum(b.approved_interview) as approved_interview,sum(b.entry) as entry from (select a.resume_id, a.ct_user, MAX(a.screen) as screen,MAX(a.arrange_interview) as arrange_interview,MAX(a.arrive) as arrive,MAX(a.approved_interview) as approved_interview,MAX(a.entry) as entry from rs_communicate a where ".$where." group by a.resume_id, a.ct_user) b group by b.ct_user");
+
+      if ($where_ur == '') {
+        $uname = array_column($data,'uname');
+        $uname[] = 'admin';
+        $uname[] = 'test';//排除掉不需要统计的数据
+        $uname = implode("','",$uname);
+        $data2 = $user->where("uname not in('$uname') and status=0")->field('uname')->select()->toArray();
+        $empty_data = [];//空数据
+        $keys = count($data);
+        foreach ($data2 as $k => $v) {
+          $data[$keys]['uname'] = $v['uname'];
+          $data[$keys]['screen'] = 0;
+          $data[$keys]['arrange_interview'] = 0;
+          $data[$keys]['arrive'] = 0;
+          $data[$keys]['approved_interview'] = 0;
+          $data[$keys]['entry'] = 0;
+          $keys++;
+        }
+      }
+      
+      return $data;
+
+  //*********************************旧版统计方法，先保留********************************************/
+   //  	$comm = new Communicate();
+
+   //  	if (isset($parm['ur'])) {
+			// $in_user = explode(',',$parm['ur']);
+			// $where_in = implode("','",$in_user);
+			// $user_info = $user->getUserInfo("uname in('$where_in')");
+   //  	}
+   //  	else{
+   //  		$user_info = $user->getUserInfo();
+   //  	}
 
     	
-    	foreach ($user_info as $k => $v) {
+   //  	foreach ($user_info as $k => $v) {
 
-    		$where = "date(communicate_time) between '$parm[dtfm]' and '$parm[dtto]' and a.ct_user = '$v[uname]'";
-    		// if (isset($in_user)) {
-    		// 	$where.= " and a.ct_user in('$where_in')";
-    		// }
+   //  		$where = "date(communicate_time) between '$parm[dtfm]' and '$parm[dtto]' and a.ct_user = '$v[uname]'";
+   //  		// if (isset($in_user)) {
+   //  		// 	$where.= " and a.ct_user in('$where_in')";
+   //  		// }
 
-    		$user_info[$k]['screen'] = 0;
-  			$user_info[$k]['arrange_interview'] = 0;
-  			$user_info[$k]['arrive'] = 0;
-  			$user_info[$k]['approved_interview'] = 0;
-  			$user_info[$k]['entry'] = 0;
-    		$communicate = $comm->getCommInfo($where);
+   //  		$user_info[$k]['screen'] = 0;
+  	// 		$user_info[$k]['arrange_interview'] = 0;
+  	// 		$user_info[$k]['arrive'] = 0;
+  	// 		$user_info[$k]['approved_interview'] = 0;
+  	// 		$user_info[$k]['entry'] = 0;
+   //  		$communicate = $comm->getCommInfo($where);
 
-    		foreach ($communicate as $a => $b) {
-    			$user_info[$k]['screen'] = $user_info[$k]['screen']+$b['screen'];
-    			$user_info[$k]['arrange_interview'] = $user_info[$k]['arrange_interview']+$b['arrange_interview'];
-    			$user_info[$k]['arrive'] = $user_info[$k]['arrive']+$b['arrive'];
-    			$user_info[$k]['approved_interview'] = $user_info[$k]['approved_interview']+$b['approved_interview'];
-    			$user_info[$k]['entry'] = $user_info[$k]['entry']+$b['entry'];
-    		}
-    	}
+   //  		foreach ($communicate as $a => $b) {
+   //  			$user_info[$k]['screen'] = $user_info[$k]['screen']+$b['screen'];
+   //  			$user_info[$k]['arrange_interview'] = $user_info[$k]['arrange_interview']+$b['arrange_interview'];
+   //  			$user_info[$k]['arrive'] = $user_info[$k]['arrive']+$b['arrive'];
+   //  			$user_info[$k]['approved_interview'] = $user_info[$k]['approved_interview']+$b['approved_interview'];
+   //  			$user_info[$k]['entry'] = $user_info[$k]['entry']+$b['entry'];
+   //  		}
+   //  	}
 
-    	return $user_info;
+   //  	return $user_info;
+      //******************************************************************************************/
+
     }
 
     public function recruitmentList(){
@@ -310,7 +349,7 @@ class Report extends Controller
       if (!$check_date) {
          return json(['msg' => '缺少日期','code' => 404]);
       }
-    	$data = $this->getRecruitment($input);
+    	$data = $this->candidateRecData($input);
 
     	return json([ 'msg' => '获取成功','code' => 0,'data' => $data ]);
     }
@@ -323,7 +362,7 @@ class Report extends Controller
          return json(['msg' => '缺少日期','code' => 404]);
       }
       $input['ur'] = Session::get('user_info')['uname'];
-      $data = $this->getRecruitment($input);
+      $data = $this->candidateRecData($input);
 
       return json([ 'msg' => '获取成功','code' => 0,'data' => $data ]);
     }
@@ -337,171 +376,238 @@ class Report extends Controller
       }
       $input['ur'] = Session::get('user_info')['uname'];
 
-      $obj = new \PHPExcel();//phpexcel
+              $obj = new \PHPExcel();//phpexcel
       $obj->setActiveSheetIndex(0);
       //宽度设置
       $obj->getActiveSheet()->getColumnDimension('A')->setWidth(12);
       $obj->getActiveSheet()->getColumnDimension('B')->setWidth(12);
-      $obj->getActiveSheet()->getColumnDimension('C')->setWidth(10);
-      $obj->getActiveSheet()->getColumnDimension('D')->setWidth(10);
-      $obj->getActiveSheet()->getColumnDimension('E')->setWidth(10);
-      $obj->getActiveSheet()->getColumnDimension('F')->setWidth(10);
-      $obj->getActiveSheet()->getColumnDimension('G')->setWidth(10);
-      //表头
-      $obj->getActiveSheet()->setCellValue("A1", '招聘负责人');
-      $obj->getActiveSheet()->setCellValue("B1", '候选人');
-      $obj->getActiveSheet()->setCellValue("C1", '是否推荐');
-      $obj->getActiveSheet()->setCellValue("D1", '是否安排');
-      $obj->getActiveSheet()->setCellValue("E1", '是否到场');
-      $obj->getActiveSheet()->setCellValue("F1", '是否通过');
-      $obj->getActiveSheet()->setCellValue("G1", '是否入职');
-      $data = $this->getRecruitment($input);
-      //数据
-      foreach ($data as $k => $v) {
-        $k = $k+2;
+      $obj->getActiveSheet()->getColumnDimension('C')->setWidth(16);
+      $obj->getActiveSheet()->getColumnDimension('D')->setWidth(16);
+      $obj->getActiveSheet()->getColumnDimension('E')->setWidth(16);
+      $obj->getActiveSheet()->getColumnDimension('F')->setWidth(12);
+      $obj->getActiveSheet()->getColumnDimension('G')->setWidth(16);
+      $obj->getActiveSheet()->getColumnDimension('H')->setWidth(10);
+      $obj->getActiveSheet()->getColumnDimension('I')->setWidth(12);
+      $obj->getActiveSheet()->getColumnDimension('J')->setWidth(16);
+      $obj->getActiveSheet()->getColumnDimension('K')->setWidth(12);
+      $obj->getActiveSheet()->getColumnDimension('L')->setWidth(25);
+      $obj->getActiveSheet()->getColumnDimension('M')->setWidth(10);
+      $obj->getActiveSheet()->getColumnDimension('N')->setWidth(10);
+      $obj->getActiveSheet()->getColumnDimension('O')->setWidth(10);
+      $obj->getActiveSheet()->getColumnDimension('P')->setWidth(10);
+      $obj->getActiveSheet()->getColumnDimension('Q')->setWidth(10);
+      $obj->getActiveSheet()->getColumnDimension('R')->setWidth(10);
 
-        $obj->getActiveSheet()->setCellValue("A".$k,$v['ct_user']);
-        $obj->getActiveSheet()->setCellValue("B".$k, $v['name']);
-        $obj->getActiveSheet()->setCellValue("C".$k, $v['screen'] == 1 ?'是':'否');
-        $obj->getActiveSheet()->setCellValue("D".$k, $v['arrange_interview'] ==1 ?'是':'否');
-        $obj->getActiveSheet()->setCellValue("E".$k, $v['arrive'] == 1 ?'是':'否');
-        $obj->getActiveSheet()->setCellValue("F".$k, $v['approved_interview'] == 1 ?'是':'否');
-        $obj->getActiveSheet()->setCellValue("G".$k, $v['entry'] == 1 ?'是':'否');
+      //设置居中
+      $obj->getDefaultStyle()->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+      $obj->getDefaultStyle()->getAlignment()->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
+      //颜色
+      $obj->getActiveSheet()->getStyle('A1:R1')->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID);
+      $obj->getActiveSheet()->getStyle('A1:R1')->getFill()->getStartColor()->setARGB('33CC66');
+
+      //表头
+      $obj->getActiveSheet()->setCellValue("A1", '推荐时间');
+      $obj->getActiveSheet()->setCellValue("B1", '姓名');
+      $obj->getActiveSheet()->setCellValue("C1", '联系方式');
+      $obj->getActiveSheet()->setCellValue("D1", '客户');
+      $obj->getActiveSheet()->setCellValue("E1", '跟踪人');
+      $obj->getActiveSheet()->setCellValue("F1", '推荐级别');
+      $obj->getActiveSheet()->setCellValue("G1", '是否原公司离职');
+      $obj->getActiveSheet()->setCellValue("H1", '到岗');
+      $obj->getActiveSheet()->setCellValue("I1", '岗位');
+      $obj->getActiveSheet()->setCellValue("J1", '学历');
+      $obj->getActiveSheet()->setCellValue("K1", '毕业年份');
+      $obj->getActiveSheet()->setCellValue("L1", '毕业院校');
+      $obj->getActiveSheet()->setCellValue("M1", '公司');
+      $obj->getActiveSheet()->setCellValue("N1", '是否推荐');
+      $obj->getActiveSheet()->setCellValue("O1", '是否安排');
+      $obj->getActiveSheet()->setCellValue("P1", '是否到场');
+      $obj->getActiveSheet()->setCellValue("Q1", '是否通过');
+      $obj->getActiveSheet()->setCellValue("R1", '是否入职');
+
+      $data = $this->candidateRecData($input);
+      $n = 0;//行
+      foreach ($data as $k => $v) {
+        $n = $k+2;
+        if (!strtotime($v['communicate_time'])) {
+          $v['communicate_time'] = str_replace('.','-',$v['communicate_time']);
+        }
+        $obj->getActiveSheet()->setCellValue("A".$n, date('Y-m-d',strtotime($v['communicate_time'])));
+        $obj->getActiveSheet()->setCellValue("B".$n, $v['name']);
+        $obj->getActiveSheet()->setCellValue("C".$n, $v['phone']);
+        $obj->getActiveSheet()->setCellValue("D".$n, $v['client_name']);
+        $obj->getActiveSheet()->setCellValue("E".$n, $v['ct_user']);
+        $obj->getActiveSheet()->setCellValue("F".$n, '');
+        $obj->getActiveSheet()->setCellValue("G".$n, '');
+        $obj->getActiveSheet()->setCellValue("H".$n, '');
+        $obj->getActiveSheet()->setCellValue("I".$n, $v['expected_job']);
+        $obj->getActiveSheet()->setCellValue("J".$n, $v['educational']);
+        $obj->getActiveSheet()->setCellValue("K".$n, $v['graduation_time']);
+        $obj->getActiveSheet()->setCellValue("L".$n, $v['school']);
+        $obj->getActiveSheet()->setCellValue("M".$n, $v['company_type']);
+        $obj->getActiveSheet()->setCellValue("N".$n, $v['screen'] == 1?'是':'否');
+        $obj->getActiveSheet()->setCellValue("O".$n, $v['arrange_interview'] == 1?'是':'否');
+        $obj->getActiveSheet()->setCellValue("P".$n, $v['arrive'] == 1?'是':'否');
+        $obj->getActiveSheet()->setCellValue("Q".$n, $v['approved_interview'] == 1?'是':'否');
+        $obj->getActiveSheet()->setCellValue("R".$n, $v['entry'] == 1?'是':'否');
       }
+
+      //边框线
+      $style_array = array( 
+                            'borders' => array( 
+                                'allborders' => array( 
+                                'style' => \PHPExcel_Style_Border::BORDER_THIN 
+                              ) 
+                            )
+                          ); 
+
+      $obj->getActiveSheet()->getStyle('A1:R'.$n)->applyFromArray($style_array);
+
+      $filename = $input['dtfm'].'到'.$input['dtto'].'候选人统计.xlsx';
       header('Content-Type: application/vnd.ms-excel');
-      header('Content-Disposition: attachment;filename="招聘负责人明细.xlsx"');
+      header('Content-Disposition: attachment;filename='.$filename);
       ob_end_clean();//清除缓冲区,避免乱码
       $objWriter = \PHPExcel_IOFactory::createWriter($obj, 'Excel2007');
       $objWriter->save('php://output');
       $obj->disconnectWorksheets();
-
     }
 
-    public function getRecruitment($parm = ''){
-    	//获取数据主方法
-    	$resume = new Resume();
-    	// $candidate = $resume->getCandidate();
+   //  public function getRecruitment($parm = ''){
+   //  	//获取数据主方法
+   // //  	$resume = new Resume();
+   // //  	// $candidate = $resume->getCandidate();
 
-    	$comm = new Communicate();
-      /*******************************************旧方法，先存档***************************************************/
-    	$data = []; //最终数据
-    	$user_arr = [];//临时数组,记录是否有重复数据用于叠加
-    	$key = 1;//data数组的key
-    	$user = new User();
-    	if (isset($parm['ur'])) {
-			$in_user = explode(',',$parm['ur']);
-			$where_in = implode("','",$in_user);
-			$user_data = $user->getUserInfo("uname in('$where_in')");
-    	}
-    	else{
-    		$user_data = $user->getUserInfo();
-    	}
+   // //  	$comm = new Communicate();
+   // //    /*******************************************旧方法，先存档***************************************************/
+   // //  	$data = []; //最终数据
+   // //  	$user_arr = [];//临时数组,记录是否有重复数据用于叠加
+   // //  	$key = 1;//data数组的key
+   // //  	$user = new User();
+   // //  	if (isset($parm['ur'])) {
+			// // $in_user = explode(',',$parm['ur']);
+			// // $where_in = implode("','",$in_user);
+			// // $user_data = $user->getUserInfo("uname in('$where_in')");
+   // //  	}
+   // //  	else{
+   // //  		$user_data = $user->getUserInfo();
+   // //  	}
 
-    	foreach ($user_data as $k => $v) {
-    		if ($parm != '') {
-    			$where = "date(communicate_time) between '$parm[dtfm]' and '$parm[dtto]' and a.ct_user = '$v[uname]'";
-    		}
-    		else{
-    			$where = "a.ct_user = '$v[uname]'";
-    		}
+   // //  	foreach ($user_data as $k => $v) {
+   // //  		if ($parm != '') {
+   // //  			$where = "date(communicate_time) between '$parm[dtfm]' and '$parm[dtto]' and a.ct_user = '$v[uname]'";
+   // //  		}
+   // //  		else{
+   // //  			$where = "a.ct_user = '$v[uname]'";
+   // //  		}
 
-    		$temp_data = $comm->getCommInfo($where);
 
-    		if (empty($temp_data)) {
-    			continue;
-    		}
-    		foreach ($temp_data as $a => $b) {
-    			if (array_key_exists($b['resume_id'],$user_arr)) {
-    				foreach ($b as $n => $m) {
-    					if ($m == 0 || $n == 'resume_id') {
-    						continue;
-    					}
+   // //  		if (empty($temp_data)) {
+   // //  			continue;
+   // //  		}
+   // //  		foreach ($temp_data as $a => $b) {
+   // //  			if (array_key_exists($b['resume_id'],$user_arr)) {
+   // //  				foreach ($b as $n => $m) {
+   // //  					if ($m == 0 || $n == 'resume_id') {
+   // //  						continue;
+   // //  					}
     					
-    					$data[$user_arr[$b['resume_id']]][$n] = 1;  
-    				}
-    			}
-    			else{
-    				$b['id'] = $key;
-    				$data[$key] = $b;
-    				// $data[$key]['personal_name'] = $v['personal_name'];
-    				// $data[$key]['name'] = $resume->getUname(['id' => $b['resume_id']]);
-	    			$user_arr[$b['resume_id']] = $key;
-	    			$key++;
+   // //  					$data[$user_arr[$b['resume_id']]][$n] = 1;  
+   // //  				}
+   // //  			}
+   // //  			else{
+   // //  				$b['id'] = $key;
+   // //  				$data[$key] = $b;
+   // //  				// $data[$key]['personal_name'] = $v['personal_name'];
+   // //  				// $data[$key]['name'] = $resume->getUname(['id' => $b['resume_id']]);
+	  // //   			$user_arr[$b['resume_id']] = $key;
+	  // //   			$key++;
 
 
-    			}
+   // //  			}
     			
-    		}
-    		$user_arr = [];
-    	}
+   // //  		}
+   // //  		$user_arr = [];
+   // //  	}
 
-    	return array_merge($data);
+   // //  	return array_merge($data);
 
-      /******************************************************************************/
-      // $where = "communicate_time between '$parm[dtfm]' and '$parm[dtto]'";
+   //    /******************************************************************************/
 
-      // if (isset($parm['ur'])) {
-      //     $in_user = explode(',',$parm['ur']);
-      //     $where_in = implode("','",$in_user);
-      //     $where.= " and a.ct_user in('$where_in')";
-      // }
-      // else{
-      //     $user_model = new User();
-      //     $in_user = array_column($user_model->field('uname')->select()->toArray(),'uname');
-      // }
 
-      // $data = $comm->alias('a')->join('rs_resume b','a.resume_id=b.id')->where($where)->field('a.*,b.name')->order('a.ct_user')->select()->toArray();
-      // foreach ($data as $k => $v) {
-      //     if () {
-      //       # code...
-      //     }
-      // }
-
-    }
+   //  }
 
     public function export(){
     	//数据导出
     	$input = input('get.');
+      $check_date = isset($input['dtfm']) && isset($input['dtto'])?true:false;
+
+      if (!$check_date) {
+        return json(['msg' => '缺少日期','code' => 404]);
+      }
+
     	
     	$obj = new \PHPExcel();
       $obj->setActiveSheetIndex(0);
         // dump($data);exit;
     	if ($input['type'] == 0) {
       		//宽度设置
-      		$obj->getActiveSheet()->getColumnDimension('A')->setWidth(12);
-    			$obj->getActiveSheet()->getColumnDimension('B')->setWidth(12);
-    			$obj->getActiveSheet()->getColumnDimension('C')->setWidth(10);
-    			$obj->getActiveSheet()->getColumnDimension('D')->setWidth(10);
-    			$obj->getActiveSheet()->getColumnDimension('E')->setWidth(10);
-    			$obj->getActiveSheet()->getColumnDimension('F')->setWidth(10);
-    			$obj->getActiveSheet()->getColumnDimension('G')->setWidth(10);
-    			//表头
-      		$obj->getActiveSheet()->setCellValue("A1", '招聘负责人');
-    			$obj->getActiveSheet()->setCellValue("B1", '候选人');
-    			$obj->getActiveSheet()->setCellValue("C1", '是否推荐');
-    			$obj->getActiveSheet()->setCellValue("D1", '是否安排');
-    			$obj->getActiveSheet()->setCellValue("E1", '是否到场');
-    			$obj->getActiveSheet()->setCellValue("F1", '是否通过');
-    			$obj->getActiveSheet()->setCellValue("G1", '是否入职');
-    			$data = $this->getRecruitment($input);
-    			//数据
-      		foreach ($data as $k => $v) {
-      			$k = $k+2;
+        	$obj->getActiveSheet()->getColumnDimension('A')->setWidth(12);
+          $obj->getActiveSheet()->getColumnDimension('B')->setWidth(12);
+          $obj->getActiveSheet()->getColumnDimension('C')->setWidth(16);
+          $obj->getActiveSheet()->getColumnDimension('D')->setWidth(16);
+          $obj->getActiveSheet()->getColumnDimension('E')->setWidth(16);
+          $obj->getActiveSheet()->getColumnDimension('F')->setWidth(12);
+          $obj->getActiveSheet()->getColumnDimension('G')->setWidth(16);
+          $obj->getActiveSheet()->getColumnDimension('H')->setWidth(10);
+          //设置居中
+          $obj->getDefaultStyle()->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+          $obj->getDefaultStyle()->getAlignment()->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
+          //颜色
+          $obj->getActiveSheet()->getStyle('A1:H1')->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID);
+          $obj->getActiveSheet()->getStyle('A1:H1')->getFill()->getStartColor()->setARGB('33CC66');
 
-      			$obj->getActiveSheet()->setCellValue("A".$k,$v['ct_user']);
-    				$obj->getActiveSheet()->setCellValue("B".$k, $v['name']);
-    				$obj->getActiveSheet()->setCellValue("C".$k, $v['screen'] == 1 ?'是':'否');
-    				$obj->getActiveSheet()->setCellValue("D".$k, $v['arrange_interview'] ==1 ?'是':'否');
-    				$obj->getActiveSheet()->setCellValue("E".$k, $v['arrive'] == 1 ?'是':'否');
-    				$obj->getActiveSheet()->setCellValue("F".$k, $v['approved_interview'] == 1 ?'是':'否');
-    				$obj->getActiveSheet()->setCellValue("G".$k, $v['entry'] == 1 ?'是':'否');
-      		}
-      		header('Content-Type: application/vnd.ms-excel');
-	        header('Content-Disposition: attachment;filename="招聘负责人明细.xlsx"');
-	        ob_end_clean();//清除缓冲区,避免乱码
-	        $objWriter = \PHPExcel_IOFactory::createWriter($obj, 'Excel2007');
-	        $objWriter->save('php://output');
-	        $obj->disconnectWorksheets();
+          //表头
+          $obj->getActiveSheet()->setCellValue("A1", '招聘负责人');
+          $obj->getActiveSheet()->setCellValue("B1", '候选人');
+          $obj->getActiveSheet()->setCellValue("C1", '客户');
+          $obj->getActiveSheet()->setCellValue("D1", '是否推荐');
+          $obj->getActiveSheet()->setCellValue("E1", '是否安排');
+          $obj->getActiveSheet()->setCellValue("F1", '是否到场');
+          $obj->getActiveSheet()->setCellValue("G1", '是否通过');
+          $obj->getActiveSheet()->setCellValue("H1", '是否入职');
+
+          $data = $this->candidateRecData($input);
+          $n = 0;//行
+          foreach ($data as $k => $v) {
+            $n = $k+2;
+            $obj->getActiveSheet()->setCellValue("A".$n, $v['ct_user']);
+            $obj->getActiveSheet()->setCellValue("B".$n, $v['name']);
+            $obj->getActiveSheet()->setCellValue("C".$n, $v['client_name']);
+            $obj->getActiveSheet()->setCellValue("D".$n, $v['screen'] == 1?'是':'否');
+            $obj->getActiveSheet()->setCellValue("E".$n, $v['arrange_interview'] == 1?'是':'否');
+            $obj->getActiveSheet()->setCellValue("F".$n, $v['arrive'] == 1?'是':'否');
+            $obj->getActiveSheet()->setCellValue("G".$n, $v['approved_interview'] == 1?'是':'否');
+            $obj->getActiveSheet()->setCellValue("H".$n, $v['entry'] == 1?'是':'否');
+          }
+
+          //边框线
+          $style_array = array( 
+                                'borders' => array( 
+                                    'allborders' => array( 
+                                    'style' => \PHPExcel_Style_Border::BORDER_THIN 
+                                  ) 
+                                )
+                              ); 
+
+          $obj->getActiveSheet()->getStyle('A1:H'.$n)->applyFromArray($style_array);
+
+          $filename = $input['dtfm'].'到'.$input['dtto'].'招聘负责人明细.xlsx';
+          header('Content-Type: application/vnd.ms-excel');
+          header('Content-Disposition: attachment;filename='.$filename);
+          ob_end_clean();//清除缓冲区,避免乱码
+          $objWriter = \PHPExcel_IOFactory::createWriter($obj, 'Excel2007');
+          $objWriter->save('php://output');
+          $obj->disconnectWorksheets();
     		
     	}
     	if ($input['type'] == 1) {
@@ -530,8 +636,11 @@ class Report extends Controller
     				$obj->getActiveSheet()->setCellValue("E".$k, $v['approved_interview']);
     				$obj->getActiveSheet()->setCellValue("F".$k, $v['entry']);
       		}
+
+          $filename = $input['dtfm'].'到'.$input['dtto'].'招聘负责人统计.xlsx';
+
     		  header('Content-Type: application/vnd.ms-excel');
-	        header('Content-Disposition: attachment;filename="招聘负责人统计.xlsx"');
+	        header('Content-Disposition: attachment;filename='.$filename);
 	        ob_end_clean();//清除缓冲区,避免乱码
 	        $objWriter = \PHPExcel_IOFactory::createWriter($obj, 'Excel2007');
 	        $objWriter->save('php://output');
@@ -573,6 +682,17 @@ class Report extends Controller
 
   			$comm = new Communicate();
   			//数据
+        $resume_ids = implode(',',array_column($data,'id'));
+        $communicate_content = $comm->getContent("date(communicate_time) between '$input[dtfm]' and '$input[dtto]' and resume_id in($resume_ids)");//提取沟通内容
+        $content = [];//沟通内容
+        foreach ($communicate_content as $k => $v) {
+          if (array_key_exists($v['resume_id'], $content)) {
+            $content[$v['resume_id']][] = $v['content'];
+            continue;
+          }
+          $content[$v['resume_id']][] = $v['content'];
+        }
+        // dump($content);exit;
     		foreach ($data as $k => $v) {
     			$k = $k+2;
     			$obj->getActiveSheet()->setCellValue("A".$k,$v['ct_user']);
@@ -585,10 +705,16 @@ class Report extends Controller
   				$obj->getActiveSheet()->setCellValue("H".$k, $v['work_year']);
   				$obj->getActiveSheet()->setCellValue("I".$k, $v['source']);
   				$obj->getActiveSheet()->setCellValue("J".$k, $v['communicate_count']);
-  				$content = $comm->getContent("date(communicate_time) between '$input[dtfm]' and '$input[dtto]' and resume_id = $v[id]");
-  				foreach ($content as $m => $n) {
-  					$obj->getActiveSheet()->setCellValue($cel[$m].$k,$n['content']);
-  				}
+  				// $content = $comm->getContent("date(communicate_time) between '$input[dtfm]' and '$input[dtto]' and resume_id = $v[id]");
+          if(isset($content[$v['id']])){
+             foreach ($content[$v['id']] as $m => $n) {
+                $obj->getActiveSheet()->setCellValue($cel[$m].$k,$n);
+             }
+          }
+
+  				// foreach ($content as $m => $n) {
+  				// 	$obj->getActiveSheet()->setCellValue($cel[$m].$k,$n['content']);
+  				// }
       		}
 
       		header('Content-Type: application/vnd.ms-excel');
@@ -870,20 +996,125 @@ class Report extends Controller
             return json(['msg' => '缺少'.$v,'code' => 404]);
          }
       }
+      $data = $this->candidateRecData($input);
+
+      return json(['msg' => '获取成功','code' => 0,'data' => $data]);
+
+    }
+
+    public function candidateRecExport(){
+        //导出候选人信息统计的数据
+        $input = input('get.');
+        $check_date = isset($input['dtfm']) && isset($input['dtto'])?true:false;
+
+        if (!$check_date) {
+          return json(['msg' => '缺少日期','code' => 404]);
+        }
+
+        $obj = new \PHPExcel();//phpexcel
+        $obj->setActiveSheetIndex(0);
+        //宽度设置
+        $obj->getActiveSheet()->getColumnDimension('A')->setWidth(12);
+        $obj->getActiveSheet()->getColumnDimension('B')->setWidth(12);
+        $obj->getActiveSheet()->getColumnDimension('C')->setWidth(16);
+        $obj->getActiveSheet()->getColumnDimension('D')->setWidth(16);
+        $obj->getActiveSheet()->getColumnDimension('E')->setWidth(16);
+        $obj->getActiveSheet()->getColumnDimension('F')->setWidth(12);
+        $obj->getActiveSheet()->getColumnDimension('G')->setWidth(16);
+        $obj->getActiveSheet()->getColumnDimension('H')->setWidth(10);
+        $obj->getActiveSheet()->getColumnDimension('I')->setWidth(12);
+        $obj->getActiveSheet()->getColumnDimension('J')->setWidth(16);
+        $obj->getActiveSheet()->getColumnDimension('K')->setWidth(12);
+        $obj->getActiveSheet()->getColumnDimension('L')->setWidth(25);
+        $obj->getActiveSheet()->getColumnDimension('M')->setWidth(10);
+        $obj->getActiveSheet()->getColumnDimension('N')->setWidth(10);
+        $obj->getActiveSheet()->getColumnDimension('O')->setWidth(10);
+        $obj->getActiveSheet()->getColumnDimension('P')->setWidth(10);
+        $obj->getActiveSheet()->getColumnDimension('Q')->setWidth(10);
+        $obj->getActiveSheet()->getColumnDimension('R')->setWidth(10);
+
+        //设置居中
+        $obj->getDefaultStyle()->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $obj->getDefaultStyle()->getAlignment()->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
+        //颜色
+        $obj->getActiveSheet()->getStyle('A1:R1')->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID);
+        $obj->getActiveSheet()->getStyle('A1:R1')->getFill()->getStartColor()->setARGB('33CC66');
+
+        //表头
+        $obj->getActiveSheet()->setCellValue("A1", '推荐时间');
+        $obj->getActiveSheet()->setCellValue("B1", '姓名');
+        $obj->getActiveSheet()->setCellValue("C1", '联系方式');
+        $obj->getActiveSheet()->setCellValue("D1", '客户');
+        $obj->getActiveSheet()->setCellValue("E1", '跟踪人');
+        $obj->getActiveSheet()->setCellValue("F1", '推荐级别');
+        $obj->getActiveSheet()->setCellValue("G1", '是否原公司离职');
+        $obj->getActiveSheet()->setCellValue("H1", '到岗');
+        $obj->getActiveSheet()->setCellValue("I1", '岗位');
+        $obj->getActiveSheet()->setCellValue("J1", '学历');
+        $obj->getActiveSheet()->setCellValue("K1", '毕业年份');
+        $obj->getActiveSheet()->setCellValue("L1", '毕业院校');
+        $obj->getActiveSheet()->setCellValue("M1", '公司');
+        $obj->getActiveSheet()->setCellValue("N1", '是否推荐');
+        $obj->getActiveSheet()->setCellValue("O1", '是否安排');
+        $obj->getActiveSheet()->setCellValue("P1", '是否到场');
+        $obj->getActiveSheet()->setCellValue("Q1", '是否通过');
+        $obj->getActiveSheet()->setCellValue("R1", '是否入职');
+
+        $data = $this->candidateRecData($input);
+        $n = 0;//行
+        foreach ($data as $k => $v) {
+          $n = $k+2;
+          if (!strtotime($v['communicate_time'])) {
+            $v['communicate_time'] = str_replace('.','-',$v['communicate_time']);
+          }
+          $obj->getActiveSheet()->setCellValue("A".$n, date('Y-m-d',strtotime($v['communicate_time'])));
+          $obj->getActiveSheet()->setCellValue("B".$n, $v['name']);
+          $obj->getActiveSheet()->setCellValue("C".$n, $v['phone']);
+          $obj->getActiveSheet()->setCellValue("D".$n, $v['client_name']);
+          $obj->getActiveSheet()->setCellValue("E".$n, $v['ct_user']);
+          $obj->getActiveSheet()->setCellValue("F".$n, '');
+          $obj->getActiveSheet()->setCellValue("G".$n, '');
+          $obj->getActiveSheet()->setCellValue("H".$n, '');
+          $obj->getActiveSheet()->setCellValue("I".$n, $v['expected_job']);
+          $obj->getActiveSheet()->setCellValue("J".$n, $v['educational']);
+          $obj->getActiveSheet()->setCellValue("K".$n, $v['graduation_time']);
+          $obj->getActiveSheet()->setCellValue("L".$n, $v['school']);
+          $obj->getActiveSheet()->setCellValue("M".$n, $v['company_type']);
+          $obj->getActiveSheet()->setCellValue("N".$n, $v['screen'] == 1?'是':'否');
+          $obj->getActiveSheet()->setCellValue("O".$n, $v['arrange_interview'] == 1?'是':'否');
+          $obj->getActiveSheet()->setCellValue("P".$n, $v['arrive'] == 1?'是':'否');
+          $obj->getActiveSheet()->setCellValue("Q".$n, $v['approved_interview'] == 1?'是':'否');
+          $obj->getActiveSheet()->setCellValue("R".$n, $v['entry'] == 1?'是':'否');
+        }
+
+        //边框线
+        $style_array = array( 
+                              'borders' => array( 
+                                  'allborders' => array( 
+                                  'style' => \PHPExcel_Style_Border::BORDER_THIN 
+                                ) 
+                              )
+                            ); 
+
+        $obj->getActiveSheet()->getStyle('A1:R'.$n)->applyFromArray($style_array);
+
+        $filename = $input['dtfm'].'到'.$input['dtto'].'候选人统计.xlsx';
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename='.$filename);
+        ob_end_clean();//清除缓冲区,避免乱码
+        $objWriter = \PHPExcel_IOFactory::createWriter($obj, 'Excel2007');
+        $objWriter->save('php://output');
+        $obj->disconnectWorksheets();
+
+
+    }
+
+    public function candidateRecData($input){
+      //获取候选人信息统计的数据
       $where = "date(communicate_time) between '$input[dtfm]' and '$input[dtto]'";//时间
-      $where_ur = $input['ur'] != ''? implode("','",explode(',',$input['ur'])):'';//招聘负责人
+      $where_ur = isset($input['ur']) && $input['ur'] != ''? implode("','",explode(',',$input['ur'])):'';//招聘负责人
       $where_ur == ''?'':$where.=" and c.ct_user in('$where_ur')";
-      $input['client'] != ''?$where.=" and a.client_id in($input[client])":'';//客户
-
-      // $comm = new Communicate();
-
-      // $data = $comm->alias('a')->join('rs_resume b','a.resume_id=b.id')
-      //                  ->join('rs_client_communicate c','a.id=c.comm_id')
-      //                  ->join('rs_client d','c.client_id=d.id')
-      //                  ->field('a.communicate_time,a.ct_user,a.screen,a.arrange_interview,a.arrive,a.approved_interview,a.entry,b.name,b.phone,b.expected_job,b.educational,b.graduation_time,b.school,b.company_type,d.client_name')
-      //                  ->where($where)
-      //                  ->order('communicate_time desc,name asc,type desc')
-      //                  ->select();
+      isset($input['client']) && $input['client'] != ''?$where.=" and a.client_id in($input[client])":'';//客户
 
       $comm_cli = new ClientComm();
       $data = $comm_cli->alias('a')->join('rs_client b','a.client_id=b.id')
@@ -892,28 +1123,11 @@ class Report extends Controller
                        ->field('max(type=1) as screen,max(type=2) as arrange_interview,max(type=3) as arrive,max(type=4) as approved_interview,max(type=5) as entry,c.communicate_time,c.ct_user,d.name,d.phone,d.expected_job,d.educational,d.graduation_time,d.school,d.company_type,b.client_name')
                        ->where($where)
                        ->group('phone,client_name')
+                       ->order('phone asc,communicate_time desc,type desc')
                        ->select()
                        ->toArray();
 
-      $data = array_unique($data, SORT_REGULAR);//数组去重
-      // $phone = array_column($data,'phone');//取出电话
-      // $phone_mark = [];//标记
-      // foreach ($phone as $k => $v) {
-      //    if (array_key_exists($v,$phone_mark)) {
-      //      $data[$phone_mark[$v]]['screen'] == 1?'':$data[$phone_mark[$v]]['screen'] = $data[$k]['screen'];
-      //      $data[$phone_mark[$v]]['arrange_interview'] == 1?'':$data[$phone_mark[$v]]['arrange_interview'] = $data[$k]['arrange_interview'];
-      //      $data[$phone_mark[$v]]['arrive'] == 1?'':$data[$phone_mark[$v]]['arrive'] = $data[$k]['arrive'];
-      //      $data[$phone_mark[$v]]['approved_interview'] == 1?'':$data[$phone_mark[$v]]['approved_interview'] = $data[$k]['approved_interview'];
-      //      $data[$phone_mark[$v]]['entry'] == 1?'':$data[$phone_mark[$v]]['entry'] = $data[$k]['entry'];
-
-      //      unset($data[$k]);
-      //      continue;
-      //    }
-      //    $phone_mark[$v] = $k;
-      // }
-
-      return json(['msg' => '获取成功','code' => 0,'data' => array_merge($data)]);
-
+      return $data;
     }
 
     
