@@ -26,6 +26,8 @@
 
 @color: #7266ba;
 @hover-color: #6254b2;
+@disabled-color: rgba(98, 84, 178, 0.6);
+@disabled-border-color: rgba(181, 174, 226, 0.6);
 
 .navbar {
     .el-menu {
@@ -54,6 +56,11 @@ body .el-pagination.is-background .el-pager li:not(.disabled).active {
         background: @hover-color;
         border-color: @hover-color;
     }
+}
+
+body .el-button--primary.is-disabled{
+    background-color: @disabled-color;
+    border-color: @disabled-border-color;
 }
 
 .view-form {
