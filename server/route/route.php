@@ -108,10 +108,11 @@ Route::get('api/resume/export','Resume/export');
 
 //客户相关
 /***新加功能***/
-Route::get('api/report/client_statistics$','Report/clientRec');
-Route::get('api/report/client_statistics/export','Report/clientRecExport');
-Route::get('api/report/client_statistics_detail','Report/clientRecDetail');
-Route::get('api/report/candidate_info_statistics','Report/candidateRec');
+Route::get('api/report/client_statistics$','Report/clientRec');//客户信息统计
+Route::get('api/report/client_statistics/export','Report/clientRecExport');//客户信息统计数据导出
+Route::get('api/report/client_statistics_detail','Report/clientRecDetail');//客户信息详情
+Route::get('api/report/candidate_info_statistics$','Report/candidateRec');//候选人信息统计
+Route::get('api/report/candidate_info_statistics/export','Report/candidateRecExport');//导出候选人信息统计的数据
 /******************************************************************/
 Route::get('api/client/list','Client/getList');//客户列表
 Route::post('api/client/add','Client/addClient');//添加客户

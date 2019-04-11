@@ -38,7 +38,7 @@ class Communicate
                 $comm_key = array_search($v['content'],$comm_data);
                 //把存在对应的key取出来
                 // dump($comm_key);
-                if($comm_user[$comm_key] == $v['ct_user']){
+                if($comm_user[$comm_key] == strtolower($v['ct_user'])){
                   //再查看对应的沟通记录的沟通人和这一条是否一致
                   if (!$data[$k]['screen'] && !$data[$k]['arrange_interview'] && !$data[$k]['arrive'] && !$data[$k]['approved_interview'] && !$data[$k]['entry']) {
                         //判断重复数据里面是否有全零，如果有删除并跳过
@@ -55,7 +55,7 @@ class Communicate
                    }
                 }
             }
-            $comm_user[$k] = $v['ct_user'];//存储每一次的沟通人记录
+            $comm_user[$k] = strtolower($v['ct_user']);//存储每一次的沟通人记录
             $comm_data[$k] = $v['content'];
 
             $cli_comm_list = $cli_comm_model->where(['comm_id' => $v['id']])->field('type,client_id')->select()->toArray();
@@ -93,6 +93,7 @@ class Communicate
             !isset($data[$k]['entry_name'])?$data[$k]['entry_name']='':'';
 
          }
+
          if (!empty($del_ids)) {
           //删除多余的数据
             $del_ids = implode(',',$del_ids);
@@ -357,9 +358,10 @@ class Communicate
       //查询招聘负责人列表
       $input = input('get.');
       $comm = new CommunicateModel();
-      $where = "communicate_time between '$input[dtfm]' and '$input[dtto]' and ct_user = '$input[uname]'";
+      $where = "date(communicate_time) between '$input[dtfm]' and '$input[dtto]' and ct_user = '$input[uname]'";
 
       $data = $comm->where($where)->select()->toArray();
+
       //获取一次数据，处理重复
       if ($data) {
          $comm_data = [];//沟通数据
@@ -400,7 +402,7 @@ class Communicate
          
       }
 
-      $where = "communicate_time between '$input[dtfm]' and '$input[dtto]' and a.ct_user = '$input[uname]'";
+      $where = "date(communicate_time) between '$input[dtfm]' and '$input[dtto]' and a.ct_user = '$input[uname]'";
       $data = $comm->getCommByUname($where);
 
       return json(['msg' => '获取成功','code' => 0,'data' => $data]);

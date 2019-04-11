@@ -86,7 +86,7 @@ class Communicate extends Model
 
     public function getContent($where = '1=1'){
       //获取沟通内容
-      return Communicate::field('content')->where($where)->select()->toArray();
+      return Communicate::field('resume_id,content')->where($where)->select()->toArray();
     }
 
 
