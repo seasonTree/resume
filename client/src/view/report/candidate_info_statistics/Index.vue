@@ -72,7 +72,7 @@
                     <el-button
                         type="primary"
                         @click="exportExcel"
-                        :disabled="!$check_pm('report_person_recru_export_excel')"
+                        :disabled="!$check_pm('report_candidate_info_statistics_export')"
                     >导出</el-button>
                 </div>
             </div>
