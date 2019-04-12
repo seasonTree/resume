@@ -267,9 +267,17 @@ class Report extends Controller
     	//获取招聘负责人统计数据
     	$user = new User();
 
-      $where = "date(a.communicate_time) between '$input[dtfm]' and '$input[dtto]'";//时间
+      $where = "date(a.communicate_time) between ? and ?";//时间
+      $parm = [$input['dtfm'],$input['dtto']];//参数
       $where_ur = isset($input['ur']) && $input['ur'] != ''? implode("','",explode(',',$input['ur'])):'';//招聘负责人
-      $where_ur == ''?'':$where.=" and a.ct_user in('$where_ur')";
+      if ($where_ur != '') {
+         $where.=" and a.ct_user in(?)";
+         $parm[] = $where_ur;
+      }
+      // $where_ur == ''?'':$where.=" and a.ct_user in('$where_ur')";
+
+
+
 
       // $data = $user->alias('a')->join('rs_communicate b','a.uname=b.ct_user')
       //                  ->field('uname,sum(screen) as screen,sum(arrange_interview) as arrange_interview,sum(arrive) as arrive,sum(approved_interview) as approved_interview,sum(entry) as entry')
@@ -278,7 +286,7 @@ class Report extends Controller
       //                  ->select()
       //                  ->toArray();
 
-      $data = Db::query("select b.ct_user as uname, sum(b.screen) as screen,sum(b.arrange_interview) as arrange_interview,sum(b.arrive) as arrive,sum(b.approved_interview) as approved_interview,sum(b.entry) as entry from (select a.resume_id, a.ct_user, MAX(a.screen) as screen,MAX(a.arrange_interview) as arrange_interview,MAX(a.arrive) as arrive,MAX(a.approved_interview) as approved_interview,MAX(a.entry) as entry from rs_communicate a where ".$where." group by a.resume_id, a.ct_user) b group by b.ct_user");
+      $data = Db::query("select b.ct_user as uname, sum(b.screen) as screen,sum(b.arrange_interview) as arrange_interview,sum(b.arrive) as arrive,sum(b.approved_interview) as approved_interview,sum(b.entry) as entry from (select a.resume_id, a.ct_user, MAX(a.screen) as screen,MAX(a.arrange_interview) as arrange_interview,MAX(a.arrive) as arrive,MAX(a.approved_interview) as approved_interview,MAX(a.entry) as entry from rs_communicate a where ".$where." group by a.resume_id, a.ct_user) b group by b.ct_user",$parm);
 
       if ($where_ur == '') {
         $uname = array_column($data,'uname');
@@ -729,121 +737,160 @@ class Report extends Controller
 
     public function clientRecData($input){
       //获取客户统计明细的数据
-      $client_model = new Client();//取出客户信息
-      $client_data = $client_model->field('id,client_name')->select()->toArray();
-      $client_new = [];
-      foreach ($client_data as $k => $v) {
-         $client_new[$v['id']] = $v['client_name'];
-      }
-      // dump($data);
-      $c_id = 0;//记录客户id
-      $keys = 0;//新数据分组的key
-      $new_data = [];//新数据
+      // $where = "DATE(communicate_time) between '$input[dtfm]' and '$input[dtto]'";
 
-      $new_data[0]['screen'] = 0;
-      $new_data[0]['arrange_interview'] = 0;
-      $new_data[0]['arrive'] = 0;
-      $new_data[0]['approved_interview'] = 0;
-      $new_data[0]['entry'] = 0;
-      $new_data[0]['client_name'] = '总共';
-      $new_data[0]['client_id'] = 0;
+      $data = Db::query("select e.id as client_id,e.client_name,SUM(c.type=1) as screen,SUM(c.type=2) as arrange_interview,SUM(c.type=3) as arrive,SUM(c.type=4) as approved_interview,SUM(c.type=5) as entry from (select a.comm_id,type,client_id from rs_client_communicate a INNER JOIN rs_communicate b on a.comm_id=b.id where DATE(communicate_time) between ? and ? GROUP BY b.resume_id,a.client_id,a.type) c INNER JOIN rs_communicate d on c.comm_id=d.id INNER JOIN rs_client e on c.client_id=e.id where DATE(communicate_time) between ? and ? GROUP BY e.client_name",[$input['dtfm'],$input['dtto'],$input['dtfm'],$input['dtto']]);
 
-      $count = function($option,$new_data,$keys){
-        //处理统计内容
-          switch ($option['type']) {
-           case 1:
-             $new_data[0]['screen']+=1;
-             $new_data[$keys]['screen']+=1;
-             break;
-           
-           case 2:
-             $new_data[0]['arrange_interview']+=1;
-             $new_data[$keys]['arrange_interview']+=1;
-             break;
+      $total = [ 'client_id' => 0,
+                 'client_name' => '总共',
+                 'screen' => array_sum(array_column($data,'screen')),
+                 'arrange_interview' => array_sum(array_column($data,'arrange_interview')),
+                 'arrive' => array_sum(array_column($data,'arrive')),
+                 'approved_interview' => array_sum(array_column($data,'approved_interview')),
+                 'entry' => array_sum(array_column($data,'entry'))
+               ];//统计总
 
-           case 3:
-             $new_data[0]['arrive']+=1;
-             $new_data[$keys]['arrive']+=1;
-             break;
-
-           case 4:
-             $new_data[0]['approved_interview']+=1;
-             $new_data[$keys]['approved_interview']+=1;
-             break;
-
-           case 5:
-             $new_data[0]['entry']+=1;
-             $new_data[$keys]['entry']+=1;
-             break;
-           default:
-             // $new_data[$keys]['screen']+=0;
-             // $new_data[$keys]['approved_interview']+=0;
-             // $new_data[$keys]['arrange_interview']+=0;
-             // $new_data[$keys]['arrive']+=0;
-             // $new_data[$keys]['entry']+=0;
-             break;
-         }
-
-         return $new_data;
-      };
-
-      $comm = new Communicate();
-      // $data = $comm->alias('a')
-      //             ->join('rs_client_communicate b','a.id=b.comm_id','left')
-      //             ->where("date(communicate_time) between '$input[dtfm]' and '$input[dtto]'")
-      //             ->field('a.id,a.screen,a.arrange_interview,a.arrive,a.approved_interview,a.entry,b.client_id,b.type')
-      //             ->order('client_id asc')
-      //             ->select()
-      //             ->toArray();
-      $comm_ids = implode(',',array_column($comm->where("date(communicate_time) between '$input[dtfm]' and '$input[dtto]'")
-                                    ->field('id')
-                                    ->select()
-                                    ->toArray(),'id')); 
-      $client_comm = new ClientComm();
-      $data = [];
-      if (!empty($comm_ids)) {
-        $data = $client_comm->where("comm_id in($comm_ids)")->order('client_id asc')->select()->toArray();
+      array_unshift($data,$total);
+      $cli_id = implode(',',array_column($data,'client_id'));
+      $empty_cli = Db::query("select id as client_id,client_name from rs_client where id not in($cli_id)");
+      $keys = count($data);
+      foreach ($empty_cli as $k => $v) {
+      //处理没有数据的客户全部填充为0
+        $data[$keys]['client_name'] = $v['client_name'];
+        $data[$keys]['client_id'] = $v['client_id'];
+        $data[$keys]['screen'] = 0;
+        $data[$keys]['arrange_interview'] = 0;
+        $data[$keys]['arrive'] = 0;
+        $data[$keys]['approved_interview'] = 0;
+        $data[$keys]['entry'] = 0;
+        $keys++;
       }
 
-      if ($data) {
-           foreach ($data as $k => $v) {
-           // if ($v['client_id'] == '') {
-           //    continue;
-           // }
-
-           if ($c_id != $v['client_id']) {
-            //利用排序进行分组
-              $keys++;
-              $new_data[$keys]['screen'] = 0;
-              $new_data[$keys]['arrange_interview'] = 0;
-              $new_data[$keys]['arrive'] = 0;
-              $new_data[$keys]['approved_interview'] = 0;
-              $new_data[$keys]['entry'] = 0;
-              $new_data[$keys]['client_name'] = $client_new[$v['client_id']];
-              $new_data[$keys]['client_id'] = $v['client_id'];
-              $c_id = $v['client_id'];
-              unset($client_new[$v['client_id']]);
-
-           }
-           $new_data = $count($v,$new_data,$keys);
-        }
-      }
-
-
-      if (!empty($client_new)) {
-        //那些没有产生数据的客户全部赋予0值
-         foreach ($client_new as $k => $v) {
-            $keys++;
-            $new_data[$keys]['screen'] = 0;
-            $new_data[$keys]['arrange_interview'] = 0;
-            $new_data[$keys]['arrive'] = 0;
-            $new_data[$keys]['approved_interview'] = 0;
-            $new_data[$keys]['entry'] = 0;
-            $new_data[$keys]['client_name'] = $v;
-         }
-      }
-      return $new_data;
+      return $data;
     }
+
+
+/***********************************旧方法*************************************************/
+
+    // public function clientRecData($input){
+    //   //获取客户统计明细的数据
+    //   $client_model = new Client();//取出客户信息
+    //   $client_data = $client_model->field('id,client_name')->select()->toArray();
+    //   $client_new = [];
+    //   foreach ($client_data as $k => $v) {
+    //      $client_new[$v['id']] = $v['client_name'];
+    //   }
+    //   // dump($data);
+    //   $c_id = 0;//记录客户id
+    //   $keys = 0;//新数据分组的key
+    //   $new_data = [];//新数据
+
+    //   $new_data[0]['screen'] = 0;
+    //   $new_data[0]['arrange_interview'] = 0;
+    //   $new_data[0]['arrive'] = 0;
+    //   $new_data[0]['approved_interview'] = 0;
+    //   $new_data[0]['entry'] = 0;
+    //   $new_data[0]['client_name'] = '总共';
+    //   $new_data[0]['client_id'] = 0;
+
+    //   $count = function($option,$new_data,$keys){
+    //     //处理统计内容
+    //       switch ($option['type']) {
+    //        case 1:
+    //          $new_data[0]['screen']+=1;
+    //          $new_data[$keys]['screen']+=1;
+    //          break;
+           
+    //        case 2:
+    //          $new_data[0]['arrange_interview']+=1;
+    //          $new_data[$keys]['arrange_interview']+=1;
+    //          break;
+
+    //        case 3:
+    //          $new_data[0]['arrive']+=1;
+    //          $new_data[$keys]['arrive']+=1;
+    //          break;
+
+    //        case 4:
+    //          $new_data[0]['approved_interview']+=1;
+    //          $new_data[$keys]['approved_interview']+=1;
+    //          break;
+
+    //        case 5:
+    //          $new_data[0]['entry']+=1;
+    //          $new_data[$keys]['entry']+=1;
+    //          break;
+    //        default:
+    //          // $new_data[$keys]['screen']+=0;
+    //          // $new_data[$keys]['approved_interview']+=0;
+    //          // $new_data[$keys]['arrange_interview']+=0;
+    //          // $new_data[$keys]['arrive']+=0;
+    //          // $new_data[$keys]['entry']+=0;
+    //          break;
+    //      }
+
+    //      return $new_data;
+    //   };
+
+    //   $comm = new Communicate();
+    //   // $data = $comm->alias('a')
+    //   //             ->join('rs_client_communicate b','a.id=b.comm_id','left')
+    //   //             ->where("date(communicate_time) between '$input[dtfm]' and '$input[dtto]'")
+    //   //             ->field('a.id,a.screen,a.arrange_interview,a.arrive,a.approved_interview,a.entry,b.client_id,b.type')
+    //   //             ->order('client_id asc')
+    //   //             ->select()
+    //   //             ->toArray();
+    //   $comm_ids = implode(',',array_column($comm->where("date(communicate_time) between '$input[dtfm]' and '$input[dtto]'")
+    //                                 ->field('id')
+    //                                 ->select()
+    //                                 ->toArray(),'id')); 
+    //   $client_comm = new ClientComm();
+    //   $data = [];
+    //   if (!empty($comm_ids)) {
+    //     $data = $client_comm->where("comm_id in($comm_ids)")->order('client_id asc')->select()->toArray();
+    //   }
+
+    //   if ($data) {
+    //        foreach ($data as $k => $v) {
+    //        // if ($v['client_id'] == '') {
+    //        //    continue;
+    //        // }
+
+    //        if ($c_id != $v['client_id']) {
+    //         //利用排序进行分组
+    //           $keys++;
+    //           $new_data[$keys]['screen'] = 0;
+    //           $new_data[$keys]['arrange_interview'] = 0;
+    //           $new_data[$keys]['arrive'] = 0;
+    //           $new_data[$keys]['approved_interview'] = 0;
+    //           $new_data[$keys]['entry'] = 0;
+    //           $new_data[$keys]['client_name'] = $client_new[$v['client_id']];
+    //           $new_data[$keys]['client_id'] = $v['client_id'];
+    //           $c_id = $v['client_id'];
+    //           unset($client_new[$v['client_id']]);
+
+    //        }
+    //        $new_data = $count($v,$new_data,$keys);
+    //     }
+    //   }
+
+
+    //   if (!empty($client_new)) {
+    //     //那些没有产生数据的客户全部赋予0值
+    //      foreach ($client_new as $k => $v) {
+    //         $keys++;
+    //         $new_data[$keys]['screen'] = 0;
+    //         $new_data[$keys]['arrange_interview'] = 0;
+    //         $new_data[$keys]['arrive'] = 0;
+    //         $new_data[$keys]['approved_interview'] = 0;
+    //         $new_data[$keys]['entry'] = 0;
+    //         $new_data[$keys]['client_name'] = $v;
+    //      }
+    //   }
+    //   return $new_data;
+    // }
+/*****************************************************************************/
+
 
     public function clientRec(){
       //客户统计明细
