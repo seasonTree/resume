@@ -385,7 +385,7 @@ export const formatDate = (date, fmt) => {
         return date;
     }
 
-    if(checkIE){ //兼容ie
+    if(checkIE()){ //兼容ie
         var testRs = dateTestRex.exec(date);
         date = new Date(testRs[1], +testRs[2] - 1, testRs[3], testRs[4], testRs[5], testRs[6]);
     }else{
