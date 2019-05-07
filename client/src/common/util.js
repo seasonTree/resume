@@ -326,6 +326,50 @@ export function removeClass(el, cls) {
     }
 };
 
+
+/**
+ * 检查浏览器是否ie
+ */
+let browserIE = null;
+export function checkIE() {
+
+    if(browserIE !== null){
+        return browserIE;
+    }
+
+    var userAgent = navigator.userAgent, //取得浏览器的userAgent字符串  
+        isIE = userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1 //判断是否IE<11浏览器  
+        isEdge = userAgent.indexOf("Edge") > -1 && !isIE, //判断是否IE的Edge浏览器  
+        isIE11 = userAgent.indexOf('Trident') > -1 && userAgent.indexOf("rv:11.0") > -1;
+
+    browserIE = isIE || isEdge || isIE11;
+
+    return browserIE;
+
+    // if(isIE) {
+    //     var reIE = new RegExp("MSIE (\\d+\\.\\d+);");
+    //     reIE.test(userAgent);
+    //     var fIEVersion = parseFloat(RegExp["$1"]);
+    //     if(fIEVersion == 7) {
+    //         return 7;
+    //     } else if(fIEVersion == 8) {
+    //         return 8;
+    //     } else if(fIEVersion == 9) {
+    //         return 9;
+    //     } else if(fIEVersion == 10) {
+    //         return 10;
+    //     } else {
+    //         return 6;//IE版本<=7
+    //     }   
+    // } else if(isEdge) {
+    //     return 'edge';//edge
+    // } else if(isIE11) {
+    //     return 11; //IE11  
+    // }else{
+    //     return -1;//不是ie浏览器
+    // }
+}
+
 /**
  * 
  * @param {Date} date 要格式的时间
@@ -333,6 +377,7 @@ export function removeClass(el, cls) {
  * 
  * @returns 格式化后的时间
  */
+let dateTestRex = /(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})/;
 export const formatDate = (date, fmt) => {
 
     //判断是否是日期
@@ -340,12 +385,19 @@ export const formatDate = (date, fmt) => {
         return date;
     }
 
-    var testRs = /(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})/.exec(date)
-    if(testRs){//兼容ie
-        date = new Date(testRs[1], +testRs[2] - 1, testRs[3], testRs[4], testRs[5], testRs[6])
+    if(checkIE){ //兼容ie
+        var testRs = dateTestRex.exec(date);
+        date = new Date(testRs[1], +testRs[2] - 1, testRs[3], testRs[4], testRs[5], testRs[6]);
     }else{
         date = new Date(date);
     }
+
+    // var testRs = /(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})/.exec(date)
+    // if(testRs){//兼容ie
+    //     date = new Date(testRs[1], +testRs[2] - 1, testRs[3], testRs[4], testRs[5], testRs[6])
+    // }else{
+    //     date = new Date(date);
+    // }
 
     var o = {
         "M+": date.getMonth() + 1, //月份   
