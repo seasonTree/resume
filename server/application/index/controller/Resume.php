@@ -751,6 +751,7 @@ class Resume extends Controller
 
         $ct_user = $user->field('uname')->select()->toArray();//创建人
         $ct_user = array_column($ct_user,'uname');
+
         if ($deleteID == true) {
             $resume = new ResumeModel();
             $row_id = time().Session::get('user_info')['uname'];//生成唯一标识符，进行批量导入标识
@@ -803,13 +804,17 @@ class Resume extends Controller
             if (is_numeric($e)) {
                 $phone_arr[$row] = $e;//联系电话//写入联系电话
             }
+
+            if (!in_array($a,$ct_user) && $ct_user != '') {
+                return '检测到不存在用户，请检查第'.$row.'行.(提示:招聘负责人请使用英文.)';
+            }
             
             if (!in_array($a,$ct_user) && $total < $row) {
-                return '检测到不存在用户，请检查第'.$row.'行';
+                return '检测到不存在用户，请检查第'.$row.'行.(提示:招聘负责人请使用英文.)';
             }
             
             if (empty($b)) {
-                return '检测到缺少日期，请检查第'.$row.'行';
+                return '检测到缺少日期，请检查第'.$row.'行.(提示:日期格式，XXXX-XX-XX.)';
             }
 
             if (empty($c)) {
@@ -1411,6 +1416,11 @@ class Resume extends Controller
     
     }
     public function test(){
+
+        $a = 'aabbzz';
+        $a++;
+        echo $a;
+        exit;
         return json(['msg'=>'测试成功','code' => 0]);
         // $dsn = 'mysql:host=127.0.0.1;dbname=test';
         // $db = new PDO($dsn, 'root', '123456');
