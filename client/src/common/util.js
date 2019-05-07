@@ -340,7 +340,12 @@ export const formatDate = (date, fmt) => {
         return date;
     }
 
-    date = new Date(date);
+    var testRs = /(\d{4})-(\d{2})-(\d{2}) ((\d{2}):(\d{2}):(\d{2}))/.exec(date)
+    if(testRs){//兼容ie
+        date = new Date(testRs[1], +testRs[2] - 1, testRs[3], testRs[4])
+    }else{
+        date = new Date(date);
+    }
 
     var o = {
         "M+": date.getMonth() + 1, //月份   
