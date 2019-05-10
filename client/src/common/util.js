@@ -338,7 +338,7 @@ export function checkIE() {
     }
 
     var userAgent = navigator.userAgent, //取得浏览器的userAgent字符串  
-        isIE = userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1 //判断是否IE<11浏览器  
+        isIE = userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1, //判断是否IE<11浏览器  
         isEdge = userAgent.indexOf("Edge") > -1 && !isIE, //判断是否IE的Edge浏览器  
         isIE11 = userAgent.indexOf('Trident') > -1 && userAgent.indexOf("rv:11.0") > -1;
 
@@ -385,7 +385,7 @@ export const formatDate = (date, fmt) => {
         return date;
     }
 
-    if(checkIE){ //兼容ie
+    if(checkIE()){ //兼容ie
         var testRs = dateTestRex.exec(date);
         date = new Date(testRs[1], +testRs[2] - 1, testRs[3], testRs[4], testRs[5], testRs[6]);
     }else{
