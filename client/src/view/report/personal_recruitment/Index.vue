@@ -188,6 +188,7 @@ export default {
             //招聘负责人汇总
             recruTotalHead: [
                 { prop: "uname", label: "招聘负责人", fixed: "left" },
+                { prop: "screen_total" , label: "推荐人次", fixed: "left" },
                 { prop: "screen", label: "推荐人数", fixed: "left" },
                 {
                     prop: "arrange_interview",

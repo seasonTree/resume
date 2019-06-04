@@ -275,10 +275,6 @@ class Report extends Controller
          $parm[] = $where_ur;
       }
       // $where_ur == ''?'':$where.=" and a.ct_user in('$where_ur')";
-
-
-
-
       // $data = $user->alias('a')->join('rs_communicate b','a.uname=b.ct_user')
       //                  ->field('uname,sum(screen) as screen,sum(arrange_interview) as arrange_interview,sum(arrive) as arrive,sum(approved_interview) as approved_interview,sum(entry) as entry')
       //                  ->where($where)
@@ -305,6 +301,25 @@ class Report extends Controller
           $data[$keys]['entry'] = 0;
           $keys++;
         }
+
+       $screen_total = Db::query("select a.ct_user,count(b.id) as screen_total from rs_communicate a inner join rs_client_communicate b on a.id=b.comm_id  where ".$where." and type = 1 group BY a.ct_user",$parm);//推荐总数
+
+       $users = array_column($screen_total, 'ct_user');
+
+       $new_screen_total = [];//新数据
+
+       foreach ($users as $k => $v) {
+          $new_screen_total[$v] = $screen_total[$k]['screen_total'];
+       }
+
+       foreach ($data as $k => $v) {
+          if (in_array($v['uname'], $users)) {
+             $data[$k]['screen_total'] = $new_screen_total[$v['uname']];
+
+          }else{
+             $data[$k]['screen_total'] = 0;
+          }
+       }
       }
       
       return $data;
@@ -621,28 +636,31 @@ class Report extends Controller
     	if ($input['type'] == 1) {
     		//宽度设置
     		$obj->getActiveSheet()->getColumnDimension('A')->setWidth(12);
-  			$obj->getActiveSheet()->getColumnDimension('B')->setWidth(10);
-  			$obj->getActiveSheet()->getColumnDimension('C')->setWidth(15);
-  			$obj->getActiveSheet()->getColumnDimension('D')->setWidth(10);
-  			$obj->getActiveSheet()->getColumnDimension('E')->setWidth(15);
-  			$obj->getActiveSheet()->getColumnDimension('F')->setWidth(10);
+        $obj->getActiveSheet()->getColumnDimension('B')->setWidth(10);
+  			$obj->getActiveSheet()->getColumnDimension('C')->setWidth(10);
+  			$obj->getActiveSheet()->getColumnDimension('D')->setWidth(15);
+  			$obj->getActiveSheet()->getColumnDimension('E')->setWidth(10);
+  			$obj->getActiveSheet()->getColumnDimension('F')->setWidth(15);
+  			$obj->getActiveSheet()->getColumnDimension('G')->setWidth(10);
   			//表头
     		$obj->getActiveSheet()->setCellValue("A1", '招聘负责人');
-  			$obj->getActiveSheet()->setCellValue("B1", '推荐人数');
-  			$obj->getActiveSheet()->setCellValue("C1", '安排面试人数');
-  			$obj->getActiveSheet()->setCellValue("D1", '到场人数');
-  			$obj->getActiveSheet()->setCellValue("E1", '通过面试人数');
-  			$obj->getActiveSheet()->setCellValue("F1", '入职人数');
+        $obj->getActiveSheet()->setCellValue("B1", '推荐人次');
+  			$obj->getActiveSheet()->setCellValue("C1", '推荐人数');
+  			$obj->getActiveSheet()->setCellValue("D1", '安排面试人数');
+  			$obj->getActiveSheet()->setCellValue("E1", '到场人数');
+  			$obj->getActiveSheet()->setCellValue("F1", '通过面试人数');
+  			$obj->getActiveSheet()->setCellValue("G1", '入职人数');
   			$data = $this->getRecruitmentTotal($input);
   			foreach ($data as $k => $v) {
   				$k = $k+2;
 
       			$obj->getActiveSheet()->setCellValue("A".$k,$v['uname']);
-    				$obj->getActiveSheet()->setCellValue("B".$k, $v['screen']);
-    				$obj->getActiveSheet()->setCellValue("C".$k, $v['arrange_interview']);
-    				$obj->getActiveSheet()->setCellValue("D".$k, $v['arrive']);
-    				$obj->getActiveSheet()->setCellValue("E".$k, $v['approved_interview']);
-    				$obj->getActiveSheet()->setCellValue("F".$k, $v['entry']);
+            $obj->getActiveSheet()->setCellValue("B".$k,$v['screen_total']);
+    				$obj->getActiveSheet()->setCellValue("C".$k, $v['screen']);
+    				$obj->getActiveSheet()->setCellValue("D".$k, $v['arrange_interview']);
+    				$obj->getActiveSheet()->setCellValue("E".$k, $v['arrive']);
+    				$obj->getActiveSheet()->setCellValue("F".$k, $v['approved_interview']);
+    				$obj->getActiveSheet()->setCellValue("G".$k, $v['entry']);
       		}
 
           $filename = $input['dtfm'].'到'.$input['dtto'].'招聘负责人统计.xlsx';
