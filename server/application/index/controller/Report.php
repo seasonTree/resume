@@ -284,11 +284,13 @@ class Report extends Controller
 
       $data = Db::query("select b.ct_user as uname, sum(b.screen) as screen,sum(b.arrange_interview) as arrange_interview,sum(b.arrive) as arrive,sum(b.approved_interview) as approved_interview,sum(b.entry) as entry from (select a.resume_id, a.ct_user, MAX(a.screen) as screen,MAX(a.arrange_interview) as arrange_interview,MAX(a.arrive) as arrive,MAX(a.approved_interview) as approved_interview,MAX(a.entry) as entry from rs_communicate a where ".$where." group by a.resume_id, a.ct_user) b group by b.ct_user",$parm);
 
-      if ($where_ur == '') {
+
+      // if ($where_ur == '') {
         $uname = array_column($data,'uname');
         $uname[] = 'admin';
         $uname[] = 'test';//排除掉不需要统计的数据
         $uname = implode("','",$uname);
+
         $data2 = $user->where("uname not in('$uname') and status=0")->field('uname')->select()->toArray();
         $empty_data = [];//空数据
         $keys = count($data);
@@ -320,7 +322,7 @@ class Report extends Controller
              $data[$k]['screen_total'] = 0;
           }
        }
-      }
+      // }
       
       return $data;
 
@@ -1187,11 +1189,11 @@ class Report extends Controller
                        ->join('rs_resume d','c.resume_id=d.id')
                        ->field('max(type=1) as screen,max(type=2) as arrange_interview,max(type=3) as arrive,max(type=4) as approved_interview,max(type=5) as entry,c.communicate_time,c.ct_user,d.name,d.phone,d.expected_job,d.educational,d.graduation_time,d.school,d.company_type,b.client_name')
                        ->where($where)
-                       ->group('phone,client_name')
+                       ->group('d.id,client_name')
                        ->order('phone asc,communicate_time desc,type desc')
                        ->select()
                        ->toArray();
-
+                       // dump($comm_cli->getlastsql());
       return $data;
     }
 
