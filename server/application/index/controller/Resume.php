@@ -801,9 +801,11 @@ class Resume extends Controller
                     continue;
                 }
             }
-            if (is_numeric($e)) {
-                $phone_arr[$row] = $e;//联系电话//写入联系电话
+            if (!preg_match("/0?(13|14|15|17|18|19)[0-9]{9}/", $e)) {
+                return '检测到电话号码不合法，请检查第'.$row.'行';
             }
+
+            $phone_arr[$row] = $e;//联系电话//写入联系电话
 
             if (!in_array($a,$ct_user) && $ct_user != '') {
                 return '检测到不存在用户，请检查第'.$row.'行.(提示:招聘负责人请使用英文.)';
@@ -1119,6 +1121,12 @@ class Resume extends Controller
             return json(['msg' => '毕业院校必填','code' => 11]);
         }
 
+        if (isset($data['phone'])) {
+            if (!preg_match("/0?(13|14|15|17|18|19)[0-9]{9}/", $data['phone'])) {
+                return json(['msg' => '电话号码格式不对','code' => 12]);
+            }
+        }
+
         $data['ct_user'] = Session::get('user_info')['uname'];
 
         if(isset($data['work_year'])){
@@ -1227,6 +1235,12 @@ class Resume extends Controller
         $data['mfy_user'] = Session::get('user_info')['uname'];
         if (empty($data)) {
             return json(['msg' => '没有数据','code' => 2]);
+        }
+
+        if (isset($data['phone'])) {
+            if (!preg_match("/0?(13|14|15|17|18|19)[0-9]{9}/", $data['phone'])) {
+                return json(['msg' => '电话号码格式不对','code' => 3]);
+            }
         }
 
 
