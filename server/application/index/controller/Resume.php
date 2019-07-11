@@ -801,7 +801,7 @@ class Resume extends Controller
                     continue;
                 }
             }
-            if (!preg_match("/0?(13|14|15|17|18|19)[0-9]{9}/", $e)) {
+            if (!preg_match("/0?(13|14|15|16|17|18|19)[0-9]{9}/", $e)) {
                 return '检测到电话号码不合法，请检查第'.$row.'行';
             }
 
@@ -1122,7 +1122,7 @@ class Resume extends Controller
         }
 
         if (isset($data['phone'])) {
-            if (!preg_match("/0?(13|14|15|17|18|19)[0-9]{9}/", $data['phone'])) {
+            if (!preg_match("/0?(13|14|15|16|17|18|19)[0-9]{9}/", $data['phone'])) {
                 return json(['msg' => '电话号码格式不对','code' => 12]);
             }
         }
@@ -1238,7 +1238,7 @@ class Resume extends Controller
         }
 
         if (isset($data['phone'])) {
-            if (!preg_match("/0?(13|14|15|17|18|19)[0-9]{9}/", $data['phone'])) {
+            if (!preg_match("/0?(13|14|15|16|17|18|19)[0-9]{9}/", $data['phone'])) {
                 return json(['msg' => '电话号码格式不对','code' => 3]);
             }
         }
