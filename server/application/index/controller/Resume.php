@@ -1043,6 +1043,7 @@ class Resume extends Controller
         //简历列表
         $where = input('get.');
         $data = $this->search($where);
+        
         $count = array_pop($data);//sphinx获取的总条数设置上限为10000条，可能导致某些结果不准确
         // if (count($input) == 3 ) {
             // $resume = new ResumeModel();
@@ -1163,15 +1164,17 @@ class Resume extends Controller
                 // }
                 $index = ($where['pageIndex'] - 1) * $where['pageSize'];
                 $size = $where['pageSize'];
-                $sql.=" order by id desc limit $index,$size";
+                $sql.=" and id <= (select id from rs_resume order by id desc limit $index,1) order by id desc limit $size";
 
                 if (empty($data)) {
+                    $sphinx = $data;
                     $data = Db::query($sql);
+
                 }
                 
                 $count = Db::query($sql_count);
         
-        return json(['msg' => '获取成功','code' => 0,'data' => [ 'row' => $data,'total' => $count[0]['count']]]);
+        return json(['msg' => '获取成功','code' => 0,'data' => [ 'row' => $data,'total' => $count[0]['count'],'sphinx' => $sphinx ]]);
     }
 
     public function getResumeOne(){
