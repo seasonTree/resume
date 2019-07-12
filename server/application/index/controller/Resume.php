@@ -1165,7 +1165,7 @@ class Resume extends Controller
                 // }
                 $index = ($where['pageIndex'] - 1) * $where['pageSize'];
                 $size = $where['pageSize'];
-                $sql.="order by id limit $index,$size";
+                $sql.="order by id desc limit $index,$size";
 
                 if (empty($data)) {
                     $data = Db::query($sql);
