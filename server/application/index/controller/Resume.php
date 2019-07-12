@@ -1051,123 +1051,123 @@ class Resume extends Controller
         // }
 
 
-            // $sql = "select graduation_time,company_type,source,ct_time,id,name,sex,age,phone,educational,work_year,email,expected_job,nearest_job,school,speciality,ct_user from rs_resume where 1=1 ";
+            $sql = "select graduation_time,company_type,source,ct_time,id,name,sex,age,phone,educational,work_year,email,expected_job,nearest_job,school,speciality,ct_user from rs_resume where 1=1 ";
 
-            // $sql_count = "select count(id) as count from rs_resume where 1=1 ";
+            $sql_count = "select count(id) as count from rs_resume where 1=1 ";
 
-            // $email = isset($where['email'])?$where['email']:'';
-            // if ($email) {
-            //     $sql.= " and email = '$email' ";
-            //     $sql_count.= " and email = '$email' ";
-            // }
+            $email = isset($where['email'])?$where['email']:'';
+            if ($email) {
+                $sql.= " and email = '$email' ";
+                $sql_count.= " and email = '$email' ";
+            }
 
-            // $work_year_min = isset($where['work_year_min'])?$where['work_year_min']:'';
-            // $work_year_max = isset($where['work_year_max'])?$where['work_year_max']:'';
+            $work_year_min = isset($where['work_year_min'])?$where['work_year_min']:'';
+            $work_year_max = isset($where['work_year_max'])?$where['work_year_max']:'';
 
-            // if ($work_year_min && $work_year_max) {
-            //     $sql.=" and work_year >= $work_year_min and work_year <= $work_year_max";
-            //     $sql_count.= " and work_year >= $work_year_min and work_year <= $work_year_max";
-            // }else if($work_year_min && !$work_year_max){    
-            //     $sql.=" and work_year >= $work_year_min and work_year <= 100";
-            //     $sql_count.=" and work_year >= $work_year_min and work_year <= 100";
-            // }else if(!$work_year_min && $work_year_max){
-            //     $sql.=" and work_year >= 0 and work_year <= $work_year_max";
-            //     $sql_count.=" and work_year >= 0 and work_year <= $work_year_max";
-            // }else{
-            //     // $arr_ids[] = [];
+            if ($work_year_min && $work_year_max) {
+                $sql.=" and work_year >= $work_year_min and work_year <= $work_year_max";
+                $sql_count.= " and work_year >= $work_year_min and work_year <= $work_year_max";
+            }else if($work_year_min && !$work_year_max){    
+                $sql.=" and work_year >= $work_year_min and work_year <= 100";
+                $sql_count.=" and work_year >= $work_year_min and work_year <= 100";
+            }else if(!$work_year_min && $work_year_max){
+                $sql.=" and work_year >= 0 and work_year <= $work_year_max";
+                $sql_count.=" and work_year >= 0 and work_year <= $work_year_max";
+            }else{
+                // $arr_ids[] = [];
                 
-            // }
+            }
 
-            //     //时间搜索条件
-            //     $ct_time = isset($where['ct_time'])?$where['ct_time']:'';
-            //     if ($ct_time) {
-            //         $min_time = strtotime($ct_time.' 00:00:00');
-            //         $max_time = strtotime($ct_time.' 23:59:59');
-            //         $sql.=" and ct_timestamp between $min_time and $max_time";
-            //         $sql_count.=" and ct_timestamp between $min_time and $max_time";
-            //     }
+                //时间搜索条件
+                $ct_time = isset($where['ct_time'])?$where['ct_time']:'';
+                if ($ct_time) {
+                    $min_time = strtotime($ct_time.' 00:00:00');
+                    $max_time = strtotime($ct_time.' 23:59:59');
+                    $sql.=" and ct_timestamp between $min_time and $max_time";
+                    $sql_count.=" and ct_timestamp between $min_time and $max_time";
+                }
 
 
-            //     $arr = [];
-            //     $arr['name'] = isset($where['name'])?$where['name']:'';
-            //     $arr['sex'] = isset($where['sex'])?$where['sex']:'';
-            //     $arr['educational'] = isset($where['educational'])?$where['educational']:'';
-            //     $arr['phone'] = isset($where['phone'])?$where['phone']:'';
-            //     $arr['expected_job'] = isset($where['expected_job'])?$where['expected_job']:'';
-            //     $arr['email'] = isset($where['email'])?$where['email']:'';
-            //     // $arr['status'] = isset($where['status'])?$where['status']:'';
-            //     // $arr['school'] = isset($where['school'])?$where['school']:'';
-            //     // $arr['speciality'] = isset($where['speciality'])?$where['speciality']:'';
-            //     // $arr['english'] = isset($where['english'])?$where['english']:'';
-            //     $arr = array_filter($arr);
-            //     $phinx_where = '';
-            //     $count_arr = count($arr);
-            //     $arr_ids = [];
-            //     $n = 1;
+                $arr = [];
+                $arr['name'] = isset($where['name'])?$where['name']:'';
+                $arr['sex'] = isset($where['sex'])?$where['sex']:'';
+                $arr['educational'] = isset($where['educational'])?$where['educational']:'';
+                $arr['phone'] = isset($where['phone'])?$where['phone']:'';
+                $arr['expected_job'] = isset($where['expected_job'])?$where['expected_job']:'';
+                $arr['email'] = isset($where['email'])?$where['email']:'';
+                // $arr['status'] = isset($where['status'])?$where['status']:'';
+                // $arr['school'] = isset($where['school'])?$where['school']:'';
+                // $arr['speciality'] = isset($where['speciality'])?$where['speciality']:'';
+                // $arr['english'] = isset($where['english'])?$where['english']:'';
+                $arr = array_filter($arr);
+                $phinx_where = '';
+                $count_arr = count($arr);
+                $arr_ids = [];
+                $n = 1;
 
-            //     if ( $count_arr > 0) {
-            //         $sql.= " and ";
-            //         $sql_count.= " and ";
-            //     }
-            //     foreach ($arr as $k => $v) {
-            //         if ($v == '') {
-            //             continue;
-            //         }
-            //         if ($count_arr == $n) {
+                if ( $count_arr > 0) {
+                    $sql.= " and ";
+                    $sql_count.= " and ";
+                }
+                foreach ($arr as $k => $v) {
+                    if ($v == '') {
+                        continue;
+                    }
+                    if ($count_arr == $n) {
 
-            //             if ($k == 'name') {
-            //                 $sql.= " $k like '%$v%'";
-            //                 $sql_count.= " $k like '%$v%'";
-            //             }
-            //             else{
-            //                 $sql.= " $k = '$v'";
-            //                 $sql_count.= " $k = '$v'";
-            //             }
+                        if ($k == 'name') {
+                            $sql.= " $k like '%$v%'";
+                            $sql_count.= " $k like '%$v%'";
+                        }
+                        else{
+                            $sql.= " $k = '$v'";
+                            $sql_count.= " $k = '$v'";
+                        }
                         
-            //         }
-            //         else{
-            //             if ($k == 'name') {
-            //                 $sql.= " $k like '%$v%' and ";
-            //                 $sql_count.= " $k like '%$v%' and ";
-            //             }
-            //             else{
-            //                 $sql.= " $k = '$v' and ";
-            //                 $sql_count.= " $k = '$v' and ";
-            //             }
+                    }
+                    else{
+                        if ($k == 'name') {
+                            $sql.= " $k like '%$v%' and ";
+                            $sql_count.= " $k like '%$v%' and ";
+                        }
+                        else{
+                            $sql.= " $k = '$v' and ";
+                            $sql_count.= " $k = '$v' and ";
+                        }
                         
-            //         }
-            //         $n++;
-            //     }
+                    }
+                    $n++;
+                }
 
 
-            //     $ct_user = isset($where['ct_user'])?$where['ct_user']:'';
-            //     if ($ct_user) {
-            //         $ct_user = preg_replace("/(,|，)/",',',$ct_user);
-            //         $ct_user = explode(",",$ct_user);
-            //         $ct_user = implode("','",$ct_user);
-            //         $sql.= " and ct_user in('$ct_user') ";
-            //         $sql_count.= " and ct_user in('$ct_user') ";
-            //         // $sphinx->AddQuery($other,'resume');
-            //     }
+                $ct_user = isset($where['ct_user'])?$where['ct_user']:'';
+                if ($ct_user) {
+                    $ct_user = preg_replace("/(,|，)/",',',$ct_user);
+                    $ct_user = explode(",",$ct_user);
+                    $ct_user = implode("','",$ct_user);
+                    $sql.= " and ct_user in('$ct_user') ";
+                    $sql_count.= " and ct_user in('$ct_user') ";
+                    // $sphinx->AddQuery($other,'resume');
+                }
 
 
 
-            //     // $other = isset($where['other'])?$where['other']:'';
-            //     // if ($other) {
-            //     //     $other = preg_replace("/(,|，)/",',',$other);
-            //     //     $other = explode(',',$other);
-            //     //     $other = implode('"|"',$other);
+                // $other = isset($where['other'])?$where['other']:'';
+                // if ($other) {
+                //     $other = preg_replace("/(,|，)/",',',$other);
+                //     $other = explode(',',$other);
+                //     $other = implode('"|"',$other);
                     
                     
-            //     //     // $sphinx->AddQuery($other,'resume');
-            //     // }
-            //     $index = ($where['pageIndex'] - 1) * $where['pageSize'];
-            //     $size = $where['pageSize'];
-            //     $sql.=" and id >= (select id from rs_resume order by id limit $index,1) order by id desc limit $size";
+                //     // $sphinx->AddQuery($other,'resume');
+                // }
+                $index = ($where['pageIndex'] - 1) * $where['pageSize'];
+                $size = $where['pageSize'];
+                $sql.=" and id >= (select id from rs_resume order by id limit $index,1) order by id desc limit $size";
 
-            //     if (empty($data)) {
-            //         $data = Db::query($sql);
-            //     }
+                // if (empty($data)) {
+                //     $data = Db::query($sql);
+                // }
                 
                 $count = Db::query($sql_count);
         
