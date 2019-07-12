@@ -1556,134 +1556,15 @@ class Resume extends Controller
     }
     public function test(){
 
-        $a = 'aabbzz';
-        $a++;
-        echo $a;
-        exit;
-        return json(['msg'=>'测试成功','code' => 0]);
-        // $dsn = 'mysql:host=127.0.0.1;dbname=test';
-        // $db = new PDO($dsn, 'root', '123456');
-        // 超时
-        ini_set('max_execution_time', '80000');
-
-        header("Content-type: text/html; charset=gb2312");
-        $index = file_get_contents("http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2018/index.html");
-        preg_match_all('/<a href=\'(\d{2,4}).html\'>(.{3,20})<br\/><\/a>/', $index, $matches);
-        echo '<pre>';
-        $url = 'http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2016/';
-        error_reporting(0);
-        $prov = array(
-            array(),
-            array(11,12,13,14,15,21,22,23,31,32,33,34,35,36,37,41,42,43,44,45,46,50,51,52,53,54,61,62,63,64,65),
-            array('北京市','天津市','河北省','山西省','内蒙古自治区','辽宁省','吉林省','黑龙江省',
-                '上海市','江苏省','浙江省','安徽省','福建省','江西省','山东省','河南省',
-                '湖北省','湖南省','广东省','广西壮族自治区','海南省','重庆市','四川省','贵州省',
-                '云南省','西藏自治区','陕西省','甘肃省','青海省','宁夏回族自治区','新疆维吾尔自治区'
-            )
-        );
-
-        $matches = $prov;
-
-        for ($i = 0,$e = count($matches[1]); $i < $e; $i++) {
-            $index = file_get_contents($url.$matches[1][$i].'.html');
-            preg_match_all('/<a href=\'\d{2}\/(.{1,30}).html\'>(.{1,30})<\/a><\/td><\/tr>/', $index, $matche);
-
-            for ($a = 0,$b = count($matche[1]); $a < $b; $a++) {
-                $index = file_get_contents($url.$matches[1][$i].'/'.$matche[1][$a].'.html');
-                preg_match_all('/<a href=\'\d{2}\/(.{1,30}).html\'>(.{1,30})<\/a><\/td><\/tr>/', $index, $match);
-                for ($c = 0,$d = count($match[1]); $c < $d; $c++) {
-                    $aru = substr($matche[1][$a], 2, 2);
-                    $index = file_get_contents($url.$matches[1][$i].'/'.$aru.'/'.$match[1][$c].'.html');
-                    preg_match_all('/<a href=\'\d{2}\/(.{1,30}).html\'>(.{1,30})<\/a><\/td><\/tr>/', $index, $matc);
-
-                    //部分省市的html和大部分的不一样，重写规则
-                    if (!$matc[0]) preg_match_all('/<td>(.{1,30})<\/td><td>\d{1,10}<\/td><td>(.{1,30})<\/td><\/tr>/', $index, $matc);
-
-                    $sql = 'REPLACE INTO position (province_id,province_name,city_id,city_name,county_id,county_name,town_id,town_name) VALUES ';
-                    for ($v = 0,$n = count($matc[1]); $v < $n; $v++) {
-                        $jil = iconv("utf-8", "gbk//ignore", $matches[2][$i]);
-                        $sql .= "({$matches[1][$i]},'{$jil}',{$matche[1][$a]},'{$matche[2][$a]}',{$match[1][$c]},'{$match[2][$c]}',{$matc[1][$v]},'{$matc[2][$v]}'),";
-                    }
-                    // $sql = iconv("gbk", "utf-8//ignore", $sql);
-                    // $res = $db->query(rtrim($sql, ","));
-                    echo $sql.'</br> ';
-
-                }
-            }
-        }
-
-
-        /********************************************************处理没用的沟通记录*******************************************/
-        $res = array_column( Db::query('select rs_communicate.id from rs_communicate LEFT JOIN rs_resume on rs_resume.id = rs_communicate.resume_id where name is null'),'id');
-        $res = Db::execute('delete from rs_communicate where id in('.implode(',',$res).')');
-        dump($res);
-        dump(file_get_contents(dirname(Env::get('ROOT_PATH')).'/server/extend/speciality.txt'));
-        exit;
-        /******************************************************************************************************************/
-
-        // $resume = new Resume();
-        // $data = Db::query("select id,phone from rs_resume GROUP BY phone HAVING count(phone) > 1");//313条//查询有重复记录的简历数据
-        // $resume_id = array_column($data,'id');
-        // $phone = array_column($data,'phone');
-
-        // $in_phone = implode(',',$phone);
-        // $data = Db::query("select id,phone,email from rs_resume where phone in($in_phone)");//661条//查询出所有重复记录的简历信息
-
-        // $comm_list = [];
-        // $in_resume_id = implode(',',array_column($data,'id'));
-        // $comm = Db::query("select id,resume_id from rs_communicate where resume_id in($in_resume_id) order by resume_id asc");//682条//查询这批简历中的所有沟通记录
-
-        // $resume_ids = array_column($comm,'resume_id');
-        // $comm_ids = array_column($comm,'id');
-
-        // $res = Db::query("select id from rs_resume where phone in (select phone from rs_resume GROUP BY phone HAVING count(phone) > 1) and id not in (select min(id) from rs_resume GROUP BY phone HAVING count(phone) > 1)");
-
-        // $resume_id = implode(',',array_column($res,'id'));
-
-        // $res = Db::query("select resume_id from rs_resume_upload where resume_id in($resume_id)");
-
-        // dump($res);exit;
-        // // dump($resume_ids);exit;
-        // // $list = [];//新集合
-        // // foreach ($data as $k => $v) {
-        // //     $list[$v['phone']][$v['id']] = isset($comm_list[$v['id']])?$comm_list[$v['id']]:'';//把各条的沟通记录分别对应到各个简历下
-        // // }
-        // // $update_comm = [];//需要修改沟通记录的集合
-        // // foreach ($list as $k => $v) {
-            
-        // // }
-        // $phone_resume = [];//需要修改对应列
-        // // $phone_list = [];//所有的简历(电话)集合
-        // foreach ($data as $k => $v) {
-        //     $phone_resume[trim($v['phone'])][] = $v['id'];
-            
-        // }
-        // $update_comm = [];//主简历的对应关系处理
-        // $comm_keys = 0;//key
-        // // dump($phone_resume);exit;
-        // foreach ($phone_resume as $k => $v) {
-        //     foreach ($v as $a => $b) {
-        //         $resume_id_keys = array_search($b,$resume_ids);//寻找简历id的key值
-        //         if ($resume_id_keys == false) {
-        //             continue;//没有找到简历id，说明该简历没有对应任何沟通记录，直接跳过
-        //         }
-        //         if ($a == 0) {
-        //             unset($comm_ids[$resume_id_keys]);//删除对应元素
-        //             unset($resume_ids[$resume_id_keys]);//删除对应元素，
-        //             continue;//第一个元素是该简历保留的第一条，我们不做任何处理，直接跳过第一个元素
-        //         }
-        //         $update_comm[$comm_keys]['id'] = $comm_ids[$resume_id_keys];//在comm_ids的数组的$resume_ids_key处取出对应的沟通id
-        //         $update_comm[$comm_keys]['resume_id'] = $v[0];//简历id改成第一份简历的id，进行合并
-        //         unset($comm_ids[$resume_id_keys]);//删除对应元素
-        //         unset($resume_ids[$resume_id_keys]);//删除对应元素，
-        //         $comm_keys++;
-        //     }
-        //     // $update_comm[]
-        // }
-        // $comm_model = new Communicate();
-        // $res = $comm_model->saveAll($update_comm);
-        // dump($res);
-        // // dump($update_comm);
+        $sphinx->setServer("127.0.0.1", 9312);
+        $sphinx->setMatchMode(SPH_MATCH_EXTENDED2);   //匹配模式 
+        // $sphinx->setMatchMode(SPH_MATCH_BOOLEAN);   //匹配模式 
+        // $sphinx->setMatchMode(SPH_MATCH_PHRASE);   //匹配模式 
+        //ANY为关键词自动拆词，ALL为不拆词匹配（完全匹配），EXTENDED2,多词匹配
+        $sphinx->SetArrayResult ( true );   //返回的结果集为数组
+        $res = $sphinx->query('','resume');
+        return $res;
+       
 
     }
 
