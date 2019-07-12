@@ -1564,7 +1564,6 @@ class Resume extends Controller
         $sphinx->SetArrayResult ( true );   //返回的结果集为数组
         $res = $sphinx->query('','resume');
         return $res;
-       
 
     }
 
@@ -1950,7 +1949,7 @@ class Resume extends Controller
 
         // }
         // return $data;
-        return $res;
+        return [$res,$sphinx];
     }
 
     public function getJob(){
