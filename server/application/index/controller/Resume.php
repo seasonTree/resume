@@ -1163,11 +1163,11 @@ class Resume extends Controller
                 // }
                 $index = ($where['pageIndex'] - 1) * $where['pageSize'];
                 $size = $where['pageSize'];
-                $sql.=" and id >= (select id from rs_resume order by id limit $index,1) order by id desc limit $size";
+                $sql.=" order by id desc limit $index,$size";
 
-                // if (empty($data)) {
-                //     $data = Db::query($sql);
-                // }
+                if (empty($data)) {
+                    $data = Db::query($sql);
+                }
                 
                 $count = Db::query($sql_count);
         
