@@ -1042,10 +1042,10 @@ class Resume extends Controller
     public function getResumeList(){
         //简历列表
         $where = input('get.');
-        $sphinx = $this->search($where);
-        $data = [];
+        $data = $this->search($where);
+        // $data = [];
         
-        $count = array_pop($data);//sphinx获取的总条数设置上限为10000条，可能导致某些结果不准确
+        // $count = array_pop($data);//sphinx获取的总条数设置上限为10000条，可能导致某些结果不准确
         // if (count($input) == 3 ) {
             // $resume = new ResumeModel();
         //     // $data = $resume->get();
@@ -1175,7 +1175,7 @@ class Resume extends Controller
                 
                 $count = Db::query($sql_count);
         
-        return json(['msg' => '获取成功','code' => 0,'data' => [ 'row' => $data,'total' => $count[0]['count'],'sphinx' => $sphinx ]]);
+        return json(['msg' => '获取成功','code' => 0,'data' => [ 'row' => $data,'total' => $count[0]['count'] ]]);
     }
 
     public function getResumeOne(){
@@ -1879,7 +1879,7 @@ class Resume extends Controller
             }
         }
 
-        $data[] = $res['total'];
+        // $data[] = $res['total'];
 
         // $money_st = isset($where['expected_money_st'])?$where['expected_money_st']:'';
         // $money_ed = isset($where['expected_money_ed'])?$where['expected_money_ed']:'';
@@ -1948,8 +1948,8 @@ class Resume extends Controller
             // $data[] = count($data_arr);//总数
 
         // }
-        // return $data;
-        return [$res,$sphinx];
+        return $data;
+        // return [$res,$sphinx];
     }
 
     public function getJob(){
